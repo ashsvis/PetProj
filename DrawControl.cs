@@ -10,6 +10,7 @@ namespace PetProj
         private int mouseClickCount;
         private Point firstMouseDown;
         private Point mousePosition;
+        private EditorMode editorMode;
 
         public DrawControl()
         {
@@ -23,7 +24,36 @@ namespace PetProj
             DrawDefaultCursor(graphics, mousePosition);
             if (mouseClickCount == 1)
             {
-                DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
+                switch (editorMode)
+                {
+                    case EditorMode.Selection:
+                        DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
+                        break;
+                    case EditorMode.BuildLines:
+                        DrawRibbonLine(graphics, firstMouseDown, mousePosition);
+                        break;
+                    case EditorMode.BuildRectangle:
+                        DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
+                        break;
+                }
+            }
+        }
+
+        private void DrawRibbonRectangle(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        {
+            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+            using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
+                graphics.DrawRectangle(pen, PrepareRect(rect));
+        }
+
+        private void DrawRibbonLine(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        {
+            var pt1 = PrepareMousePosition(new Point(firstMouseDown.X, firstMouseDown.Y));
+            var pt2 = PrepareMousePosition(new Point(mousePosition.X, mousePosition.Y));
+            using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
+            {
+                graphics.DrawLine(pen, pt1, pt2);
             }
         }
 
@@ -93,25 +123,46 @@ namespace PetProj
 
         private void zoomPad_MouseDown(object sender, MouseEventArgs e)
         {
-            mousePosition = e.Location;
-            if (mouseClickCount == 0)
+            if (e.Button == MouseButtons.Left)
             {
-                // при первом нажатии запоминаем точку нажатия
-                firstMouseDown = mousePosition;
-                mouseClickCount++;
+                mousePosition = e.Location;
+                if (mouseClickCount == 0)
+                {
+                    // при первом нажатии запоминаем точку нажатия
+                    firstMouseDown = mousePosition;
+                    mouseClickCount++;
+                }
+                else if (mouseClickCount == 1) // это второе нажатие
+                {
+                    switch (editorMode)
+                    {
+                        case EditorMode.Selection:
+                            var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
+                            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+                            // при отсутвии других режимов - режим выбора, и второе нажатие
+                            // сбрасывает количество нажатий
+                            mouseClickCount = 0;
+                            // здесь будет обработка при выборе объектов
+                            // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
+                            break;
+                        case EditorMode.BuildLines:
+                            mouseClickCount = 0;
+                            firstMouseDown = mousePosition;
+                            mouseClickCount++;
+                            break;
+                        case EditorMode.BuildRectangle:
+                            //SetMode(EditorMode.Selection);
+                            mouseClickCount = 0;
+                            break;
+                    }
+                }
+                zoomPad.Invalidate();
             }
-            else if (mouseClickCount == 1)
+            else if (e.Button == MouseButtons.Right)
             {
-                // при онсутвии других режимов - режим выбора, и второе нажатие
-                // сбрасывает количество нажатий
-                mouseClickCount = 0;
-                // здесь будет обработка при выборе объектов
-                var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
-                var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
-                    Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
-                // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
+                SetMode(EditorMode.Selection);
             }
-            zoomPad.Invalidate();
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
@@ -123,6 +174,17 @@ namespace PetProj
         private void zoomPad_MouseUp(object sender, MouseEventArgs e)
         {
             zoomPad.Invalidate();
+        }
+
+        public EventHandler OnSelectionMode;
+
+        public void SetMode(EditorMode selection)
+        {
+            editorMode = selection;
+            mouseClickCount = 0;
+            zoomPad.Invalidate();
+            if (editorMode == EditorMode.Selection)
+                OnSelectionMode?.Invoke(this, EventArgs.Empty);
         }
     }
 }

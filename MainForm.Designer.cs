@@ -392,6 +392,7 @@
             this.tsbArrow.Name = "tsbArrow";
             this.tsbArrow.Size = new System.Drawing.Size(23, 22);
             this.tsbArrow.Text = "Режим выбора";
+            this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
             // tsbLine
             // 
@@ -400,7 +401,8 @@
             this.tsbLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLine.Name = "tsbLine";
             this.tsbLine.Size = new System.Drawing.Size(23, 22);
-            this.tsbLine.Text = "Отрезок";
+            this.tsbLine.Text = "Построение отрезков";
+            this.tsbLine.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
             // tsbRect
             // 
@@ -409,7 +411,8 @@
             this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRect.Name = "tsbRect";
             this.tsbRect.Size = new System.Drawing.Size(23, 22);
-            this.tsbRect.Text = "Прямоугольник";
+            this.tsbRect.Text = "Построение прямоугольников";
+            this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
             // создатьToolStripMenuItem
             // 

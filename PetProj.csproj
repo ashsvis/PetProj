@@ -52,6 +52,7 @@
     <Compile Include="DrawControl.Designer.cs">
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorMode.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

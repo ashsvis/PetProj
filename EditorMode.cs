@@ -1,0 +1,9 @@
+﻿namespace PetProj
+{
+    public enum EditorMode
+    {
+        Selection,
+        BuildLines,
+        BuildRectangle
+    }
+}
