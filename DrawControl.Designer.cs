@@ -33,6 +33,7 @@
             // 
             // zoomPad
             // 
+            this.zoomPad.Cursor = System.Windows.Forms.Cursors.Cross;
             this.zoomPad.Dock = System.Windows.Forms.DockStyle.Fill;
             this.zoomPad.Location = new System.Drawing.Point(0, 0);
             this.zoomPad.MaxZoom = 100F;

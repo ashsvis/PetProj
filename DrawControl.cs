@@ -40,7 +40,7 @@ namespace PetProj
             var color = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y
                 ? Color.Green : Color.Blue;
             using (var brush = new SolidBrush(Color.FromArgb(50, color)))
-                graphics.FillRectangle(brush, rect);
+                graphics.FillRectangle(brush, PrepareRect(rect));
             using (var pen = new Pen(color, 0))
                 graphics.DrawRectangle(pen, PrepareRect(rect));
         }
