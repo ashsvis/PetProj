@@ -17,6 +17,8 @@ namespace PetProj
 
         public event EventHandler<DrawEventArgs> OnDraw; /// Called on everytime control is painted and after zoom calculations. Can be used to draw custom paints.
 
+        public event EventHandler OnMouseWheel;
+
         public double ZoomScale { get; set; } = 1; /// Current Zoom value
         public PointF Origin = new PointF(0, 0); /// Origin is the left most point of a viewport
         
@@ -133,8 +135,6 @@ namespace PetProj
 
             //g.SmoothingMode = SmoothingMode.HighQuality;
             //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.SmoothingMode = SmoothingMode.HighSpeed;
-            g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             g.FillRectangle(brush, Origin.X, Origin.Y, (float)(width / ZoomScale), (float)(height / ZoomScale));
 
             OnDraw?.Invoke(this, new DrawEventArgs()
@@ -169,7 +169,8 @@ namespace PetProj
         {
             if (e.Button == MouseButtons.None)
             {
-                if ((ModifierKeys & Keys.Control) != 0)
+                if (ModifierKeys == Keys.None)
+                //if ((ModifierKeys & Keys.Control) != 0)
                 {
                     var mouseX = e.Location.X;
                     var mouseY = e.Location.Y;
@@ -181,27 +182,6 @@ namespace PetProj
                     {
                         Position = new Point(mouseX, mouseY),
                         Zoom = zoom,
-                    };
-                }
-                else if (ModifierKeys == Keys.None)
-                {
-                    if (LastMousePosition.X == -1 && LastMousePosition.Y == -1)
-                    {
-                        LastMousePosition = new PointF(e.Location.X, e.Location.Y);
-                    }
-                    else if (e.Location.X == LastMousePosition.X && e.Location.Y == LastMousePosition.Y)
-                    {
-                        return;
-                    }
-
-                    var wheel = e.Delta < 0 ? -1 : 1;
-                    var shift = wheel * 30;
-                    var mouseX = (int)LastMousePosition.X;
-                    var mouseY = (int)(LastMousePosition.Y + shift);
-
-                    this.MouseMoveData = new MouseMoveEvent()
-                    {
-                        Position = new Point(mouseX, mouseY),
                     };
                 }
                 Invalidate();

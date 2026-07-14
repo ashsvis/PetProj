@@ -9,15 +9,21 @@ namespace PetProj
     public partial class DrawControl : UserControl
     {
         private int mouseClickCount;
-        private Point firstMouseDown;
-        private Point mousePosition;
+        private PointF firstMouseDown;
+        private PointF mousePosition;
         private EditorMode editorMode;
 
-        private List<Primitive> figures = new List<Primitive>();
+        private readonly List<Primitive> figures = new List<Primitive>();
 
         public DrawControl()
         {
             InitializeComponent();
+            zoomPad.OnMouseWheel += ZoomPad_OnMouseWheel;
+        }
+
+        private void ZoomPad_OnMouseWheel(object sender, EventArgs e)
+        {
+            SetMode(EditorMode.Selection);
         }
 
         private void zoomPad_OnDraw(object sender, ZoomControl.DrawEventArgs e)
@@ -48,15 +54,15 @@ namespace PetProj
             }
         }
 
-        private void DrawRibbonRectangle(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        private void DrawRibbonRectangle(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
-            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
             using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
                 graphics.DrawRectangle(pen, PrepareRect(rect));
         }
 
-        private void DrawRibbonLine(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = PrepareMousePosition(firstMouseDown);
             var pt2 = PrepareMousePosition(mousePosition);
@@ -72,9 +78,9 @@ namespace PetProj
         /// <param name="graphics"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        private void DrawRibbonSelectionRect(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        private void DrawRibbonSelectionRect(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
-            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
             var color = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y
                 ? Color.Green : Color.Blue;
@@ -84,11 +90,11 @@ namespace PetProj
                 graphics.DrawRectangle(pen, PrepareRect(rect));
         }
 
-        private Rectangle PrepareRect(Rectangle rectangle)
+        private Rectangle PrepareRect(RectangleF rectangle)
         {
             var pt1 = PrepareMousePosition(rectangle.Location);
             var size = rectangle.Size;
-            var pt2 = PrepareMousePosition(Point.Add(rectangle.Location, size));
+            var pt2 = PrepareMousePosition(PointF.Add(rectangle.Location, size));
             return Rectangle.Ceiling(new RectangleF(pt1, new SizeF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
         }
 
@@ -117,12 +123,12 @@ namespace PetProj
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="mousePosition"></param>
-        private void DrawDefaultCursor(Graphics graphics, Point mousePosition)
+        private void DrawDefaultCursor(Graphics graphics, PointF mousePosition)
         {
-            var pt1 = PrepareMousePosition(new Point(0, mousePosition.Y));
-            var pt2 = PrepareMousePosition(new Point(zoomPad.Width, mousePosition.Y));
-            var pt3 = PrepareMousePosition(new Point(mousePosition.X, 0));
-            var pt4 = PrepareMousePosition(new Point(mousePosition.X, zoomPad.Height));
+            var pt1 = PrepareMousePosition(new PointF(0, mousePosition.Y));
+            var pt2 = PrepareMousePosition(new PointF(zoomPad.Width, mousePosition.Y));
+            var pt3 = PrepareMousePosition(new PointF(mousePosition.X, 0));
+            var pt4 = PrepareMousePosition(new PointF(mousePosition.X, zoomPad.Height));
             using (var pen = new Pen(Color.Black, 0) { DashStyle = DashStyle.Dash })
             {
                 graphics.DrawLine(pen, pt1, pt2);
@@ -147,7 +153,7 @@ namespace PetProj
                     {
                         case EditorMode.Selection:
                             var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
-                            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
                             // при отсутвии других режимов - режим выбора, и второе нажатие
                             // сбрасывает количество нажатий
