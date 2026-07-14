@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -12,6 +13,8 @@ namespace PetProj
         private Point mousePosition;
         private EditorMode editorMode;
 
+        private List<Primitive> figures = new List<Primitive>();
+
         public DrawControl()
         {
             InitializeComponent();
@@ -21,6 +24,12 @@ namespace PetProj
         {
             var graphics = e.Graphics;
             if (graphics == null) return;
+
+            foreach (Primitive p in figures)
+            {
+                p.DrawAt(graphics, Color.Black);
+            }
+
             DrawDefaultCursor(graphics, mousePosition);
             if (mouseClickCount == 1)
             {
@@ -49,8 +58,8 @@ namespace PetProj
 
         private void DrawRibbonLine(Graphics graphics, Point firstMouseDown, Point mousePosition)
         {
-            var pt1 = PrepareMousePosition(new Point(firstMouseDown.X, firstMouseDown.Y));
-            var pt2 = PrepareMousePosition(new Point(mousePosition.X, mousePosition.Y));
+            var pt1 = PrepareMousePosition(firstMouseDown);
+            var pt2 = PrepareMousePosition(mousePosition);
             using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
             {
                 graphics.DrawLine(pen, pt1, pt2);
@@ -147,6 +156,10 @@ namespace PetProj
                             // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
                             break;
                         case EditorMode.BuildLines:
+                            var pt1 = PrepareMousePosition(firstMouseDown);
+                            var pt2 = PrepareMousePosition(mousePosition);
+                            var line = new Line(pt1, pt2);
+                            figures.Add(line);
                             mouseClickCount = 0;
                             firstMouseDown = mousePosition;
                             mouseClickCount++;
