@@ -7,6 +7,7 @@ namespace PetProj
 {
     public partial class DrawControl : UserControl
     {
+        private int mouseClickCount;
         private Point firstMouseDown;
         private Point mousePosition;
 
@@ -20,8 +21,37 @@ namespace PetProj
             var graphics = e.Graphics;
             if (graphics == null) return;
             DrawDefaultCursor(graphics, mousePosition);
+            if (mouseClickCount == 1)
+            {
+                DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
+            }
         }
 
+        /// <summary>
+        /// Рисуем резиновый прямоугольник выбора
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
+        private void DrawRibbonSelectionRect(Graphics graphics, Point firstMouseDown, Point mousePosition)
+        {
+            var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+            var color = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y
+                ? Color.Green : Color.Blue;
+            using (var brush = new SolidBrush(Color.FromArgb(50, color)))
+                graphics.FillRectangle(brush, rect);
+            using (var pen = new Pen(color, 0))
+                graphics.DrawRectangle(pen, PrepareRect(rect));
+        }
+
+        private Rectangle PrepareRect(Rectangle rectangle)
+        {
+            var pt1 = PrepareMousePosition(rectangle.Location);
+            var size = rectangle.Size;
+            var pt2 = PrepareMousePosition(Point.Add(rectangle.Location, size));
+            return Rectangle.Ceiling(new RectangleF(pt1, new SizeF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
+        }
 
         /// <summary>
         /// Перерасчёт позиции мыши при масштабировании и панарамировании
@@ -43,6 +73,11 @@ namespace PetProj
             return new PointF(arr[0].X, arr[0].Y);
         }
 
+        /// <summary>
+        /// Рисуем курсор-перекрестье на всё окно
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="mousePosition"></param>
         private void DrawDefaultCursor(Graphics graphics, Point mousePosition)
         {
             var pt1 = PrepareMousePosition(new Point(0, mousePosition.Y));
@@ -58,7 +93,24 @@ namespace PetProj
 
         private void zoomPad_MouseDown(object sender, MouseEventArgs e)
         {
-            mousePosition = firstMouseDown = e.Location;
+            mousePosition = e.Location;
+            if (mouseClickCount == 0)
+            {
+                // при первом нажатии запоминаем точку нажатия
+                firstMouseDown = mousePosition;
+                mouseClickCount++;
+            }
+            else if (mouseClickCount == 1)
+            {
+                // при онсутвии других режимов - режим выбора, и второе нажатие
+                // сбрасывает количество нажатий
+                mouseClickCount = 0;
+                // здесь будет обработка при выборе объектов
+                var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
+                var rect = new Rectangle(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                    Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+                // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
+            }
             zoomPad.Invalidate();
         }
 
@@ -70,7 +122,6 @@ namespace PetProj
 
         private void zoomPad_MouseUp(object sender, MouseEventArgs e)
         {
-            mousePosition = firstMouseDown = e.Location;
             zoomPad.Invalidate();
         }
     }
