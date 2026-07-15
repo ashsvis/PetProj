@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -12,18 +14,13 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
+        private Line ribbonLine;
 
         private readonly List<Primitive> figures = new List<Primitive>();
 
         public DrawControl()
         {
             InitializeComponent();
-            zoomPad.OnMouseWheel += ZoomPad_OnMouseWheel;
-        }
-
-        private void ZoomPad_OnMouseWheel(object sender, EventArgs e)
-        {
-            SetMode(EditorMode.Selection);
         }
 
         private void zoomPad_OnDraw(object sender, ZoomControl.DrawEventArgs e)
@@ -58,7 +55,7 @@ namespace PetProj
         {
             var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
-            using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
+            using (var pen = new Pen(Color.Magenta, 1))
                 graphics.DrawRectangle(pen, PrepareRect(rect));
         }
 
@@ -66,8 +63,10 @@ namespace PetProj
         {
             var pt1 = PrepareMousePosition(firstMouseDown);
             var pt2 = PrepareMousePosition(mousePosition);
-            using (var pen = new Pen(Color.Black, 1) { DashStyle = DashStyle.Dash })
+            using (var pen = new Pen(Color.Magenta, 1))
             {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
                 graphics.DrawLine(pen, pt1, pt2);
             }
         }
@@ -129,7 +128,7 @@ namespace PetProj
             var pt2 = PrepareMousePosition(new PointF(zoomPad.Width, mousePosition.Y));
             var pt3 = PrepareMousePosition(new PointF(mousePosition.X, 0));
             var pt4 = PrepareMousePosition(new PointF(mousePosition.X, zoomPad.Height));
-            using (var pen = new Pen(Color.Black, 0) { DashStyle = DashStyle.Dash })
+            using (var pen = new Pen(Color.Gray, 0))
             {
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.DrawLine(pen, pt3, pt4);
@@ -149,11 +148,13 @@ namespace PetProj
                 }
                 else if (mouseClickCount == 1) // это второе нажатие
                 {
+                    PointF pt1, pt2, pt3, pt4;
+                    Line line;
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
                             var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
-                            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                            var rectangle = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
                             // при отсутвии других режимов - режим выбора, и второе нажатие
                             // сбрасывает количество нажатий
@@ -162,16 +163,27 @@ namespace PetProj
                             // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
                             break;
                         case EditorMode.BuildLines:
-                            var pt1 = PrepareMousePosition(firstMouseDown);
-                            var pt2 = PrepareMousePosition(mousePosition);
-                            var line = new Line(pt1, pt2);
+                            pt1 = PrepareMousePosition(firstMouseDown);
+                            pt2 = PrepareMousePosition(mousePosition);
+                            line = new Line(pt1, pt2);
                             figures.Add(line);
                             mouseClickCount = 0;
                             firstMouseDown = mousePosition;
                             mouseClickCount++;
                             break;
                         case EditorMode.BuildRectangle:
-                            //SetMode(EditorMode.Selection);
+                            pt1 = PrepareMousePosition(firstMouseDown);
+                            pt3 = PrepareMousePosition(mousePosition);
+                            pt2 = new PointF(pt3.X, pt1.Y);
+                            pt4 = new PointF(pt1.X, pt3.Y);
+                            line = new Line(pt1, pt2);
+                            figures.Add(line);
+                            line = new Line(pt2, pt3);
+                            figures.Add(line);
+                            line = new Line(pt3, pt4);
+                            figures.Add(line);
+                            line = new Line(pt4, pt1);
+                            figures.Add(line);
                             mouseClickCount = 0;
                             break;
                     }
@@ -201,6 +213,7 @@ namespace PetProj
         {
             editorMode = selection;
             mouseClickCount = 0;
+            ribbonLine = null;
             zoomPad.Invalidate();
             if (editorMode == EditorMode.Selection)
                 OnSelectionMode?.Invoke(this, EventArgs.Empty);

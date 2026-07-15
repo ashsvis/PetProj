@@ -17,8 +17,6 @@ namespace PetProj
 
         public event EventHandler<DrawEventArgs> OnDraw; /// Called on everytime control is painted and after zoom calculations. Can be used to draw custom paints.
 
-        public event EventHandler OnMouseWheel;
-
         public double ZoomScale { get; set; } = 1; /// Current Zoom value
         public PointF Origin = new PointF(0, 0); /// Origin is the left most point of a viewport
         
@@ -133,8 +131,8 @@ namespace PetProj
             var brush = new SolidBrush(BackColor);
             var pen = new Pen(ForeColor);
 
-            //g.SmoothingMode = SmoothingMode.HighQuality;
-            //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.FillRectangle(brush, Origin.X, Origin.Y, (float)(width / ZoomScale), (float)(height / ZoomScale));
 
             OnDraw?.Invoke(this, new DrawEventArgs()
