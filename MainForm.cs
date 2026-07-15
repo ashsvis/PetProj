@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace PetProj
 {
@@ -70,8 +71,43 @@ namespace PetProj
             };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                drawControl.Save(dlg.FileName);
+                try
+                {
+                    drawControl.SaveDocument(dlg.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Сохранение чертежа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+        }
+
+        private void tsmiOpenDocument_Click(object sender, System.EventArgs e)
+        {
+            var dlg = new OpenFileDialog()
+            {
+                Title = "Загрузка ранее сохранённого чертежа",
+                FileName = "Чертёж.gxml",
+                DefaultExt = "gxml",
+                Filter = "Файл графического документа (*.gxml)|*.gxml",
+                Multiselect = false,
+            };
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    drawControl.LoadDocument(dlg.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Загрузка чертежа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsmiCreateDocument_Click(object sender, System.EventArgs e)
+        {
+            drawControl.CreateNewDocument();
         }
     }
 }

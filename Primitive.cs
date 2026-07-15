@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace PetProj
 {
@@ -17,5 +19,6 @@ namespace PetProj
         public abstract void DrawAt(Graphics graphics, Color forecolor);
         public abstract void DrawHighlightAt(Graphics graphics, Color forecolor);
         public abstract bool Contains(PointF point);
+        public abstract XElement GetData();
     }
 }

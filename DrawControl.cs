@@ -230,14 +230,20 @@ namespace PetProj
                 OnSelectionMode?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Save(string filename)
+        public void SaveDocument(string filename)
         {
             try
             {
                 var root = new XElement("Document");
+                root.Add(new XAttribute("Name", System.IO.Path.GetFileNameWithoutExtension(filename)));
                 var doc = new XDocument(new XComment("Данные чертёжного документа"), root);
                 var xmodel = new XElement("Model");
                 root.Add(xmodel);
+                foreach (var figure in figures)
+                {
+                    xmodel.Add(figure.GetData());
+                }
+
                 doc.Save(filename);
                 Changed = false;
             }
@@ -245,6 +251,46 @@ namespace PetProj
             {
                 throw;
             }
+        }
+
+        public void LoadDocument(string filename)
+        {
+            try
+            {
+                var xdoc = XDocument.Load(filename);
+                var root = xdoc.Element("Document");
+                var name =  root.Attribute("Name")?.Value;
+                var model = root.Element("Model");
+                figures.Clear();
+                zoomPad.Reset();
+                foreach (var xelement in model.Descendants())
+                {
+                    var figureName = $"{xelement.Name}";
+                    switch (figureName)
+                    {
+                        case "Line":
+                            var line = new Line(xelement);
+                            figures.Add(line);
+                            break;
+                    }
+                }
+                Changed = false;
+                zoomPad.Invalidate();
+            }
+            catch
+            {
+                figures.Clear();
+                Changed = false;
+                throw;
+            }
+        }
+
+        public void CreateNewDocument()
+        {
+            figures.Clear();
+            zoomPad.Reset();
+            Changed = false;
+            zoomPad.Invalidate();
         }
     }
 }

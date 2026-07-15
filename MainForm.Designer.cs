@@ -120,6 +120,7 @@
             this.tsmiCreateDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.tsmiCreateDocument.Size = new System.Drawing.Size(233, 22);
             this.tsmiCreateDocument.Text = "&Создать";
+            this.tsmiCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
             // 
             // tsmiOpenDocument
             // 
@@ -129,6 +130,7 @@
             this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.tsmiOpenDocument.Size = new System.Drawing.Size(233, 22);
             this.tsmiOpenDocument.Text = "&Открыть";
+            this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
             // 
             // toolStripSeparator
             // 
@@ -356,6 +358,7 @@
             this.tsbCreateDocument.Name = "tsbCreateDocument";
             this.tsbCreateDocument.Size = new System.Drawing.Size(23, 22);
             this.tsbCreateDocument.Text = "&Создать";
+            this.tsbCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
             // 
             // tsbOpenDocument
             // 
@@ -365,6 +368,7 @@
             this.tsbOpenDocument.Name = "tsbOpenDocument";
             this.tsbOpenDocument.Size = new System.Drawing.Size(23, 22);
             this.tsbOpenDocument.Text = "&Открыть";
+            this.tsbOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
             // 
             // tsbSaveDocument
             // 

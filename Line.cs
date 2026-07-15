@@ -1,5 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Data;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace PetProj
 {
@@ -9,6 +15,11 @@ namespace PetProj
         { 
             Origin = point1;
             Offsets.Add(new SizeF(point2.X - point1.X, point2.Y - point1.Y));
+        }
+
+        public Line(XElement xelement)
+        {
+            SetData(xelement);
         }
 
         public override void DrawAt(Graphics graphics, Color forecolor)
@@ -86,6 +97,53 @@ namespace PetProj
                 Offsets[0] = sz;
             else 
                 Offsets.Add(sz);
+        }
+
+        public override XElement GetData()
+        {
+            var xline = new XElement("Line");
+            xline.Add(new XAttribute("Start", StartPoint));
+            xline.Add(new XAttribute("End", EndPoint));
+            return xline;
+        }
+
+        private void SetData(XElement xelement)
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            var decsep = culture.NumberFormat.NumberDecimalSeparator;
+            var point1 = Parse(xelement.Attribute("Start")?.Value, decsep);
+            var point2 = Parse(xelement.Attribute("End")?.Value, decsep);
+            Origin = point1;
+            Offsets.Clear();
+            Offsets.Add(new SizeF(point2.X - point1.X, point2.Y - point1.Y));
+        }
+
+        private PointF Parse(string line, string decimalseparator)
+        {
+            // Разбиваем по запятым и убираем пустые элементы
+            string[] tokens = line.Trim('{','}').Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            if (tokens.Length == 2)
+            {
+                string valueX = tokens[0].Split('=').Last();
+                string valueY = tokens[1].Split('=').Last();
+
+                switch (decimalseparator)
+                {
+                    case ".":
+                        valueX = valueX.Replace(',', '.');
+                        valueY = valueY.Replace(',', '.');
+                        break;
+                    case ",":
+                        valueX = valueX.Replace('.', ',');
+                        valueY = valueY.Replace('.', ',');
+                        break;
+                }
+
+                // Проверяем, что удалось успешно преобразовать обе координаты
+                if (float.TryParse(valueX, out float x) && float.TryParse(valueY, out float y))
+                    return new PointF(x, y);
+            }
+            return PointF.Empty;
         }
     }
 }
