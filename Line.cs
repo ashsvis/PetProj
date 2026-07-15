@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using System.Reflection;
+using System.Drawing.Drawing2D;
 
 namespace PetProj
 {
@@ -19,11 +19,52 @@ namespace PetProj
                 var pt2 = PointF.Add(pt1, Offsets[0]);
                 using (var pen = new Pen(forecolor))
                 {
-                    pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-                    pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
                     graphics.DrawLine(pen, pt1, pt2);
                 }
             }
+        }
+
+        public override void DrawHighlightAt(Graphics graphics, Color forecolor)
+        {
+            if (Offsets.Count == 1)
+            {
+                var pt1 = Origin;
+                var pt2 = PointF.Add(pt1, Offsets[0]);
+                using (var pen = new Pen(Color.FromArgb(80, forecolor), 2))
+                {
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    graphics.DrawLine(pen, pt1, pt2);
+                }
+                using (var pen = new Pen(forecolor))
+                {
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    graphics.DrawLine(pen, pt1, pt2);
+                }
+            }
+        }
+
+        public override bool Contains(PointF point)
+        {
+            if (Offsets.Count == 1)
+            {
+                var pt1 = Origin;
+                var pt2 = PointF.Add(pt1, Offsets[0]);
+                using (var path = new GraphicsPath())
+                {
+                    path.AddLine(pt1, pt2);
+                    using (var pen = new Pen(Color.Black, 3))
+                    {
+                        pen.StartCap = LineCap.Round;
+                        pen.EndCap = LineCap.Round;
+                        return path.IsOutlineVisible(point, pen);
+                    }
+                }
+            }
+            return false;
         }
 
         public PointF StartPoint => Origin;

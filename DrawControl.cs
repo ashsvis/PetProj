@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -12,6 +13,7 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
+        private Primitive underCursor;
 
         private readonly List<Primitive> figures = new List<Primitive>();
 
@@ -29,6 +31,8 @@ namespace PetProj
             {
                 p.DrawAt(graphics, Color.Black);
             }
+
+            underCursor?.DrawHighlightAt(graphics, Color.Black);
 
             DrawDefaultCursor(graphics, mousePosition);
             if (mouseClickCount == 1)
@@ -55,7 +59,7 @@ namespace PetProj
             var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
             using (var pen = new Pen(Color.Magenta, 1))
-                graphics.DrawRectangle(pen, Rectangle.Ceiling(rect));
+                graphics.DrawRectangles(pen, new RectangleF[] { rect });
         }
 
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
@@ -88,16 +92,16 @@ namespace PetProj
             {
                 if (firstMouseDown.X > mousePosition.X)
                     pen.DashStyle = DashStyle.Dash;
-                graphics.DrawRectangle(pen, PrepareRect(rect));
+                graphics.DrawRectangles(pen, new RectangleF[] { PrepareRect(rect) });
             }
         }
 
-        private Rectangle PrepareRect(RectangleF rectangle)
+        private RectangleF PrepareRect(RectangleF rectangle)
         {
             var pt1 = PrepareMousePosition(rectangle.Location);
             var size = rectangle.Size;
             var pt2 = PrepareMousePosition(PointF.Add(rectangle.Location, size));
-            return Rectangle.Ceiling(new RectangleF(pt1, new SizeF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
+            return new RectangleF(pt1, new SizeF(pt2.X - pt1.X, pt2.Y - pt1.Y));
         }
 
         /// <summary>
@@ -202,6 +206,8 @@ namespace PetProj
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
+            var pt = PrepareMousePosition(mousePosition);
+            underCursor = figures.LastOrDefault(x => x.Contains(pt));
             zoomPad.Invalidate();
         }
 

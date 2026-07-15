@@ -15,5 +15,7 @@ namespace PetProj
         public List<SizeF> Offsets { get; set; } = new List<SizeF>();
 
         public abstract void DrawAt(Graphics graphics, Color forecolor);
+        public abstract void DrawHighlightAt(Graphics graphics, Color forecolor);
+        public abstract bool Contains(PointF point);
     }
 }
