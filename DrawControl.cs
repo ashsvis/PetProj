@@ -225,6 +225,24 @@ namespace PetProj
         {
             mousePosition = e.Location;
             var pt = PrepareMousePosition(mousePosition);
+
+            var primitive = selected.LastOrDefault(x => x.GetMarkers().Any(y => y.Contains(pt)));
+            if (primitive != null)
+            {
+                var found = false;
+                foreach (var markerRect in primitive.GetMarkers())
+                {
+                    if (markerRect.Contains(pt))
+                    {
+                        Cursor.Current = Cursors.Hand;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found && Cursor.Current == Cursors.Hand)
+                    Cursor.Current = Cursors.Default;
+            }
+
             underCursor = figures.LastOrDefault(x => x.Contains(pt));
             zoomPad.Invalidate();
         }

@@ -21,5 +21,6 @@ namespace PetProj
         public abstract bool Contains(PointF point);
         public abstract XElement GetData();
         public abstract void DrawSelectedAt(Graphics graphics, Color forecolor);
+        public abstract RectangleF[] GetMarkers();
     }
 }

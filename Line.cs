@@ -74,7 +74,7 @@ namespace PetProj
         /// Получение массива маркерных квадратиков
         /// </summary>
         /// <returns></returns>
-        public RectangleF[] GetMarkers()
+        public override RectangleF[] GetMarkers()
         {
             var pt1 = Origin;
             var pt2 = Offsets.Count == 1 ? PointF.Add(pt1, Offsets[0]) : Origin;
