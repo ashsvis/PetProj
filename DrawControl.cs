@@ -82,26 +82,18 @@ namespace PetProj
         /// <param name="mousePosition"></param>
         private void DrawRibbonSelectionRect(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
-            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
-                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
-            var color = firstMouseDown.X > mousePosition.X
-                ? Color.Green : Color.Blue;
+            var pt1 = firstMouseDown;
+            var pt2 = PrepareMousePosition(mousePosition);
+            var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
+                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
+            var color = pt1.X > pt2.X ? Color.Green : Color.Blue;
             using (var brush = new SolidBrush(Color.FromArgb(50, color)))
-                graphics.FillRectangle(brush, PrepareRect(rect));
+                graphics.FillRectangle(brush, rect);
             using (var pen = new Pen(Color.Black, 0))
             {
-                if (firstMouseDown.X > mousePosition.X)
-                    pen.DashStyle = DashStyle.Dash;
-                graphics.DrawRectangles(pen, new RectangleF[] { PrepareRect(rect) });
+                if (pt1.X > pt2.X) pen.DashStyle = DashStyle.Dash;
+                graphics.DrawRectangles(pen, new RectangleF[] { rect });
             }
-        }
-
-        private RectangleF PrepareRect(RectangleF rectangle)
-        {
-            var pt1 = PrepareMousePosition(rectangle.Location);
-            var size = rectangle.Size;
-            var pt2 = PrepareMousePosition(PointF.Add(rectangle.Location, size));
-            return new RectangleF(pt1, new SizeF(pt2.X - pt1.X, pt2.Y - pt1.Y));
         }
 
         /// <summary>
@@ -151,7 +143,13 @@ namespace PetProj
                 {
                     // при первом нажатии запоминаем точку нажатия
                     firstMouseDown = PrepareMousePosition(mousePosition);
-                    mouseClickCount++;
+                    var fig = figures.LastOrDefault(x => x.Contains(firstMouseDown));
+                    if (editorMode == EditorMode.Selection && fig != null)
+                    {
+
+                    }
+                    else
+                        mouseClickCount++;
                 }
                 else if (mouseClickCount == 1) // это второе нажатие
                 {
@@ -160,9 +158,9 @@ namespace PetProj
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
-                            var selMode = firstMouseDown.X > mousePosition.X;
-                            var rectangle = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
-                                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+                            //var selMode = firstMouseDown.X > mousePosition.X;
+                            //var rectangle = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
+                            //    Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
                             // при отсутвии других режимов - режим выбора, и второе нажатие
                             // сбрасывает количество нажатий
                             mouseClickCount = 0;

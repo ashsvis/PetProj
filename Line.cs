@@ -32,10 +32,8 @@ namespace PetProj
             {
                 var pt1 = Origin;
                 var pt2 = PointF.Add(pt1, Offsets[0]);
-                using (var pen = new Pen(Color.FromArgb(80, forecolor), 2))
+                using (var pen = new Pen(Color.FromArgb(80, forecolor), 3))
                 {
-                    pen.StartCap = LineCap.Round;
-                    pen.EndCap = LineCap.Round;
                     graphics.DrawLine(pen, pt1, pt2);
                 }
                 using (var pen = new Pen(forecolor))
