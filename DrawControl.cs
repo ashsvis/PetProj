@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Printing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -14,7 +12,6 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
-        private Line ribbonLine;
 
         private readonly List<Primitive> figures = new List<Primitive>();
 
@@ -53,15 +50,17 @@ namespace PetProj
 
         private void DrawRibbonRectangle(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
-            var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
-                Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+            var pt1 = firstMouseDown;
+            var pt2 = PrepareMousePosition(mousePosition);
+            var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
+                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
             using (var pen = new Pen(Color.Magenta, 1))
-                graphics.DrawRectangle(pen, PrepareRect(rect));
+                graphics.DrawRectangle(pen, Rectangle.Ceiling(rect));
         }
 
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
-            var pt1 = PrepareMousePosition(firstMouseDown);
+            var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
             using (var pen = new Pen(Color.Magenta, 1))
             {
@@ -81,12 +80,16 @@ namespace PetProj
         {
             var rect = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
-            var color = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y
+            var color = firstMouseDown.X > mousePosition.X
                 ? Color.Green : Color.Blue;
             using (var brush = new SolidBrush(Color.FromArgb(50, color)))
                 graphics.FillRectangle(brush, PrepareRect(rect));
-            using (var pen = new Pen(color, 0))
+            using (var pen = new Pen(Color.Black, 0))
+            {
+                if (firstMouseDown.X > mousePosition.X)
+                    pen.DashStyle = DashStyle.Dash;
                 graphics.DrawRectangle(pen, PrepareRect(rect));
+            }
         }
 
         private Rectangle PrepareRect(RectangleF rectangle)
@@ -143,7 +146,7 @@ namespace PetProj
                 if (mouseClickCount == 0)
                 {
                     // при первом нажатии запоминаем точку нажатия
-                    firstMouseDown = mousePosition;
+                    firstMouseDown = PrepareMousePosition(mousePosition);
                     mouseClickCount++;
                 }
                 else if (mouseClickCount == 1) // это второе нажатие
@@ -153,7 +156,7 @@ namespace PetProj
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
-                            var selMode = firstMouseDown.X > mousePosition.X && firstMouseDown.Y > mousePosition.Y;
+                            var selMode = firstMouseDown.X > mousePosition.X;
                             var rectangle = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
                                 Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
                             // при отсутвии других режимов - режим выбора, и второе нажатие
@@ -163,16 +166,16 @@ namespace PetProj
                             // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
                             break;
                         case EditorMode.BuildLines:
-                            pt1 = PrepareMousePosition(firstMouseDown);
+                            pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
                             line = new Line(pt1, pt2);
                             figures.Add(line);
                             mouseClickCount = 0;
-                            firstMouseDown = mousePosition;
+                            firstMouseDown = pt2;
                             mouseClickCount++;
                             break;
                         case EditorMode.BuildRectangle:
-                            pt1 = PrepareMousePosition(firstMouseDown);
+                            pt1 = firstMouseDown;
                             pt3 = PrepareMousePosition(mousePosition);
                             pt2 = new PointF(pt3.X, pt1.Y);
                             pt4 = new PointF(pt1.X, pt3.Y);
@@ -213,7 +216,6 @@ namespace PetProj
         {
             editorMode = selection;
             mouseClickCount = 0;
-            ribbonLine = null;
             zoomPad.Invalidate();
             if (editorMode == EditorMode.Selection)
                 OnSelectionMode?.Invoke(this, EventArgs.Empty);
