@@ -17,6 +17,7 @@ namespace PetProj
         private Primitive underCursor;
 
         private readonly List<Primitive> figures = new List<Primitive>();
+        private readonly List<Primitive> selected = new List<Primitive>();
 
         public bool Changed { get; private set; }
 
@@ -32,10 +33,23 @@ namespace PetProj
 
             foreach (Primitive p in figures)
             {
+                if (selected.Contains(p)) continue;
                 p.DrawAt(graphics, Color.Black);
             }
 
-            underCursor?.DrawHighlightAt(graphics, Color.Black);
+            if (underCursor != null)
+            {
+                if (selected.Contains(underCursor))
+                    underCursor.DrawSelectedAt(graphics, Color.Black);
+                else
+                    underCursor.DrawHighlightAt(graphics, Color.Black);
+            }
+
+            foreach (Primitive p in selected)
+            {
+                if (p == underCursor) continue;
+                p.DrawSelectedAt(graphics, Color.Black);
+            }
 
             DrawDefaultCursor(graphics, mousePosition);
             if (mouseClickCount == 1)
@@ -149,7 +163,8 @@ namespace PetProj
                     var fig = figures.LastOrDefault(x => x.Contains(firstMouseDown));
                     if (editorMode == EditorMode.Selection && fig != null)
                     {
-
+                        if (!selected.Contains(fig))
+                            selected.Add(fig);
                     }
                     else
                         mouseClickCount++;
@@ -245,7 +260,9 @@ namespace PetProj
                 }
 
                 doc.Save(filename);
+                selected.Clear();
                 Changed = false;
+                zoomPad.Invalidate();
             }
             catch 
             {
@@ -261,6 +278,7 @@ namespace PetProj
                 var root = xdoc.Element("Document");
                 var name =  root.Attribute("Name")?.Value;
                 var model = root.Element("Model");
+                selected.Clear();
                 figures.Clear();
                 zoomPad.Reset();
                 foreach (var xelement in model.Descendants())
@@ -279,6 +297,7 @@ namespace PetProj
             }
             catch
             {
+                selected.Clear();
                 figures.Clear();
                 Changed = false;
                 throw;
@@ -287,6 +306,7 @@ namespace PetProj
 
         public void CreateNewDocument()
         {
+            selected.Clear();
             figures.Clear();
             zoomPad.Reset();
             Changed = false;

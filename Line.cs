@@ -37,6 +37,41 @@ namespace PetProj
             }
         }
 
+        public override void DrawSelectedAt(Graphics graphics, Color forecolor)
+        {
+            if (Offsets.Count == 1)
+            {
+                var pt1 = Origin;
+                var pt2 = PointF.Add(pt1, Offsets[0]);
+                var middle = new PointF(pt1.X + (pt2.X - pt1.X) / 2f, pt1.Y + (pt2.Y - pt1.Y) / 2f);
+                var selColor = Color.FromArgb(0, 127, 255);
+                using (var pen = new Pen(Color.FromArgb(80, selColor), 3))
+                {
+                    graphics.DrawLine(pen, pt1, pt2);
+                }
+                using (var pen = new Pen(forecolor))
+                {
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    graphics.DrawLine(pen, pt1, pt2);
+                }
+                using (var brush = new SolidBrush(selColor))
+                {
+                    graphics.FillRectangles(brush, new RectangleF[] { GetSquare(pt1), GetSquare(middle), GetSquare(pt2) });
+                }
+                using (var pen = new Pen(Color.Gray))
+                {
+                    graphics.DrawRectangles(pen, new RectangleF[] { GetSquare(pt1), GetSquare(middle), GetSquare(pt2) });
+                }
+            }
+        }
+
+        private RectangleF GetSquare(PointF point)
+        {
+            var sz = new SizeF(6f, 6f);
+            return new RectangleF(new PointF(point.X - sz.Width / 2f, point.Y - sz.Height / 2f), sz);
+        }
+
         public override void DrawHighlightAt(Graphics graphics, Color forecolor)
         {
             if (Offsets.Count == 1)
