@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace PetProj
 {
@@ -16,6 +17,8 @@ namespace PetProj
         private Primitive underCursor;
 
         private readonly List<Primitive> figures = new List<Primitive>();
+
+        public bool Changed { get; private set; }
 
         public DrawControl()
         {
@@ -175,6 +178,7 @@ namespace PetProj
                             mouseClickCount = 0;
                             firstMouseDown = pt2;
                             mouseClickCount++;
+                            Changed = true;
                             break;
                         case EditorMode.BuildRectangle:
                             pt1 = firstMouseDown;
@@ -190,6 +194,7 @@ namespace PetProj
                             line = new Line(pt4, pt1);
                             figures.Add(line);
                             mouseClickCount = 0;
+                            Changed = true;
                             break;
                     }
                 }
@@ -223,6 +228,23 @@ namespace PetProj
             zoomPad.Invalidate();
             if (editorMode == EditorMode.Selection)
                 OnSelectionMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Save(string filename)
+        {
+            try
+            {
+                var root = new XElement("Document");
+                var doc = new XDocument(new XComment("Данные чертёжного документа"), root);
+                var xmodel = new XElement("Model");
+                root.Add(xmodel);
+                doc.Save(filename);
+                Changed = false;
+            }
+            catch 
+            {
+                throw;
+            }
         }
     }
 }

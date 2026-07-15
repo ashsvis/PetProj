@@ -18,6 +18,10 @@ namespace PetProj
             };
             placeHolder.Controls.Add(drawControl);
         }
+        private void MainForm_Load(object sender, System.EventArgs e)
+        {
+            timerUpdateControls.Enabled = true;
+        }
 
         private void tsbArrow_Click(object sender, System.EventArgs e)
         {
@@ -46,6 +50,27 @@ namespace PetProj
                 tsbLine.Checked = false;
                 drawControl.SetMode(EditorMode.BuildRectangle);
                 tsbRect.Checked = true;
+            }
+        }
+        private void timerUpdateControls_Tick(object sender, System.EventArgs e)
+        {
+            var changed = drawControl.Changed;
+            tsmiSaveDocument.Enabled = changed;
+            tsbSaveDocument.Enabled = changed;
+        }
+
+        private void tsmiSaveDocument_Click(object sender, System.EventArgs e)
+        {
+            var dlg = new SaveFileDialog() 
+            {
+                Title = "Сохранение чертежа",
+                FileName = "Чертёж.gxml",
+                DefaultExt = "gxml",
+                Filter = "Файл графического документа (*.gxml)|*.gxml" 
+            };
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                drawControl.Save(dlg.FileName);
             }
         }
     }
