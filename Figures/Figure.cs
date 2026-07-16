@@ -88,4 +88,23 @@ namespace PetProj.Figures
         }
     }
 
+    public class VertexMarker : Marker
+    {
+        public int Index { get; set; }
+        public Figure Owner { get; set; }
+    }
+
+    public enum MarkerType
+    {
+        Scale,
+        SizeX,
+        SizeY,
+        Rotate,
+        SkewX,
+        SkewY,
+        Vertex,
+        Gradient,
+        ControlBezier,
+        Warp
+    }
 }

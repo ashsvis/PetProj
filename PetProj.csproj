@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="EditorMode.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
+    <Compile Include="Figures\Marker.cs" />
     <Compile Include="Geometries\AddLineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Renderers\IRendererPath.cs" />
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />
+    <Compile Include="Selections\Selection.cs" />
+    <Compile Include="Controllers\SelectionController.cs" />
     <Compile Include="Styles\AllowedFillDecorators.cs" />
     <Compile Include="Styles\Border.cs" />
     <Compile Include="Styles\DefaultFill.cs" />

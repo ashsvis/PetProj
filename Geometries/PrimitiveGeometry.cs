@@ -3,11 +3,10 @@ using System.Drawing.Drawing2D;
 
 namespace PetProj.Geometries
 {
-    /*
     /// <summary>
     /// Содержит геометрию фиксированной формы
     /// </summary>
-    public class PrimitiveGeometry : Geometry, IDisposable
+    public class PrimitiveGeometry : Geometry
     {
         /// <summary>
         /// Локальное поле для хранения пути
@@ -44,15 +43,9 @@ namespace PetProj.Geometries
             allowedOperations = allowed;
         }
 
-        public void Dispose()
-        {
-            path?.Dispose();
-        }
-
         public override string ToString()
         {
             return Name;
         }
     }
-    */
 }

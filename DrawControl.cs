@@ -1,4 +1,5 @@
-﻿using PetProj.Figures;
+﻿using PetProj.Controllers;
+using PetProj.Figures;
 using PetProj.Geometries;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,27 @@ namespace PetProj
         private Figure underCursor;
 
         private readonly List<Figure> figures = new List<Figure>();
-        private readonly List<Figure> selected = new List<Figure>();
+        private readonly SelectionController selectionController;
 
         public bool Changed { get; private set; }
 
         public DrawControl()
         {
             InitializeComponent();
+            selectionController = new SelectionController();
+            // подключение обработчиков событий для контроллера выбора
+            selectionController.SelectedFigureChanged += BuildInterface;
+            selectionController.EditorModeChanged += _ => UpdateInterface();
+        }
+
+        private void BuildInterface()
+        {
+            UpdateInterface();
+        }
+
+        private void UpdateInterface()
+        {
+            Invalidate();
         }
 
         private void zoomPad_OnDraw(object sender, ZoomControl.DrawEventArgs e)
@@ -37,9 +52,21 @@ namespace PetProj
             // отрисовка созданных фигур
             foreach (var fig in figures)
             {
-                fig.DrawGlowed(fig == underCursor);
+                if (!selectionController.Selection.Contains(fig))
+                    fig.DrawGlowed(fig == underCursor);
                 fig.Renderer.Render(graphics, fig);
             }
+
+            // отрисовка выделения
+            selectionController.Selection.Render(graphics);
+
+            //// отрисовка маркеров
+            //foreach (var marker in selectionController.Markers)
+            //{
+            //    //marker.Transform.Matrix.Scale(1 / scaleFactor, 1 / scaleFactor);
+            //    marker.Renderer.Render(graphics, marker);
+            //    //marker.Transform.Matrix.Scale(scaleFactor, scaleFactor);
+            //}
 
             DrawDefaultCursor(graphics, mousePosition);
             if (mouseClickCount == 1)
@@ -150,12 +177,8 @@ namespace PetProj
                 {
                     // при первом нажатии запоминаем точку нажатия
                     firstMouseDown = PrepareMousePosition(mousePosition);
-                    var fig = figures.LastOrDefault(x => x.Contains(firstMouseDown));
-                    if (editorMode == EditorMode.Selection && fig != null)
-                    {
-                        if (!selected.Contains(fig))
-                            selected.Add(fig);
-                    }
+                    if (editorMode == EditorMode.Selection)
+                        selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
                     else
                         mouseClickCount++;
                 }
@@ -205,6 +228,28 @@ namespace PetProj
             }
         }
 
+        private void zoomPad_MouseMove(object sender, MouseEventArgs e)
+        {
+            mousePosition = e.Location;
+            var pt = PrepareMousePosition(mousePosition);
+
+            selectionController.OnMouseMove(pt, ModifierKeys);
+
+            underCursor = figures.LastOrDefault(x => x.Contains(pt));
+            zoomPad.Invalidate();
+        }
+
+        private void zoomPad_MouseUp(object sender, MouseEventArgs e)
+        {
+            mousePosition = e.Location;
+            var pt = PrepareMousePosition(mousePosition);
+
+            if (e.Button == MouseButtons.Left)
+                selectionController.OnMouseUp(pt, ModifierKeys);
+
+            zoomPad.Invalidate();
+        }
+
         private void AddFigureAsLine(PointF pt1, PointF pt2)
         {
             Figure figure = new Figure();
@@ -212,19 +257,6 @@ namespace PetProj
             ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
             figure.Style.FillStyle.IsVisible = false;
             figures.Add(figure);
-        }
-
-        private void zoomPad_MouseMove(object sender, MouseEventArgs e)
-        {
-            mousePosition = e.Location;
-            var pt = PrepareMousePosition(mousePosition);
-            underCursor = figures.LastOrDefault(x => x.Contains(pt));
-            zoomPad.Invalidate();
-        }
-
-        private void zoomPad_MouseUp(object sender, MouseEventArgs e)
-        {
-            zoomPad.Invalidate();
         }
 
         public EventHandler OnSelectionMode;
@@ -269,7 +301,6 @@ namespace PetProj
                     }
                 }
                 doc.Save(filename);
-                selected.Clear();
                 Changed = false;
                 zoomPad.Invalidate();
             }
@@ -291,7 +322,6 @@ namespace PetProj
                 var root = xdoc.Element("Document");
                 var name =  root.Attribute("Name")?.Value;
                 var model = root.Element("Model");
-                selected.Clear();
                 figures.Clear();
                 zoomPad.Reset();
                 foreach (var xelement in model.Descendants())
@@ -313,7 +343,6 @@ namespace PetProj
             }
             catch
             {
-                selected.Clear();
                 figures.Clear();
                 Changed = false;
                 throw;
@@ -356,11 +385,11 @@ namespace PetProj
 
         public void CreateNewDocument()
         {
-            selected.Clear();
             figures.Clear();
             zoomPad.Reset();
             Changed = false;
             zoomPad.Invalidate();
         }
+
     }
 }
