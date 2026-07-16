@@ -3,6 +3,7 @@ using PetProj.Renderers;
 using PetProj.Styles;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Xml.Linq;
 
 namespace PetProj.Figures
@@ -34,12 +35,58 @@ namespace PetProj.Figures
 
         public List<SizeF> Offsets { get; set; } = new List<SizeF>();
 
-        public virtual void DrawAt(Graphics graphics, Color forecolor) { }
-        public virtual void DrawHighlightAt(Graphics graphics, Color forecolor) { }
-        public virtual bool Contains(PointF point) { return false; }
+        public virtual void DrawGlowed(bool state = true)
+        {
+            if (state)
+            {
+                if (RendererDecorator.IsNotContainsDecorator(this, typeof(GlowRendererDecorator)))
+                {
+                    if (Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
+                        Renderer = new GlowRendererDecorator(Renderer) { Color = Style.BorderStyle.Color };
+                }
+            }
+            else
+            {
+                if (RendererDecorator.IsContainsDecorator(this, typeof(GlowRendererDecorator)))
+                {
+                    if (RendererDecorator.ContainsAnyDecorator(Renderer))
+                        Renderer = RendererDecorator.GetBaseRenderer(Renderer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Контрур фигуры содердит искомую точку
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public virtual bool Contains(PointF point) 
+        {
+            using (var path = GetRendererPath())
+            {
+                using (var pen = new Pen(Color.Black, 3))
+                {
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    return path.IsOutlineVisible(point, pen);
+                }
+            }
+        }
+
         public virtual XElement GetData() { return null; }
         public virtual void DrawSelectedAt(Graphics graphics, Color forecolor) { }
         public virtual RectangleF[] GetMarkers() { return new RectangleF[] { }; }
+
+        /// <summary>
+        /// Предоставление геометрии для рисования
+        /// </summary>
+        /// <returns>Путь для рисования</returns>
+        public virtual GraphicsPath GetRendererPath()
+        {
+            // создаём копию геометрии фигуры
+            var path = (GraphicsPath)Geometry.Path.Clone();
+            return path;
+        }
     }
 
 }

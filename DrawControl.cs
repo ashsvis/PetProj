@@ -1,5 +1,6 @@
 ﻿using PetProj.Figures;
 using PetProj.Geometries;
+using PetProj.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,24 +34,11 @@ namespace PetProj
             var graphics = e.Graphics;
             if (graphics == null) return;
 
-            //foreach (Figure p in figures)
-            //{
-            //    if (selected.Contains(p)) continue;
-            //    p.DrawAt(graphics, Color.Black);
-            //}
-
             // отрисовка созданных фигур
             foreach (var fig in figures)
             {
+                fig.DrawGlowed(fig == underCursor);
                 fig.Renderer.Render(graphics, fig);
-            }
-
-            if (underCursor != null)
-            {
-                if (selected.Contains(underCursor))
-                    underCursor.DrawSelectedAt(graphics, Color.Black);
-                else
-                    underCursor.DrawHighlightAt(graphics, Color.Black);
             }
 
             foreach (Figure p in selected)
@@ -180,8 +168,6 @@ namespace PetProj
                 else if (mouseClickCount == 1) // это второе нажатие
                 {
                     PointF pt1, pt2, pt3, pt4;
-                    //Line line;
-                    Figure figure;
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
@@ -197,16 +183,7 @@ namespace PetProj
                         case EditorMode.BuildLines:
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
-                            //var line = new Line(pt1, pt2);
-                            //figures.Add(line);
-
-                            figure = new Figure();
-                            FigureBuilder.BuildAddLineGeometry(figure, pt1);
-                            ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
-                            figure.Style.FillStyle.IsVisible = false;
-                            figure.Style.BorderStyle.Width = 1f;
-                            figures.Add(figure);
-
+                            AddFigureAsLine(pt1, pt2);
                             mouseClickCount = 0;
                             firstMouseDown = pt2;
                             mouseClickCount++;
@@ -217,14 +194,10 @@ namespace PetProj
                             pt3 = PrepareMousePosition(mousePosition);
                             pt2 = new PointF(pt3.X, pt1.Y);
                             pt4 = new PointF(pt1.X, pt3.Y);
-                            //line = new Line(pt1, pt2);
-                            //figures.Add(line);
-                            //line = new Line(pt2, pt3);
-                            //figures.Add(line);
-                            //line = new Line(pt3, pt4);
-                            //figures.Add(line);
-                            //line = new Line(pt4, pt1);
-                            //figures.Add(line);
+                            AddFigureAsLine(pt1, pt2);
+                            AddFigureAsLine(pt2, pt3);
+                            AddFigureAsLine(pt3, pt4);
+                            AddFigureAsLine(pt4, pt1);
                             mouseClickCount = 0;
                             Changed = true;
                             break;
@@ -236,6 +209,16 @@ namespace PetProj
             {
                 SetMode(EditorMode.Selection);
             }
+        }
+
+        private void AddFigureAsLine(PointF pt1, PointF pt2)
+        {
+            Figure figure = new Figure();
+            FigureBuilder.BuildAddLineGeometry(figure, pt1);
+            ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
+            figure.Style.FillStyle.IsVisible = false;
+            figure.Style.BorderStyle.Width = 1f;
+            figures.Add(figure);
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)

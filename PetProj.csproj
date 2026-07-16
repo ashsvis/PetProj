@@ -74,7 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\AllowedRendererDecorators.cs" />
     <Compile Include="Renderers\DefaultRenderer.cs" />
+    <Compile Include="Renderers\GlowRendererDecorator.cs" />
+    <Compile Include="Renderers\IRendererPath.cs" />
     <Compile Include="Renderers\Renderer.cs" />
+    <Compile Include="Renderers\RendererDecorator.cs" />
     <Compile Include="Styles\AllowedFillDecorators.cs" />
     <Compile Include="Styles\Border.cs" />
     <Compile Include="Styles\DefaultFill.cs" />
