@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Xml.Linq;
 
 namespace PetProj
@@ -198,8 +199,6 @@ namespace PetProj
                             {
                                 foreach (var fig in figures)
                                 {
-                                    if (selectionController.Selection.Contains(fig))
-                                        continue;
                                     using (GraphicsPath path = fig.GetRendererPath())
                                     {
                                         if (selMode)
@@ -232,7 +231,15 @@ namespace PetProj
                                                 }
                                             }
                                             if (interpolatedPoints.Any(p => rectangle.Contains(p)))
-                                                selectionController.Selection.Add(fig);
+                                            {
+                                                if (ModifierKeys.HasFlag(Keys.Shift))
+                                                {
+                                                    if (selectionController.Selection.Contains(fig))
+                                                        selectionController.Selection.Remove(fig);
+                                                }
+                                                else if (!selectionController.Selection.Contains(fig))
+                                                    selectionController.Selection.Add(fig);
+                                            }
                                         }
                                         else
                                         {
@@ -241,7 +248,15 @@ namespace PetProj
                                             var rect = new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
                                             figrect.Intersect(rect);
                                             if (figrect.Equals(path.GetBounds()))
-                                                selectionController.Selection.Add(fig);
+                                            {
+                                                if (ModifierKeys.HasFlag(Keys.Shift))
+                                                {
+                                                    if (selectionController.Selection.Contains(fig))
+                                                        selectionController.Selection.Remove(fig);
+                                                }
+                                                else if (!selectionController.Selection.Contains(fig))
+                                                    selectionController.Selection.Add(fig);
+                                            }
                                         }
                                     }
                                 }
