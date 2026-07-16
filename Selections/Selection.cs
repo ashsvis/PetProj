@@ -3,8 +3,6 @@ using PetProj.Geometries;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
 
 namespace PetProj.Selections
 {
@@ -33,6 +31,8 @@ namespace PetProj.Selections
         {
 
         }
+
+        public Color Color { get; set; } = Color.Magenta;
 
         /// <summary>
         /// Очистка списка выделенных фигур
@@ -148,7 +148,10 @@ namespace PetProj.Selections
                 using (var path = figure.Geometry.Path)
                 {
                     // то получаем карандаш из стиля рисования фигуры
-                    graphics.DrawPath(Pens.Magenta, path);
+                    using (var pen = new Pen(Color))
+                    { 
+                        graphics.DrawPath(pen, path); 
+                    }
                 }
             }
         }

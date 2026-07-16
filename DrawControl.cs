@@ -36,6 +36,7 @@ namespace PetProj
 
         private void BuildInterface()
         {
+            mouseClickCount = 0;
             UpdateInterface();
         }
 
@@ -177,10 +178,9 @@ namespace PetProj
                 {
                     // при первом нажатии запоминаем точку нажатия
                     firstMouseDown = PrepareMousePosition(mousePosition);
+                    mouseClickCount++;
                     if (editorMode == EditorMode.Selection)
                         selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
-                    else
-                        mouseClickCount++;
                 }
                 else if (mouseClickCount == 1) // это второе нажатие
                 {
@@ -188,9 +188,64 @@ namespace PetProj
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
-                            //var selMode = firstMouseDown.X > mousePosition.X;
-                            //var rectangle = new RectangleF(Math.Min(firstMouseDown.X, mousePosition.X), Math.Min(firstMouseDown.Y, mousePosition.Y),
-                            //    Math.Abs(firstMouseDown.X - mousePosition.X), Math.Abs(firstMouseDown.Y - mousePosition.Y));
+                            pt1 = firstMouseDown;
+                            pt2 = PrepareMousePosition(mousePosition);
+                            var selMode = pt1.X > pt2.X;
+                            var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
+                                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
+                            using (var image = new Bitmap(Width, Height))
+                            using (var g = Graphics.FromImage(image))
+                            {
+                                foreach (var fig in figures)
+                                {
+                                    if (selectionController.Selection.Contains(fig))
+                                        continue;
+                                    using (GraphicsPath path = fig.GetRendererPath())
+                                    {
+                                        if (selMode)
+                                        {
+                                            // захватываем рамкой объекты частично
+                                            var points = path.PathPoints;
+                                            List<PointF> interpolatedPoints = new List<PointF>();
+                                            for (int i = 0; i < points.Length - 1; i++)
+                                            {
+                                                PointF current = points[i];
+                                                PointF next = points[i + 1];
+                                                // Если отрезок длинный, interpolate
+                                                if (Distance(current, next) > 1.0f)
+                                                { 
+                                                    int numSteps = 10; // Number of intermediate points
+                                                    for (int step = 1; step <= numSteps; step++)
+                                                    {
+                                                        float t = (step / (float)numSteps);
+                                                        PointF interpolated = new PointF(
+                                                            (int)(current.X + t * (next.X - current.X)),
+                                                            (int)(current.Y + t * (next.Y - current.Y))
+                                                        );
+                                                        interpolatedPoints.Add(interpolated);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    // Keep the original point if it's a vertex
+                                                    interpolatedPoints.Add(current);
+                                                }
+                                            }
+                                            if (interpolatedPoints.Any(p => rectangle.Contains(p)))
+                                                selectionController.Selection.Add(fig);
+                                        }
+                                        else
+                                        {
+                                            // захватываем рамкой объекты целиком
+                                            var figrect = path.GetBounds();
+                                            var rect = new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+                                            figrect.Intersect(rect);
+                                            if (figrect.Equals(path.GetBounds()))
+                                                selectionController.Selection.Add(fig);
+                                        }
+                                    }
+                                }
+                            }
                             // при отсутвии других режимов - режим выбора, и второе нажатие
                             // сбрасывает количество нажатий
                             mouseClickCount = 0;
@@ -224,8 +279,19 @@ namespace PetProj
             }
             else if (e.Button == MouseButtons.Right)
             {
-                SetMode(EditorMode.Selection);
+                if (editorMode != EditorMode.Selection)
+                    SetMode(EditorMode.Selection);
+                else
+                {
+                    mouseClickCount = 0;
+                    selectionController.Clear();
+                }
             }
+        }
+
+        private float Distance(PointF current, PointF next)
+        {
+            return (float)Math.Sqrt(Math.Pow(next.X - current.X, 2) + Math.Pow(next.Y - current.Y, 2));
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
