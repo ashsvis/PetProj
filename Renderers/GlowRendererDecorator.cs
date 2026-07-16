@@ -25,13 +25,12 @@ namespace PetProj.Renderers
 
         public override void Render(Graphics graphics, Figure figure)
         {
-            var baseRenderer = GetBaseRenderer(figure.Renderer) as IRendererPath;
             // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = baseRenderer != null
+            using (var path = GetBaseRenderer(figure.Renderer) is IRendererPath baseRenderer
             ? baseRenderer.GetRendererPath(graphics, figure) : figure.GetRendererPath())
             {
                 // то получаем карандаш из стиля рисования фигуры
-                using (var pen = new Pen(Color))
+                using (var pen = new Pen(Color, 0))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;

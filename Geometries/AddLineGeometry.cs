@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace PetProj.Geometries
 {
@@ -8,6 +9,7 @@ namespace PetProj.Geometries
     {
         public readonly List<PointF> Points = new List<PointF>();
 
+        public PointF StartPoint => Points.Count > 0 ? Points.First() : PointF.Empty;
         public PointF EndPoint { get; set; }
 
         /// <summary>
@@ -26,7 +28,6 @@ namespace PetProj.Geometries
         {
             get
             {
-                //path.Reset();
                 var path = new GraphicsPath();
                 if (Points.Count > 0)
                 {

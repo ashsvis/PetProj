@@ -19,12 +19,12 @@ namespace PetProj
             };
             placeHolder.Controls.Add(drawControl);
         }
-        private void MainForm_Load(object sender, System.EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             timerUpdateControls.Enabled = true;
         }
 
-        private void tsbArrow_Click(object sender, System.EventArgs e)
+        private void tsbArrow_Click(object sender, EventArgs e)
         {
             SelectEditorMode(sender);
         }
@@ -53,14 +53,14 @@ namespace PetProj
                 tsbRect.Checked = true;
             }
         }
-        private void timerUpdateControls_Tick(object sender, System.EventArgs e)
+        private void timerUpdateControls_Tick(object sender, EventArgs e)
         {
             var changed = drawControl.Changed;
             tsmiSaveDocument.Enabled = changed;
             tsbSaveDocument.Enabled = changed;
         }
 
-        private void tsmiSaveDocument_Click(object sender, System.EventArgs e)
+        private void tsmiSaveDocument_Click(object sender, EventArgs e)
         {
             var dlg = new SaveFileDialog() 
             {
@@ -82,7 +82,7 @@ namespace PetProj
             }
         }
 
-        private void tsmiOpenDocument_Click(object sender, System.EventArgs e)
+        private void tsmiOpenDocument_Click(object sender, EventArgs e)
         {
             var dlg = new OpenFileDialog()
             {
@@ -105,7 +105,7 @@ namespace PetProj
             }
         }
 
-        private void tsmiCreateDocument_Click(object sender, System.EventArgs e)
+        private void tsmiCreateDocument_Click(object sender, EventArgs e)
         {
             drawControl.CreateNewDocument();
         }

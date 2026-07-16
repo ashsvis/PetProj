@@ -4,7 +4,6 @@ using PetProj.Styles;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Xml.Linq;
 
 namespace PetProj.Figures
 {
@@ -35,6 +34,10 @@ namespace PetProj.Figures
 
         public List<SizeF> Offsets { get; set; } = new List<SizeF>();
 
+        /// <summary>
+        /// Подсветка фигуры
+        /// </summary>
+        /// <param name="state"></param>
         public virtual void DrawGlowed(bool state = true)
         {
             if (state)
@@ -56,7 +59,7 @@ namespace PetProj.Figures
         }
 
         /// <summary>
-        /// Контрур фигуры содердит искомую точку
+        /// Контрур фигуры содержит искомую точку
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
@@ -72,10 +75,6 @@ namespace PetProj.Figures
                 }
             }
         }
-
-        public virtual XElement GetData() { return null; }
-        public virtual void DrawSelectedAt(Graphics graphics, Color forecolor) { }
-        public virtual RectangleF[] GetMarkers() { return new RectangleF[] { }; }
 
         /// <summary>
         /// Предоставление геометрии для рисования

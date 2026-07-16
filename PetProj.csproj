@@ -57,7 +57,6 @@
     </Compile>
     <Compile Include="EditorMode.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
-    <Compile Include="Figures\Line.cs" />
     <Compile Include="Geometries\AddLineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />

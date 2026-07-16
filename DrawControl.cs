@@ -1,10 +1,10 @@
 ﻿using PetProj.Figures;
 using PetProj.Geometries;
-using PetProj.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -39,12 +39,6 @@ namespace PetProj
             {
                 fig.DrawGlowed(fig == underCursor);
                 fig.Renderer.Render(graphics, fig);
-            }
-
-            foreach (Figure p in selected)
-            {
-                if (p == underCursor) continue;
-                p.DrawSelectedAt(graphics, Color.Black);
             }
 
             DrawDefaultCursor(graphics, mousePosition);
@@ -217,7 +211,6 @@ namespace PetProj
             FigureBuilder.BuildAddLineGeometry(figure, pt1);
             ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
             figure.Style.FillStyle.IsVisible = false;
-            figure.Style.BorderStyle.Width = 1f;
             figures.Add(figure);
         }
 
@@ -225,24 +218,6 @@ namespace PetProj
         {
             mousePosition = e.Location;
             var pt = PrepareMousePosition(mousePosition);
-
-            var primitive = selected.LastOrDefault(x => x.GetMarkers().Any(y => y.Contains(pt)));
-            if (primitive != null)
-            {
-                var found = false;
-                foreach (var markerRect in primitive.GetMarkers())
-                {
-                    if (markerRect.Contains(pt))
-                    {
-                        Cursor.Current = Cursors.Hand;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found && Cursor.Current == Cursors.Hand)
-                    Cursor.Current = Cursors.Default;
-            }
-
             underCursor = figures.LastOrDefault(x => x.Contains(pt));
             zoomPad.Invalidate();
         }
@@ -267,6 +242,10 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Сохранение документа чертежа в xml файле
+        /// </summary>
+        /// <param name="filename"></param>
         public void SaveDocument(string filename)
         {
             try
@@ -278,9 +257,17 @@ namespace PetProj
                 root.Add(xmodel);
                 foreach (var figure in figures)
                 {
-                    xmodel.Add(figure.GetData());
+                    if (figure.Geometry is AddLineGeometry lineGeometry)
+                    {
+                        if (lineGeometry.Points.Count == 2)
+                        {
+                            var xline = new XElement("Line");
+                            xline.Add(new XAttribute("Start", lineGeometry.StartPoint));
+                            xline.Add(new XAttribute("End", lineGeometry.EndPoint));
+                            xmodel.Add(xline);
+                        }
+                    }
                 }
-
                 doc.Save(filename);
                 selected.Clear();
                 Changed = false;
@@ -292,6 +279,10 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Загрузка документа чертежа из xml файла
+        /// </summary>
+        /// <param name="filename"></param>
         public void LoadDocument(string filename)
         {
             try
@@ -309,8 +300,11 @@ namespace PetProj
                     switch (figureName)
                     {
                         case "Line":
-                            //var line = new Line(xelement);
-                            //figures.Add(line);
+                            CultureInfo culture = CultureInfo.CurrentCulture;
+                            var decsep = culture.NumberFormat.NumberDecimalSeparator;
+                            var pt1 = Parse(xelement.Attribute("Start")?.Value, decsep);
+                            var pt2 = Parse(xelement.Attribute("End")?.Value, decsep);
+                            AddFigureAsLine(pt1, pt2);
                             break;
                     }
                 }
@@ -324,6 +318,40 @@ namespace PetProj
                 Changed = false;
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Разбор символьной записи для получения координат точки
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="decimalseparator"></param>
+        /// <returns></returns>
+        private PointF Parse(string line, string decimalseparator)
+        {
+            // Разбиваем по запятым и убираем пустые элементы
+            string[] tokens = line.Trim('{', '}').Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            if (tokens.Length == 2)
+            {
+                string valueX = tokens[0].Split('=').Last();
+                string valueY = tokens[1].Split('=').Last();
+
+                switch (decimalseparator)
+                {
+                    case ".":
+                        valueX = valueX.Replace(',', '.');
+                        valueY = valueY.Replace(',', '.');
+                        break;
+                    case ",":
+                        valueX = valueX.Replace('.', ',');
+                        valueY = valueY.Replace('.', ',');
+                        break;
+                }
+
+                // Проверяем, что удалось успешно преобразовать обе координаты
+                if (float.TryParse(valueX, out float x) && float.TryParse(valueY, out float y))
+                    return new PointF(x, y);
+            }
+            return PointF.Empty;
         }
 
         public void CreateNewDocument()
