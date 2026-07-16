@@ -5,9 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace PetProj
+namespace PetProj.Figures
 {
-    public class Line : Primitive
+    /*
+    public class Line : Figure
     {
         /// <summary>
         /// Конструктор для создания из редактора
@@ -56,7 +57,9 @@ namespace PetProj
             var pt1 = Origin;
             var pt2 = Offsets.Count == 1 ? PointF.Add(pt1, Offsets[0]) : Origin;
             var selColor = Color.FromArgb(0, 127, 255);
-            using (var pen = new Pen(Color.FromArgb(80, selColor), 3))
+            using (var pen = new Pen(Color.FromArgb(64, selColor), 3))
+                graphics.DrawLine(pen, pt1, pt2);
+            using (var pen = new Pen(Color.FromArgb(128, selColor), 2))
                 graphics.DrawLine(pen, pt1, pt2);
             using (var pen = new Pen(forecolor))
             {
@@ -66,7 +69,7 @@ namespace PetProj
             }
             using (var brush = new SolidBrush(selColor))
                 graphics.FillRectangles(brush, GetMarkers());
-            using (var pen = new Pen(Color.Gray))
+            using (var pen = new Pen(Color.Gray, 0))
                 graphics.DrawRectangles(pen, GetMarkers());
         }
 
@@ -102,7 +105,9 @@ namespace PetProj
         {
             var pt1 = Origin;
             var pt2 = Offsets.Count == 1 ? PointF.Add(pt1, Offsets[0]) : Origin;
-            using (var pen = new Pen(Color.FromArgb(80, forecolor), 3))
+            using (var pen = new Pen(Color.FromArgb(64, forecolor), 3))
+                graphics.DrawLine(pen, pt1, pt2);
+            using (var pen = new Pen(Color.FromArgb(128, forecolor), 2))
                 graphics.DrawLine(pen, pt1, pt2);
             using (var pen = new Pen(forecolor))
             {
@@ -232,4 +237,5 @@ namespace PetProj
             return PointF.Empty;
         }
     }
+    */
 }

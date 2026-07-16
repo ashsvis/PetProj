@@ -49,7 +49,7 @@ namespace PetProj
             {
                 tsbArrow.Checked = false;
                 tsbLine.Checked = false;
-                drawControl.SetMode(EditorMode.BuildRectangle);
+                drawControl.SetMode(EditorMode.BuildRectangles);
                 tsbRect.Checked = true;
             }
         }

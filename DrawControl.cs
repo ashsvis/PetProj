@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PetProj.Figures;
+using PetProj.Geometries;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -14,10 +16,10 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
-        private Primitive underCursor;
+        private Figure underCursor;
 
-        private readonly List<Primitive> figures = new List<Primitive>();
-        private readonly List<Primitive> selected = new List<Primitive>();
+        private readonly List<Figure> figures = new List<Figure>();
+        private readonly List<Figure> selected = new List<Figure>();
 
         public bool Changed { get; private set; }
 
@@ -31,10 +33,16 @@ namespace PetProj
             var graphics = e.Graphics;
             if (graphics == null) return;
 
-            foreach (Primitive p in figures)
+            //foreach (Figure p in figures)
+            //{
+            //    if (selected.Contains(p)) continue;
+            //    p.DrawAt(graphics, Color.Black);
+            //}
+
+            // отрисовка созданных фигур
+            foreach (var fig in figures)
             {
-                if (selected.Contains(p)) continue;
-                p.DrawAt(graphics, Color.Black);
+                fig.Renderer.Render(graphics, fig);
             }
 
             if (underCursor != null)
@@ -45,7 +53,7 @@ namespace PetProj
                     underCursor.DrawHighlightAt(graphics, Color.Black);
             }
 
-            foreach (Primitive p in selected)
+            foreach (Figure p in selected)
             {
                 if (p == underCursor) continue;
                 p.DrawSelectedAt(graphics, Color.Black);
@@ -62,7 +70,7 @@ namespace PetProj
                     case EditorMode.BuildLines:
                         DrawRibbonLine(graphics, firstMouseDown, mousePosition);
                         break;
-                    case EditorMode.BuildRectangle:
+                    case EditorMode.BuildRectangles:
                         DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
                         break;
                 }
@@ -172,7 +180,8 @@ namespace PetProj
                 else if (mouseClickCount == 1) // это второе нажатие
                 {
                     PointF pt1, pt2, pt3, pt4;
-                    Line line;
+                    //Line line;
+                    Figure figure;
                     switch (editorMode)
                     {
                         case EditorMode.Selection:
@@ -188,26 +197,34 @@ namespace PetProj
                         case EditorMode.BuildLines:
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
-                            line = new Line(pt1, pt2);
-                            figures.Add(line);
+                            //var line = new Line(pt1, pt2);
+                            //figures.Add(line);
+
+                            figure = new Figure();
+                            FigureBuilder.BuildAddLineGeometry(figure, pt1);
+                            ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
+                            figure.Style.FillStyle.IsVisible = false;
+                            figure.Style.BorderStyle.Width = 1f;
+                            figures.Add(figure);
+
                             mouseClickCount = 0;
                             firstMouseDown = pt2;
                             mouseClickCount++;
                             Changed = true;
                             break;
-                        case EditorMode.BuildRectangle:
+                        case EditorMode.BuildRectangles:
                             pt1 = firstMouseDown;
                             pt3 = PrepareMousePosition(mousePosition);
                             pt2 = new PointF(pt3.X, pt1.Y);
                             pt4 = new PointF(pt1.X, pt3.Y);
-                            line = new Line(pt1, pt2);
-                            figures.Add(line);
-                            line = new Line(pt2, pt3);
-                            figures.Add(line);
-                            line = new Line(pt3, pt4);
-                            figures.Add(line);
-                            line = new Line(pt4, pt1);
-                            figures.Add(line);
+                            //line = new Line(pt1, pt2);
+                            //figures.Add(line);
+                            //line = new Line(pt2, pt3);
+                            //figures.Add(line);
+                            //line = new Line(pt3, pt4);
+                            //figures.Add(line);
+                            //line = new Line(pt4, pt1);
+                            //figures.Add(line);
                             mouseClickCount = 0;
                             Changed = true;
                             break;
@@ -259,8 +276,12 @@ namespace PetProj
             editorMode = selection;
             mouseClickCount = 0;
             zoomPad.Invalidate();
-            if (editorMode == EditorMode.Selection)
-                OnSelectionMode?.Invoke(this, EventArgs.Empty);
+            switch (editorMode)
+            {
+                case EditorMode.Selection:
+                    OnSelectionMode?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
         }
 
         public void SaveDocument(string filename)
@@ -305,8 +326,8 @@ namespace PetProj
                     switch (figureName)
                     {
                         case "Line":
-                            var line = new Line(xelement);
-                            figures.Add(line);
+                            //var line = new Line(xelement);
+                            //figures.Add(line);
                             break;
                     }
                 }

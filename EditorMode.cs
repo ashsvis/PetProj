@@ -4,6 +4,6 @@
     {
         Selection,
         BuildLines,
-        BuildRectangle
+        BuildRectangles
     }
 }
