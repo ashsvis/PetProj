@@ -79,6 +79,8 @@
     <Compile Include="Renderers\IRendererPath.cs" />
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />
+    <Compile Include="Selections\BlowedSelection.cs" />
+    <Compile Include="Selections\IListManage.cs" />
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
     <Compile Include="Styles\AllowedFillDecorators.cs" />

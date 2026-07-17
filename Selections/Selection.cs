@@ -9,7 +9,7 @@ namespace PetProj.Selections
     /// <summary>
     /// Набор выделенных фигур и операции над ними
     /// </summary>
-    public class Selection : IEnumerable<Figure>
+    public class Selection : IEnumerable<Figure>,  IListManage
     {
         // внутренний набор для хранения списка выделенных фигур
         private readonly HashSet<Figure> selected = new HashSet<Figure>();

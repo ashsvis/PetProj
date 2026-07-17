@@ -58,6 +58,7 @@ namespace PetProj
             var changed = drawControl.Changed;
             tsmiSaveDocument.Enabled = changed;
             tsbSaveDocument.Enabled = changed;
+            tsslStatus.Text = $"Выбрано объектов: {drawControl.SelectionCount}";
         }
 
         private void tsmiSaveDocument_Click(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 ﻿using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
+using PetProj.Selections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,6 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Xml.Linq;
 
 namespace PetProj
@@ -19,12 +19,13 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
-        private Figure underCursor;
+        private readonly BlowedSelection underCursor = new BlowedSelection();
 
         private readonly List<Figure> figures = new List<Figure>();
         private readonly SelectionController selectionController;
 
         public bool Changed { get; private set; }
+        public int SelectionCount => selectionController.Selection.Count;
 
         public DrawControl()
         {
@@ -53,11 +54,10 @@ namespace PetProj
 
             // отрисовка созданных фигур
             foreach (var fig in figures)
-            {
-                if (!selectionController.Selection.Contains(fig))
-                    fig.DrawGlowed(fig == underCursor);
                 fig.Renderer.Render(graphics, fig);
-            }
+
+            // отрисовка временно подсвеченных под курсором или рамкой выделения
+            underCursor.Render(graphics);
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics);
@@ -94,7 +94,7 @@ namespace PetProj
             var pt2 = PrepareMousePosition(mousePosition);
             var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-            using (var pen = new Pen(Color.Magenta, 1))
+            using (var pen = new Pen(Color.Magenta))
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
         }
 
@@ -102,7 +102,7 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
-            using (var pen = new Pen(Color.Magenta, 1))
+            using (var pen = new Pen(Color.Magenta))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
@@ -194,78 +194,24 @@ namespace PetProj
                             var selMode = pt1.X > pt2.X;
                             var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                            using (var image = new Bitmap(Width, Height))
-                            using (var g = Graphics.FromImage(image))
-                            {
-                                foreach (var fig in figures)
-                                {
-                                    using (GraphicsPath path = fig.GetRendererPath())
+                            SelectUnselectByFrame(selMode, rectangle, 
+                                    (manager, fig) => 
                                     {
-                                        if (selMode)
+                                        if (!selectionController.Selection.Contains(fig))
                                         {
-                                            // захватываем рамкой объекты частично
-                                            var points = path.PathPoints;
-                                            List<PointF> interpolatedPoints = new List<PointF>();
-                                            for (int i = 0; i < points.Length - 1; i++)
-                                            {
-                                                PointF current = points[i];
-                                                PointF next = points[i + 1];
-                                                // Если отрезок длинный, interpolate
-                                                if (Distance(current, next) > 1.0f)
-                                                { 
-                                                    int numSteps = 10; // Number of intermediate points
-                                                    for (int step = 1; step <= numSteps; step++)
-                                                    {
-                                                        float t = (step / (float)numSteps);
-                                                        PointF interpolated = new PointF(
-                                                            (int)(current.X + t * (next.X - current.X)),
-                                                            (int)(current.Y + t * (next.Y - current.Y))
-                                                        );
-                                                        interpolatedPoints.Add(interpolated);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    // Keep the original point if it's a vertex
-                                                    interpolatedPoints.Add(current);
-                                                }
-                                            }
-                                            if (interpolatedPoints.Any(p => rectangle.Contains(p)))
-                                            {
-                                                if (ModifierKeys.HasFlag(Keys.Shift))
-                                                {
-                                                    if (selectionController.Selection.Contains(fig))
-                                                        selectionController.Selection.Remove(fig);
-                                                }
-                                                else if (!selectionController.Selection.Contains(fig))
-                                                    selectionController.Selection.Add(fig);
-                                            }
+                                            fig.DrawGlowed(false);
+                                            selectionController.Selection.Add(fig);
                                         }
-                                        else
-                                        {
-                                            // захватываем рамкой объекты целиком
-                                            var figrect = path.GetBounds();
-                                            var rect = new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-                                            figrect.Intersect(rect);
-                                            if (figrect.Equals(path.GetBounds()))
-                                            {
-                                                if (ModifierKeys.HasFlag(Keys.Shift))
-                                                {
-                                                    if (selectionController.Selection.Contains(fig))
-                                                        selectionController.Selection.Remove(fig);
-                                                }
-                                                else if (!selectionController.Selection.Contains(fig))
-                                                    selectionController.Selection.Add(fig);
-                                            }
-                                        }
+                                    }, 
+                                    (manager, fig) => 
+                                    {
+                                        if (selectionController.Selection.Contains(fig))
+                                            selectionController.Selection.Remove(fig);
                                     }
-                                }
-                            }
-                            // при отсутвии других режимов - режим выбора, и второе нажатие
+                                );
+                            // при отсутствии других режимов - режим выбора, и второе нажатие
                             // сбрасывает количество нажатий
                             mouseClickCount = 0;
-                            // здесь будет обработка при выборе объектов
-                            // при selMode == true выбираются все объекты, хотя бы частично попавшие в rect, а при false - только целиком
                             break;
                         case EditorMode.BuildLines:
                             pt1 = firstMouseDown;
@@ -304,6 +250,72 @@ namespace PetProj
             }
         }
 
+        private void SelectUnselectByFrame(bool selMode, RectangleF rectangle, 
+            Action<IListManage, Figure> onSelect, Action<IListManage, Figure> onUnselect)
+        {
+            using (var image = new Bitmap(Width, Height))
+            using (var g = Graphics.FromImage(image))
+            {
+                foreach (var fig in figures)
+                {
+                    using (GraphicsPath path = fig.GetRendererPath())
+                    {
+                        if (selMode)
+                        {
+                            // захватываем рамкой объекты частично
+                            var points = path.PathPoints;
+                            List<PointF> interpolatedPoints = new List<PointF>();
+                            for (int i = 0; i < points.Length - 1; i++)
+                            {
+                                PointF current = points[i];
+                                PointF next = points[i + 1];
+                                // Если отрезок длинный, interpolate
+                                if (Distance(current, next) > 1.0f)
+                                {
+                                    int numSteps = 100; // Number of intermediate points
+                                    for (int step = 1; step <= numSteps; step++)
+                                    {
+                                        float t = (step / (float)numSteps);
+                                        PointF interpolated = new PointF(
+                                            (int)(current.X + t * (next.X - current.X)),
+                                            (int)(current.Y + t * (next.Y - current.Y))
+                                        );
+                                        interpolatedPoints.Add(interpolated);
+                                    }
+                                }
+                                else
+                                {
+                                    // Keep the original point if it's a vertex
+                                    interpolatedPoints.Add(current);
+                                }
+                            }
+                            if (interpolatedPoints.Any(p => rectangle.Contains(p)))
+                            {
+                                if (ModifierKeys.HasFlag(Keys.Shift))
+                                    onUnselect(selectionController.Selection, fig);
+                                else
+                                    onSelect(selectionController.Selection, fig);
+                            }
+                        }
+                        else
+                        {
+                            // захватываем рамкой объекты целиком
+                            var figrect = path.GetBounds();
+                            var rect = new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+                            figrect.Intersect(rect);
+                            if (figrect.Equals(path.GetBounds()))
+                            {
+                                if (ModifierKeys.HasFlag(Keys.Shift))
+                                    onUnselect(selectionController.Selection, fig);
+                                else
+                                    onSelect(selectionController.Selection, fig);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private float Distance(PointF current, PointF next)
         {
             return (float)Math.Sqrt(Math.Pow(next.X - current.X, 2) + Math.Pow(next.Y - current.Y, 2));
@@ -316,7 +328,37 @@ namespace PetProj
 
             selectionController.OnMouseMove(pt, ModifierKeys);
 
-            underCursor = figures.LastOrDefault(x => x.Contains(pt));
+            if (mouseClickCount == 1 && editorMode == EditorMode.Selection)
+            {
+                // определение фигуры под рамкой выбора
+                var pt1 = firstMouseDown;
+                var pt2 = PrepareMousePosition(mousePosition);
+                var selMode = pt1.X > pt2.X;
+                var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
+                    Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
+                underCursor.Clear();
+                SelectUnselectByFrame(selMode, rectangle,
+                        (manager, fig) =>
+                        {
+                            if (!underCursor.Contains(fig))
+                                underCursor.Add(fig);
+                        },
+                        (manager, fig) =>
+                        {
+                            if (underCursor.Contains(fig))
+                                underCursor.Remove(fig);
+                        }
+                    );
+            }
+            if (mouseClickCount == 0)
+            {
+                // определение фигуры непосредственно под курсором
+                underCursor.Clear();
+                var fig = figures.LastOrDefault(x => x.Contains(pt));
+                if (fig != null)
+                    underCursor.Add(fig);
+            }
+
             zoomPad.Invalidate();
         }
 

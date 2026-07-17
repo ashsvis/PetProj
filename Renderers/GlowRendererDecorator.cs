@@ -1,4 +1,5 @@
 ﻿using PetProj.Figures;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -35,10 +36,12 @@ namespace PetProj.Renderers
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;
                     var color = Color;
-                    for (var i = 0; i < 8; i++)
+                    var width = 8;
+
+                    for (var i = 0; i < width; i++)
                     {
                         pen.Color = color;
-                        pen.Width += 1; //4;
+                        pen.Width += 1f; //4;
                         graphics.DrawPath(pen, path);
                         color = Color.FromArgb(color.A / 2, color);
                     }

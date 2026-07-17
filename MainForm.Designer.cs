@@ -78,8 +78,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.placeHolder = new System.Windows.Forms.Panel();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
+            this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -276,13 +278,13 @@
             // tsmiTuningApplication
             // 
             this.tsmiTuningApplication.Name = "tsmiTuningApplication";
-            this.tsmiTuningApplication.Size = new System.Drawing.Size(180, 22);
+            this.tsmiTuningApplication.Size = new System.Drawing.Size(138, 22);
             this.tsmiTuningApplication.Text = "&Настройки";
             // 
             // tsmiAppParameters
             // 
             this.tsmiAppParameters.Name = "tsmiAppParameters";
-            this.tsmiAppParameters.Size = new System.Drawing.Size(180, 22);
+            this.tsmiAppParameters.Size = new System.Drawing.Size(138, 22);
             this.tsmiAppParameters.Text = "&Параметры";
             // 
             // tsmiHelpMenu
@@ -301,30 +303,30 @@
             // tsmiHelpContent
             // 
             this.tsmiHelpContent.Name = "tsmiHelpContent";
-            this.tsmiHelpContent.Size = new System.Drawing.Size(180, 22);
+            this.tsmiHelpContent.Size = new System.Drawing.Size(158, 22);
             this.tsmiHelpContent.Text = "&Содержание";
             // 
             // tsmiHelpIndex
             // 
             this.tsmiHelpIndex.Name = "tsmiHelpIndex";
-            this.tsmiHelpIndex.Size = new System.Drawing.Size(180, 22);
+            this.tsmiHelpIndex.Size = new System.Drawing.Size(158, 22);
             this.tsmiHelpIndex.Text = "&Индекс";
             // 
             // tsmiSearch
             // 
             this.tsmiSearch.Name = "tsmiSearch";
-            this.tsmiSearch.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSearch.Size = new System.Drawing.Size(158, 22);
             this.tsmiSearch.Text = "&Поиск";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(155, 6);
             // 
             // tsmiAboutApplication
             // 
             this.tsmiAboutApplication.Name = "tsmiAboutApplication";
-            this.tsmiAboutApplication.Size = new System.Drawing.Size(180, 22);
+            this.tsmiAboutApplication.Size = new System.Drawing.Size(158, 22);
             this.tsmiAboutApplication.Text = "&О программе...";
             // 
             // toolStrip1
@@ -480,6 +482,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 603);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1117, 22);
@@ -500,6 +504,12 @@
             // 
             this.timerUpdateControls.Tick += new System.EventHandler(this.timerUpdateControls_Tick);
             // 
+            // tsslStatus
+            // 
+            this.tsslStatus.Name = "tsslStatus";
+            this.tsslStatus.Size = new System.Drawing.Size(48, 17);
+            this.tsslStatus.Text = "Готово.";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -519,6 +529,8 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -574,6 +586,7 @@
         private System.Windows.Forms.ToolStripButton tsbLine;
         private System.Windows.Forms.ToolStripButton tsbRect;
         private System.Windows.Forms.Timer timerUpdateControls;
+        private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
     }
 }
 

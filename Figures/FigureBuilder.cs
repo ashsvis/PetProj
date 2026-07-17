@@ -20,7 +20,7 @@ namespace PetProj.Figures
         /// <param name="isSmoothed">Сглаживание</param>
         public static void BuildAddLineGeometry(Figure figure, PointF startPoint, bool isClosed = false, bool isSmoothed = false)
         {
-            figure.Style.BorderStyle.Width = 0;
+            figure.Style.BorderStyle.Width = 1f;
             figure.Geometry = new AddLineGeometry(startPoint)
             {
                 Name = "AddLine",
