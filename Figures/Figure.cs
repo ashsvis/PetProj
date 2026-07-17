@@ -3,9 +3,9 @@ using PetProj.Renderers;
 using PetProj.Styles;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using System.Xml.Linq;
 
 namespace PetProj.Figures
 {
@@ -31,6 +31,20 @@ namespace PetProj.Figures
         /// Свойство источника геометрии фигуры
         /// </summary>
         public Geometry Geometry { get; set; }
+
+        public XElement GetXml()
+        {
+            var xfigure = new XElement("Figure");
+            xfigure.Add(Geometry.GetXml());
+            xfigure.Add(Style.GetXml());
+            return xfigure;
+        }
+
+        public virtual Figure DeepCopy()
+        {
+            var xfigure = GetXml();
+            return null;
+        }
 
         /// <summary>
         /// Подсветка фигуры
@@ -83,25 +97,6 @@ namespace PetProj.Figures
             // создаём копию геометрии фигуры
             var path = (GraphicsPath)Geometry.Path.Clone();
             return path;
-        }
-
-        public virtual string DeepCopy()
-        {
-            // Создаём экземпляр XmlSerializer, указывая тип объекта
-            XmlSerializer serializer = new XmlSerializer(typeof(Figure));
-            // Или сериализация в строку в памяти
-            string xmlString;
-            using (StringWriter writer = new StringWriter())
-            {
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true; // для отступов
-                using (XmlWriter w = XmlWriter.Create(new StringWriter(), settings))
-                {
-                    serializer.Serialize(w, this);
-                }
-                xmlString = writer.ToString();
-            }
-            return xmlString;
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using PetProj.Figures;
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Xml.Linq;
 
 namespace PetProj.Styles
 {
@@ -48,6 +48,17 @@ namespace PetProj.Styles
         public bool IsVisible { get; set; }
 
         public DashStyle DashStyle { get; set; }
+
+        public XElement GetXml()
+        {
+            var xborder = new XElement("Border");
+            xborder.Add(new XAttribute("IsVisible", IsVisible));
+            xborder.Add(new XAttribute("Color", $"{Color.A};{Color.R};{Color.G};{Color.B}"));
+            xborder.Add(new XAttribute("Opacity", Opacity));
+             xborder.Add(new XAttribute("Width", Width));
+           xborder.Add(new XAttribute("DashStyle", DashStyle));
+            return xborder;
+        }
 
         /// <summary>
         /// Предоставление карандаша для рисования контура

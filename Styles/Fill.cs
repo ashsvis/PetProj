@@ -1,6 +1,6 @@
 ﻿using PetProj.Figures;
-using System;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace PetProj.Styles
 {
@@ -23,6 +23,15 @@ namespace PetProj.Styles
         /// Признак возможности заливки фигуры
         /// </summary>
         public virtual bool IsVisible { get; set; }
+
+        public XElement GetXml()
+        {
+            var xfill = new XElement("Fill");
+            xfill.Add(new XAttribute("IsVisible", IsVisible));
+            xfill.Add(new XAttribute("Color", $"{Color.A};{Color.R};{Color.G};{Color.B}"));
+            xfill.Add(new XAttribute("Opacity", Opacity));
+            return xfill;
+        }
 
         public abstract Brush GetBrush(Figure figure);
 
