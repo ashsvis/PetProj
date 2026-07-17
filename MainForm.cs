@@ -65,7 +65,7 @@ namespace PetProj
                 tsbUndo.Enabled = tsmiUndo.Enabled = support.CanUndo();
                 tsbRedo.Enabled = tsmiRedo.Enabled = support.CanRedo();
             }
-            tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = drawControl.SelectionCount > 0;
+            tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = drawControl.SelectionCount > 0;
         }
 
         private void tsmiSaveDocument_Click(object sender, EventArgs e)
@@ -133,6 +133,11 @@ namespace PetProj
         {
             if (drawControl is IUndoRedoSupport support && support.CanRedo())
                 support.Redo();
+        }
+
+        private void tsmiDelete_Click(object sender, EventArgs e)
+        {
+            drawControl.RemoveSelected();
         }
     }
 }

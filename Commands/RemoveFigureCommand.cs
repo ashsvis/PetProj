@@ -1,33 +1,35 @@
 ﻿using PetProj.Common;
 using PetProj.Figures;
-using System;
 using System.Collections.Generic;
 
 namespace PetProj.Commands
 {
-    public class CreateFigure : ICommand
+    public class RemoveFigureCommand : ICommand
     {
         private readonly List<Figure> figures;
         private readonly Figure figure;
+        private Figure prevFigure;
 
-        public CreateFigure(List<Figure> figures, Figure figure)
+
+        public RemoveFigureCommand(List<Figure> figures, Figure figure)
         {
             this.figures = figures;
             this.figure = figure;
         }
 
-        public string Name => "Добавить новую фигуру";
+        public string Name => "Удалить фигуру";
 
         public void Execute()
         {
             if (figures == null || figure == null) return;
-            figures.Add(figure);
+            prevFigure = figure;
+            figures.Remove(figure);
         }
 
         public void UnExecute()
         {
-            if (figures == null || figure == null) return;
-            figures.Remove(figure);
+            if (figures == null || prevFigure == null) return;
+            figures.Add(prevFigure);
         }
     }
 }

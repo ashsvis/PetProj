@@ -11,6 +11,7 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace PetProj
@@ -222,7 +223,7 @@ namespace PetProj
                         case EditorMode.BuildLines:
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
-                            AddFigureAsLine(pt1, pt2);
+                            AddLine(pt1, pt2);
                             mouseClickCount = 0;
                             firstMouseDown = pt2;
                             mouseClickCount++;
@@ -233,10 +234,10 @@ namespace PetProj
                             pt3 = PrepareMousePosition(mousePosition);
                             pt2 = new PointF(pt3.X, pt1.Y);
                             pt4 = new PointF(pt1.X, pt3.Y);
-                            AddFigureAsLine(pt1, pt2);
-                            AddFigureAsLine(pt2, pt3);
-                            AddFigureAsLine(pt3, pt4);
-                            AddFigureAsLine(pt4, pt1);
+                            AddLine(pt1, pt2);
+                            AddLine(pt2, pt3);
+                            AddLine(pt3, pt4);
+                            AddLine(pt4, pt1);
                             mouseClickCount = 0;
                             Changed = true;
                             break;
@@ -379,16 +380,25 @@ namespace PetProj
             zoomPad.Invalidate();
         }
 
-        private void AddFigureAsLine(PointF pt1, PointF pt2, bool loading = false)
+        private void AddLine(PointF pt1, PointF pt2, bool loading = false)
         {
-            Figure figure = new Figure();
-            FigureBuilder.BuildAddLineGeometry(figure, pt1);
-            ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
-            figure.Style.FillStyle.IsVisible = false;
+            Figure line = new Figure();
+            FigureBuilder.BuildAddLineGeometry(line, pt1);
+            ((AddLineGeometry)line.Geometry).AddPoint(pt2);
+            line.Style.FillStyle.IsVisible = false;
             if (loading)
-                figures.Add(figure);
+                figures.Add(line);
             else
-                undoRedoManager.Execute(new CreateFigure(figures, figure));
+                undoRedoManager.Execute(new CreateFigureCommand(figures, line));
+        }
+
+        public void RemoveSelected()
+        {
+            foreach (var fig in selectionController.Selection)
+                undoRedoManager.Execute(new RemoveFigureCommand(figures, fig));
+            selectionController.Selection.Clear();
+            underCursor.Clear();
+            Changed = true;
         }
 
         public EventHandler OnSelectionMode;
@@ -467,7 +477,7 @@ namespace PetProj
                             var decsep = culture.NumberFormat.NumberDecimalSeparator;
                             var pt1 = Parse(xelement.Attribute("Start")?.Value, decsep);
                             var pt2 = Parse(xelement.Attribute("End")?.Value, decsep);
-                            AddFigureAsLine(pt1, pt2, loading: true);
+                            AddLine(pt1, pt2, loading: true);
                             break;
                     }
                 }
@@ -537,12 +547,14 @@ namespace PetProj
         {
             selectionController.Selection.Clear();
             undoRedoManager.Undo();
+            Changed = true;
         }
 
         public void Redo()
         {
             selectionController.Selection.Clear();
             undoRedoManager.Redo();
+            Changed = true;
         }
 
         public bool CanUndo()
