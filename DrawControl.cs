@@ -11,7 +11,6 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace PetProj
@@ -22,6 +21,9 @@ namespace PetProj
         private PointF firstMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
+
+        public EditorMode EditorMode => editorMode;
+
         private readonly BlowedSelection underCursor = new BlowedSelection();
 
         private readonly List<Figure> figures = new List<Figure>();
@@ -64,10 +66,11 @@ namespace PetProj
                 fig.Renderer.Render(graphics, fig);
 
             // отрисовка временно подсвеченных под курсором или рамкой выделения
-            underCursor.Render(graphics);
+            underCursor.Render(graphics, Color.Gray);
 
             // отрисовка выделения
-            selectionController.Selection.Render(graphics);
+            selectionController.Selection.Render(graphics, 
+                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.WhiteSmoke : Color.Magenta);
 
             //// отрисовка маркеров
             //foreach (var marker in selectionController.Markers)
@@ -91,7 +94,33 @@ namespace PetProj
                     case EditorMode.BuildRectangles:
                         DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
                         break;
+                    case EditorMode.MoveSelected:
+                        DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
+                        break;
                 }
+            }
+        }
+
+        private void DrawRibbonMoved(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
+        {
+            var pt1 = firstMouseDown;
+            var pt2 = PrepareMousePosition(mousePosition);
+            using (var pen = new Pen(Color.Gray) { DashStyle = DashStyle.Dash })
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+
+                var state = graphics.Save();
+
+                graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                // отрисовка выделения
+                selectionController.Selection.Render(graphics, Color.Magenta);
+                graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
+
+                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphics.DrawLine(pen, pt1, pt2);
+                graphics.Restore(state);
             }
         }
 
@@ -181,6 +210,7 @@ namespace PetProj
         {
             if (e.Button == MouseButtons.Left)
             {
+                underCursor.Clear();
                 mousePosition = e.Location;
                 if (mouseClickCount == 0)
                 {
@@ -239,6 +269,15 @@ namespace PetProj
                             AddLine(pt3, pt4);
                             AddLine(pt4, pt1);
                             mouseClickCount = 0;
+                            Changed = true;
+                            break;
+                        case EditorMode.MoveSelected:
+                            pt1 = firstMouseDown;
+                            pt2 = PrepareMousePosition(mousePosition);
+                            selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                            selectionController.Selection.Clear();
+                            mouseClickCount = 0;
+                            SetMode(EditorMode.Selection);
                             Changed = true;
                             break;
                     }
@@ -565,6 +604,11 @@ namespace PetProj
         public bool CanRedo()
         {
             return undoRedoManager.RedoPossible();
+        }
+
+        public void MoveSelected()
+        {
+            editorMode = EditorMode.MoveSelected;
         }
     }
 }

@@ -67,11 +67,11 @@ namespace PetProj.Selections
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics)
+        public void Render(Graphics graphics, Color color)
         {
             foreach (var figure in selected)
             {
-                var blowedColor = Color.Gray;
+                var blowedColor = color; // Color.Gray;
                 // получаем путь для рисования методом фигуры
                 using (var path = figure.Geometry.Path)
                 {

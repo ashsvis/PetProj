@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PetProj.Geometries
 {
-    public sealed class AddLineGeometry : Geometry, IGeometry
+    public sealed class AddLineGeometry : Geometry, IGeometry, IMoveGeometry
     {
         public readonly List<PointF> Points = new List<PointF>();
 
@@ -66,6 +66,13 @@ namespace PetProj.Geometries
         {
             if (!Points.Contains(point)) Points.Add(point);
             EndPoint = point;
+        }
+
+        public void Move(float offsetX, float offsetY)
+        {
+            for (var i = 0; i < Points.Count; i++)
+                Points[i] = PointF.Add(Points[i], new SizeF(offsetX, offsetY));
+            EndPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
         }
     }
 }

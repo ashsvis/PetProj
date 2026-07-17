@@ -10,6 +10,6 @@ namespace PetProj.Selections
         void Remove(Figure fig);
         bool Contains(Figure figure);
         int Count { get; }
-        void Render(Graphics graphics);
+        void Render(Graphics graphics, Color color);
     }
 }

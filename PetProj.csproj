@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +40,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ValueTuple" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,6 +72,7 @@
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\IGeometry.cs" />
+    <Compile Include="Geometries\IMoveGeometry.cs" />
     <Compile Include="Geometries\PrimitiveGeometry.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -143,6 +148,7 @@
   <ItemGroup>
     <None Include="Resources\undo.png" />
     <None Include="Resources\redo.png" />
+    <None Include="Resources\move.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

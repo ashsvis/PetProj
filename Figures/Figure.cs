@@ -1,9 +1,11 @@
 ﻿using PetProj.Geometries;
 using PetProj.Renderers;
 using PetProj.Styles;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace PetProj.Figures
 {
@@ -29,10 +31,6 @@ namespace PetProj.Figures
         /// Свойство источника геометрии фигуры
         /// </summary>
         public Geometry Geometry { get; set; }
-
-        public PointF Origin { get; set; } = new PointF(0, 0);
-
-        public List<SizeF> Offsets { get; set; } = new List<SizeF>();
 
         /// <summary>
         /// Подсветка фигуры
@@ -85,6 +83,25 @@ namespace PetProj.Figures
             // создаём копию геометрии фигуры
             var path = (GraphicsPath)Geometry.Path.Clone();
             return path;
+        }
+
+        public virtual string DeepCopy()
+        {
+            // Создаём экземпляр XmlSerializer, указывая тип объекта
+            XmlSerializer serializer = new XmlSerializer(typeof(Figure));
+            // Или сериализация в строку в памяти
+            string xmlString;
+            using (StringWriter writer = new StringWriter())
+            {
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true; // для отступов
+                using (XmlWriter w = XmlWriter.Create(new StringWriter(), settings))
+                {
+                    serializer.Serialize(w, this);
+                }
+                xmlString = writer.ToString();
+            }
+            return xmlString;
         }
     }
 

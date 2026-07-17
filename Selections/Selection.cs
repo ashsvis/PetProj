@@ -140,7 +140,7 @@ namespace PetProj.Selections
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics)
+        public void Render(Graphics graphics, Color color)
         {
             foreach (var figure in selected)
             {
@@ -148,11 +148,20 @@ namespace PetProj.Selections
                 using (var path = figure.Geometry.Path)
                 {
                     // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = new Pen(Color))
+                    using (var pen = new Pen(color /*Color*/))
                     { 
                         graphics.DrawPath(pen, path); 
                     }
                 }
+            }
+        }
+
+        public void Translate(float offsetX, float offsetY)
+        {
+            foreach(var figure in selected)
+            {
+                if (figure.Geometry is IMoveGeometry geometry)
+                    geometry.Move(offsetX, offsetY);
             }
         }
     }

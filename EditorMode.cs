@@ -4,6 +4,7 @@
     {
         Selection,
         BuildLines,
-        BuildRectangles
+        BuildRectangles,
+        MoveSelected,
     }
 }
