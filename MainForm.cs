@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PetProj.Common;
+using System;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -59,6 +60,12 @@ namespace PetProj
             tsmiSaveDocument.Enabled = changed;
             tsbSaveDocument.Enabled = changed;
             tsslStatus.Text = $"Выбрано объектов: {drawControl.SelectionCount}";
+            if (drawControl is IUndoRedoSupport support)
+            {
+                tsbUndo.Enabled = tsmiUndo.Enabled = support.CanUndo();
+                tsbRedo.Enabled = tsmiRedo.Enabled = support.CanRedo();
+            }
+            tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = drawControl.SelectionCount > 0;
         }
 
         private void tsmiSaveDocument_Click(object sender, EventArgs e)
@@ -109,6 +116,23 @@ namespace PetProj
         private void tsmiCreateDocument_Click(object sender, EventArgs e)
         {
             drawControl.CreateNewDocument();
+        }
+
+        private void tsmiSelectAll_Click(object sender, EventArgs e)
+        {
+            drawControl.SelectAll();
+        }
+
+        private void tsmiUndo_Click(object sender, EventArgs e)
+        {
+            if (drawControl is IUndoRedoSupport support && support.CanUndo())
+                support.Undo();
+        }
+
+        private void tsmiRedo_Click(object sender, EventArgs e)
+        {
+            if (drawControl is IUndoRedoSupport support && support.CanRedo())
+                support.Redo();
         }
     }
 }

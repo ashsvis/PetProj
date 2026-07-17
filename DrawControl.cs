@@ -1,4 +1,5 @@
-﻿using PetProj.Controllers;
+﻿using PetProj.Common;
+using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.Selections;
@@ -13,7 +14,7 @@ using System.Xml.Linq;
 
 namespace PetProj
 {
-    public partial class DrawControl : UserControl
+    public partial class DrawControl : UserControl, IUndoRedoSupport
     {
         private int mouseClickCount;
         private PointF firstMouseDown;
@@ -24,12 +25,16 @@ namespace PetProj
         private readonly List<Figure> figures = new List<Figure>();
         private readonly SelectionController selectionController;
 
+        private readonly UndoRedoManager undoRedoManager;
+
         public bool Changed { get; private set; }
         public int SelectionCount => selectionController.Selection.Count;
 
         public DrawControl()
         {
             InitializeComponent();
+            undoRedoManager = new UndoRedoManager();
+            undoRedoManager.OnStateChaned += (o, e) => Invalidate();
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
@@ -441,6 +446,7 @@ namespace PetProj
         {
             try
             {
+                undoRedoManager.Clear();
                 var xdoc = XDocument.Load(filename);
                 var root = xdoc.Element("Document");
                 var name =  root.Attribute("Name")?.Value;
@@ -508,11 +514,39 @@ namespace PetProj
 
         public void CreateNewDocument()
         {
+            undoRedoManager.Clear();
             figures.Clear();
             zoomPad.Reset();
             Changed = false;
             zoomPad.Invalidate();
         }
 
+        public void SelectAll()
+        {
+            selectionController.Selection.Clear();
+            foreach(var fig in figures)
+                selectionController.Selection.Add(fig);
+            zoomPad.Invalidate();
+        }
+
+        public void Undo()
+        {
+            undoRedoManager.Undo();
+        }
+
+        public void Redo()
+        {
+            undoRedoManager.Redo();
+        }
+
+        public bool CanUndo()
+        {
+            return undoRedoManager.UndoPossible();
+        }
+
+        public bool CanRedo()
+        {
+            return undoRedoManager.RedoPossible();
+        }
     }
 }

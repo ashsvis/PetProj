@@ -32,25 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFileMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCreateDocument = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiOpenDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiSaveDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSaveDocumentAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiPrintDocument = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiPreviewDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEditMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.отменадействияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.отменадействияToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.вырезатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.вставкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.выделитьвсеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAppParameters = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,24 +53,35 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAboutApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbOpenDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbSaveDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbPrintDocument = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbCut = new System.Windows.Forms.ToolStripButton();
-            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
-            this.tsbPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbArrow = new System.Windows.Forms.ToolStripButton();
-            this.tsbLine = new System.Windows.Forms.ToolStripButton();
-            this.tsbRect = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.placeHolder = new System.Windows.Forms.Panel();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbOpenDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbSaveDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbPrintDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
+            this.tsbRedo = new System.Windows.Forms.ToolStripButton();
+            this.tsbCut = new System.Windows.Forms.ToolStripButton();
+            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
+            this.tsbPaste = new System.Windows.Forms.ToolStripButton();
+            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
+            this.tsbArrow = new System.Windows.Forms.ToolStripButton();
+            this.tsbLine = new System.Windows.Forms.ToolStripButton();
+            this.tsbRect = new System.Windows.Forms.ToolStripButton();
+            this.tsmiCreateDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpenDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSaveDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPrintDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPreviewDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -114,41 +117,10 @@
             this.tsmiFileMenu.Size = new System.Drawing.Size(48, 20);
             this.tsmiFileMenu.Text = "&Файл";
             // 
-            // tsmiCreateDocument
-            // 
-            this.tsmiCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCreateDocument.Image")));
-            this.tsmiCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiCreateDocument.Name = "tsmiCreateDocument";
-            this.tsmiCreateDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmiCreateDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiCreateDocument.Text = "&Создать";
-            this.tsmiCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
-            // 
-            // tsmiOpenDocument
-            // 
-            this.tsmiOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiOpenDocument.Image")));
-            this.tsmiOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiOpenDocument.Name = "tsmiOpenDocument";
-            this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmiOpenDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiOpenDocument.Text = "&Открыть";
-            this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
-            // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
             this.toolStripSeparator.Size = new System.Drawing.Size(230, 6);
-            // 
-            // tsmiSaveDocument
-            // 
-            this.tsmiSaveDocument.Enabled = false;
-            this.tsmiSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSaveDocument.Image")));
-            this.tsmiSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiSaveDocument.Name = "tsmiSaveDocument";
-            this.tsmiSaveDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmiSaveDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiSaveDocument.Text = "&Сохранить";
-            this.tsmiSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
             // 
             // tsmiSaveDocumentAs
             // 
@@ -161,25 +133,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
-            // 
-            // tsmiPrintDocument
-            // 
-            this.tsmiPrintDocument.Enabled = false;
-            this.tsmiPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPrintDocument.Image")));
-            this.tsmiPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiPrintDocument.Name = "tsmiPrintDocument";
-            this.tsmiPrintDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.tsmiPrintDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiPrintDocument.Text = "&Печать";
-            // 
-            // tsmiPreviewDocument
-            // 
-            this.tsmiPreviewDocument.Enabled = false;
-            this.tsmiPreviewDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPreviewDocument.Image")));
-            this.tsmiPreviewDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiPreviewDocument.Name = "tsmiPreviewDocument";
-            this.tsmiPreviewDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiPreviewDocument.Text = "Предварительный про&смотр";
             // 
             // toolStripSeparator2
             // 
@@ -195,75 +148,55 @@
             // tsmiEditMenu
             // 
             this.tsmiEditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.отменадействияToolStripMenuItem,
-            this.отменадействияToolStripMenuItem1,
+            this.tsmiUndo,
+            this.tsmiRedo,
             this.toolStripSeparator3,
-            this.вырезатьToolStripMenuItem,
-            this.копироватьToolStripMenuItem,
-            this.вставкаToolStripMenuItem,
+            this.tsmiCut,
+            this.tsmiCopy,
+            this.tsmiPaste,
             this.toolStripSeparator4,
-            this.выделитьвсеToolStripMenuItem});
-            this.tsmiEditMenu.Enabled = false;
+            this.tsmiSelectAll});
             this.tsmiEditMenu.Name = "tsmiEditMenu";
             this.tsmiEditMenu.Size = new System.Drawing.Size(59, 20);
             this.tsmiEditMenu.Text = "&Правка";
             // 
-            // отменадействияToolStripMenuItem
+            // tsmiUndo
             // 
-            this.отменадействияToolStripMenuItem.Name = "отменадействияToolStripMenuItem";
-            this.отменадействияToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.отменадействияToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.отменадействияToolStripMenuItem.Text = "&Отмена действия";
+            this.tsmiUndo.Enabled = false;
+            this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
+            this.tsmiUndo.Name = "tsmiUndo";
+            this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiUndo.Text = "&Отмена действия";
+            this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
-            // отменадействияToolStripMenuItem1
+            // tsmiRedo
             // 
-            this.отменадействияToolStripMenuItem1.Name = "отменадействияToolStripMenuItem1";
-            this.отменадействияToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.отменадействияToolStripMenuItem1.Size = new System.Drawing.Size(217, 22);
-            this.отменадействияToolStripMenuItem1.Text = "&Отмена действия";
+            this.tsmiRedo.Enabled = false;
+            this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
+            this.tsmiRedo.Name = "tsmiRedo";
+            this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiRedo.Text = "&Отмена действия";
+            this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
-            // вырезатьToolStripMenuItem
-            // 
-            this.вырезатьToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("вырезатьToolStripMenuItem.Image")));
-            this.вырезатьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.вырезатьToolStripMenuItem.Name = "вырезатьToolStripMenuItem";
-            this.вырезатьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.вырезатьToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.вырезатьToolStripMenuItem.Text = "Вырезат&ь";
-            // 
-            // копироватьToolStripMenuItem
-            // 
-            this.копироватьToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("копироватьToolStripMenuItem.Image")));
-            this.копироватьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
-            this.копироватьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.копироватьToolStripMenuItem.Text = "&Копировать";
-            // 
-            // вставкаToolStripMenuItem
-            // 
-            this.вставкаToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("вставкаToolStripMenuItem.Image")));
-            this.вставкаToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.вставкаToolStripMenuItem.Name = "вставкаToolStripMenuItem";
-            this.вставкаToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.вставкаToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.вставкаToolStripMenuItem.Text = "Вст&авка";
-            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
             // 
-            // выделитьвсеToolStripMenuItem
+            // tsmiSelectAll
             // 
-            this.выделитьвсеToolStripMenuItem.Name = "выделитьвсеToolStripMenuItem";
-            this.выделитьвсеToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.выделитьвсеToolStripMenuItem.Text = "Выделить &все";
+            this.tsmiSelectAll.Name = "tsmiSelectAll";
+            this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
+            this.tsmiSelectAll.Text = "Выделить &все";
+            this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
             // tsmiServiceMenu
             // 
@@ -336,6 +269,9 @@
             this.tsbOpenDocument,
             this.tsbSaveDocument,
             this.tsbPrintDocument,
+            this.toolStripSeparator9,
+            this.tsbUndo,
+            this.tsbRedo,
             this.toolStripSeparator6,
             this.tsbCut,
             this.tsbCopy,
@@ -351,6 +287,56 @@
             this.toolStrip1.Size = new System.Drawing.Size(1117, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 603);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1117, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // placeHolder
+            // 
+            this.placeHolder.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.placeHolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolder.Location = new System.Drawing.Point(0, 49);
+            this.placeHolder.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolder.Name = "placeHolder";
+            this.placeHolder.Size = new System.Drawing.Size(1117, 554);
+            this.placeHolder.TabIndex = 3;
+            // 
+            // timerUpdateControls
+            // 
+            this.timerUpdateControls.Tick += new System.EventHandler(this.timerUpdateControls_Tick);
+            // 
+            // tsslStatus
+            // 
+            this.tsslStatus.Name = "tsslStatus";
+            this.tsslStatus.Size = new System.Drawing.Size(48, 17);
+            this.tsslStatus.Text = "Готово.";
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbCreateDocument
             // 
@@ -393,10 +379,27 @@
             this.tsbPrintDocument.Size = new System.Drawing.Size(23, 22);
             this.tsbPrintDocument.Text = "&Печать";
             // 
-            // toolStripSeparator6
+            // tsbUndo
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            this.tsbUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbUndo.Enabled = false;
+            this.tsbUndo.Image = global::PetProj.Properties.Resources.undo;
+            this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbUndo.Name = "tsbUndo";
+            this.tsbUndo.Size = new System.Drawing.Size(23, 22);
+            this.tsbUndo.Text = "Отменить";
+            this.tsbUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
+            // 
+            // tsbRedo
+            // 
+            this.tsbRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRedo.Enabled = false;
+            this.tsbRedo.Image = global::PetProj.Properties.Resources.redo;
+            this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRedo.Name = "tsbRedo";
+            this.tsbRedo.Size = new System.Drawing.Size(23, 22);
+            this.tsbRedo.Text = "Вернуть";
+            this.tsbRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // tsbCut
             // 
@@ -428,11 +431,6 @@
             this.tsbPaste.Size = new System.Drawing.Size(23, 22);
             this.tsbPaste.Text = "Вст&авка";
             // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
-            // 
             // tsbHelp
             // 
             this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -442,11 +440,6 @@
             this.tsbHelp.Name = "tsbHelp";
             this.tsbHelp.Size = new System.Drawing.Size(23, 22);
             this.tsbHelp.Text = "Спр&авка";
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbArrow
             // 
@@ -480,35 +473,85 @@
             this.tsbRect.Text = "Построение прямоугольников";
             this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
-            // statusStrip1
+            // tsmiCreateDocument
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 603);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1117, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.tsmiCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCreateDocument.Image")));
+            this.tsmiCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCreateDocument.Name = "tsmiCreateDocument";
+            this.tsmiCreateDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiCreateDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiCreateDocument.Text = "&Создать";
+            this.tsmiCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
             // 
-            // placeHolder
+            // tsmiOpenDocument
             // 
-            this.placeHolder.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.placeHolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolder.Location = new System.Drawing.Point(0, 49);
-            this.placeHolder.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolder.Name = "placeHolder";
-            this.placeHolder.Size = new System.Drawing.Size(1117, 554);
-            this.placeHolder.TabIndex = 3;
+            this.tsmiOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiOpenDocument.Image")));
+            this.tsmiOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiOpenDocument.Name = "tsmiOpenDocument";
+            this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.tsmiOpenDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiOpenDocument.Text = "&Открыть";
+            this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
             // 
-            // timerUpdateControls
+            // tsmiSaveDocument
             // 
-            this.timerUpdateControls.Tick += new System.EventHandler(this.timerUpdateControls_Tick);
+            this.tsmiSaveDocument.Enabled = false;
+            this.tsmiSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSaveDocument.Image")));
+            this.tsmiSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiSaveDocument.Name = "tsmiSaveDocument";
+            this.tsmiSaveDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.tsmiSaveDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiSaveDocument.Text = "&Сохранить";
+            this.tsmiSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
             // 
-            // tsslStatus
+            // tsmiPrintDocument
             // 
-            this.tsslStatus.Name = "tsslStatus";
-            this.tsslStatus.Size = new System.Drawing.Size(48, 17);
-            this.tsslStatus.Text = "Готово.";
+            this.tsmiPrintDocument.Enabled = false;
+            this.tsmiPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPrintDocument.Image")));
+            this.tsmiPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPrintDocument.Name = "tsmiPrintDocument";
+            this.tsmiPrintDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.tsmiPrintDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiPrintDocument.Text = "&Печать";
+            // 
+            // tsmiPreviewDocument
+            // 
+            this.tsmiPreviewDocument.Enabled = false;
+            this.tsmiPreviewDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPreviewDocument.Image")));
+            this.tsmiPreviewDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPreviewDocument.Name = "tsmiPreviewDocument";
+            this.tsmiPreviewDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiPreviewDocument.Text = "Предварительный про&смотр";
+            // 
+            // tsmiCut
+            // 
+            this.tsmiCut.Enabled = false;
+            this.tsmiCut.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCut.Image")));
+            this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCut.Name = "tsmiCut";
+            this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCut.Text = "Вырезат&ь";
+            // 
+            // tsmiCopy
+            // 
+            this.tsmiCopy.Enabled = false;
+            this.tsmiCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCopy.Image")));
+            this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCopy.Name = "tsmiCopy";
+            this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCopy.Text = "&Копировать";
+            // 
+            // tsmiPaste
+            // 
+            this.tsmiPaste.Enabled = false;
+            this.tsmiPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPaste.Image")));
+            this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPaste.Name = "tsmiPaste";
+            this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
+            this.tsmiPaste.Text = "Вст&авка";
             // 
             // MainForm
             // 
@@ -551,14 +594,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.ToolStripMenuItem tsmiEditMenu;
-        private System.Windows.Forms.ToolStripMenuItem отменадействияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem отменадействияToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiUndo;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRedo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem вырезатьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem вставкаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCut;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCopy;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPaste;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem выделитьвсеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSelectAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiServiceMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiTuningApplication;
         private System.Windows.Forms.ToolStripMenuItem tsmiAppParameters;
@@ -587,6 +630,9 @@
         private System.Windows.Forms.ToolStripButton tsbRect;
         private System.Windows.Forms.Timer timerUpdateControls;
         private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripButton tsbUndo;
+        private System.Windows.Forms.ToolStripButton tsbRedo;
     }
 }
 
