@@ -1,4 +1,5 @@
-﻿using PetProj.Common;
+﻿using PetProj.Commands;
+using PetProj.Common;
 using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
@@ -34,7 +35,7 @@ namespace PetProj
         {
             InitializeComponent();
             undoRedoManager = new UndoRedoManager();
-            undoRedoManager.OnStateChaned += (o, e) => Invalidate();
+            undoRedoManager.OnStateChaned += (o, e) => zoomPad.Invalidate();
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
@@ -378,13 +379,16 @@ namespace PetProj
             zoomPad.Invalidate();
         }
 
-        private void AddFigureAsLine(PointF pt1, PointF pt2)
+        private void AddFigureAsLine(PointF pt1, PointF pt2, bool loading = false)
         {
             Figure figure = new Figure();
             FigureBuilder.BuildAddLineGeometry(figure, pt1);
             ((AddLineGeometry)figure.Geometry).AddPoint(pt2);
             figure.Style.FillStyle.IsVisible = false;
-            figures.Add(figure);
+            if (loading)
+                figures.Add(figure);
+            else
+                undoRedoManager.Execute(new CreateFigure(figures, figure));
         }
 
         public EventHandler OnSelectionMode;
@@ -463,7 +467,7 @@ namespace PetProj
                             var decsep = culture.NumberFormat.NumberDecimalSeparator;
                             var pt1 = Parse(xelement.Attribute("Start")?.Value, decsep);
                             var pt2 = Parse(xelement.Attribute("End")?.Value, decsep);
-                            AddFigureAsLine(pt1, pt2);
+                            AddFigureAsLine(pt1, pt2, loading: true);
                             break;
                     }
                 }
@@ -531,11 +535,13 @@ namespace PetProj
 
         public void Undo()
         {
+            selectionController.Selection.Clear();
             undoRedoManager.Undo();
         }
 
         public void Redo()
         {
+            selectionController.Selection.Clear();
             undoRedoManager.Redo();
         }
 

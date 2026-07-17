@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateFigure.cs" />
     <Compile Include="Common\ICommand.cs" />
     <Compile Include="Common\IUndoRedoSupport.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
@@ -143,5 +144,6 @@
     <None Include="Resources\redo.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
