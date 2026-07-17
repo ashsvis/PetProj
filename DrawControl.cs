@@ -95,6 +95,7 @@ namespace PetProj
                         DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
                         break;
                     case EditorMode.MoveSelected:
+                    case EditorMode.MoveCopySelected:
                         DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                         break;
                 }
@@ -275,6 +276,15 @@ namespace PetProj
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
                             selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                            selectionController.Selection.Clear();
+                            mouseClickCount = 0;
+                            SetMode(EditorMode.Selection);
+                            Changed = true;
+                            break;
+                        case EditorMode.MoveCopySelected:
+                            pt1 = firstMouseDown;
+                            pt2 = PrepareMousePosition(mousePosition);
+                            selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y);
                             selectionController.Selection.Clear();
                             mouseClickCount = 0;
                             SetMode(EditorMode.Selection);
@@ -609,6 +619,11 @@ namespace PetProj
         public void MoveSelected()
         {
             editorMode = EditorMode.MoveSelected;
+        }
+
+        public void MoveCopySelected()
+        {
+            editorMode = EditorMode.MoveCopySelected;
         }
     }
 }

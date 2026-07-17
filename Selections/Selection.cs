@@ -32,7 +32,7 @@ namespace PetProj.Selections
 
         }
 
-        public Color Color { get; set; } = Color.Magenta;
+        //public Color Color { get; set; } = Color.Magenta;
 
         /// <summary>
         /// Очистка списка выделенных фигур
@@ -162,6 +162,16 @@ namespace PetProj.Selections
             {
                 if (figure.Geometry is IMoveGeometry geometry)
                     geometry.Move(offsetX, offsetY);
+            }
+        }
+
+        public void TranslateCopy(float offsetX, float offsetY)
+        {
+            foreach (var figure in selected)
+            {
+                var fig = figure.DeepCopy();
+                //if (figure.Geometry is IMoveGeometry geometry)
+                //    geometry.Move(offsetX, offsetY);
             }
         }
     }

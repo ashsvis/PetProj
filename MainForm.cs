@@ -66,6 +66,7 @@ namespace PetProj
                 tsbRedo.Enabled = tsmiRedo.Enabled = support.CanRedo();
             }
             tsmiMove.Enabled = tsbMove.Enabled = drawControl.SelectionCount > 0;
+            tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionCount > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionCount > 0;
         }
@@ -145,6 +146,11 @@ namespace PetProj
         private void tsmiMove_Click(object sender, EventArgs e)
         {
             drawControl.MoveSelected();
+        }
+
+        private void tsmiMoveCopy_Click(object sender, EventArgs e)
+        {
+            drawControl.MoveCopySelected();
         }
     }
 }

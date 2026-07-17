@@ -40,7 +40,9 @@
             this.tsmiEditMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAppParameters = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,16 +55,13 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
-            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
             this.tsbOpenDocument = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveDocument = new System.Windows.Forms.ToolStripButton();
@@ -70,6 +69,7 @@
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.tsbMove = new System.Windows.Forms.ToolStripButton();
+            this.tsbMoveCopy = new System.Windows.Forms.ToolStripButton();
             this.tsbCut = new System.Windows.Forms.ToolStripButton();
             this.tsbCopy = new System.Windows.Forms.ToolStripButton();
             this.tsbPaste = new System.Windows.Forms.ToolStripButton();
@@ -87,6 +87,8 @@
             this.tsmiCut = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -177,6 +179,15 @@
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
             // 
+            // tsmiDelete
+            // 
+            this.tsmiDelete.Enabled = false;
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
+            this.tsmiDelete.Text = "Удалить";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
+            // 
             // tsmiSelectAll
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
@@ -184,6 +195,15 @@
             this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
+            // 
+            // tsmiCommands
+            // 
+            this.tsmiCommands.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMove,
+            this.tsmiMoveCopy});
+            this.tsmiCommands.Name = "tsmiCommands";
+            this.tsmiCommands.Size = new System.Drawing.Size(70, 20);
+            this.tsmiCommands.Text = "Команды";
             // 
             // tsmiServiceMenu
             // 
@@ -261,6 +281,7 @@
             this.tsbRedo,
             this.toolStripSeparator6,
             this.tsbMove,
+            this.tsbMoveCopy,
             this.toolStripSeparator10,
             this.tsbCut,
             this.tsbCopy,
@@ -286,6 +307,11 @@
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripSeparator7
             // 
@@ -326,37 +352,6 @@
             // timerUpdateControls
             // 
             this.timerUpdateControls.Tick += new System.EventHandler(this.timerUpdateControls_Tick);
-            // 
-            // tsmiDelete
-            // 
-            this.tsmiDelete.Enabled = false;
-            this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
-            this.tsmiDelete.Text = "Удалить";
-            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
-            // 
-            // tsmiCommands
-            // 
-            this.tsmiCommands.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiMove});
-            this.tsmiCommands.Name = "tsmiCommands";
-            this.tsmiCommands.Size = new System.Drawing.Size(70, 20);
-            this.tsmiCommands.Text = "Команды";
-            // 
-            // tsmiMove
-            // 
-            this.tsmiMove.Enabled = false;
-            this.tsmiMove.Image = global::PetProj.Properties.Resources.move;
-            this.tsmiMove.Name = "tsmiMove";
-            this.tsmiMove.Size = new System.Drawing.Size(180, 22);
-            this.tsmiMove.Text = "Переместить";
-            this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbCreateDocument
             // 
@@ -431,6 +426,17 @@
             this.tsbMove.Size = new System.Drawing.Size(23, 22);
             this.tsbMove.Text = "Перенести";
             this.tsbMove.Click += new System.EventHandler(this.tsmiMove_Click);
+            // 
+            // tsbMoveCopy
+            // 
+            this.tsbMoveCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbMoveCopy.Enabled = false;
+            this.tsbMoveCopy.Image = global::PetProj.Properties.Resources.movecopy;
+            this.tsbMoveCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMoveCopy.Name = "tsbMoveCopy";
+            this.tsbMoveCopy.Size = new System.Drawing.Size(23, 22);
+            this.tsbMoveCopy.Text = "Копировать";
+            this.tsbMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
             // 
             // tsbCut
             // 
@@ -604,6 +610,24 @@
             this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
+            // tsmiMove
+            // 
+            this.tsmiMove.Enabled = false;
+            this.tsmiMove.Image = global::PetProj.Properties.Resources.move;
+            this.tsmiMove.Name = "tsmiMove";
+            this.tsmiMove.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMove.Text = "Переместить";
+            this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
+            // 
+            // tsmiMoveCopy
+            // 
+            this.tsmiMoveCopy.Enabled = false;
+            this.tsmiMoveCopy.Image = global::PetProj.Properties.Resources.movecopy;
+            this.tsmiMoveCopy.Name = "tsmiMoveCopy";
+            this.tsmiMoveCopy.Size = new System.Drawing.Size(180, 22);
+            this.tsmiMoveCopy.Text = "Копировать";
+            this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -689,6 +713,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMove;
         private System.Windows.Forms.ToolStripButton tsbMove;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripButton tsbMoveCopy;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMoveCopy;
     }
 }
 

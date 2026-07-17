@@ -6,5 +6,6 @@
         BuildLines,
         BuildRectangles,
         MoveSelected,
+        MoveCopySelected,
     }
 }
