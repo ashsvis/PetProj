@@ -1,5 +1,4 @@
 ﻿using PetProj.Figures;
-using System;
 using System.Drawing;
 
 namespace PetProj.Styles
@@ -9,7 +8,7 @@ namespace PetProj.Styles
     /// </summary>
     public class DefaultFill : Fill
     {
-        private AllowedFillDecorators allowedFillDecorators;
+        private readonly AllowedFillDecorators allowedFillDecorators;
 
         /// <summary>
         /// Конструктор класса хранения данных заливки фигуры
@@ -24,6 +23,17 @@ namespace PetProj.Styles
             Opacity = 255;
 
             allowedFillDecorators = allowedDecorators;
+        }
+
+        public override Fill DeepCopy()
+        {
+            var fill = new DefaultFill
+            {
+                IsVisible = IsVisible,
+                Color = Color,
+                Opacity = Opacity
+            };
+            return fill;
         }
 
         /// <summary>

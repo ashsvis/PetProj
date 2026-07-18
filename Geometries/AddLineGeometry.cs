@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace PetProj.Geometries
 {
@@ -50,16 +51,34 @@ namespace PetProj.Geometries
                 }
                 return path;
             }
+            set { }
         }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel
         /// (только для внутреннего использования)
         /// </summary>
-        internal AddLineGeometry(PointF startPoint)
+        internal AddLineGeometry(PointF point)
         {
-            Points.Add(startPoint);
-            EndPoint = startPoint;
+            Points.Add(point);
+            EndPoint = point;
+        }
+
+        public override Geometry DeepCopy()
+        {
+            var geometry = new AddLineGeometry(StartPoint)
+            {
+                IsClosed = IsClosed,
+                IsSmoothed = IsSmoothed,
+            };
+            geometry.Points.AddRange(Points.Skip(1));
+            geometry.EndPoint = EndPoint;
+            return geometry;
+        }
+
+        public new void SetXml(XElement xgeometry)
+        {
+            base.SetXml(xgeometry);
         }
 
         public void AddPoint(PointF point)

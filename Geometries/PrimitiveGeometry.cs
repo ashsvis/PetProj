@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 
 namespace PetProj.Geometries
 {
@@ -11,7 +10,7 @@ namespace PetProj.Geometries
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        readonly GraphicsPath path = new GraphicsPath();
+        private readonly GraphicsPath path = new GraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -21,7 +20,7 @@ namespace PetProj.Geometries
         /// <summary>
         /// Свойство возвращает путь, указанный в конструкторе
         /// </summary>
-        public override GraphicsPath Path { get { return path; } }
+        public override GraphicsPath Path { get { return path; } set { } }
 
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
@@ -43,9 +42,16 @@ namespace PetProj.Geometries
             allowedOperations = allowed;
         }
 
+        public override Geometry DeepCopy()
+        {
+            var geometry = new PrimitiveGeometry(Path, AllowedOperations) { Name = Name };
+            return geometry;
+        }
+
         public override string ToString()
         {
             return Name;
         }
+
     }
 }

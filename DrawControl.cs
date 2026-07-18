@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -284,7 +283,11 @@ namespace PetProj
                         case EditorMode.MoveCopySelected:
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
-                            selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                            selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
+                                (fig) => 
+                                { 
+                                    figures.Add(fig); 
+                                });
                             selectionController.Selection.Clear();
                             mouseClickCount = 0;
                             SetMode(EditorMode.Selection);
@@ -522,10 +525,8 @@ namespace PetProj
                     switch (figureName)
                     {
                         case "Line":
-                            CultureInfo culture = CultureInfo.CurrentCulture;
-                            var decsep = culture.NumberFormat.NumberDecimalSeparator;
-                            var pt1 = Parse(xelement.Attribute("Start")?.Value, decsep);
-                            var pt2 = Parse(xelement.Attribute("End")?.Value, decsep);
+                            var pt1 = ParseHelper.ParsePointF(xelement.Attribute("Start")?.Value, PointF.Empty);
+                            var pt2 = ParseHelper.ParsePointF(xelement.Attribute("End")?.Value, PointF.Empty);
                             AddLine(pt1, pt2, loading: true);
                             break;
                     }
@@ -539,40 +540,6 @@ namespace PetProj
                 Changed = false;
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Разбор символьной записи для получения координат точки
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="decimalseparator"></param>
-        /// <returns></returns>
-        private PointF Parse(string line, string decimalseparator)
-        {
-            // Разбиваем по запятым и убираем пустые элементы
-            string[] tokens = line.Trim('{', '}').Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            if (tokens.Length == 2)
-            {
-                string valueX = tokens[0].Split('=').Last();
-                string valueY = tokens[1].Split('=').Last();
-
-                switch (decimalseparator)
-                {
-                    case ".":
-                        valueX = valueX.Replace(',', '.');
-                        valueY = valueY.Replace(',', '.');
-                        break;
-                    case ",":
-                        valueX = valueX.Replace('.', ',');
-                        valueY = valueY.Replace('.', ',');
-                        break;
-                }
-
-                // Проверяем, что удалось успешно преобразовать обе координаты
-                if (float.TryParse(valueX, out float x) && float.TryParse(valueY, out float y))
-                    return new PointF(x, y);
-            }
-            return PointF.Empty;
         }
 
         public void CreateNewDocument()

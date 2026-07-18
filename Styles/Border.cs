@@ -1,4 +1,5 @@
-﻿using PetProj.Figures;
+﻿using PetProj.Common;
+using PetProj.Figures;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
@@ -53,11 +54,21 @@ namespace PetProj.Styles
         {
             var xborder = new XElement("Border");
             xborder.Add(new XAttribute("IsVisible", IsVisible));
-            xborder.Add(new XAttribute("Color", $"{Color.A};{Color.R};{Color.G};{Color.B}"));
+            xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
             xborder.Add(new XAttribute("Opacity", Opacity));
              xborder.Add(new XAttribute("Width", Width));
            xborder.Add(new XAttribute("DashStyle", DashStyle));
             return xborder;
+        }
+
+        public void SetXml(XElement xborder)
+        {
+            if (xborder == null || xborder.Name != "Border") return;
+            IsVisible = ParseHelper.ParseBoolean(xborder.Attribute("IsVisible")?.Value, IsVisible);
+            Color = ParseHelper.ParseColor(xborder.Attribute("Color")?.Value, Color);
+            Opacity = ParseHelper.ParseInteger(xborder.Attribute("Opacity")?.Value, Opacity);
+            Width = ParseHelper.ParseSingle(xborder.Attribute("IsVisible")?.Value, Width);
+            DashStyle = ParseHelper.ParseEnumeration(xborder.Attribute("DashStyle")?.Value, DashStyle);
         }
 
         /// <summary>
@@ -69,6 +80,19 @@ namespace PetProj.Styles
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
             return new Pen(Color.FromArgb(Opacity, Color), Width) { DashStyle = DashStyle };
+        }
+
+        public Border DeepCopy()
+        {
+            var border = new Border
+            {
+                Opacity = Opacity,
+                Width = Width,
+                Color = Color,
+                IsVisible = IsVisible,
+                DashStyle = DashStyle
+            };
+            return border;
         }
     }
 }

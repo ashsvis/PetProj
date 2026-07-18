@@ -1,5 +1,6 @@
 ﻿using PetProj.Figures;
 using PetProj.Geometries;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -165,13 +166,14 @@ namespace PetProj.Selections
             }
         }
 
-        public void TranslateCopy(float offsetX, float offsetY)
+        public void TranslateCopy(float offsetX, float offsetY, Action<Figure> addCopyAction)
         {
             foreach (var figure in selected)
             {
                 var fig = figure.DeepCopy();
-                //if (figure.Geometry is IMoveGeometry geometry)
-                //    geometry.Move(offsetX, offsetY);
+                if (fig.Geometry is IMoveGeometry geometry)
+                    geometry.Move(offsetX, offsetY);
+                addCopyAction(fig);
             }
         }
     }

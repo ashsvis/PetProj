@@ -25,6 +25,23 @@ namespace PetProj.Styles
             return xstyle;
         }
 
+        public void SetXml(XElement xstyle)
+        {
+            if (xstyle == null || xstyle.Name != "Style") return;
+            BorderStyle.SetXml(xstyle.Element("Border"));
+            FillStyle.SetXml(xstyle.Element("Fill"));
+        }
+
+        public Style DeepCopy()
+        {
+            var style = new Style
+            {
+                BorderStyle = BorderStyle.DeepCopy(),
+                FillStyle = FillStyle.DeepCopy()
+            };
+            return style;
+        }
+
         /// <summary>
         /// Конструктор стилей, для задания свойств по умолчанию
         /// </summary>

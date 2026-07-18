@@ -3,8 +3,6 @@ using PetProj.Renderers;
 using PetProj.Styles;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
 
 namespace PetProj.Figures
@@ -23,14 +21,14 @@ namespace PetProj.Figures
         public Style Style { get; private set; }
 
         /// <summary>
-        /// Свойство рисовальщика фигуры
-        /// </summary>
-        public Renderer Renderer { get; set; }
-
-        /// <summary>
         /// Свойство источника геометрии фигуры
         /// </summary>
         public Geometry Geometry { get; set; }
+
+        /// <summary>
+        /// Свойство рисовальщика фигуры
+        /// </summary>
+        public Renderer Renderer { get; set; }
 
         public XElement GetXml()
         {
@@ -40,10 +38,25 @@ namespace PetProj.Figures
             return xfigure;
         }
 
-        public virtual Figure DeepCopy()
+        public void SetXml(XElement xfigure)
         {
-            var xfigure = GetXml();
-            return null;
+            if (xfigure == null || xfigure.Name != "Figure") return;
+            var xgeometry = xfigure.Element("Geometry");
+            if (xgeometry == null) return;
+            Geometry.SetXml(xgeometry);
+            var xstyle = xfigure.Element("Style");
+            if (xstyle == null) return;
+            Style.SetXml(xstyle);
+        }
+
+        public Figure DeepCopy()
+        {
+            var fig = new Figure
+            {
+                Style = Style.DeepCopy(),
+                Geometry = Geometry.DeepCopy()
+            };
+            return fig;
         }
 
         /// <summary>
