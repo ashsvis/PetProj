@@ -518,6 +518,7 @@ namespace PetProj
                 var name =  root.Attribute("Name")?.Value;
                 var model = root.Element("Model");
                 figures.Clear();
+                selectionController.Clear();
                 zoomPad.Reset();
                 foreach (var xelement in model.Descendants())
                 {
@@ -546,6 +547,7 @@ namespace PetProj
         {
             undoRedoManager.Clear();
             figures.Clear();
+            selectionController.Clear();
             zoomPad.Reset();
             Changed = false;
             zoomPad.Invalidate();
