@@ -446,7 +446,7 @@ namespace PetProj
         /// </summary>
         /// <param name="pt1">Первая точка</param>
         /// <param name="pt2">Вторая точка</param>
-        /// <param name="loading">Признак загрузки из внешнего источника</param>
+        /// <param name="loading">Признак загрузки из внешнего источника (для исключения поддержки undo)</param>
         private void AddLine(PointF pt1, PointF pt2, bool loading = false)
         {
             Figure line = CreateLine(pt1, pt2);
@@ -456,6 +456,14 @@ namespace PetProj
                 undoRedoManager.Execute(new CreateFigureCommand(figures, line));
         }
 
+        /// <summary>
+        /// Добавление прямоугольника по четырём точкам вершин отрезками линий
+        /// </summary>
+        /// <param name="pt1">Первая точка (левый верхний)</param>
+        /// <param name="pt2">Вторая точка (правый верхний)</param>
+        /// <param name="pt3">Третья точка (правый нижний)</param>
+        /// <param name="pt4">Четвёртая точка (левый нижний)</param>
+        /// <param name="loading">Признак загрузки из внешнего источника (для исключения поддержки undo)</param>
         private void AddRectangle(PointF pt1, PointF pt2, PointF pt3, PointF pt4, bool loading = false)
         {
             Figure line1 = CreateLine(pt1, pt2);
@@ -473,6 +481,9 @@ namespace PetProj
                 undoRedoManager.Execute(new CreateFiguresCommand(figures, new List<Figure>() { line1, line2, line3, line4 }));
         }
 
+        /// <summary>
+        /// Удаление выбранных фигур
+        /// </summary>
         public void RemoveSelected()
         {
             foreach (var fig in selectionController.Selection)
@@ -484,6 +495,10 @@ namespace PetProj
 
         public EventHandler OnSelectionMode;
 
+        /// <summary>
+        /// Установка и запоминание режима работы редактора
+        /// </summary>
+        /// <param name="selection"></param>
         public void SetMode(EditorMode selection)
         {
             editorMode = selection;
@@ -492,6 +507,7 @@ namespace PetProj
             switch (editorMode)
             {
                 case EditorMode.Selection:
+                    // при выборе режима "Выбор фигур" вызывается поключенное событие для обновления интерфейса
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
                     break;
             }
@@ -572,6 +588,9 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Создание нового документа
+        /// </summary>
         public void CreateNewDocument()
         {
             undoRedoManager.Clear();
@@ -582,6 +601,9 @@ namespace PetProj
             zoomPad.Invalidate();
         }
 
+        /// <summary>
+        /// Выбор всех фигур в редакторе
+        /// </summary>
         public void SelectAll()
         {
             selectionController.Selection.Clear();
@@ -590,6 +612,9 @@ namespace PetProj
             zoomPad.Invalidate();
         }
 
+        /// <summary>
+        /// Отменить предыдущее действие
+        /// </summary>
         public void Undo()
         {
             selectionController.Selection.Clear();
@@ -597,6 +622,9 @@ namespace PetProj
             Changed = true;
         }
 
+        /// <summary>
+        /// Вернуть отменённое предыдущее действие
+        /// </summary>
         public void Redo()
         {
             selectionController.Selection.Clear();
@@ -604,21 +632,35 @@ namespace PetProj
             Changed = true;
         }
 
+        /// <summary>
+        /// Возможность отмены
+        /// </summary>
+        /// <returns></returns>
         public bool CanUndo()
         {
             return undoRedoManager.UndoPossible();
         }
 
+        /// <summary>
+        /// Возможность вернуть отменённое
+        /// </summary>
+        /// <returns></returns>
         public bool CanRedo()
         {
             return undoRedoManager.RedoPossible();
         }
 
+        /// <summary>
+        /// Переключение в режим Переместить
+        /// </summary>
         public void MoveSelected()
         {
             editorMode = EditorMode.MoveSelected;
         }
 
+        /// <summary>
+        /// Переключение в режим Копировать и Переместить
+        /// </summary>
         public void MoveCopySelected()
         {
             editorMode = EditorMode.MoveCopySelected;

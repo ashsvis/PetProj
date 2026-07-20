@@ -12,48 +12,94 @@ namespace PetProj
         {
             InitializeComponent();
             drawControl = new DrawControl() { Dock = DockStyle.Fill };
-            drawControl.OnSelectionMode += (o, e) => 
-            {
-                tsbLine.Checked = false;
-                tsbRect.Checked = false;
-                tsbArrow.Checked = true;
-            };
+            drawControl.OnSelectionMode += drawControl_OnSelectionMode;
+
             placeHolder.Controls.Add(drawControl);
         }
+
+        /// <summary>
+        /// Метод события при программном переключении режимов редактора
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void drawControl_OnSelectionMode(object sender, EventArgs e)
+        {
+            drawControl.OnSelectionMode -= drawControl_OnSelectionMode;
+            // переключение режимов редактора при нажатии на кнопки интерфейса
+            SelectEditorMode(tsbArrow);
+            drawControl.OnSelectionMode += drawControl_OnSelectionMode;
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             timerUpdateControls.Enabled = true;
         }
 
+        /// <summary>
+        /// Выбор базового режима редактора: выбор фигур
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbArrow_Click(object sender, EventArgs e)
         {
             SelectEditorMode(sender);
         }
 
+        /// <summary>
+        /// Выключение выбора для всех кнопок интерфейса команд
+        /// </summary>
+        private void SwitchOffButtons()
+        {
+            tsbArrow.Checked = false;
+            tsbLine.Checked = false;
+            tsbRect.Checked = false;
+            tsbMove.Checked = false;
+            tsbMoveCopy.Checked = false;
+        }
+
+        /// <summary>
+        /// Переключение режимов редактора при нажатии на кнопки интерфейса
+        /// </summary>
+        /// <param name="sender"></param>
         private void SelectEditorMode(object sender)
         {
             if (sender == tsbArrow)
             {
-                tsbLine.Checked = false;
-                tsbRect.Checked = false;
+                SwitchOffButtons();
                 drawControl.SetMode(EditorMode.Selection);
                 tsbArrow.Checked = true;
             }
             else if (sender == tsbLine)
             {
-                tsbArrow.Checked = false;
-                tsbRect.Checked = false;
+                SwitchOffButtons();
                 drawControl.SetMode(EditorMode.BuildLines);
                 tsbLine.Checked = true;
             }
             else if (sender == tsbRect)
             {
-                tsbArrow.Checked = false;
-                tsbLine.Checked = false;
+                SwitchOffButtons();
                 drawControl.SetMode(EditorMode.BuildRectangles);
                 tsbRect.Checked = true;
             }
+            else if (sender == tsbMove)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.MoveSelected);
+                tsbMove.Checked = true;
+            }
+            else if (sender == tsbMoveCopy)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.MoveCopySelected);
+                tsbMoveCopy.Checked = true;
+            }
         }
+
+        /// <summary>
+        /// Событие таймера для обновления вида управляющих элементов формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timerUpdateControls_Tick(object sender, EventArgs e)
         {
             var changed = drawControl.Changed;
@@ -71,6 +117,11 @@ namespace PetProj
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionCount > 0;
         }
 
+        /// <summary>
+        /// Сохранить документ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiSaveDocument_Click(object sender, EventArgs e)
         {
             var dlg = new SaveFileDialog() 
@@ -93,6 +144,11 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Открыть сохранённый ранее документ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiOpenDocument_Click(object sender, EventArgs e)
         {
             var dlg = new OpenFileDialog()
@@ -116,40 +172,77 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Создать новый документ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiCreateDocument_Click(object sender, EventArgs e)
         {
             drawControl.CreateNewDocument();
         }
 
+        /// <summary>
+        /// Выбрать всё
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiSelectAll_Click(object sender, EventArgs e)
         {
             drawControl.SelectAll();
         }
 
+        /// <summary>
+        /// Обработка дейстия кнопки для режима Отменить
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiUndo_Click(object sender, EventArgs e)
         {
             if (drawControl is IUndoRedoSupport support && support.CanUndo())
                 support.Undo();
         }
 
+        /// <summary>
+        /// Обработка дейстия кнопки для режима Вернуть
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiRedo_Click(object sender, EventArgs e)
         {
             if (drawControl is IUndoRedoSupport support && support.CanRedo())
                 support.Redo();
         }
 
+        /// <summary>
+        /// Обработка дейстия кнопки Удалить выбранное
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiDelete_Click(object sender, EventArgs e)
         {
             drawControl.RemoveSelected();
         }
 
+        /// <summary>
+        /// Обработка дейстия кнопки для режима Переместить выбранное
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiMove_Click(object sender, EventArgs e)
         {
+            SelectEditorMode(sender);
             drawControl.MoveSelected();
         }
 
+        /// <summary>
+        /// Обработка дейстия кнопки для режима Копировать выбранное и Переместить
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiMoveCopy_Click(object sender, EventArgs e)
         {
+            SelectEditorMode(sender);
             drawControl.MoveCopySelected();
         }
     }
