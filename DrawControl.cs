@@ -144,6 +144,72 @@ namespace PetProj
                 pen.EndCap = LineCap.Round;
                 graphics.DrawLine(pen, pt1, pt2);
             }
+            if (mouseClickCount == 1)
+            {
+                using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                {
+                    graphics.DrawLine(pen, pt1, pt2);
+                    DrawSizeLine(graphics, pen, pt1, pt2,(float)(50 / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
+                    DrawAngleLine(graphics, pen, pt1, pt2, (float)(50 / zoomPad.ZoomScale));
+                }
+            }
+        }
+
+        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF a, PointF b, float halfLength)
+        {
+            // Шаг 1: Вектор отрезка
+            float dx = b.X - a.X;
+            float dy = b.Y - a.Y;
+
+            float length = (float)Math.Sqrt(dx * dx + dy * dy);
+            if (length == 0) return; // Отрезок вырожден в точку
+
+            // выносная линия, горизонтальная
+            var b1 = PointF.Add(a, new SizeF(length, 0));
+            graphics.DrawLine(pen, a, b1);
+            var rect = new RectangleF(a.X - length, a.Y - length, length * 2, length * 2);
+            var andle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            graphics.DrawArc(pen, rect, 0, (float)andle);
+        }
+
+        private static void DrawSizeLine(Graphics graphics, Pen pen, PointF a, PointF b, float halfLength)
+        {
+            // Шаг 1: Вектор отрезка
+            float dx = b.X - a.X;
+            float dy = b.Y - a.Y;
+
+            // Шаг 2: Вектор перпендикуляра
+            float px = dy;
+            float py = -dx;
+
+            // Шаг 3: Нормализация
+            float length = (float)Math.Sqrt(px * px + py * py);
+            if (length == 0) return; // Отрезок вырожден в точку
+            px /= length;
+            py /= length;
+
+            // Шаг 4: Точки перпендикуляра (например, середина отрезка)
+            PointF mid = new PointF((a.X + b.X) / 2, (a.Y + b.Y) / 2);
+
+            PointF d = new PointF(mid.X + px * halfLength, mid.Y + py * halfLength);
+            //PointF e = new PointF(mid.X/* - px * halfLength*/, mid.Y/* - py * halfLength*/);
+
+            PointF start = new PointF(a.X, a.Y);
+            PointF df = new PointF(start.X + px * halfLength, start.Y + py * halfLength);
+            PointF ef = new PointF(start.X/* - px * halfLength*/, start.Y/* - py * halfLength*/);
+
+            PointF end = new PointF(b.X, b.Y);
+            PointF de = new PointF(end.X + px * halfLength, end.Y + py * halfLength);
+            PointF ee = new PointF(end.X/* - px * halfLength*/, end.Y/* - py * halfLength*/);
+
+            // Шаг 5: Рисовка
+            //graphics.DrawLine(new Pen(Color.Red), d, e);
+            // перендикуляр в начале отрезка
+            graphics.DrawLine(pen, df, ef);
+            // перендикуляр в конце отрезка
+            graphics.DrawLine(pen, de, ee);
+            // выносная линия, соединяющая два перпендикуляра
+            graphics.DrawLine(pen, df, de);
         }
 
         /// <summary>
@@ -167,6 +233,10 @@ namespace PetProj
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
             }
         }
+
+        public event EventHandler OnSelectionMode;
+        public event EventHandler<string> OnToolTipChanged;
+        public event EventHandler<(int, PointF, Point)> OnCursorMoved;
 
         /// <summary>
         /// Перерасчёт позиции мыши при масштабировании и панарамировании
@@ -548,10 +618,6 @@ namespace PetProj
             underCursor.Clear();
             Changed = true;
         }
-
-        public event EventHandler OnSelectionMode;
-        public event EventHandler<string> OnToolTipChanged;
-        public event EventHandler<(int, PointF, Point)> OnCursorMoved;
 
         /// <summary>
         /// Установка и запоминание режима работы редактора

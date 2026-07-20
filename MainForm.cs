@@ -1,5 +1,6 @@
 ﻿using PetProj.Common;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -28,7 +29,7 @@ namespace PetProj
             }
         }
 
-        private void DrawControl_OnCursorMoved(object sender, (int clickCount, System.Drawing.PointF first, System.Drawing.Point location) e)
+        private void DrawControl_OnCursorMoved(object sender, (int clickCount, PointF first, Point location) e)
         {
             switch (drawControl.EditorMode)
             {
@@ -49,10 +50,11 @@ namespace PetProj
                     if (!textBox2.Visible) textBox2.Visible = true;
                     pt.Offset(textBox1.Width + 5, 0);
                     textBox2.Location = pt;
-                    var ptm = new MmsPoint(this, drawControl.PrepareMousePosition(e.location));
-                    textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, e.location).ToString();
+                    var ploc = drawControl.PrepareMousePosition(e.location);
+                    var ptm = new MmsPoint(this, ploc);
+                    textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, ploc).ToString();
                     textBox1.SelectAll();
-                    textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, e.location);
+                    textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, ploc);
                     textBox2.SelectAll();
                     break;
                 default:
