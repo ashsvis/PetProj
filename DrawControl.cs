@@ -308,6 +308,7 @@ namespace PetProj
             }
             else if (e.Button == MouseButtons.Right)
             {
+                OnToolTipChanged?.Invoke(this, string.Empty);
                 if (editorMode == EditorMode.MoveCopySelected)
                 {
                     mouseClickCount = 0;
@@ -398,7 +399,44 @@ namespace PetProj
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
+
             var pt = PrepareMousePosition(mousePosition);
+
+            if (e.Button == MouseButtons.None)
+            {
+                switch (editorMode)
+                {
+                    case EditorMode.BuildLines:
+                        if (mouseClickCount == 0)
+                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {pt}");
+                        else if (mouseClickCount == 1)
+                        {
+                            var pt1 = firstMouseDown;
+                            var pt2 = PrepareMousePosition(mousePosition);
+                            var len = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
+                            OnToolTipChanged?.Invoke(this, 
+                                $"Укажите вторую точку отрезка: {pt2}, длина: {len}");
+                        }
+                        break;
+                    case EditorMode.BuildRectangles:
+                        if (mouseClickCount == 0)
+                            OnToolTipChanged?.Invoke(this, 
+                                $"Укажите первый угол прямоугольника: {pt}");
+                        else if (mouseClickCount == 1)
+                        {
+                            var pt1 = firstMouseDown; // первая точка нажатия
+                            var pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
+                            var pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
+                            var pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
+                            var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
+                            var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y));
+                            OnToolTipChanged?.Invoke(this, 
+                                $"Укажите противоположный угол прямоугольника: {pt3}, ширина: {width}, высота: {height}," +
+                                $" площадь: {width * height}, периметр: {(width + height) * 2}");
+                        }
+                        break;
+                }
+            }
 
             selectionController.OnMouseMove(pt, ModifierKeys);
 
@@ -507,7 +545,8 @@ namespace PetProj
             Changed = true;
         }
 
-        public EventHandler OnSelectionMode;
+        public event EventHandler OnSelectionMode;
+        public event EventHandler<string> OnToolTipChanged;
 
         /// <summary>
         /// Установка и запоминание режима работы редактора
@@ -523,6 +562,9 @@ namespace PetProj
                 case EditorMode.Selection:
                     // при выборе режима "Выбор фигур" вызывается поключенное событие для обновления интерфейса
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
+                    break;
+                case EditorMode.BuildLines:
+                    OnToolTipChanged?.Invoke(this, "Укажите первую точку отрезка:");
                     break;
             }
         }

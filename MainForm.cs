@@ -13,8 +13,13 @@ namespace PetProj
             InitializeComponent();
             drawControl = new DrawControl() { Dock = DockStyle.Fill };
             drawControl.OnSelectionMode += drawControl_OnSelectionMode;
-
+            drawControl.OnToolTipChanged += DrawControl_OnToolTipChanged;
             placeHolder.Controls.Add(drawControl);
+        }
+
+        private void DrawControl_OnToolTipChanged(object sender, string text)
+        {
+            tsslStatus.Text = text;
         }
 
         /// <summary>
@@ -105,7 +110,7 @@ namespace PetProj
             var changed = drawControl.Changed;
             tsmiSaveDocument.Enabled = changed;
             tsbSaveDocument.Enabled = changed;
-            tsslStatus.Text = $"Выбрано объектов: {drawControl.SelectionCount}";
+            //tsslStatus.Text = $"Выбрано объектов: {drawControl.SelectionCount}";
             if (drawControl is IUndoRedoSupport support)
             {
                 tsbUndo.Enabled = tsmiUndo.Enabled = support.CanUndo();
