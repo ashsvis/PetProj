@@ -206,6 +206,11 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Нажатие кнопки указателя
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void zoomPad_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -251,20 +256,25 @@ namespace PetProj
                             mouseClickCount = 0;
                             break;
                         case EditorMode.BuildLines:
+                            // построение отрезков линий по двум точкам (концы отрезка)
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
                             AddLine(pt1, pt2);
+                            // сброс количества нажатий, следующий прямоугольник будет строиться заново
                             mouseClickCount = 0;
+                            // точка начала следующего отрезка совпадает с концом предыдущего отрезка
                             firstMouseDown = pt2;
                             mouseClickCount++;
                             Changed = true;
                             break;
                         case EditorMode.BuildRectangles:
-                            pt1 = firstMouseDown;
-                            pt3 = PrepareMousePosition(mousePosition);
-                            pt2 = new PointF(pt3.X, pt1.Y);
-                            pt4 = new PointF(pt1.X, pt3.Y);
+                            // построение прямоугольника по двум точкам диагонали
+                            pt1 = firstMouseDown; // первая точка нажатия
+                            pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
+                            pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
+                            pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
                             AddRectangle(pt1, pt2, pt3, pt4);
+                            // сброс количества нажатий, следующий прямоугольник будет строиться заново
                             mouseClickCount = 0;
                             Changed = true;
                             break;
@@ -276,6 +286,7 @@ namespace PetProj
                                 {
                                     undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
                                 });
+                            // предыдущий выбор стирается, т.к. перемещение - однократная операция
                             selectionController.Selection.Clear();
                             mouseClickCount = 0;
                             SetMode(EditorMode.Selection);
@@ -289,9 +300,6 @@ namespace PetProj
                                 { 
                                     undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
                                 });
-                            selectionController.Selection.Clear();
-                            mouseClickCount = 0;
-                            SetMode(EditorMode.Selection);
                             Changed = true;
                             break;
                     }
@@ -300,13 +308,19 @@ namespace PetProj
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if (editorMode != EditorMode.Selection)
+                if (editorMode == EditorMode.MoveCopySelected)
+                {
+                    mouseClickCount = 0;
+                    selectionController.Clear();
                     SetMode(EditorMode.Selection);
-                else
+                }
+                else if (editorMode == EditorMode.Selection)
                 {
                     mouseClickCount = 0;
                     selectionController.Clear();
                 }
+                else if (editorMode != EditorMode.Selection)
+                    SetMode(EditorMode.Selection);
             }
         }
 
