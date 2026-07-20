@@ -68,7 +68,7 @@ namespace PetProj
             underCursor.Render(graphics, Color.Gray);
 
             // отрисовка выделения
-            selectionController.Selection.Render(graphics, 
+            selectionController.Selection.Render(graphics,
                 editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.WhiteSmoke : Color.Magenta);
 
             //// отрисовка маркеров
@@ -173,7 +173,7 @@ namespace PetProj
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        private PointF PrepareMousePosition(PointF p)
+        public PointF PrepareMousePosition(PointF p)
         {
             PointF[] arr = new PointF[] { p };
             Matrix matrix = new Matrix();
@@ -236,16 +236,16 @@ namespace PetProj
                             var selMode = pt1.X > pt2.X;
                             var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                            SelectUnselectByFrame(selMode, rectangle, 
-                                    (manager, fig) => 
+                            SelectUnselectByFrame(selMode, rectangle,
+                                    (manager, fig) =>
                                     {
                                         if (!selectionController.Selection.Contains(fig))
                                         {
                                             fig.DrawGlowed(false);
                                             selectionController.Selection.Add(fig);
                                         }
-                                    }, 
-                                    (manager, fig) => 
+                                    },
+                                    (manager, fig) =>
                                     {
                                         if (selectionController.Selection.Contains(fig))
                                             selectionController.Selection.Remove(fig);
@@ -271,8 +271,8 @@ namespace PetProj
                             // построение прямоугольника по двум точкам диагонали
                             pt1 = firstMouseDown; // первая точка нажатия
                             pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
-                            pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
-                            pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
+                            pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
+                            pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
                             AddRectangle(pt1, pt2, pt3, pt4);
                             // сброс количества нажатий, следующий прямоугольник будет строиться заново
                             mouseClickCount = 0;
@@ -296,8 +296,8 @@ namespace PetProj
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
                             selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
-                                (addedfigs) => 
-                                { 
+                                (addedfigs) =>
+                                {
                                     undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
                                 });
                             Changed = true;
@@ -325,7 +325,7 @@ namespace PetProj
             }
         }
 
-        private void SelectUnselectByFrame(bool selMode, RectangleF rectangle, 
+        private void SelectUnselectByFrame(bool selMode, RectangleF rectangle,
             Action<IListManage, Figure> onSelect, Action<IListManage, Figure> onUnselect)
         {
             using (var image = new Bitmap(Width, Height))
@@ -399,8 +399,8 @@ namespace PetProj
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
-
             var pt = PrepareMousePosition(mousePosition);
+            OnCursorMoved?.Invoke(this, (mouseClickCount, firstMouseDown, e.Location));
 
             if (e.Button == MouseButtons.None)
             {
@@ -408,32 +408,36 @@ namespace PetProj
                 {
                     case EditorMode.BuildLines:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {pt}");
+                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {new MmsPoint(this, pt)}");
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown;
                             var pt2 = PrepareMousePosition(mousePosition);
-                            var len = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
-                            OnToolTipChanged?.Invoke(this, 
-                                $"Укажите вторую точку отрезка: {pt2}, длина: {len}");
+                            OnToolTipChanged?.Invoke(this,
+                                $"Укажите вторую точку отрезка: {new MmsPoint(this, pt2)}, длина: {MmsPoint.GetLength(this, pt1, pt2)}");
                         }
                         break;
                     case EditorMode.BuildRectangles:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this, 
-                                $"Укажите первый угол прямоугольника: {pt}");
+                            OnToolTipChanged?.Invoke(this,
+                                $"Укажите первый угол прямоугольника: {new MmsPoint(this, pt)}");
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown; // первая точка нажатия
                             var pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
                             var pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
                             var pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
-                            var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
-                            var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y));
-                            OnToolTipChanged?.Invoke(this, 
-                                $"Укажите противоположный угол прямоугольника: {pt3}, ширина: {width}, высота: {height}," +
+                            int dpi = this.DeviceDpi;
+                            var kf = 25.4 / dpi;
+                            var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y)) * kf;
+                            var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y)) * kf;
+                            OnToolTipChanged?.Invoke(this,
+                                $"Укажите противоположный угол прямоугольника: {new MmsPoint(this, pt3)}, ширина: {width}, высота: {height}," +
                                 $" площадь: {width * height}, периметр: {(width + height) * 2}");
                         }
+                        break;
+                    default:
+                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {new MmsPoint(this, pt)}");
                         break;
                 }
             }
@@ -547,6 +551,7 @@ namespace PetProj
 
         public event EventHandler OnSelectionMode;
         public event EventHandler<string> OnToolTipChanged;
+        public event EventHandler<(int, PointF, Point)> OnCursorMoved;
 
         /// <summary>
         /// Установка и запоминание режима работы редактора
@@ -599,7 +604,7 @@ namespace PetProj
                 Changed = false;
                 zoomPad.Invalidate();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -616,7 +621,7 @@ namespace PetProj
                 undoRedoManager.Clear();
                 var xdoc = XDocument.Load(filename);
                 var root = xdoc.Element("Document");
-                var name =  root.Attribute("Name")?.Value;
+                var name = root.Attribute("Name")?.Value;
                 var model = root.Element("Model");
                 figures.Clear();
                 selectionController.Clear();
@@ -654,6 +659,10 @@ namespace PetProj
             selectionController.Clear();
             zoomPad.Reset();
             Changed = false;
+
+            AddLine(new PointF(0, 0), new PointF(378, 0));
+            AddLine(new PointF(0, 0), new PointF(0, 378));
+
             zoomPad.Invalidate();
         }
 
@@ -663,7 +672,7 @@ namespace PetProj
         public void SelectAll()
         {
             selectionController.Selection.Clear();
-            foreach(var fig in figures)
+            foreach (var fig in figures)
                 selectionController.Selection.Add(fig);
             zoomPad.Invalidate();
         }
@@ -720,6 +729,49 @@ namespace PetProj
         public void MoveCopySelected()
         {
             editorMode = EditorMode.MoveCopySelected;
+        }
+    }
+
+    public class MmsPoint
+    {
+        public float X { get; private set; }
+        public float Y { get; private set; }
+
+        public MmsPoint(Control control, PointF point)
+        {
+            int dpi = control.DeviceDpi;
+            var kf = 25.4f / dpi;
+            X = point.X * kf;
+            Y = point.Y * kf;
+        }
+
+        public override string ToString()
+        {
+            return "{" + X + ", " + Y + "}";
+        }
+
+        public static float GetLength(Control control, PointF pt1, PointF pt2)
+        {
+            int dpi = control.DeviceDpi;
+            var kf = 25.4f / dpi;
+            var len = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y)) * kf;
+            return (float)len;
+        }
+
+        public static float GetAngle(PointF pt1, PointF pt2)
+        {
+            var dx = pt2.X - pt1.X;
+            var dy = pt2.Y - pt1.Y;
+            var andle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            return (float)andle;
+        }
+
+        public static string GetAngleString(PointF pt1, PointF pt2)
+        {
+            var dx = pt2.X - pt1.X;
+            var dy = pt2.Y - pt1.Y;
+            var andle = Math.Abs(Math.Atan2(dy, dx) * 180 / Math.PI);
+            return $"{(float)andle}°";
         }
     }
 }

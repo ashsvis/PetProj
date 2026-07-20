@@ -14,7 +14,53 @@ namespace PetProj
             drawControl = new DrawControl() { Dock = DockStyle.Fill };
             drawControl.OnSelectionMode += drawControl_OnSelectionMode;
             drawControl.OnToolTipChanged += DrawControl_OnToolTipChanged;
+            drawControl.OnCursorMoved += DrawControl_OnCursorMoved;
+            drawControl.Enter += DrawControl_Enter;
             placeHolder.Controls.Add(drawControl);
+        }
+
+        private void DrawControl_Enter(object sender, EventArgs e)
+        {
+            if (textBox1.Visible)
+            {
+                textBox1.Focus();
+                textBox1.SelectAll();
+            }
+        }
+
+        private void DrawControl_OnCursorMoved(object sender, (int clickCount, System.Drawing.PointF first, System.Drawing.Point location) e)
+        {
+            switch (drawControl.EditorMode)
+            {
+                case EditorMode.BuildLines:
+                    if (!label1.Visible) label1.Visible = true;
+                    label1.Text = e.clickCount > 0 ? "Следующая точка " : "Первая точка ";
+                    var pt = e.location;
+                    pt.Offset(5, 5);
+                    label1.Location = pt;
+                    if (!textBox1.Visible)
+                    {
+                        textBox1.Visible = true;
+                        textBox1.Focus();
+                        textBox1.SelectAll();
+                    }
+                    pt.Offset(label1.Width + 5, 0);
+                    textBox1.Location = pt;
+                    if (!textBox2.Visible) textBox2.Visible = true;
+                    pt.Offset(textBox1.Width + 5, 0);
+                    textBox2.Location = pt;
+                    var ptm = new MmsPoint(this, drawControl.PrepareMousePosition(e.location));
+                    textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, e.location).ToString();
+                    textBox1.SelectAll();
+                    textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, e.location);
+                    textBox2.SelectAll();
+                    break;
+                default:
+                    if (label1.Visible) label1.Visible = false;
+                    if (textBox1.Visible) textBox1.Visible = false;
+                    if (textBox2.Visible) textBox2.Visible = false;
+                    break;
+            }
         }
 
         private void DrawControl_OnToolTipChanged(object sender, string text)
@@ -249,6 +295,11 @@ namespace PetProj
         {
             SelectEditorMode(sender);
             drawControl.MoveCopySelected();
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
         }
     }
 }
