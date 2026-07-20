@@ -264,17 +264,18 @@ namespace PetProj
                             pt3 = PrepareMousePosition(mousePosition);
                             pt2 = new PointF(pt3.X, pt1.Y);
                             pt4 = new PointF(pt1.X, pt3.Y);
-                            AddLine(pt1, pt2);
-                            AddLine(pt2, pt3);
-                            AddLine(pt3, pt4);
-                            AddLine(pt4, pt1);
+                            AddRectangle(pt1, pt2, pt3, pt4);
                             mouseClickCount = 0;
                             Changed = true;
                             break;
                         case EditorMode.MoveSelected:
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
-                            selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                            selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
+                                (movedoffsets) =>
+                                {
+                                    undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
+                                });
                             selectionController.Selection.Clear();
                             mouseClickCount = 0;
                             SetMode(EditorMode.Selection);
@@ -284,9 +285,9 @@ namespace PetProj
                             pt1 = firstMouseDown;
                             pt2 = PrepareMousePosition(mousePosition);
                             selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
-                                (fig) => 
+                                (addedfigs) => 
                                 { 
-                                    figures.Add(fig); 
+                                    undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
                                 });
                             selectionController.Selection.Clear();
                             mouseClickCount = 0;
@@ -431,17 +432,45 @@ namespace PetProj
 
             zoomPad.Invalidate();
         }
-
-        private void AddLine(PointF pt1, PointF pt2, bool loading = false)
+        private Figure CreateLine(PointF pt1, PointF pt2)
         {
             Figure line = new Figure();
             FigureBuilder.BuildAddLineGeometry(line, pt1);
             ((AddLineGeometry)line.Geometry).AddPoint(pt2);
             line.Style.FillStyle.IsVisible = false;
+            return line;
+        }
+
+        /// <summary>
+        /// Добавление отрезка линии по двум точкам
+        /// </summary>
+        /// <param name="pt1">Первая точка</param>
+        /// <param name="pt2">Вторая точка</param>
+        /// <param name="loading">Признак загрузки из внешнего источника</param>
+        private void AddLine(PointF pt1, PointF pt2, bool loading = false)
+        {
+            Figure line = CreateLine(pt1, pt2);
             if (loading)
                 figures.Add(line);
             else
                 undoRedoManager.Execute(new CreateFigureCommand(figures, line));
+        }
+
+        private void AddRectangle(PointF pt1, PointF pt2, PointF pt3, PointF pt4, bool loading = false)
+        {
+            Figure line1 = CreateLine(pt1, pt2);
+            Figure line2 = CreateLine(pt2, pt3);
+            Figure line3 = CreateLine(pt3, pt4);
+            Figure line4 = CreateLine(pt4, pt1);
+            if (loading)
+            {
+                figures.Add(line1);
+                figures.Add(line2);
+                figures.Add(line3);
+                figures.Add(line4);
+            }
+            else
+                undoRedoManager.Execute(new CreateFiguresCommand(figures, new List<Figure>() { line1, line2, line3, line4 }));
         }
 
         public void RemoveSelected()

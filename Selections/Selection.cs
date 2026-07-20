@@ -157,24 +157,58 @@ namespace PetProj.Selections
             }
         }
 
-        public void Translate(float offsetX, float offsetY)
+        /// <summary>
+        /// Перемещение выделенных(ой) фигур(ы)
+        /// </summary>
+        /// <param name="offsetX">Смещение по горизонтали</param>
+        /// <param name="offsetY">Смещение по вертикали</param>
+        /// <param name="moveAction">Ссылка на метод фактического перемещения</param>
+        public void Translate(float offsetX, float offsetY, Action<List<(Figure, PointF)>> moveAction)
         {
+            // список фигур и смещений
+            List<(Figure, PointF)> offsets = new List<(Figure, PointF)>();
+            // для всех выделенных фигур
             foreach(var figure in selected)
             {
-                if (figure.Geometry is IMoveGeometry geometry)
-                    geometry.Move(offsetX, offsetY);
+                // если перемещение поддерживается
+                if (figure.Geometry is IMoveGeometry _)
+                {
+                    // добавляем в список
+                    offsets.Add((figure, new PointF(offsetX, offsetY)));
+                }
             }
+            // если список не пуст, выполняем метод перемещения
+            if (offsets.Count > 0)
+                moveAction(offsets);
         }
 
-        public void TranslateCopy(float offsetX, float offsetY, Action<Figure> addCopyAction)
+        /// <summary>
+        /// Копирование с перещением
+        /// </summary>
+        /// <param name="offsetX">Смещение по горизонтали</param>
+        /// <param name="offsetY">Смещение по вертикали</param>
+        /// <param name="addCopyAction">Ссылка на метод фактического копирования и перемещения</param>
+        public void TranslateCopy(float offsetX, float offsetY, Action<List<Figure>> addCopyAction)
         {
+            // список фигур
+            List<Figure> added = new List<Figure>();
+            // для всех выделенных фигур
             foreach (var figure in selected)
             {
+                // получаем полную копию фигуры
                 var fig = figure.DeepCopy();
+                // если перемещение поддерживается
                 if (fig.Geometry is IMoveGeometry geometry)
+                {
+                    // перемещаем созданную копию
                     geometry.Move(offsetX, offsetY);
-                addCopyAction(fig);
+                    // добавляем копию в список
+                    added.Add(fig);
+                }
             }
+            // если список не пуст, выполняем метод копирования и перемещения
+            if (added.Count > 0)
+                addCopyAction(added);
         }
     }
 }

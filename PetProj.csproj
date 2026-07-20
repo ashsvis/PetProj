@@ -55,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateFigureCommand.cs" />
+    <Compile Include="Commands\CreateFiguresCommand.cs" />
+    <Compile Include="Commands\MoveFiguresCommand.cs" />
     <Compile Include="Commands\RemoveFigureCommand.cs" />
     <Compile Include="Common\ICommand.cs" />
     <Compile Include="Common\IUndoRedoSupport.cs" />
