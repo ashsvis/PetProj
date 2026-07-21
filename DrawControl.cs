@@ -59,6 +59,8 @@ namespace PetProj
         {
             var graphics = e.Graphics;
             if (graphics == null) return;
+            // рисуем начало координат и направление осей
+            DrawZeroOrigin(graphics, Color.Black, (float)zoomPad.ZoomScale);
 
             // отрисовка созданных фигур
             foreach (var fig in figures)
@@ -69,7 +71,7 @@ namespace PetProj
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
-                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.WhiteSmoke : Color.Magenta);
+                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Magenta);
 
             //// отрисовка маркеров
             //foreach (var marker in selectionController.Markers)
@@ -98,6 +100,28 @@ namespace PetProj
                         DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                         break;
                 }
+            }
+        }
+
+        private void DrawZeroOrigin(Graphics graphics, Color color, float zoomScale)
+        {
+            using (var pen = new Pen(color, (float)(1f / zoomScale)))
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+                var gs = graphics.Save();
+                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(50f / zoomScale, 0f));
+                graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(0f, 50f / zoomScale));
+                var rect = new RectangleF(-4f / zoomScale, -4f / zoomScale, 8f / zoomScale, 8f / zoomScale);
+                graphics.DrawRectangles(pen, new RectangleF[] { rect });
+                using (var font = new Font("Consolas", 14f / zoomScale))
+                {
+                    graphics.DrawString("X", font, Brushes.Black, new PointF(50f / zoomScale, 0f));
+                    graphics.DrawString("Y", font, Brushes.Black, new PointF(0f, 50f / zoomScale));
+                }
+                graphics.Restore(gs);
             }
         }
 
@@ -414,7 +438,7 @@ namespace PetProj
                                 PointF current = points[i];
                                 PointF next = points[i + 1];
                                 // Если отрезок длинный, interpolate
-                                if (Distance(current, next) > 1.0f)
+                                if (Distance(current, next) > (1.0f / zoomPad.ZoomScale))
                                 {
                                     int numSteps = 100; // Number of intermediate points
                                     for (int step = 1; step <= numSteps; step++)
@@ -460,9 +484,9 @@ namespace PetProj
             }
         }
 
-        private float Distance(PointF current, PointF next)
+        private double Distance(PointF current, PointF next)
         {
-            return (float)Math.Sqrt(Math.Pow(next.X - current.X, 2) + Math.Pow(next.Y - current.Y, 2));
+            return Math.Sqrt(Math.Pow(next.X - current.X, 2) + Math.Pow(next.Y - current.Y, 2));
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
@@ -794,6 +818,11 @@ namespace PetProj
         public void MoveCopySelected()
         {
             editorMode = EditorMode.MoveCopySelected;
+        }
+
+        private void zoomPad_OnPanOrZoom(object sender, ZoomControl.PanOrZoomEventArgs e)
+        {
+            OnToolTipChanged?.Invoke(this, $"Смещение: {new MmsPoint(this, e.ViewPort)}, зум: {e.Zoom}");
         }
     }
 

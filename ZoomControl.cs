@@ -16,6 +16,7 @@ namespace PetProj
         public float MinZoom { get; set; } = 0.01f;
 
         public event EventHandler<DrawEventArgs> OnDraw; /// Called on everytime control is painted and after zoom calculations. Can be used to draw custom paints.
+        public event EventHandler<PanOrZoomEventArgs> OnPanOrZoom;
 
         public double ZoomScale { get; set; } = 1; /// Current Zoom value
         public PointF Origin = new PointF(0, 0); /// Origin is the left most point of a viewport
@@ -73,6 +74,11 @@ namespace PetProj
                 {
                     Position = new Point(mouseX, mouseY),
                 };
+                OnPanOrZoom?.Invoke(this, new PanOrZoomEventArgs()
+                {
+                    Zoom = ZoomScale,
+                    ViewPort = Origin
+                });
 
 
                 Invalidate();
@@ -154,6 +160,11 @@ namespace PetProj
             if (e.Button == MouseButtons.Middle && e.Clicks > 1)
             {
                 Reset();
+                OnPanOrZoom?.Invoke(this, new PanOrZoomEventArgs() 
+                {
+                    Zoom = ZoomScale,
+                    ViewPort = Origin
+                });
                 return;
             }
         }
@@ -181,6 +192,11 @@ namespace PetProj
                         Position = new Point(mouseX, mouseY),
                         Zoom = zoom,
                     };
+                    OnPanOrZoom?.Invoke(this, new PanOrZoomEventArgs()
+                    {
+                        Zoom = ZoomScale,
+                        ViewPort = Origin
+                    });
                 }
                 Invalidate();
             }
@@ -216,6 +232,12 @@ namespace PetProj
         public class DrawEventArgs : EventArgs
         {
             public Graphics Graphics { get; set; }
+            public double Zoom { get; set; }
+            public PointF ViewPort { get; set; }
+        }
+
+        public class PanOrZoomEventArgs : EventArgs
+        {
             public double Zoom { get; set; }
             public PointF ViewPort { get; set; }
         }

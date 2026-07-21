@@ -44,6 +44,7 @@
             this.zoomPad.ZoomScale = 1D;
             this.zoomPad.ZoomSensitivity = 0.2F;
             this.zoomPad.OnDraw += new System.EventHandler<PetProj.ZoomControl.DrawEventArgs>(this.zoomPad_OnDraw);
+            this.zoomPad.OnPanOrZoom += new System.EventHandler<PetProj.ZoomControl.PanOrZoomEventArgs>(this.zoomPad_OnPanOrZoom);
             this.zoomPad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.zoomPad_MouseDown);
             this.zoomPad.MouseMove += new System.Windows.Forms.MouseEventHandler(this.zoomPad_MouseMove);
             this.zoomPad.MouseUp += new System.Windows.Forms.MouseEventHandler(this.zoomPad_MouseUp);
