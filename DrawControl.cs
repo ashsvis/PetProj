@@ -227,12 +227,12 @@ namespace PetProj
             //PointF e = new PointF(mid.X, mid.Y);
 
             PointF start = new PointF(a.X, a.Y);
-            PointF df = new PointF(start.X + px * halfLength, start.Y + py * halfLength);
-            PointF ef = new PointF(start.X, start.Y);
+            PointF df = px > 0 ? new PointF(start.X, start.Y) : new PointF(start.X + px * halfLength, start.Y + py * halfLength);
+            PointF ef = px < 0 ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
 
             PointF end = new PointF(b.X, b.Y);
-            PointF de = new PointF(end.X + px * halfLength, end.Y + py * halfLength);
-            PointF ee = new PointF(end.X, end.Y);
+            PointF de = px > 0 ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
+            PointF ee = px < 0 ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
 
             // Шаг 5: Рисовка
             // перендикуляр в начале отрезка
@@ -240,7 +240,7 @@ namespace PetProj
             // перендикуляр в конце отрезка
             graphics.DrawLine(pen, de, ee);
             // выносная линия, соединяющая два перпендикуляра
-            graphics.DrawLine(pen, df, de);
+            graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);
         }
 
         /// <summary>
