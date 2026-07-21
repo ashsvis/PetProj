@@ -37,18 +37,14 @@ namespace PetProj
             switch (drawControl.EditorMode)
             {
                 case EditorMode.BuildLines:
-                    //if (!label1.Visible) label1.Visible = true;
-                    //label1.Text = e.clickCount > 0 ? "Следующая точка " : "Первая точка ";
                     var pt = e.location;
-                    //pt.Offset(5, -label1.Height / 2);
-                    //label1.Location = pt;
                     if (!textBox1.Visible)
                     {
                         textBox1.Visible = true;
                         textBox1.Focus();
                         textBox1.SelectAll();
                     }
-                    pt.Offset(5, 0);
+                    pt.Offset(5, 5);
                     if (e.clickCount == 0)
                         textBox1.Location = pt;
                     else if (e.clickCount == 1)
