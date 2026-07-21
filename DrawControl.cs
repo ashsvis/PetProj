@@ -187,57 +187,53 @@ namespace PetProj
             }
         }
 
-        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF a, PointF b)
+        /// <summary>
+        /// Рисуем дугу, показывающую угол наклона отрезка к горизонтали
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF start, PointF end)
         {
-            // Шаг 1: Вектор отрезка
-            float dx = b.X - a.X;
-            float dy = b.Y - a.Y;
-
+            float dx = end.X - start.X;
+            float dy = end.Y - start.Y;
             float length = (float)Math.Sqrt(dx * dx + dy * dy);
             if (length == 0) return; // Отрезок вырожден в точку
-
             // выносная линия, горизонтальная
-            var b1 = PointF.Add(a, new SizeF(length, 0));
-            graphics.DrawLine(pen, a, b1);
-            var rect = new RectangleF(a.X - length, a.Y - length, length * 2, length * 2);
-            var andle = Math.Atan2(dy, dx) * 180 / Math.PI;
-            if (Math.Abs(andle) > 0.1f)
-                graphics.DrawArc(pen, rect, 0, (float)andle);
+            var b1 = PointF.Add(start, new SizeF(length, 0));
+            graphics.DrawLine(pen, start, b1);
+            var rect = new RectangleF(start.X - length, start.Y - length, length * 2, length * 2);
+            var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            if (Math.Abs(angle) > 0.1f)
+                graphics.DrawArc(pen, rect, 0, (float)angle);
         }
 
-        private static void DrawSizeLine(Graphics graphics, Pen pen, PointF a, PointF b, float halfLength)
+        /// <summary>
+        /// Рисуем размерную линию для отрезка
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="halfLength"></param>
+        private static void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength)
         {
-            // Шаг 1: Вектор отрезка
-            float dx = b.X - a.X;
-            float dy = b.Y - a.Y;
-
-            // Шаг 2: Вектор перпендикуляра
+            float dx = end.X - start.X;
+            float dy = end.Y - start.Y;
             float px = dy;
             float py = -dx;
-
-            // Шаг 3: Нормализация
             float length = (float)Math.Sqrt(px * px + py * py);
             if (length == 0) return; // Отрезок вырожден в точку
             px /= length;
             py /= length;
-
-            // Шаг 4: Точки перпендикуляра (например, середина отрезка)
-            //PointF mid = new PointF((a.X + b.X) / 2, (a.Y + b.Y) / 2);
-            //PointF d = new PointF(mid.X + px * halfLength, mid.Y + py * halfLength);
-            //PointF e = new PointF(mid.X, mid.Y);
-
-            PointF start = new PointF(a.X, a.Y);
+            // перпендикуляр в начале отрезка
             PointF df = px > 0 ? new PointF(start.X, start.Y) : new PointF(start.X + px * halfLength, start.Y + py * halfLength);
-            PointF ef = px < 0 ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
-
-            PointF end = new PointF(b.X, b.Y);
-            PointF de = px > 0 ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
-            PointF ee = px < 0 ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
-
-            // Шаг 5: Рисовка
-            // перендикуляр в начале отрезка
+            PointF ef = px <= 0 ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
             graphics.DrawLine(pen, df, ef);
-            // перендикуляр в конце отрезка
+            // перпендикуляр в конце отрезка
+            PointF de = px > 0 ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
+            PointF ee = px <= 0 ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
             graphics.DrawLine(pen, de, ee);
             // выносная линия, соединяющая два перпендикуляра
             graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);

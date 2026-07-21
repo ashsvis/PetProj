@@ -89,7 +89,6 @@
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
@@ -622,7 +621,6 @@
             // 
             this.placeHolder.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.placeHolder.Controls.Add(this.textBox2);
-            this.placeHolder.Controls.Add(this.label1);
             this.placeHolder.Controls.Add(this.textBox1);
             this.placeHolder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.placeHolder.Location = new System.Drawing.Point(0, 49);
@@ -641,19 +639,6 @@
             this.textBox2.Visible = false;
             this.textBox2.WordWrap = false;
             this.textBox2.Enter += new System.EventHandler(this.textBox1_Enter);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Gainsboro;
-            this.label1.Location = new System.Drawing.Point(184, 65);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(3);
-            this.label1.Size = new System.Drawing.Size(41, 19);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            this.label1.Visible = false;
             // 
             // textBox1
             // 
@@ -761,7 +746,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveCopy;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label1;
     }
 }
 

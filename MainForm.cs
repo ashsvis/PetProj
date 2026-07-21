@@ -1,8 +1,10 @@
 ﻿using PetProj.Common;
 using System;
 using System.Drawing;
+using System.Net;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace PetProj
 {
@@ -35,44 +37,85 @@ namespace PetProj
             switch (drawControl.EditorMode)
             {
                 case EditorMode.BuildLines:
-                    if (!label1.Visible) label1.Visible = true;
-                    label1.Text = e.clickCount > 0 ? "Следующая точка " : "Первая точка ";
+                    //if (!label1.Visible) label1.Visible = true;
+                    //label1.Text = e.clickCount > 0 ? "Следующая точка " : "Первая точка ";
                     var pt = e.location;
-                    pt.Offset(5, 5);
-                    label1.Location = pt;
+                    //pt.Offset(5, -label1.Height / 2);
+                    //label1.Location = pt;
                     if (!textBox1.Visible)
                     {
                         textBox1.Visible = true;
                         textBox1.Focus();
                         textBox1.SelectAll();
                     }
-                    pt.Offset(label1.Width + 5, 0);
+                    pt.Offset(5, 0);
                     if (e.clickCount == 0)
                         textBox1.Location = pt;
                     else if (e.clickCount == 1)
                     {
                         var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
                         var pt2 = e.location;
-                        float dx = pt2.X - pt1.X;
-                        float dy = pt2.Y - pt1.Y;
-                        float px = dy;
-                        float py = -dx;
-                        float length = (float)Math.Sqrt(px * px + py * py);
-                        if (length > 0) // Отрезок не вырожден в точку
+                        if (pt1 == pt2)
                         {
-                            px /= length;
-                            py /= length;
-                            var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
-                            var shift = px > 0 ? 50 : -50;
-                            var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
-                            midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
-                            textBox1.Location = Point.Ceiling(midpoint);
+                            pt2.Offset(0, -25);
+                            textBox1.Location = pt2;
+                        }
+                        else
+                        {
+                            float dx = pt2.X - pt1.X;
+                            float dy = pt2.Y - pt1.Y;
+                            float px = dy;
+                            float py = -dx;
+                            float length = (float)Math.Sqrt(px * px + py * py);
+                            if (length > 0) // Отрезок не вырожден в точку
+                            {
+                                px /= length;
+                                py /= length;
+                                var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
+                                var shift = px > 0 ? 50 : -50;
+                                var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
+                                midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
+                                textBox1.Location = Point.Ceiling(midpoint);
+                            }
                         }
                     }
                     if (!textBox2.Visible) textBox2.Visible = true;
                     pt.Offset(textBox1.Width + 5, 0);
-                    textBox2.Location = pt;
-
+                    if (e.clickCount == 0)
+                        textBox2.Location = pt;
+                    else if (e.clickCount == 1)
+                    {
+                        var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
+                        var pt2 = e.location;
+                        if (pt1 == pt2)
+                        {
+                            pt2.Offset(0, 25);
+                            textBox2.Location = pt2;
+                        }
+                        else
+                        {
+                            float dx = pt2.X - pt1.X;
+                            float dy = pt2.Y - pt1.Y;
+                            float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                            var plc = drawControl.PrepareMousePosition(e.location);
+                            var angle = Math.Abs(MmsPoint.GetAngle(e.first, plc));
+                            if (angle > 20 && length > textBox2.Width)
+                            {
+                                angle /= 2;
+                                var kf = (dy < 0) ? -1 : 1;
+                                var endX = pt1.X + length * Math.Cos(angle * Math.PI / 180);
+                                var endY = pt1.Y + kf * length * Math.Sin(angle * Math.PI / 180);
+                                var location = new Point((int)endX, (int)endY);
+                                location.Offset(-textBox2.Width / 2, -textBox2.Height / 2);
+                                textBox2.Location = location;
+                            }
+                            else
+                            {
+                                pt2.Offset(0, 30);
+                                textBox2.Location = pt2;
+                            }
+                        }
+                    }
                     // показываем значения координат в полях ввода
                     var ploc = drawControl.PrepareMousePosition(e.location);
                     var ptm = new MmsPoint(this, ploc);
@@ -82,7 +125,7 @@ namespace PetProj
                     textBox2.SelectAll();
                     break;
                 default:
-                    if (label1.Visible) label1.Visible = false;
+                    //if (label1.Visible) label1.Visible = false;
                     if (textBox1.Visible) textBox1.Visible = false;
                     if (textBox2.Visible) textBox2.Visible = false;
                     break;
