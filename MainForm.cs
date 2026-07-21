@@ -47,6 +47,8 @@ namespace PetProj
                     }
                     pt.Offset(label1.Width + 5, 0);
                     textBox1.Location = pt;
+                    if (e.clickCount == 1)
+                        textBox1.Location = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
                     if (!textBox2.Visible) textBox2.Visible = true;
                     pt.Offset(textBox1.Width + 5, 0);
                     textBox2.Location = pt;

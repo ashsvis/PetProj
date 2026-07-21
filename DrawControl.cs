@@ -290,6 +290,26 @@ namespace PetProj
             return new PointF(arr[0].X, arr[0].Y);
         }
 
+        /// <summary>
+        /// Обратный перерасчёт позиции первого нажатия мыши
+        /// при масштабировании и панарамировании
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public PointF GetFirstMouseDownPosition()
+        {
+            PointF[] arr = new PointF[] { firstMouseDown };
+            var origin = zoomPad.Origin;
+            var zoom = (float)zoomPad.ZoomScale;
+
+            Matrix matrix = new Matrix();
+            matrix.Scale(zoom, zoom);
+            matrix.Translate(-origin.X, -origin.Y);
+            matrix.TransformPoints(arr);
+            matrix.Dispose();
+            return new PointF(arr[0].X, arr[0].Y);
+        }
+
         private PointF PrepareMousePositionX(PointF p)
         {
             PointF[] arr = new PointF[] { p };
@@ -782,15 +802,11 @@ namespace PetProj
         /// </summary>
         public void CreateNewDocument()
         {
-            undoRedoManager.Clear();
             figures.Clear();
             selectionController.Clear();
+            undoRedoManager.Clear();
             zoomPad.Reset();
             Changed = false;
-
-            AddLine(new PointF(0, 0), new PointF(378, 0));
-            AddLine(new PointF(0, 0), new PointF(0, 378));
-
             zoomPad.Invalidate();
         }
 
