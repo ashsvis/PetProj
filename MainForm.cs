@@ -111,7 +111,7 @@ namespace PetProj
                             }
                             else
                             {
-                                pt2.Offset(0, 30);
+                                pt2.Offset(0, 15);
                                 textBox2.Location = pt2;
                             }
                         }

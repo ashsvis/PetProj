@@ -351,6 +351,20 @@ namespace PetProj
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.DrawLine(pen, pt3, pt4);
             }
+            switch (editorMode)
+            {
+                case EditorMode.BuildLines:
+                    var text = mouseClickCount == 0 ?  "Первая точка:" : "Следующая точка";
+                    using (var font = new Font("Arial", (float)(10f / zoomPad.ZoomScale)))
+                    {
+                        var ms = graphics.MeasureString(text, font);
+                        var pt = PointF.Add(mousePosition, new SizeF(3f, -ms.Height - 3f));
+                        if (mouseClickCount > 0)
+                            pt.Y += ms.Height + 3f;
+                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
+                    }
+                    break;
+            }
         }
 
         /// <summary>
