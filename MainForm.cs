@@ -1,6 +1,7 @@
 ﻿using PetProj.Common;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -17,7 +18,13 @@ namespace PetProj
             drawControl.OnToolTipChanged += DrawControl_OnToolTipChanged;
             drawControl.OnCursorMoved += DrawControl_OnCursorMoved;
             drawControl.Enter += DrawControl_Enter;
+            drawControl.OnSelected += DrawControl_OnSelected;
             placeHolder.Controls.Add(drawControl);
+        }
+
+        private void DrawControl_OnSelected(object sender, Selections.Selection e)
+        {
+
         }
 
         private void DrawControl_Enter(object sender, EventArgs e)
@@ -392,7 +399,7 @@ namespace PetProj
                         {
                             // ввод длины отрезка и угла наклона к горизонтали
                             if (double.TryParse(textBox1.Text, out double lengthmm) &&
-                                double.TryParse(textBox2.Text, out double angledeg))
+                                double.TryParse(textBox2.Text.TrimEnd('°'), out double angledeg))
                             {
                                 textBox1.Focus();
                                 drawControl.SetLineLengthAndAngle(lengthmm, angledeg);
@@ -403,5 +410,19 @@ namespace PetProj
             }
         }
 
+        private void btnHideShowLeftPanel_Click(object sender, EventArgs e)
+        {
+            if (btnHideShowLeftPanel.Text == "<")
+            {
+                propsHolder.Tag = propsHolder.Width;
+                propsHolder.Width = splitterHolders.MinSize;
+                btnHideShowLeftPanel.Text = ">";
+            }
+            else if (btnHideShowLeftPanel.Text == ">")
+            {
+                propsHolder.Width = (int)propsHolder.Tag;
+                btnHideShowLeftPanel.Text = "<";
+            }
+        }
     }
 }

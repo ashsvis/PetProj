@@ -34,6 +34,11 @@ namespace PetProj
         public bool Changed { get; private set; }
         public int SelectionCount => selectionController.Selection.Count;
 
+        public event EventHandler OnSelectionMode;
+        public event EventHandler<string> OnToolTipChanged;
+        public event EventHandler<(int, PointF, Point)> OnCursorMoved;
+        public event EventHandler<Selection> OnSelected;
+
         public DrawControl()
         {
             InitializeComponent();
@@ -265,10 +270,6 @@ namespace PetProj
             }
         }
 
-        public event EventHandler OnSelectionMode;
-        public event EventHandler<string> OnToolTipChanged;
-        public event EventHandler<(int, PointF, Point)> OnCursorMoved;
-
         /// <summary>
         /// Перерасчёт позиции мыши при масштабировании и панарамировании
         /// </summary>
@@ -388,24 +389,6 @@ namespace PetProj
             }
         }
 
-        private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
-        {
-            OnToolTipChanged?.Invoke(this, string.Empty);
-            if (editorMode == EditorMode.MoveCopySelected)
-            {
-                mouseClickCount = 0;
-                selectionController.Clear();
-                SetMode(EditorMode.Selection);
-            }
-            else if (editorMode == EditorMode.Selection)
-            {
-                mouseClickCount = 0;
-                selectionController.Clear();
-            }
-            else if (editorMode != EditorMode.Selection)
-                SetMode(EditorMode.Selection);
-        }
-
         private void PressLeftMouseButton(PointF point, bool calledByCode = false)
         {
             underCursor.Clear();
@@ -444,6 +427,7 @@ namespace PetProj
                                         selectionController.Selection.Remove(fig);
                                 }
                             );
+                        OnSelected?.Invoke(this, selectionController.Selection);
                         // при отсутствии других режимов - режим выбора, и второе нажатие
                         // сбрасывает количество нажатий
                         mouseClickCount = 0;
@@ -498,6 +482,24 @@ namespace PetProj
                 }
             }
             zoomPad.Invalidate();
+        }
+
+        private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
+        {
+            OnToolTipChanged?.Invoke(this, string.Empty);
+            if (editorMode == EditorMode.MoveCopySelected)
+            {
+                mouseClickCount = 0;
+                selectionController.Clear();
+                SetMode(EditorMode.Selection);
+            }
+            else if (editorMode == EditorMode.Selection)
+            {
+                mouseClickCount = 0;
+                selectionController.Clear();
+            }
+            else if (editorMode != EditorMode.Selection)
+                SetMode(EditorMode.Selection);
         }
 
         private void SelectUnselectByFrame(bool selMode, RectangleF rectangle,
