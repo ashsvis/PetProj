@@ -65,7 +65,7 @@ namespace PetProj
                 fig.Renderer.Render(graphics, fig);
 
             // отрисовка временно подсвеченных под курсором или рамкой выделения
-            underCursor.Render(graphics, Color.Gray);
+            underCursor.Render(graphics, Color.Black, (float)zoomPad.ZoomScale);
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
@@ -105,7 +105,7 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
-            using (var pen = new Pen(Color.Gray) { DashStyle = DashStyle.Dash })
+            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoomPad.ZoomScale)) { DashStyle = DashStyle.Dash })
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
@@ -130,7 +130,7 @@ namespace PetProj
             var pt2 = PrepareMousePosition(mousePosition);
             var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-            using (var pen = new Pen(Color.Magenta))
+            using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
         }
 
@@ -138,7 +138,7 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
-            using (var pen = new Pen(Color.Magenta))
+            using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
@@ -148,14 +148,13 @@ namespace PetProj
             {
                 using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
                 {
-                    graphics.DrawLine(pen, pt1, pt2);
-                    DrawSizeLine(graphics, pen, pt1, pt2,(float)(50 / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
-                    DrawAngleLine(graphics, pen, pt1, pt2, (float)(50 / zoomPad.ZoomScale));
+                    DrawSizeLine(graphics, pen, pt1, pt2,(float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
+                    DrawAngleLine(graphics, pen, pt1, pt2);
                 }
             }
         }
 
-        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF a, PointF b, float halfLength)
+        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF a, PointF b)
         {
             // Шаг 1: Вектор отрезка
             float dx = b.X - a.X;

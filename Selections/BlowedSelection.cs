@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 
 namespace PetProj.Selections
 {
-    public class BlowedSelection : IEnumerable<Figure>, IListManage
+    public class BlowedSelection : IEnumerable<Figure>
     {
         // внутренний набор для хранения списка выделенных фигур
         private readonly HashSet<Figure> selected = new HashSet<Figure>();
@@ -67,7 +67,7 @@ namespace PetProj.Selections
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics, Color color)
+        public void Render(Graphics graphics, Color color, float zoomScale)
         {
             foreach (var figure in selected)
             {
@@ -75,21 +75,24 @@ namespace PetProj.Selections
                 // получаем путь для рисования методом фигуры
                 using (var path = figure.Geometry.Path)
                 {
-                    using (var pen = new Pen(figure.Style.BorderStyle.Color, figure.Style.BorderStyle.Width))
+                    using (var pen = new Pen(figure.Style.BorderStyle.Color, figure.Style.BorderStyle.Width / zoomScale))
                     {
                         graphics.DrawPath(pen, path);
-                        using (var blowedPen = new Pen(blowedColor, pen.Width))
+                        using (var blowedPen = new Pen(blowedColor, pen.Width / zoomScale))
                         {
                             blowedPen.StartCap = LineCap.Round;
                             blowedPen.EndCap = LineCap.Round;
-                            var width = 10;
+                            var width = 10f / zoomScale;
+                            var i = 0f;
 
-                            for (var i = 0; i < width; i++)
+                            
+                            while (i < width)
                             {
                                 blowedPen.Color = blowedColor;
-                                blowedPen.Width += 0.5f; //4;
+                                blowedPen.Width += 0.6f;
                                 graphics.DrawPath(blowedPen, path);
                                 blowedColor = Color.FromArgb(blowedColor.A / 2, blowedColor);
+                                i += 1f / zoomScale;
                             }
                         }
                     }
