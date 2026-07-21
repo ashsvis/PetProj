@@ -181,7 +181,7 @@ namespace PetProj
             {
                 using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
                 {
-                    DrawSizeLine(graphics, pen, pt1, pt2,(float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
+                    DrawSizeLine(graphics, pen, pt1, pt2, (float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
                     DrawAngleLine(graphics, pen, pt1, pt2);
                 }
             }
@@ -201,7 +201,8 @@ namespace PetProj
             graphics.DrawLine(pen, a, b1);
             var rect = new RectangleF(a.X - length, a.Y - length, length * 2, length * 2);
             var andle = Math.Atan2(dy, dx) * 180 / Math.PI;
-            graphics.DrawArc(pen, rect, 0, (float)andle);
+            if (Math.Abs(andle) > 0.1f)
+                graphics.DrawArc(pen, rect, 0, (float)andle);
         }
 
         private static void DrawSizeLine(Graphics graphics, Pen pen, PointF a, PointF b, float halfLength)
@@ -221,21 +222,19 @@ namespace PetProj
             py /= length;
 
             // Шаг 4: Точки перпендикуляра (например, середина отрезка)
-            PointF mid = new PointF((a.X + b.X) / 2, (a.Y + b.Y) / 2);
-
-            PointF d = new PointF(mid.X + px * halfLength, mid.Y + py * halfLength);
-            //PointF e = new PointF(mid.X/* - px * halfLength*/, mid.Y/* - py * halfLength*/);
+            //PointF mid = new PointF((a.X + b.X) / 2, (a.Y + b.Y) / 2);
+            //PointF d = new PointF(mid.X + px * halfLength, mid.Y + py * halfLength);
+            //PointF e = new PointF(mid.X, mid.Y);
 
             PointF start = new PointF(a.X, a.Y);
             PointF df = new PointF(start.X + px * halfLength, start.Y + py * halfLength);
-            PointF ef = new PointF(start.X/* - px * halfLength*/, start.Y/* - py * halfLength*/);
+            PointF ef = new PointF(start.X, start.Y);
 
             PointF end = new PointF(b.X, b.Y);
             PointF de = new PointF(end.X + px * halfLength, end.Y + py * halfLength);
-            PointF ee = new PointF(end.X/* - px * halfLength*/, end.Y/* - py * halfLength*/);
+            PointF ee = new PointF(end.X, end.Y);
 
             // Шаг 5: Рисовка
-            //graphics.DrawLine(new Pen(Color.Red), d, e);
             // перендикуляр в начале отрезка
             graphics.DrawLine(pen, df, ef);
             // перендикуляр в конце отрезка
@@ -878,49 +877,6 @@ namespace PetProj
         private void zoomPad_OnPanOrZoom(object sender, ZoomControl.PanOrZoomEventArgs e)
         {
             OnToolTipChanged?.Invoke(this, $"Смещение: {new MmsPoint(this, e.ViewPort)}, зум: {e.Zoom}");
-        }
-    }
-
-    public class MmsPoint
-    {
-        public float X { get; private set; }
-        public float Y { get; private set; }
-
-        public MmsPoint(Control control, PointF point)
-        {
-            int dpi = control.DeviceDpi;
-            var kf = 25.4f / dpi;
-            X = point.X * kf;
-            Y = point.Y * kf;
-        }
-
-        public override string ToString()
-        {
-            return "{" + X + ", " + Y + "}";
-        }
-
-        public static float GetLength(Control control, PointF pt1, PointF pt2)
-        {
-            int dpi = control.DeviceDpi;
-            var kf = 25.4f / dpi;
-            var len = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y)) * kf;
-            return (float)len;
-        }
-
-        public static float GetAngle(PointF pt1, PointF pt2)
-        {
-            var dx = pt2.X - pt1.X;
-            var dy = pt2.Y - pt1.Y;
-            var andle = Math.Atan2(dy, dx) * 180 / Math.PI;
-            return (float)andle;
-        }
-
-        public static string GetAngleString(PointF pt1, PointF pt2)
-        {
-            var dx = pt2.X - pt1.X;
-            var dy = pt2.Y - pt1.Y;
-            var andle = Math.Abs(Math.Atan2(dy, dx) * 180 / Math.PI);
-            return $"{(float)andle}°";
         }
     }
 }

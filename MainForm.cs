@@ -1,6 +1,7 @@
 ﻿using PetProj.Common;
 using System;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace PetProj
@@ -46,12 +47,32 @@ namespace PetProj
                         textBox1.SelectAll();
                     }
                     pt.Offset(label1.Width + 5, 0);
-                    textBox1.Location = pt;
-                    if (e.clickCount == 1)
-                        textBox1.Location = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
+                    if (e.clickCount == 0)
+                        textBox1.Location = pt;
+                    else if (e.clickCount == 1)
+                    {
+                        var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
+                        var pt2 = e.location;
+                        float dx = pt2.X - pt1.X;
+                        float dy = pt2.Y - pt1.Y;
+                        float px = dy;
+                        float py = -dx;
+                        float length = (float)Math.Sqrt(px * px + py * py);
+                        if (length > 0) // Отрезок не вырожден в точку
+                        {
+                            px /= length;
+                            py /= length;
+                            var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
+                            var midpoint = Point.Ceiling(new PointF(mid.X + px * 50, mid.Y + py * 50));
+                            midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
+                            textBox1.Location = Point.Ceiling(midpoint);
+                        }
+                    }
                     if (!textBox2.Visible) textBox2.Visible = true;
                     pt.Offset(textBox1.Width + 5, 0);
                     textBox2.Location = pt;
+
+                    // показываем значения координат в полях ввода
                     var ploc = drawControl.PrepareMousePosition(e.location);
                     var ptm = new MmsPoint(this, ploc);
                     textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, ploc).ToString();
