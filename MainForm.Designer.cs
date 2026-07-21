@@ -639,6 +639,7 @@
             this.textBox2.Visible = false;
             this.textBox2.WordWrap = false;
             this.textBox2.Enter += new System.EventHandler(this.textBox1_Enter);
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // textBox1
             // 
@@ -650,6 +651,7 @@
             this.textBox1.Visible = false;
             this.textBox1.WordWrap = false;
             this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // timerUpdateControls
             // 

@@ -22,6 +22,7 @@ namespace PetProj
         private EditorMode editorMode;
 
         public EditorMode EditorMode => editorMode;
+        public int MouseClickCount => mouseClickCount;
 
         private readonly BlowedSelection underCursor = new BlowedSelection();
 
@@ -205,8 +206,11 @@ namespace PetProj
             graphics.DrawLine(pen, start, b1);
             var rect = new RectangleF(start.X - length, start.Y - length, length * 2, length * 2);
             var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
-            if (Math.Abs(angle) > 0.1f)
+            try
+            {
                 graphics.DrawArc(pen, rect, 0, (float)angle);
+            }
+            catch { }
         }
 
         /// <summary>
@@ -376,114 +380,124 @@ namespace PetProj
         {
             if (e.Button == MouseButtons.Left)
             {
-                underCursor.Clear();
-                mousePosition = e.Location;
-                if (mouseClickCount == 0)
-                {
-                    // при первом нажатии запоминаем точку нажатия
-                    firstMouseDown = PrepareMousePosition(mousePosition);
-                    mouseClickCount++;
-                    if (editorMode == EditorMode.Selection)
-                        selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
-                }
-                else if (mouseClickCount == 1) // это второе нажатие
-                {
-                    PointF pt1, pt2, pt3, pt4;
-                    switch (editorMode)
-                    {
-                        case EditorMode.Selection:
-                            pt1 = firstMouseDown;
-                            pt2 = PrepareMousePosition(mousePosition);
-                            var selMode = pt1.X > pt2.X;
-                            var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
-                                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                            SelectUnselectByFrame(selMode, rectangle,
-                                    (manager, fig) =>
-                                    {
-                                        if (!selectionController.Selection.Contains(fig))
-                                        {
-                                            fig.DrawGlowed(false);
-                                            selectionController.Selection.Add(fig);
-                                        }
-                                    },
-                                    (manager, fig) =>
-                                    {
-                                        if (selectionController.Selection.Contains(fig))
-                                            selectionController.Selection.Remove(fig);
-                                    }
-                                );
-                            // при отсутствии других режимов - режим выбора, и второе нажатие
-                            // сбрасывает количество нажатий
-                            mouseClickCount = 0;
-                            break;
-                        case EditorMode.BuildLines:
-                            // построение отрезков линий по двум точкам (концы отрезка)
-                            pt1 = firstMouseDown;
-                            pt2 = PrepareMousePosition(mousePosition);
-                            AddLine(pt1, pt2);
-                            // сброс количества нажатий, следующий прямоугольник будет строиться заново
-                            mouseClickCount = 0;
-                            // точка начала следующего отрезка совпадает с концом предыдущего отрезка
-                            firstMouseDown = pt2;
-                            mouseClickCount++;
-                            Changed = true;
-                            break;
-                        case EditorMode.BuildRectangles:
-                            // построение прямоугольника по двум точкам диагонали
-                            pt1 = firstMouseDown; // первая точка нажатия
-                            pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
-                            pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
-                            pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
-                            AddRectangle(pt1, pt2, pt3, pt4);
-                            // сброс количества нажатий, следующий прямоугольник будет строиться заново
-                            mouseClickCount = 0;
-                            Changed = true;
-                            break;
-                        case EditorMode.MoveSelected:
-                            pt1 = firstMouseDown;
-                            pt2 = PrepareMousePosition(mousePosition);
-                            selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
-                                (movedoffsets) =>
-                                {
-                                    undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
-                                });
-                            // предыдущий выбор стирается, т.к. перемещение - однократная операция
-                            selectionController.Selection.Clear();
-                            mouseClickCount = 0;
-                            SetMode(EditorMode.Selection);
-                            Changed = true;
-                            break;
-                        case EditorMode.MoveCopySelected:
-                            pt1 = firstMouseDown;
-                            pt2 = PrepareMousePosition(mousePosition);
-                            selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
-                                (addedfigs) =>
-                                {
-                                    undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
-                                });
-                            Changed = true;
-                            break;
-                    }
-                }
-                zoomPad.Invalidate();
+                PressLeftMouseButton(e.Location);
             }
             else if (e.Button == MouseButtons.Right)
             {
-                OnToolTipChanged?.Invoke(this, string.Empty);
-                if (editorMode == EditorMode.MoveCopySelected)
-                {
-                    mouseClickCount = 0;
-                    selectionController.Clear();
-                    SetMode(EditorMode.Selection);
-                }
-                else if (editorMode == EditorMode.Selection)
-                {
-                    mouseClickCount = 0;
-                    selectionController.Clear();
-                }
-                else if (editorMode != EditorMode.Selection)
-                    SetMode(EditorMode.Selection);
+                PressRightMouseButton(e.Location);
             }
+        }
+
+        private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
+        {
+            OnToolTipChanged?.Invoke(this, string.Empty);
+            if (editorMode == EditorMode.MoveCopySelected)
+            {
+                mouseClickCount = 0;
+                selectionController.Clear();
+                SetMode(EditorMode.Selection);
+            }
+            else if (editorMode == EditorMode.Selection)
+            {
+                mouseClickCount = 0;
+                selectionController.Clear();
+            }
+            else if (editorMode != EditorMode.Selection)
+                SetMode(EditorMode.Selection);
+        }
+
+        private void PressLeftMouseButton(PointF point, bool calledByCode = false)
+        {
+            underCursor.Clear();
+            mousePosition = point;
+            if (mouseClickCount == 0)
+            {
+                // при первом нажатии запоминаем точку нажатия
+                firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                mouseClickCount++;
+                if (editorMode == EditorMode.Selection)
+                    selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
+            }
+            else if (mouseClickCount == 1) // это второе нажатие
+            {
+                PointF pt1, pt2, pt3, pt4;
+                switch (editorMode)
+                {
+                    case EditorMode.Selection:
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        var selMode = pt1.X > pt2.X;
+                        var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
+                            Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
+                        SelectUnselectByFrame(selMode, rectangle,
+                                (manager, fig) =>
+                                {
+                                    if (!selectionController.Selection.Contains(fig))
+                                    {
+                                        fig.DrawGlowed(false);
+                                        selectionController.Selection.Add(fig);
+                                    }
+                                },
+                                (manager, fig) =>
+                                {
+                                    if (selectionController.Selection.Contains(fig))
+                                        selectionController.Selection.Remove(fig);
+                                }
+                            );
+                        // при отсутствии других режимов - режим выбора, и второе нажатие
+                        // сбрасывает количество нажатий
+                        mouseClickCount = 0;
+                        break;
+                    case EditorMode.BuildLines:
+                        // построение отрезков линий по двум точкам (концы отрезка)
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        AddLine(pt1, pt2);
+                        // сброс количества нажатий, следующий прямоугольник будет строиться заново
+                        mouseClickCount = 0;
+                        // точка начала следующего отрезка совпадает с концом предыдущего отрезка
+                        firstMouseDown = pt2;
+                        mouseClickCount++;
+                        Changed = true;
+                        break;
+                    case EditorMode.BuildRectangles:
+                        // построение прямоугольника по двум точкам диагонали
+                        pt1 = firstMouseDown; // первая точка нажатия
+                        pt3 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition); // вторая точка нажатия
+                        pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
+                        pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
+                        AddRectangle(pt1, pt2, pt3, pt4);
+                        // сброс количества нажатий, следующий прямоугольник будет строиться заново
+                        mouseClickCount = 0;
+                        Changed = true;
+                        break;
+                    case EditorMode.MoveSelected:
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
+                            (movedoffsets) =>
+                            {
+                                undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
+                            });
+                        // предыдущий выбор стирается, т.к. перемещение - однократная операция
+                        selectionController.Selection.Clear();
+                        mouseClickCount = 0;
+                        SetMode(EditorMode.Selection);
+                        Changed = true;
+                        break;
+                    case EditorMode.MoveCopySelected:
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
+                            (addedfigs) =>
+                            {
+                                undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
+                            });
+                        Changed = true;
+                        break;
+                }
+            }
+            zoomPad.Invalidate();
         }
 
         private void SelectUnselectByFrame(bool selMode, RectangleF rectangle,
@@ -575,7 +589,7 @@ namespace PetProj
                             var pt1 = firstMouseDown;
                             var pt2 = PrepareMousePosition(mousePosition);
                             OnToolTipChanged?.Invoke(this,
-                                $"Укажите вторую точку отрезка: {new MmsPoint(this, pt2)}, длина: {MmsPoint.GetLength(this, pt1, pt2)}");
+                                $"Укажите вторую точку отрезка: ({new MmsPoint(this, pt1)} - {new MmsPoint(this, pt2)}), длина: {MmsPoint.GetLength(this, pt1, pt2)}");
                         }
                         break;
                     case EditorMode.BuildRectangles:
@@ -887,6 +901,36 @@ namespace PetProj
         private void zoomPad_OnPanOrZoom(object sender, ZoomControl.PanOrZoomEventArgs e)
         {
             OnToolTipChanged?.Invoke(this, $"Смещение: {new MmsPoint(this, e.ViewPort)}, зум: {e.Zoom}");
+        }
+
+        public void SetFirstPoint(double pxX, double pxY)
+        {
+            mousePosition = new PointF((float)pxX, (float)pxY);
+            PressLeftMouseButton(mousePosition, calledByCode: true);
+            zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
+            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {new MmsPoint(this, mousePosition)}");
+        }
+
+        public void EscapeKeyPressed()
+        {
+            PressRightMouseButton(MousePosition, calledByCode: true);
+        }
+
+        public void SetLineLengthAndAngle(double lengthmm, double angledeg)
+        {
+            // построение отрезков линий по первой точке (начало отрезка), длине и углу наклона
+            var pt1 = firstMouseDown;
+            double angleRad = angledeg * (Math.PI / 180);
+            var pt2 = new PointF(pt1.X + (float)(lengthmm * Math.Cos(angleRad)), pt1.Y + (float)(lengthmm * Math.Sin(angleRad)));
+            AddLine(pt1, pt2);
+            //PressLeftMouseButton(pt2, calledByCode: true);
+            zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pt2.X, (int)pt2.Y, 0));
+            // сброс количества нажатий, следующий прямоугольник будет строиться заново
+            mouseClickCount = 0;
+            // точка начала следующего отрезка совпадает с концом предыдущего отрезка
+            firstMouseDown = pt2;
+            mouseClickCount++;
+            Changed = true;
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using PetProj.Common;
 using System;
 using System.Drawing;
-using System.Net;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
 
 namespace PetProj
 {
@@ -121,7 +118,6 @@ namespace PetProj
                     textBox2.SelectAll();
                     break;
                 default:
-                    //if (label1.Visible) label1.Visible = false;
                     if (textBox1.Visible) textBox1.Visible = false;
                     if (textBox2.Visible) textBox2.Visible = false;
                     break;
@@ -366,5 +362,46 @@ namespace PetProj
         {
             ((TextBox)sender).SelectAll();
         }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (textBox1.Visible) textBox1.Visible = false;
+                if (textBox2.Visible) textBox2.Visible = false;
+                drawControl.EscapeKeyPressed();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                switch (drawControl.EditorMode)
+                {
+                    case EditorMode.BuildLines:
+                        if (drawControl.MouseClickCount == 0)
+                        {
+                            // ввод координат X и Y
+                            if (double.TryParse(textBox1.Text, out double xmm) &&
+                                double.TryParse(textBox2.Text, out double ymm))
+                            {
+                                textBox1.Focus();
+                                int dpi = this.DeviceDpi;
+                                var kf = 25.4 / dpi;
+                                drawControl.SetFirstPoint(xmm / kf, ymm / kf);
+                            }
+                        }
+                        else if (drawControl.MouseClickCount == 1)
+                        {
+                            // ввод длины отрезка и угла наклона к горизонтали
+                            if (double.TryParse(textBox1.Text, out double lengthmm) &&
+                                double.TryParse(textBox2.Text, out double angledeg))
+                            {
+                                textBox1.Focus();
+                                drawControl.SetLineLengthAndAngle(lengthmm, angledeg);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
     }
 }
