@@ -151,6 +151,7 @@ namespace PetProj
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
         }
 
@@ -412,16 +413,27 @@ namespace PetProj
 
         private void btnHideShowLeftPanel_Click(object sender, EventArgs e)
         {
-            if (btnHideShowLeftPanel.Text == "<")
+            ShowHideLeftPanel(btnHideShowLeftPanel.Text == "<");
+        }
+
+        private void ShowHideLeftPanel(bool hide)
+        {
+            Properties.Settings.Default.HideLeftPanel = hide;
+            Properties.Settings.Default.Save();
+            if (hide)
             {
                 propsHolder.Tag = propsHolder.Width;
                 propsHolder.Width = splitterHolders.MinSize;
                 btnHideShowLeftPanel.Text = ">";
+                splitterHolders.Visible = false;
+                toolTip1.SetToolTip(btnHideShowLeftPanel, "Показать панель");
             }
-            else if (btnHideShowLeftPanel.Text == ">")
+            else
             {
-                propsHolder.Width = (int)propsHolder.Tag;
+                propsHolder.Width = (int)(propsHolder.Tag ?? 250);
                 btnHideShowLeftPanel.Text = "<";
+                splitterHolders.Visible = true;
+                toolTip1.SetToolTip(btnHideShowLeftPanel, "Спрятать панель");
             }
         }
     }

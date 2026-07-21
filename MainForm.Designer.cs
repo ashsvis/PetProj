@@ -92,12 +92,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.propsHolder = new System.Windows.Forms.Panel();
-            this.splitterHolders = new System.Windows.Forms.Splitter();
-            this.propGrid = new System.Windows.Forms.PropertyGrid();
+            this.btnHideShowLeftPanel = new System.Windows.Forms.Button();
             this.tcLeftEditProps = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnHideShowLeftPanel = new System.Windows.Forms.Button();
+            this.propGrid = new System.Windows.Forms.PropertyGrid();
+            this.splitterHolders = new System.Windows.Forms.Splitter();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -684,25 +685,20 @@
             this.propsHolder.Size = new System.Drawing.Size(250, 650);
             this.propsHolder.TabIndex = 4;
             // 
-            // splitterHolders
+            // btnHideShowLeftPanel
             // 
-            this.splitterHolders.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.splitterHolders.Location = new System.Drawing.Point(250, 49);
-            this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.splitterHolders.MinSize = 20;
-            this.splitterHolders.Name = "splitterHolders";
-            this.splitterHolders.Size = new System.Drawing.Size(4, 650);
-            this.splitterHolders.TabIndex = 5;
-            this.splitterHolders.TabStop = false;
-            // 
-            // propGrid
-            // 
-            this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propGrid.Location = new System.Drawing.Point(4, 3);
-            this.propGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.propGrid.Name = "propGrid";
-            this.propGrid.Size = new System.Drawing.Size(230, 612);
-            this.propGrid.TabIndex = 0;
+            this.btnHideShowLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideShowLeftPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
+            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(230, 0);
+            this.btnHideShowLeftPanel.Name = "btnHideShowLeftPanel";
+            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(15, 22);
+            this.btnHideShowLeftPanel.TabIndex = 2;
+            this.btnHideShowLeftPanel.Text = "<";
+            this.toolTip1.SetToolTip(this.btnHideShowLeftPanel, "Спрятать панель");
+            this.btnHideShowLeftPanel.UseVisualStyleBackColor = true;
+            this.btnHideShowLeftPanel.Click += new System.EventHandler(this.btnHideShowLeftPanel_Click);
             // 
             // tcLeftEditProps
             // 
@@ -739,19 +735,25 @@
             this.tabPage2.Text = "Прочие свойства";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btnHideShowLeftPanel
+            // propGrid
             // 
-            this.btnHideShowLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideShowLeftPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
-            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(230, 0);
-            this.btnHideShowLeftPanel.Name = "btnHideShowLeftPanel";
-            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(15, 22);
-            this.btnHideShowLeftPanel.TabIndex = 2;
-            this.btnHideShowLeftPanel.Text = "<";
-            this.btnHideShowLeftPanel.UseVisualStyleBackColor = true;
-            this.btnHideShowLeftPanel.Click += new System.EventHandler(this.btnHideShowLeftPanel_Click);
+            this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propGrid.Location = new System.Drawing.Point(4, 3);
+            this.propGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.propGrid.Name = "propGrid";
+            this.propGrid.Size = new System.Drawing.Size(230, 612);
+            this.propGrid.TabIndex = 0;
+            // 
+            // splitterHolders
+            // 
+            this.splitterHolders.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.splitterHolders.Location = new System.Drawing.Point(250, 49);
+            this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.splitterHolders.MinSize = 20;
+            this.splitterHolders.Name = "splitterHolders";
+            this.splitterHolders.Size = new System.Drawing.Size(4, 650);
+            this.splitterHolders.TabIndex = 5;
+            this.splitterHolders.TabStop = false;
             // 
             // MainForm
             // 
@@ -858,6 +860,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnHideShowLeftPanel;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
