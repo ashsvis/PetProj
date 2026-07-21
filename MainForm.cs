@@ -63,7 +63,8 @@ namespace PetProj
                             px /= length;
                             py /= length;
                             var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
-                            var midpoint = Point.Ceiling(new PointF(mid.X + px * 50, mid.Y + py * 50));
+                            var shift = px > 0 ? 50 : -50;
+                            var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
                             midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
                             textBox1.Location = Point.Ceiling(midpoint);
                         }
