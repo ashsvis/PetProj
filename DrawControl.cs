@@ -60,7 +60,7 @@ namespace PetProj
             var graphics = e.Graphics;
             if (graphics == null) return;
             // рисуем начало координат и направление осей
-            DrawZeroOrigin(graphics, Color.Black, (float)zoomPad.ZoomScale);
+            DrawZeroOrigin(graphics, Color.LightGray, (float)zoomPad.ZoomScale);
 
             // отрисовка созданных фигур
             foreach (var fig in figures)
@@ -105,21 +105,30 @@ namespace PetProj
 
         private void DrawZeroOrigin(Graphics graphics, Color color, float zoomScale)
         {
-            using (var pen = new Pen(color, (float)(1f / zoomScale)))
+            using (var pen = new Pen(color, (float)(2f / zoomScale)))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
                 var gs = graphics.Save();
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                using (var penX = new Pen(Color.FromArgb(80, Color.LightSalmon), (float)(2f / zoomScale)))
+                {
+                    graphics.DrawLine(penX, new PointF(0f, 0f), PrepareMousePositionX(new PointF(zoomPad.Width, 0f)));
+                }
+                using (var penY = new Pen(Color.FromArgb(80, Color.LightGreen), (float)(2f / zoomScale)))
+                {
+                    graphics.DrawLine(penY, new PointF(0f, 0f), PrepareMousePositionY(new PointF(0f, zoomPad.Height)));
+                }
                 graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(50f / zoomScale, 0f));
                 graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(0f, 50f / zoomScale));
                 var rect = new RectangleF(-4f / zoomScale, -4f / zoomScale, 8f / zoomScale, 8f / zoomScale);
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
-                using (var font = new Font("Consolas", 14f / zoomScale))
+                using (var font = new Font("Arial", 10f / zoomScale))
+                using (var brush = new SolidBrush(color))
                 {
-                    graphics.DrawString("X", font, Brushes.Black, new PointF(50f / zoomScale, 0f));
-                    graphics.DrawString("Y", font, Brushes.Black, new PointF(0f, 50f / zoomScale));
+                    graphics.DrawString("X", font, brush, new PointF(50f / zoomScale, 0f));
+                    graphics.DrawString("Y", font, brush, new PointF(0f, 50f / zoomScale));
                 }
                 graphics.Restore(gs);
             }
@@ -276,6 +285,36 @@ namespace PetProj
 
             matrix.Translate(origin.X, origin.Y);
             matrix.Scale(1 / zoom, 1 / zoom);
+            matrix.TransformPoints(arr);
+            matrix.Dispose();
+            return new PointF(arr[0].X, arr[0].Y);
+        }
+
+        private PointF PrepareMousePositionX(PointF p)
+        {
+            PointF[] arr = new PointF[] { p };
+            Matrix matrix = new Matrix();
+
+            var zoom = (float)zoomPad.ZoomScale;
+            var origin = zoomPad.Origin;
+
+            matrix.Translate(origin.X, 0);
+            matrix.Scale(1 / zoom, 1);
+            matrix.TransformPoints(arr);
+            matrix.Dispose();
+            return new PointF(arr[0].X, arr[0].Y);
+        }
+
+        private PointF PrepareMousePositionY(PointF p)
+        {
+            PointF[] arr = new PointF[] { p };
+            Matrix matrix = new Matrix();
+
+            var zoom = (float)zoomPad.ZoomScale;
+            var origin = zoomPad.Origin;
+
+            matrix.Translate(0, origin.Y);
+            matrix.Scale(1, 1 / zoom);
             matrix.TransformPoints(arr);
             matrix.Dispose();
             return new PointF(arr[0].X, arr[0].Y);
