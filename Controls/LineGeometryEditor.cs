@@ -3,11 +3,13 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using PetProj.Common;
+using PetProj.Geometries;
 using PetProj.Selections;
 
 namespace PetProj.Controls
 {
-    public partial class BorderStyleEditor : UserControl, IEditor<Selection>
+    public partial class LineGeometryEditor : UserControl, IEditor<Selection>
     {
         private Selection selection;
         private int updating;
@@ -15,12 +17,12 @@ namespace PetProj.Controls
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
 
-        public BorderStyleEditor()
+        public LineGeometryEditor()
         {
             InitializeComponent();
-            cbPattern.Items.Clear();
-            cbPattern.Items.AddRange(GetPenPatternNames()); // получение всех имён доступных типов линий
-            cbPattern.SelectedIndex = 0;
+            //cbPattern.Items.Clear();
+            //cbPattern.Items.AddRange(GetPenPatternNames()); // получение всех имён доступных типов линий
+            //cbPattern.SelectedIndex = 0;
         }
 
         static readonly DashStyle[] DashStyleArray = (DashStyle[])Enum.GetValues(typeof(DashStyle));
@@ -39,24 +41,33 @@ namespace PetProj.Controls
         public void Build(Selection selection)
         {
             // проверка видимости
-            Visible = selection.ForAll(f => f.Style.BorderStyle != null); 
-            // показываем редактор только если все фигуры содержат свойство BorderStyle
+            Visible = selection.ForAll(f => f.Geometry is AddLineGeometry) && selection.Count == 1; 
+            // показываем редактор только если одна фигура и это отрезок
             if (!Visible || selection == null) return; // ничего не строим            
 
             // запоминаем редактируемый объект
             this.selection = selection;
 
             // получаем список объектов
-            var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
+            var lineStyles = selection.Select(f => f.Geometry as AddLineGeometry).ToList();
 
             // копируем свойства объекта в GUI
             updating++;
 
-            cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
-            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
-            nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
-            lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
-            cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
+            var start = new MmsPoint(this, lineStyles.GetProperty(f => f.StartPoint));
+            var end = new MmsPoint(this, lineStyles.GetProperty(f => f.EndPoint));
+            float dx = end.X - start.X;
+            float dy = end.Y - start.Y;
+            float length = (float)Math.Sqrt(dx * dx + dy * dy);
+            var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            tbStartX.Text = start.X.ToString();
+            tbStartY.Text = start.Y.ToString();
+            tbEndX.Text = end.X.ToString();
+            tbEndY.Text = end.Y.ToString();
+            tbDeltaX.Text = $"{dx}";
+            tbDeltaY.Text = $"{dy}";
+            tbLength.Text = $"{length}";
+            tbAngle.Text = $"{angle}";
 
             updating--;
         }
@@ -72,11 +83,11 @@ namespace PetProj.Controls
             var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
 
             // посылаем значения назад из GUI в объект
-            borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
-            borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
-            borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
-            borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
-            borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
+            //borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
+            //borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
+            //borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
+            //borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
+            //borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
 
             // вызывем событие
             Changed(this, EventArgs.Empty);
@@ -84,16 +95,16 @@ namespace PetProj.Controls
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
-            lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
-                lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
+            //lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
+            //    lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
             UpdateObject();
         }
 
         private void lbColor_Click(object sender, EventArgs e)
         {
-            var dlg = new ColorDialog { Color = lbColor.BackColor };
-            if (dlg.ShowDialog() == DialogResult.OK)
-                lbColor.BackColor = dlg.Color;
+            //var dlg = new ColorDialog { Color = lbColor.BackColor };
+            //if (dlg.ShowDialog() == DialogResult.OK)
+            //    lbColor.BackColor = dlg.Color;
         }
 
         private void cbPattern_DrawItem(object sender, DrawItemEventArgs e)

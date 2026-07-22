@@ -63,6 +63,12 @@
     <Compile Include="Common\ParseHelper.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
+    <Compile Include="Controls\LineGeometryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LineGeometryEditor.Designer.cs">
+      <DependentUpon>LineGeometryEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BorderStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     <Compile Include="ZoomControl.Designer.cs">
       <DependentUpon>ZoomControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Controls\LineGeometryEditor.resx">
+      <DependentUpon>LineGeometryEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
       <DependentUpon>BorderStyleEditor.cs</DependentUpon>
     </EmbeddedResource>

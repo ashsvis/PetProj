@@ -31,6 +31,7 @@ namespace PetProj
             var editors = new[]
             {
                 typeof(BorderStyleEditor),
+                typeof(LineGeometryEditor),
             };
             foreach (var typeName in editors)
             {
@@ -61,10 +62,9 @@ namespace PetProj
         {
             foreach (var editor in panelTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
                 editor.Build(drawControl.SelectionController.Selection);
-
         }
 
-        private void DrawControl_OnSelected(object sender, Selections.Selection e)
+        private void DrawControl_OnSelected(object sender, Selection e)
         {
             BuildInterface();
         }

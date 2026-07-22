@@ -55,6 +55,8 @@
             this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAppParameters = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,14 +94,12 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.propsHolder = new System.Windows.Forms.Panel();
-            this.btnHideShowLeftPanel = new System.Windows.Forms.Button();
-            this.splitterHolders = new System.Windows.Forms.Splitter();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panLeftCaption = new System.Windows.Forms.Panel();
-            this.panelTools = new System.Windows.Forms.Panel();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnHideShowLeftPanel = new System.Windows.Forms.Button();
+            this.panelTools = new System.Windows.Forms.FlowLayoutPanel();
+            this.splitterHolders = new System.Windows.Forms.Splitter();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -340,6 +340,19 @@
             this.tsmiMoveCopy.Size = new System.Drawing.Size(210, 22);
             this.tsmiMoveCopy.Text = "Копировать";
             this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // tsmiDynamicalEnter
+            // 
+            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
+            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(210, 22);
+            this.tsmiDynamicalEnter.Text = "Динамический ввод";
+            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
             // tsmiServiceMenu
             // 
@@ -686,34 +699,6 @@
             this.propsHolder.Size = new System.Drawing.Size(250, 650);
             this.propsHolder.TabIndex = 4;
             // 
-            // btnHideShowLeftPanel
-            // 
-            this.btnHideShowLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHideShowLeftPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnHideShowLeftPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(0, 0);
-            this.btnHideShowLeftPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.btnHideShowLeftPanel.Name = "btnHideShowLeftPanel";
-            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(20, 22);
-            this.btnHideShowLeftPanel.TabIndex = 2;
-            this.btnHideShowLeftPanel.Text = "«";
-            this.toolTip1.SetToolTip(this.btnHideShowLeftPanel, "Спрятать панель");
-            this.btnHideShowLeftPanel.UseVisualStyleBackColor = true;
-            this.btnHideShowLeftPanel.Click += new System.EventHandler(this.btnHideShowLeftPanel_Click);
-            // 
-            // splitterHolders
-            // 
-            this.splitterHolders.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.splitterHolders.Location = new System.Drawing.Point(250, 49);
-            this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.splitterHolders.MinSize = 19;
-            this.splitterHolders.Name = "splitterHolders";
-            this.splitterHolders.Size = new System.Drawing.Size(4, 650);
-            this.splitterHolders.TabIndex = 5;
-            this.splitterHolders.TabStop = false;
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -742,6 +727,23 @@
             this.panLeftCaption.TabIndex = 3;
             this.panLeftCaption.Paint += new System.Windows.Forms.PaintEventHandler(this.panLeftCaption_Paint);
             // 
+            // btnHideShowLeftPanel
+            // 
+            this.btnHideShowLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHideShowLeftPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnHideShowLeftPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.btnHideShowLeftPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.btnHideShowLeftPanel.Name = "btnHideShowLeftPanel";
+            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(20, 22);
+            this.btnHideShowLeftPanel.TabIndex = 2;
+            this.btnHideShowLeftPanel.Text = "«";
+            this.toolTip1.SetToolTip(this.btnHideShowLeftPanel, "Спрятать панель");
+            this.btnHideShowLeftPanel.UseVisualStyleBackColor = true;
+            this.btnHideShowLeftPanel.Click += new System.EventHandler(this.btnHideShowLeftPanel_Click);
+            // 
             // panelTools
             // 
             this.panelTools.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -753,18 +755,16 @@
             this.panelTools.Size = new System.Drawing.Size(230, 650);
             this.panelTools.TabIndex = 4;
             // 
-            // toolStripMenuItem1
+            // splitterHolders
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
-            // 
-            // tsmiDynamicalEnter
-            // 
-            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
-            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(210, 22);
-            this.tsmiDynamicalEnter.Text = "Динамический ввод";
-            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            this.splitterHolders.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.splitterHolders.Location = new System.Drawing.Point(250, 49);
+            this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.splitterHolders.MinSize = 19;
+            this.splitterHolders.Name = "splitterHolders";
+            this.splitterHolders.Size = new System.Drawing.Size(4, 650);
+            this.splitterHolders.TabIndex = 5;
+            this.splitterHolders.TabStop = false;
             // 
             // MainForm
             // 
@@ -871,7 +871,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panLeftCaption;
-        private System.Windows.Forms.Panel panelTools;
+        private System.Windows.Forms.FlowLayoutPanel panelTools;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem tsmiDynamicalEnter;
     }
