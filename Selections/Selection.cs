@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace PetProj.Selections
 {
@@ -209,6 +210,14 @@ namespace PetProj.Selections
             // если список не пуст, выполняем метод копирования и перемещения
             if (added.Count > 0)
                 addCopyAction(added);
+        }
+
+        public bool ForAll(Func<Figure, bool> func)
+        {
+            var figures = new List<Figure>();
+            foreach (var figure in selected)
+                figures.Add(figure);
+            return figures.All(x => func(x));
         }
     }
 }
