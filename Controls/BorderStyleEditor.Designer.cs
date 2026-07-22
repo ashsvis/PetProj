@@ -39,6 +39,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -48,10 +49,10 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(67, 23);
-            this.lbColor.Margin = new System.Windows.Forms.Padding(3);
+            this.lbColor.Location = new System.Drawing.Point(103, 53);
+            this.lbColor.Margin = new System.Windows.Forms.Padding(1);
             this.lbColor.Name = "lbColor";
-            this.lbColor.Size = new System.Drawing.Size(39, 17);
+            this.lbColor.Size = new System.Drawing.Size(45, 19);
             this.lbColor.TabIndex = 1;
             this.lbColor.BackColorChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
@@ -59,7 +60,8 @@
             // cbVisible
             // 
             this.cbVisible.AutoSize = true;
-            this.cbVisible.Location = new System.Drawing.Point(67, 3);
+            this.cbVisible.Location = new System.Drawing.Point(105, 34);
+            this.cbVisible.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbVisible.Name = "cbVisible";
             this.cbVisible.Size = new System.Drawing.Size(15, 14);
             this.cbVisible.TabIndex = 0;
@@ -68,20 +70,11 @@
             // 
             // nudWidth
             // 
-            this.nudWidth.Location = new System.Drawing.Point(67, 72);
-            this.nudWidth.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.nudWidth.Location = new System.Drawing.Point(103, 101);
+            this.nudWidth.Margin = new System.Windows.Forms.Padding(1);
             this.nudWidth.Name = "nudWidth";
-            this.nudWidth.Size = new System.Drawing.Size(40, 20);
+            this.nudWidth.Size = new System.Drawing.Size(64, 23);
             this.nudWidth.TabIndex = 5;
-            this.nudWidth.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nudWidth.ValueChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             // 
             // cbPattern
@@ -89,56 +82,61 @@
             this.cbPattern.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbPattern.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPattern.FormattingEnabled = true;
-            this.cbPattern.Location = new System.Drawing.Point(67, 98);
+            this.cbPattern.Location = new System.Drawing.Point(103, 127);
+            this.cbPattern.Margin = new System.Windows.Forms.Padding(1);
             this.cbPattern.Name = "cbPattern";
-            this.cbPattern.Size = new System.Drawing.Size(55, 21);
+            this.cbPattern.Size = new System.Drawing.Size(63, 24);
             this.cbPattern.TabIndex = 7;
             this.cbPattern.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbPattern_DrawItem);
             this.cbPattern.SelectionChangeCommitted += new System.EventHandler(this.cbVisible_CheckedChanged);
             // 
             // lbPattern
             // 
+            this.lbPattern.AutoSize = true;
             this.lbPattern.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbPattern.Location = new System.Drawing.Point(0, 97);
+            this.lbPattern.Location = new System.Drawing.Point(1, 128);
             this.lbPattern.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbPattern.Name = "lbPattern";
-            this.lbPattern.Size = new System.Drawing.Size(64, 25);
+            this.lbPattern.Size = new System.Drawing.Size(100, 24);
             this.lbPattern.TabIndex = 6;
-            this.lbPattern.Text = "Pattern:";
+            this.lbPattern.Text = "Стиль линии";
             this.lbPattern.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbWidth
             // 
+            this.lbWidth.AutoSize = true;
             this.lbWidth.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbWidth.Location = new System.Drawing.Point(0, 71);
+            this.lbWidth.Location = new System.Drawing.Point(1, 102);
             this.lbWidth.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbWidth.Name = "lbWidth";
-            this.lbWidth.Size = new System.Drawing.Size(64, 24);
+            this.lbWidth.Size = new System.Drawing.Size(100, 23);
             this.lbWidth.TabIndex = 4;
-            this.lbWidth.Text = "Width:";
+            this.lbWidth.Text = "Толщина";
             this.lbWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbOpacity
             // 
+            this.lbOpacity.AutoSize = true;
             this.lbOpacity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOpacity.Location = new System.Drawing.Point(0, 45);
+            this.lbOpacity.Location = new System.Drawing.Point(1, 76);
             this.lbOpacity.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbOpacity.Name = "lbOpacity";
-            this.lbOpacity.Size = new System.Drawing.Size(64, 24);
+            this.lbOpacity.Size = new System.Drawing.Size(100, 23);
             this.lbOpacity.TabIndex = 2;
-            this.lbOpacity.Text = "Opacity:";
+            this.lbOpacity.Text = "Прозрачность";
             this.lbOpacity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // nudOpacity
             // 
-            this.nudOpacity.Location = new System.Drawing.Point(67, 46);
+            this.nudOpacity.Location = new System.Drawing.Point(103, 75);
+            this.nudOpacity.Margin = new System.Windows.Forms.Padding(1);
             this.nudOpacity.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.nudOpacity.Name = "nudOpacity";
-            this.nudOpacity.Size = new System.Drawing.Size(40, 20);
+            this.nudOpacity.Size = new System.Drawing.Size(47, 23);
             this.nudOpacity.TabIndex = 3;
             this.nudOpacity.Value = new decimal(new int[] {
             255,
@@ -149,20 +147,25 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.cbVisible, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lbColor, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.lbPattern, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.nudOpacity, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.nudWidth, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lbOpacity, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cbPattern, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.lbWidth, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbVisible, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbColor, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lbPattern, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.nudOpacity, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.nudWidth, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.lbOpacity, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbPattern, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.lbWidth, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -170,42 +173,59 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(128, 128);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 153);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
             // label1
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(0, 22);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1, 54);
             this.label1.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 21);
+            this.label1.Size = new System.Drawing.Size(33, 15);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Color:";
+            this.label1.Text = "Цвет";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(0, 2);
+            this.label2.Location = new System.Drawing.Point(1, 30);
             this.label2.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 18);
+            this.label2.Size = new System.Drawing.Size(100, 21);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Border Style";
+            this.label2.Text = "Показывать";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Location = new System.Drawing.Point(1, 1);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(1);
+            this.label3.Size = new System.Drawing.Size(198, 26);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Контуры фигуры";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // BorderStyleEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "BorderStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(132, 140);
+            this.Size = new System.Drawing.Size(200, 153);
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -227,5 +247,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

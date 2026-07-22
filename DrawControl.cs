@@ -21,6 +21,8 @@ namespace PetProj
         private PointF mousePosition;
         private EditorMode editorMode;
 
+        public bool IsDynamicalEnter { get; set; } = true;
+
         public EditorMode EditorMode => editorMode;
         public int MouseClickCount => mouseClickCount;
 
@@ -186,10 +188,13 @@ namespace PetProj
             }
             if (mouseClickCount == 1)
             {
-                using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                if (IsDynamicalEnter)
                 {
-                    DrawSizeLine(graphics, pen, pt1, pt2, (float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
-                    DrawAngleLine(graphics, pen, pt1, pt2);
+                    using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                    {
+                        DrawSizeLine(graphics, pen, pt1, pt2, (float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
+                        DrawAngleLine(graphics, pen, pt1, pt2);
+                    }
                 }
             }
         }
@@ -357,19 +362,22 @@ namespace PetProj
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.DrawLine(pen, pt3, pt4);
             }
-            switch (editorMode)
+            if (IsDynamicalEnter)
             {
-                case EditorMode.BuildLines:
-                    var text = mouseClickCount == 0 ?  "Первая точка:" : "Следующая точка";
-                    using (var font = new Font("Arial", (float)(10f / zoomPad.ZoomScale)))
-                    {
-                        var ms = graphics.MeasureString(text, font);
-                        var pt = PointF.Add(mousePosition, new SizeF(3f, -ms.Height - 3f));
-                        if (mouseClickCount > 0)
-                            pt.Y += ms.Height + 3f;
-                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
-                    }
-                    break;
+                switch (editorMode)
+                {
+                    case EditorMode.BuildLines:
+                        var text = mouseClickCount == 0 ? "Первая точка:" : "Следующая точка";
+                        using (var font = new Font("Arial", (float)(10f / zoomPad.ZoomScale)))
+                        {
+                            var ms = graphics.MeasureString(text, font);
+                            var pt = PointF.Add(mousePosition, new SizeF(3f, -ms.Height - 3f));
+                            if (mouseClickCount > 0)
+                                pt.Y += ms.Height + 3f;
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
+                        }
+                        break;
+                }
             }
         }
 

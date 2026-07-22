@@ -98,6 +98,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panLeftCaption = new System.Windows.Forms.Panel();
             this.panelTools = new System.Windows.Forms.Panel();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -314,7 +316,9 @@
             // 
             this.tsmiCommands.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMove,
-            this.tsmiMoveCopy});
+            this.tsmiMoveCopy,
+            this.toolStripMenuItem1,
+            this.tsmiDynamicalEnter});
             this.tsmiCommands.Name = "tsmiCommands";
             this.tsmiCommands.Size = new System.Drawing.Size(70, 20);
             this.tsmiCommands.Text = "Команды";
@@ -324,7 +328,7 @@
             this.tsmiMove.Enabled = false;
             this.tsmiMove.Image = global::PetProj.Properties.Resources.move;
             this.tsmiMove.Name = "tsmiMove";
-            this.tsmiMove.Size = new System.Drawing.Size(146, 22);
+            this.tsmiMove.Size = new System.Drawing.Size(210, 22);
             this.tsmiMove.Text = "Переместить";
             this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
             // 
@@ -333,7 +337,7 @@
             this.tsmiMoveCopy.Enabled = false;
             this.tsmiMoveCopy.Image = global::PetProj.Properties.Resources.movecopy;
             this.tsmiMoveCopy.Name = "tsmiMoveCopy";
-            this.tsmiMoveCopy.Size = new System.Drawing.Size(146, 22);
+            this.tsmiMoveCopy.Size = new System.Drawing.Size(210, 22);
             this.tsmiMoveCopy.Text = "Копировать";
             this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
             // 
@@ -741,11 +745,26 @@
             // panelTools
             // 
             this.panelTools.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.panelTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelTools.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTools.Location = new System.Drawing.Point(23, 3);
+            this.panelTools.Location = new System.Drawing.Point(20, 0);
+            this.panelTools.Margin = new System.Windows.Forms.Padding(0);
             this.panelTools.Name = "panelTools";
-            this.panelTools.Size = new System.Drawing.Size(224, 644);
+            this.panelTools.Size = new System.Drawing.Size(230, 650);
             this.panelTools.TabIndex = 4;
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // tsmiDynamicalEnter
+            // 
+            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
+            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(210, 22);
+            this.tsmiDynamicalEnter.Text = "Динамический ввод";
+            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
             // MainForm
             // 
@@ -853,6 +872,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panLeftCaption;
         private System.Windows.Forms.Panel panelTools;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDynamicalEnter;
     }
 }
 

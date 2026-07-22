@@ -1,5 +1,4 @@
 ﻿using PetProj.Common;
-using PetProj.Controllers;
 using PetProj.Controls;
 using PetProj.Selections;
 using System;
@@ -36,6 +35,8 @@ namespace PetProj
             foreach (var typeName in editors)
             {
                 var uc = (UserControl)Activator.CreateInstance(typeName);
+                uc.Width = panelTools.ClientSize.Width;
+                uc.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 if (uc is IEditor<Selection> figEditor)
                 {
                     figEditor.StartChanging += FigEditor_StartChanging;
@@ -79,96 +80,104 @@ namespace PetProj
 
         private void DrawControl_OnCursorMoved(object sender, (int clickCount, PointF first, Point location) e)
         {
-            switch (drawControl.EditorMode)
+            if (drawControl.IsDynamicalEnter)
             {
-                case EditorMode.BuildLines:
-                    var pt = e.location;
-                    if (!textBox1.Visible)
-                    {
-                        textBox1.Visible = true;
-                        textBox1.Focus();
-                        textBox1.SelectAll();
-                    }
-                    pt.Offset(5, 5);
-                    if (e.clickCount == 0)
-                        textBox1.Location = pt;
-                    else if (e.clickCount == 1)
-                    {
-                        var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
-                        var pt2 = e.location;
-                        if (pt1 == pt2)
+                switch (drawControl.EditorMode)
+                {
+                    case EditorMode.BuildLines:
+                        var pt = e.location;
+                        if (!textBox1.Visible)
                         {
-                            pt2.Offset(0, -25);
-                            textBox1.Location = pt2;
+                            textBox1.Visible = true;
+                            textBox1.Focus();
+                            textBox1.SelectAll();
                         }
-                        else
+                        pt.Offset(5, 5);
+                        if (e.clickCount == 0)
+                            textBox1.Location = pt;
+                        else if (e.clickCount == 1)
                         {
-                            float dx = pt2.X - pt1.X;
-                            float dy = pt2.Y - pt1.Y;
-                            float px = dy;
-                            float py = -dx;
-                            float length = (float)Math.Sqrt(px * px + py * py);
-                            if (length > 0) // Отрезок не вырожден в точку
+                            var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
+                            var pt2 = e.location;
+                            if (pt1 == pt2)
                             {
-                                px /= length;
-                                py /= length;
-                                var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
-                                var shift = px > 0 ? 50 : -50;
-                                var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
-                                midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
-                                textBox1.Location = Point.Ceiling(midpoint);
-                            }
-                        }
-                    }
-                    if (!textBox2.Visible) textBox2.Visible = true;
-                    pt.Offset(textBox1.Width + 5, 0);
-                    if (e.clickCount == 0)
-                        textBox2.Location = pt;
-                    else if (e.clickCount == 1)
-                    {
-                        var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
-                        var pt2 = e.location;
-                        if (pt1 == pt2)
-                        {
-                            pt2.Offset(0, 25);
-                            textBox2.Location = pt2;
-                        }
-                        else
-                        {
-                            float dx = pt2.X - pt1.X;
-                            float dy = pt2.Y - pt1.Y;
-                            float length = (float)Math.Sqrt(dx * dx + dy * dy);
-                            var plc = drawControl.PrepareMousePosition(e.location);
-                            var angle = Math.Abs(MmsPoint.GetAngle(e.first, plc));
-                            if (angle > 20 && length > textBox2.Width)
-                            {
-                                angle /= 2;
-                                var kf = (dy < 0) ? -1 : 1;
-                                var endX = pt1.X + length * Math.Cos(angle * Math.PI / 180);
-                                var endY = pt1.Y + kf * length * Math.Sin(angle * Math.PI / 180);
-                                var location = new Point((int)endX, (int)endY);
-                                location.Offset(-textBox2.Width / 2, -textBox2.Height / 2);
-                                textBox2.Location = location;
+                                pt2.Offset(0, -25);
+                                textBox1.Location = pt2;
                             }
                             else
                             {
-                                pt2.Offset(0, 15);
-                                textBox2.Location = pt2;
+                                float dx = pt2.X - pt1.X;
+                                float dy = pt2.Y - pt1.Y;
+                                float px = dy;
+                                float py = -dx;
+                                float length = (float)Math.Sqrt(px * px + py * py);
+                                if (length > 0) // Отрезок не вырожден в точку
+                                {
+                                    px /= length;
+                                    py /= length;
+                                    var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
+                                    var shift = px > 0 ? 50 : -50;
+                                    var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
+                                    midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
+                                    textBox1.Location = Point.Ceiling(midpoint);
+                                }
                             }
                         }
-                    }
-                    // показываем значения координат в полях ввода
-                    var ploc = drawControl.PrepareMousePosition(e.location);
-                    var ptm = new MmsPoint(this, ploc);
-                    textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, ploc).ToString();
-                    textBox1.SelectAll();
-                    textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, ploc);
-                    textBox2.SelectAll();
-                    break;
-                default:
-                    if (textBox1.Visible) textBox1.Visible = false;
-                    if (textBox2.Visible) textBox2.Visible = false;
-                    break;
+                        if (!textBox2.Visible) textBox2.Visible = true;
+                        pt.Offset(textBox1.Width + 5, 0);
+                        if (e.clickCount == 0)
+                            textBox2.Location = pt;
+                        else if (e.clickCount == 1)
+                        {
+                            var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
+                            var pt2 = e.location;
+                            if (pt1 == pt2)
+                            {
+                                pt2.Offset(0, 25);
+                                textBox2.Location = pt2;
+                            }
+                            else
+                            {
+                                float dx = pt2.X - pt1.X;
+                                float dy = pt2.Y - pt1.Y;
+                                float length = (float)Math.Sqrt(dx * dx + dy * dy);
+                                var plc = drawControl.PrepareMousePosition(e.location);
+                                var angle = Math.Abs(MmsPoint.GetAngle(e.first, plc));
+                                if (angle > 20 && length > textBox2.Width)
+                                {
+                                    angle /= 2;
+                                    var kf = (dy < 0) ? -1 : 1;
+                                    var endX = pt1.X + length * Math.Cos(angle * Math.PI / 180);
+                                    var endY = pt1.Y + kf * length * Math.Sin(angle * Math.PI / 180);
+                                    var location = new Point((int)endX, (int)endY);
+                                    location.Offset(-textBox2.Width / 2, -textBox2.Height / 2);
+                                    textBox2.Location = location;
+                                }
+                                else
+                                {
+                                    pt2.Offset(0, 15);
+                                    textBox2.Location = pt2;
+                                }
+                            }
+                        }
+                        // показываем значения координат в полях ввода
+                        var ploc = drawControl.PrepareMousePosition(e.location);
+                        var ptm = new MmsPoint(this, ploc);
+                        textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, ploc).ToString();
+                        textBox1.SelectAll();
+                        textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, ploc);
+                        textBox2.SelectAll();
+                        break;
+                    default:
+                        if (textBox1.Visible) textBox1.Visible = false;
+                        if (textBox2.Visible) textBox2.Visible = false;
+                        break;
+                }
+            }
+            else
+            {
+                if (textBox1.Visible) textBox1.Visible = false;
+                if (textBox2.Visible) textBox2.Visible = false;
             }
         }
 
@@ -192,6 +201,7 @@ namespace PetProj
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            drawControl.IsDynamicalEnter = Properties.Settings.Default.ModeDynamicalEnter;
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
         }
@@ -485,18 +495,37 @@ namespace PetProj
             rect.Height -= btnHideShowLeftPanel.Height + 1;
             rect.Width -= 1;
             gr.DrawRectangle(SystemPens.ControlDarkDark, rect);
-            var caption = "Свойства";
-            var sz = gr.MeasureString(caption, Font);
-            var gs = gr.Save();
-            gr.TranslateTransform(0f, (rect.Height + sz.Width + btnHideShowLeftPanel.Height) / 2f);
-            gr.RotateTransform(-90f);
-            gr.DrawString(caption, Font, SystemBrushes.ActiveCaptionText, PointF.Empty);
-            gr.Restore(gs);
+            var caption = "Свойства фигур";
+            using (var font = new Font("Segoe UI", 10f, FontStyle.Bold))
+            {
+                var sz = gr.MeasureString(caption, font);
+                var gs = gr.Save();
+                gr.TranslateTransform(0f, (rect.Height + sz.Width + btnHideShowLeftPanel.Height) / 2f);
+                gr.RotateTransform(-90f);
+                gr.DrawString(caption, font, SystemBrushes.ActiveCaptionText, PointF.Empty);
+                gr.Restore(gs);
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
             panLeftCaption.Invalidate();
+        }
+
+        /// <summary>
+        /// Включение/отключение режима динамического ввода F12
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiDynamicalEnter_Click(object sender, EventArgs e)
+        {
+            var mode = !drawControl.IsDynamicalEnter;
+            drawControl.IsDynamicalEnter = mode;
+            drawControl.UpdateInterface();
+            textBox1.Visible = drawControl.Focused && mode;
+            textBox2.Visible = drawControl.Focused && mode;
+            Properties.Settings.Default.ModeDynamicalEnter = mode;
+            Properties.Settings.Default.Save();
         }
     }
 }

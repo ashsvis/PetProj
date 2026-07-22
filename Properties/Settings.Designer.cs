@@ -34,5 +34,17 @@ namespace PetProj.Properties {
                 this["HideLeftPanel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ModeDynamicalEnter {
+            get {
+                return ((bool)(this["ModeDynamicalEnter"]));
+            }
+            set {
+                this["ModeDynamicalEnter"] = value;
+            }
+        }
     }
 }
