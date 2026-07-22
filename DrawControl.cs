@@ -32,7 +32,7 @@ namespace PetProj
         private readonly UndoRedoManager undoRedoManager;
 
         public bool Changed { get; private set; }
-        public int SelectionCount => selectionController.Selection.Count;
+        public SelectionController SelectionController => selectionController;
 
         public event EventHandler OnSelectionMode;
         public event EventHandler<string> OnToolTipChanged;
@@ -56,9 +56,10 @@ namespace PetProj
             UpdateInterface();
         }
 
-        private void UpdateInterface()
+        public void UpdateInterface()
         {
             Invalidate();
+            zoomPad.Invalidate();
         }
 
         private void zoomPad_OnDraw(object sender, ZoomControl.DrawEventArgs e)
@@ -399,7 +400,10 @@ namespace PetProj
                 firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
+                {
                     selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
+                    OnSelected?.Invoke(this, selectionController.Selection);
+                }
             }
             else if (mouseClickCount == 1) // это второе нажатие
             {
@@ -419,15 +423,18 @@ namespace PetProj
                                     {
                                         fig.DrawGlowed(false);
                                         selectionController.Selection.Add(fig);
+                                        OnSelected?.Invoke(this, selectionController.Selection);
                                     }
                                 },
                                 (manager, fig) =>
                                 {
                                     if (selectionController.Selection.Contains(fig))
+                                    {
                                         selectionController.Selection.Remove(fig);
+                                        OnSelected?.Invoke(this, selectionController.Selection);
+                                    }
                                 }
                             );
-                        OnSelected?.Invoke(this, selectionController.Selection);
                         // при отсутствии других режимов - режим выбора, и второе нажатие
                         // сбрасывает количество нажатий
                         mouseClickCount = 0;
@@ -491,12 +498,14 @@ namespace PetProj
             {
                 mouseClickCount = 0;
                 selectionController.Clear();
+                OnSelected?.Invoke(this, selectionController.Selection);
                 SetMode(EditorMode.Selection);
             }
             else if (editorMode == EditorMode.Selection)
             {
                 mouseClickCount = 0;
                 selectionController.Clear();
+                OnSelected?.Invoke(this, selectionController.Selection);
             }
             else if (editorMode != EditorMode.Selection)
                 SetMode(EditorMode.Selection);
@@ -642,6 +651,7 @@ namespace PetProj
                                 underCursor.Remove(fig);
                         }
                     );
+                OnSelected?.Invoke(this, selectionController.Selection);
             }
             if (mouseClickCount == 0)
             {
@@ -661,7 +671,10 @@ namespace PetProj
             var pt = PrepareMousePosition(mousePosition);
 
             if (e.Button == MouseButtons.Left)
+            {
                 selectionController.OnMouseUp(pt, ModifierKeys);
+                OnSelected?.Invoke(this, selectionController.Selection);
+            }
 
             zoomPad.Invalidate();
         }

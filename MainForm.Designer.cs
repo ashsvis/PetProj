@@ -97,7 +97,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panLeftCaption = new System.Windows.Forms.Panel();
-            this.propsEditorsHolder = new System.Windows.Forms.Panel();
+            this.panelTools = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -716,7 +716,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panLeftCaption, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.propsEditorsHolder, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panelTools, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -738,14 +738,14 @@
             this.panLeftCaption.TabIndex = 3;
             this.panLeftCaption.Paint += new System.Windows.Forms.PaintEventHandler(this.panLeftCaption_Paint);
             // 
-            // propsEditorsHolder
+            // panelTools
             // 
-            this.propsEditorsHolder.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.propsEditorsHolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propsEditorsHolder.Location = new System.Drawing.Point(23, 3);
-            this.propsEditorsHolder.Name = "propsEditorsHolder";
-            this.propsEditorsHolder.Size = new System.Drawing.Size(224, 644);
-            this.propsEditorsHolder.TabIndex = 4;
+            this.panelTools.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.panelTools.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTools.Location = new System.Drawing.Point(23, 3);
+            this.panelTools.Name = "panelTools";
+            this.panelTools.Size = new System.Drawing.Size(224, 644);
+            this.panelTools.TabIndex = 4;
             // 
             // MainForm
             // 
@@ -852,7 +852,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panLeftCaption;
-        private System.Windows.Forms.Panel propsEditorsHolder;
+        private System.Windows.Forms.Panel panelTools;
     }
 }
 

@@ -9,8 +9,8 @@ namespace PetProj.Controls
 {
     public partial class BorderStyleEditor : UserControl, IEditor<Selection>
     {
-        private Selection _selection;
-        private int _updating;
+        private Selection selection;
+        private int updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -41,16 +41,16 @@ namespace PetProj.Controls
             // check visibility
             Visible = selection.ForAll(f => f.Style.BorderStyle != null); 
             // show the editor only if all figures contain BorderStyle
-            if (!Visible) return; // do not build anything            
+            if (!Visible || selection == null) return; // do not build anything            
 
             // remember editing object
-            _selection = selection;
+            this.selection = selection;
 
             // get list of objects
             var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
 
             // copy properties of object to GUI
-            _updating++;
+            updating++;
 
             cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
             nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
@@ -58,18 +58,18 @@ namespace PetProj.Controls
             lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
             cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
 
-            _updating--;
+            updating--;
         }
 
         private void UpdateObject()
         {
-            if (_updating > 0) return; // we are in updating mode
+            if (updating > 0 || selection == null) return; // we are in updating mode
 
             // fire event
             StartChanging(this, new ChangingEventArgs("Border Style"));
 
             // get list of objects
-            var borderStyles = _selection.Select(f => f.Style.BorderStyle).ToList();
+            var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
 
             // send values back from GUI to object
             borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);

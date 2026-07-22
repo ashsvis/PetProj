@@ -98,13 +98,6 @@ namespace PetProj.Controllers
                 // если этой фигуры не было в списке
                 if (!selection.Contains(fig))
                 {
-                    /*
-                    // если не нажата управляющая клавиша Shift
-                    // в режиме изменения вершим может быть выбрана только одна фигура
-                    if (!modifierKeys.HasFlag(Keys.Shift))
-                        selection.Clear(); // очистим список выбранных
-                    // то добавим её в список
-                    */
                     fig.DrawGlowed(false);
                     selection.Add(fig);
                     OnSelectedFigureChanged();
@@ -112,8 +105,7 @@ namespace PetProj.Controllers
                 else
                 {
                     // при нажатой клавише Shift удаляем эту фигуру из списка выбора
-                    // если она не последняя
-                    if (selection.Count > 1 && modifierKeys.HasFlag(Keys.Shift))
+                    if (selection.Count > 0 && modifierKeys.HasFlag(Keys.Shift))
                     {
                         selection.Remove(fig);
                         OnSelectedFigureChanged();

@@ -61,11 +61,14 @@
     <Compile Include="Common\ICommand.cs" />
     <Compile Include="Common\IUndoRedoSupport.cs" />
     <Compile Include="Common\ParseHelper.cs" />
+    <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controls\BorderStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BorderStyleEditor.Designer.cs" />
+    <Compile Include="Controls\BorderStyleEditor.Designer.cs">
+      <DependentUpon>BorderStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ControlsHelper.cs" />
     <Compile Include="Controls\IEditor.cs" />
     <Compile Include="DrawControl.cs">
@@ -114,7 +117,9 @@
     <Compile Include="ZoomControl.Designer.cs">
       <DependentUpon>ZoomControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\BorderStyleEditor.resx" />
+    <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
+      <DependentUpon>BorderStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DrawControl.resx">
       <DependentUpon>DrawControl.cs</DependentUpon>
     </EmbeddedResource>

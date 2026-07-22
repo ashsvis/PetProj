@@ -1,4 +1,7 @@
 ﻿using PetProj.Common;
+using PetProj.Controllers;
+using PetProj.Controls;
+using PetProj.Selections;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -20,11 +23,49 @@ namespace PetProj
             drawControl.Enter += DrawControl_Enter;
             drawControl.OnSelected += DrawControl_OnSelected;
             placeHolder.Controls.Add(drawControl);
+            ConnectEditors();
+        }
+
+        private void ConnectEditors()
+        {
+            panelTools.Controls.Clear();
+            var editors = new[]
+            {
+                typeof(BorderStyleEditor),
+            };
+            foreach (var typeName in editors)
+            {
+                var uc = (UserControl)Activator.CreateInstance(typeName);
+                if (uc is IEditor<Selection> figEditor)
+                {
+                    figEditor.StartChanging += FigEditor_StartChanging;
+                    figEditor.Changed += FigEditor_Changed;
+                }
+                panelTools.Controls.Add(uc);
+            }
+            BuildInterface();
+        }
+
+        private void FigEditor_StartChanging(object sender, ChangingEventArgs e)
+        {
+
+        }
+
+        private void FigEditor_Changed(object sender, EventArgs e)
+        {
+            drawControl.UpdateInterface();
+        }
+
+        private  void BuildInterface()
+        {
+            foreach (var editor in panelTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
+                editor.Build(drawControl.SelectionController.Selection);
+
         }
 
         private void DrawControl_OnSelected(object sender, Selections.Selection e)
         {
-
+            BuildInterface();
         }
 
         private void DrawControl_Enter(object sender, EventArgs e)
@@ -225,16 +266,15 @@ namespace PetProj
             var changed = drawControl.Changed;
             tsmiSaveDocument.Enabled = changed;
             tsbSaveDocument.Enabled = changed;
-            //tsslStatus.Text = $"Выбрано объектов: {drawControl.SelectionCount}";
             if (drawControl is IUndoRedoSupport support)
             {
                 tsbUndo.Enabled = tsmiUndo.Enabled = support.CanUndo();
                 tsbRedo.Enabled = tsmiRedo.Enabled = support.CanRedo();
             }
-            tsmiMove.Enabled = tsbMove.Enabled = drawControl.SelectionCount > 0;
-            tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionCount > 0;
+            tsmiMove.Enabled = tsbMove.Enabled = drawControl.SelectionController.Selection.Count > 0;
+            tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
-                drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionCount > 0;
+                drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
         }
 
         /// <summary>
