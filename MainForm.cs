@@ -413,7 +413,7 @@ namespace PetProj
 
         private void btnHideShowLeftPanel_Click(object sender, EventArgs e)
         {
-            ShowHideLeftPanel(btnHideShowLeftPanel.Text == "<");
+            ShowHideLeftPanel(btnHideShowLeftPanel.Text == "«");
         }
 
         private void ShowHideLeftPanel(bool hide)
@@ -424,17 +424,39 @@ namespace PetProj
             {
                 propsHolder.Tag = propsHolder.Width;
                 propsHolder.Width = splitterHolders.MinSize;
-                btnHideShowLeftPanel.Text = ">";
+                btnHideShowLeftPanel.Text = "»";
                 splitterHolders.Visible = false;
                 toolTip1.SetToolTip(btnHideShowLeftPanel, "Показать панель");
             }
             else
             {
                 propsHolder.Width = (int)(propsHolder.Tag ?? 250);
-                btnHideShowLeftPanel.Text = "<";
+                btnHideShowLeftPanel.Text = "«";
                 splitterHolders.Visible = true;
                 toolTip1.SetToolTip(btnHideShowLeftPanel, "Спрятать панель");
             }
+        }
+
+        private void panLeftCaption_Paint(object sender, PaintEventArgs e)
+        {
+            var gr = e.Graphics;
+            var rect = ((Panel)sender).ClientRectangle;
+            rect.Offset(0, btnHideShowLeftPanel.Height - 1);
+            rect.Height -= btnHideShowLeftPanel.Height + 1;
+            rect.Width -= 1;
+            gr.DrawRectangle(SystemPens.ControlDarkDark, rect);
+            var caption = "Свойства";
+            var sz = gr.MeasureString(caption, Font);
+            var gs = gr.Save();
+            gr.TranslateTransform(0f, (rect.Height + sz.Width + btnHideShowLeftPanel.Height) / 2f);
+            gr.RotateTransform(-90f);
+            gr.DrawString(caption, Font, SystemBrushes.ActiveCaptionText, PointF.Empty);
+            gr.Restore(gs);
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            panLeftCaption.Invalidate();
         }
     }
 }

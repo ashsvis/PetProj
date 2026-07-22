@@ -211,13 +211,5 @@ namespace PetProj.Selections
             if (added.Count > 0)
                 addCopyAction(added);
         }
-
-        public bool ForAll(Func<Figure, bool> func)
-        {
-            var figures = new List<Figure>();
-            foreach (var figure in selected)
-                figures.Add(figure);
-            return figures.All(x => func(x));
-        }
     }
 }

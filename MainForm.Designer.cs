@@ -93,19 +93,18 @@
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.propsHolder = new System.Windows.Forms.Panel();
             this.btnHideShowLeftPanel = new System.Windows.Forms.Button();
-            this.tcLeftEditProps = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.propGrid = new System.Windows.Forms.PropertyGrid();
             this.splitterHolders = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panLeftCaption = new System.Windows.Forms.Panel();
+            this.propsEditorsHolder = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.placeHolder.SuspendLayout();
             this.propsHolder.SuspendLayout();
-            this.tcLeftEditProps.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panLeftCaption.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -240,7 +239,7 @@
             this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
             this.tsmiUndo.Name = "tsmiUndo";
             this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(209, 22);
+            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
             this.tsmiUndo.Text = "&Отмена действия";
             this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
@@ -250,14 +249,14 @@
             this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
             this.tsmiRedo.Name = "tsmiRedo";
             this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(209, 22);
+            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
             this.tsmiRedo.Text = "&Отмена действия";
             this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
             // tsmiCut
             // 
@@ -266,7 +265,7 @@
             this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCut.Name = "tsmiCut";
             this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(209, 22);
+            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
             this.tsmiCut.Text = "Вырезат&ь";
             // 
             // tsmiCopy
@@ -276,7 +275,7 @@
             this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCopy.Name = "tsmiCopy";
             this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(209, 22);
+            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
             this.tsmiCopy.Text = "&Копировать";
             // 
             // tsmiPaste
@@ -286,20 +285,20 @@
             this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiPaste.Name = "tsmiPaste";
             this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(209, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Enabled = false;
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(209, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
             this.tsmiDelete.Text = "Удалить";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
@@ -307,7 +306,7 @@
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
             this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiSelectAll.Size = new System.Drawing.Size(209, 22);
+            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
@@ -675,9 +674,7 @@
             // 
             // propsHolder
             // 
-            this.propsHolder.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.propsHolder.Controls.Add(this.btnHideShowLeftPanel);
-            this.propsHolder.Controls.Add(this.tcLeftEditProps);
+            this.propsHolder.Controls.Add(this.tableLayoutPanel1);
             this.propsHolder.Dock = System.Windows.Forms.DockStyle.Left;
             this.propsHolder.Location = new System.Drawing.Point(0, 49);
             this.propsHolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -689,71 +686,66 @@
             // 
             this.btnHideShowLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHideShowLeftPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
-            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(230, 0);
+            this.btnHideShowLeftPanel.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnHideShowLeftPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHideShowLeftPanel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnHideShowLeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.btnHideShowLeftPanel.Margin = new System.Windows.Forms.Padding(0);
             this.btnHideShowLeftPanel.Name = "btnHideShowLeftPanel";
-            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(15, 22);
+            this.btnHideShowLeftPanel.Size = new System.Drawing.Size(20, 22);
             this.btnHideShowLeftPanel.TabIndex = 2;
-            this.btnHideShowLeftPanel.Text = "<";
+            this.btnHideShowLeftPanel.Text = "«";
             this.toolTip1.SetToolTip(this.btnHideShowLeftPanel, "Спрятать панель");
             this.btnHideShowLeftPanel.UseVisualStyleBackColor = true;
             this.btnHideShowLeftPanel.Click += new System.EventHandler(this.btnHideShowLeftPanel_Click);
-            // 
-            // tcLeftEditProps
-            // 
-            this.tcLeftEditProps.Controls.Add(this.tabPage1);
-            this.tcLeftEditProps.Controls.Add(this.tabPage2);
-            this.tcLeftEditProps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcLeftEditProps.Location = new System.Drawing.Point(0, 0);
-            this.tcLeftEditProps.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tcLeftEditProps.Name = "tcLeftEditProps";
-            this.tcLeftEditProps.SelectedIndex = 0;
-            this.tcLeftEditProps.Size = new System.Drawing.Size(246, 646);
-            this.tcLeftEditProps.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Size = new System.Drawing.Size(238, 618);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Свойства фигур";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.propGrid);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage2.Size = new System.Drawing.Size(238, 618);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Прочие свойства";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // propGrid
-            // 
-            this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propGrid.Location = new System.Drawing.Point(4, 3);
-            this.propGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.propGrid.Name = "propGrid";
-            this.propGrid.Size = new System.Drawing.Size(230, 612);
-            this.propGrid.TabIndex = 0;
             // 
             // splitterHolders
             // 
             this.splitterHolders.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.splitterHolders.Location = new System.Drawing.Point(250, 49);
             this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.splitterHolders.MinSize = 20;
+            this.splitterHolders.MinSize = 19;
             this.splitterHolders.Name = "splitterHolders";
             this.splitterHolders.Size = new System.Drawing.Size(4, 650);
             this.splitterHolders.TabIndex = 5;
             this.splitterHolders.TabStop = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panLeftCaption, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.propsEditorsHolder, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(250, 650);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // panLeftCaption
+            // 
+            this.panLeftCaption.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panLeftCaption.Controls.Add(this.btnHideShowLeftPanel);
+            this.panLeftCaption.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panLeftCaption.Location = new System.Drawing.Point(0, 0);
+            this.panLeftCaption.Margin = new System.Windows.Forms.Padding(0);
+            this.panLeftCaption.MinimumSize = new System.Drawing.Size(20, 0);
+            this.panLeftCaption.Name = "panLeftCaption";
+            this.panLeftCaption.Size = new System.Drawing.Size(20, 650);
+            this.panLeftCaption.TabIndex = 3;
+            this.panLeftCaption.Paint += new System.Windows.Forms.PaintEventHandler(this.panLeftCaption_Paint);
+            // 
+            // propsEditorsHolder
+            // 
+            this.propsEditorsHolder.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.propsEditorsHolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propsEditorsHolder.Location = new System.Drawing.Point(23, 3);
+            this.propsEditorsHolder.Name = "propsEditorsHolder";
+            this.propsEditorsHolder.Size = new System.Drawing.Size(224, 644);
+            this.propsEditorsHolder.TabIndex = 4;
             // 
             // MainForm
             // 
@@ -774,6 +766,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Чертилка";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -783,8 +776,8 @@
             this.placeHolder.ResumeLayout(false);
             this.placeHolder.PerformLayout();
             this.propsHolder.ResumeLayout(false);
-            this.tcLeftEditProps.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panLeftCaption.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -855,12 +848,11 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Panel propsHolder;
         private System.Windows.Forms.Splitter splitterHolders;
-        private System.Windows.Forms.PropertyGrid propGrid;
-        private System.Windows.Forms.TabControl tcLeftEditProps;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnHideShowLeftPanel;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panLeftCaption;
+        private System.Windows.Forms.Panel propsEditorsHolder;
     }
 }
 

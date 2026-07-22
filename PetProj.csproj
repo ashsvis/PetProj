@@ -66,6 +66,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\BorderStyleEditor.Designer.cs" />
+    <Compile Include="Controls\ControlsHelper.cs" />
     <Compile Include="Controls\IEditor.cs" />
     <Compile Include="DrawControl.cs">
       <SubType>UserControl</SubType>
