@@ -85,37 +85,44 @@ namespace PetProj
                 switch (drawControl.EditorMode)
                 {
                     case EditorMode.BuildLines:
-                        var pt = e.location;
+                        var pt = new PointF(e.location.X, e.location.Y);
+                        float dx = pt.X - e.first.X;
+                        float dy = pt.Y - e.first.Y;
+                        if (drawControl.IsDrawOrtoMode)
+                        {
+                            if (dx < dy)
+                                pt.X = (int)e.first.X;
+                            else
+                                pt.Y = (int)e.first.Y;
+                        }
                         if (!textBox1.Visible)
                         {
                             textBox1.Visible = true;
                             textBox1.Focus();
                             textBox1.SelectAll();
                         }
-                        pt.Offset(5, 5);
+                        pt = PointF.Add(pt, new SizeF(5, 5));
                         if (e.clickCount == 0)
-                            textBox1.Location = pt;
+                            textBox1.Location = Point.Ceiling(pt);
                         else if (e.clickCount == 1)
                         {
                             var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
-                            var pt2 = e.location;
+                            var pt2 = pt;
                             if (pt1 == pt2)
                             {
-                                pt2.Offset(0, -25);
-                                textBox1.Location = pt2;
+                                pt2 = PointF.Add(pt2, new SizeF(0, -25));
+                                textBox1.Location = Point.Ceiling(pt2);
                             }
                             else
                             {
-                                float dx = pt2.X - pt1.X;
-                                float dy = pt2.Y - pt1.Y;
                                 float px = dy;
                                 float py = -dx;
-                                float length = (float)Math.Sqrt(px * px + py * py);
+                                float length = pt2.Vector(pt1).Length();
                                 if (length > 0) // Отрезок не вырожден в точку
                                 {
                                     px /= length;
                                     py /= length;
-                                    var mid = new Point((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
+                                    var mid = new PointF((pt1.X + pt2.X) / 2, (pt1.Y + pt2.Y) / 2);
                                     var shift = px > 0 ? 50 : -50;
                                     var midpoint = Point.Ceiling(new PointF(mid.X - px * shift, mid.Y - py * shift));
                                     midpoint.Offset(-textBox1.Width / 2, -textBox1.Height / 2);
@@ -124,25 +131,22 @@ namespace PetProj
                             }
                         }
                         if (!textBox2.Visible) textBox2.Visible = true;
-                        pt.Offset(textBox1.Width + 5, 0);
+                        pt = PointF.Add(pt, new SizeF(textBox1.Width + 5, 0));
                         if (e.clickCount == 0)
-                            textBox2.Location = pt;
+                            textBox2.Location = Point.Ceiling(pt);
                         else if (e.clickCount == 1)
                         {
                             var pt1 = Point.Ceiling(drawControl.GetFirstMouseDownPosition());
-                            var pt2 = e.location;
+                            var pt2 = pt;
                             if (pt1 == pt2)
                             {
-                                pt2.Offset(0, 25);
-                                textBox2.Location = pt2;
+                                pt2 = PointF.Add(pt2, new SizeF(0, 25));
+                                textBox2.Location = Point.Ceiling(pt2);
                             }
                             else
                             {
-                                float dx = pt2.X - pt1.X;
-                                float dy = pt2.Y - pt1.Y;
-                                float length = (float)Math.Sqrt(dx * dx + dy * dy);
-                                var plc = drawControl.PrepareMousePosition(e.location);
-                                var angle = Math.Abs(MmsPoint.GetAngle(e.first, plc));
+                                float length = pt2.Vector(pt1).Length();
+                                var angle = Math.Abs(pt2.Vector(pt1).AngleDegree());
                                 if (angle > 20 && length > textBox2.Width)
                                 {
                                     angle /= 2;
@@ -155,17 +159,17 @@ namespace PetProj
                                 }
                                 else
                                 {
-                                    pt2.Offset(0, 15);
-                                    textBox2.Location = pt2;
+                                    pt2 = PointF.Add(pt2, new SizeF(0, 15));
+                                    textBox2.Location = Point.Ceiling(pt2);
                                 }
                             }
                         }
                         // показываем значения координат в полях ввода
                         var ploc = drawControl.PrepareMousePosition(e.location);
-                        var ptm = new MmsPoint(this, ploc);
-                        textBox1.Text = e.clickCount == 0 ? ptm.X.ToString() : MmsPoint.GetLength(this, e.first, ploc).ToString();
+                        var vector = ploc.Vector(e.first);
+                        textBox1.Text = e.clickCount == 0 ? ploc.X.ToString() : vector.Length().ToString();
                         textBox1.SelectAll();
-                        textBox2.Text = e.clickCount == 0 ? ptm.Y.ToString() : MmsPoint.GetAngleString(e.first, ploc);
+                        textBox2.Text = e.clickCount == 0 ? ploc.Y.ToString() : $"{vector.AngleDegree()}°";
                         textBox2.SelectAll();
                         break;
                     default:
@@ -201,6 +205,7 @@ namespace PetProj
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            drawControl.IsDrawOrtoMode = Properties.Settings.Default.ModeDrawOrto;
             drawControl.IsDynamicalEnter = Properties.Settings.Default.ModeDynamicalEnter;
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
@@ -437,23 +442,21 @@ namespace PetProj
                         if (drawControl.MouseClickCount == 0)
                         {
                             // ввод координат X и Y
-                            if (double.TryParse(textBox1.Text, out double xmm) &&
-                                double.TryParse(textBox2.Text, out double ymm))
+                            if (double.TryParse(textBox1.Text, out double x) &&
+                                double.TryParse(textBox2.Text, out double y))
                             {
                                 textBox1.Focus();
-                                int dpi = this.DeviceDpi;
-                                var kf = 25.4 / dpi;
-                                drawControl.SetFirstPoint(xmm / kf, ymm / kf);
+                                drawControl.SetFirstPoint(x, y);
                             }
                         }
                         else if (drawControl.MouseClickCount == 1)
                         {
                             // ввод длины отрезка и угла наклона к горизонтали
-                            if (double.TryParse(textBox1.Text, out double lengthmm) &&
-                                double.TryParse(textBox2.Text.TrimEnd('°'), out double angledeg))
+                            if (double.TryParse(textBox1.Text, out double length) &&
+                                double.TryParse(textBox2.Text.TrimEnd('°'), out double angle))
                             {
                                 textBox1.Focus();
-                                drawControl.SetLineLengthAndAngle(lengthmm, angledeg);
+                                drawControl.SetLineLengthAndAngle(length, angle);
                             }
                         }
                         break;
@@ -525,6 +528,14 @@ namespace PetProj
             textBox1.Visible = drawControl.Focused && mode;
             textBox2.Visible = drawControl.Focused && mode;
             Properties.Settings.Default.ModeDynamicalEnter = mode;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tsmiOrto_Click(object sender, EventArgs e)
+        {
+            var mode = !drawControl.IsDrawOrtoMode;
+            drawControl.IsDrawOrtoMode = mode;
+            Properties.Settings.Default.ModeDrawOrto = mode;
             Properties.Settings.Default.Save();
         }
     }

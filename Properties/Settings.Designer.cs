@@ -46,5 +46,17 @@ namespace PetProj.Properties {
                 this["ModeDynamicalEnter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ModeDrawOrto {
+            get {
+                return ((bool)(this["ModeDrawOrto"]));
+            }
+            set {
+                this["ModeDrawOrto"] = value;
+            }
+        }
     }
 }

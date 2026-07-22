@@ -100,6 +100,7 @@
             this.panelTools = new System.Windows.Forms.FlowLayoutPanel();
             this.splitterHolders = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -318,6 +319,7 @@
             this.tsmiMove,
             this.tsmiMoveCopy,
             this.toolStripMenuItem1,
+            this.tsmiOrto,
             this.tsmiDynamicalEnter});
             this.tsmiCommands.Name = "tsmiCommands";
             this.tsmiCommands.Size = new System.Drawing.Size(70, 20);
@@ -766,6 +768,14 @@
             this.splitterHolders.TabIndex = 5;
             this.splitterHolders.TabStop = false;
             // 
+            // tsmiOrto
+            // 
+            this.tsmiOrto.Name = "tsmiOrto";
+            this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.tsmiOrto.Size = new System.Drawing.Size(210, 22);
+            this.tsmiOrto.Text = "Ортогональность";
+            this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -784,6 +794,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Чертилка";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStrip1.ResumeLayout(false);
@@ -874,6 +885,7 @@
         private System.Windows.Forms.FlowLayoutPanel panelTools;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem tsmiDynamicalEnter;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOrto;
     }
 }
 

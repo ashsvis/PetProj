@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbPattern = new System.Windows.Forms.Label();
             this.lbWidth = new System.Windows.Forms.Label();
             this.lbOpacity = new System.Windows.Forms.Label();
@@ -46,7 +47,9 @@
             this.tbDeltaY = new System.Windows.Forms.TextBox();
             this.tbLength = new System.Windows.Forms.TextBox();
             this.tbAngle = new System.Windows.Forms.TextBox();
+            this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.SuspendLayout();
             // 
             // lbPattern
@@ -186,7 +189,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(99, 23);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Длина, мм";
+            this.label5.Text = "Длина";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label6
@@ -208,6 +211,7 @@
             this.tbStartX.Name = "tbStartX";
             this.tbStartX.Size = new System.Drawing.Size(96, 23);
             this.tbStartX.TabIndex = 10;
+            this.tbStartX.Validated += new System.EventHandler(this.tbText_Validated);
             // 
             // tbStartY
             // 
@@ -216,6 +220,7 @@
             this.tbStartY.Name = "tbStartY";
             this.tbStartY.Size = new System.Drawing.Size(95, 23);
             this.tbStartY.TabIndex = 10;
+            this.tbStartY.Validated += new System.EventHandler(this.tbText_Validated);
             // 
             // tbEndX
             // 
@@ -224,6 +229,7 @@
             this.tbEndX.Name = "tbEndX";
             this.tbEndX.Size = new System.Drawing.Size(95, 23);
             this.tbEndX.TabIndex = 10;
+            this.tbEndX.Validated += new System.EventHandler(this.tbText_Validated);
             // 
             // tbEndY
             // 
@@ -232,6 +238,7 @@
             this.tbEndY.Name = "tbEndY";
             this.tbEndY.Size = new System.Drawing.Size(95, 23);
             this.tbEndY.TabIndex = 10;
+            this.tbEndY.Validated += new System.EventHandler(this.tbText_Validated);
             // 
             // tbDeltaX
             // 
@@ -269,6 +276,10 @@
             this.tbAngle.Size = new System.Drawing.Size(95, 23);
             this.tbAngle.TabIndex = 10;
             // 
+            // errorProv
+            // 
+            this.errorProv.ContainerControl = this;
+            // 
             // LineGeometryEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -278,9 +289,10 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LineGeometryEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(200, 237);
+            this.Size = new System.Drawing.Size(200, 235);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -304,5 +316,6 @@
         private System.Windows.Forms.TextBox tbDeltaY;
         private System.Windows.Forms.TextBox tbLength;
         private System.Windows.Forms.TextBox tbAngle;
+        private System.Windows.Forms.ErrorProvider errorProv;
     }
 }

@@ -87,7 +87,17 @@ namespace PetProj.Common
             return (float)Math.Atan2(c.Y, c.X);
         }
 
-/* not used
+        /// <summary>
+        /// Angle (-180° ; 180°]
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static float AngleDegree(this PointF c)
+        {
+            return (float)(Math.Atan2(c.Y, c.X) * 180 / Math.PI);
+        }
+
+
         /// <summary>
         /// Поворот вектора на угол
         /// </summary>
@@ -110,7 +120,18 @@ namespace PetProj.Common
         {
             return new PointF(point2.X - point1.X, point2.Y - point1.Y);
         }
- * 
+
+        /// <summary>
+        /// Строим вектор на координатах двух точек
+        /// </summary>
+        /// <param name="point2"></param>
+        /// <param name="point1"></param>
+        /// <returns>Вектор</returns>
+        public static PointF Vector(this Point point2, Point point1)
+        {
+            return new PointF(point2.X - point1.X, point2.Y - point1.Y);
+        }
+
         /// <summary>
         /// Ортогональная проекция Вектора 1 на Вектор 2
         /// </summary>
@@ -173,6 +194,5 @@ namespace PetProj.Common
         {
             return new PointF(vector.X, vector.Y);
         }
- */
     }
 }

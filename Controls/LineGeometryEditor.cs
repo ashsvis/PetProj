@@ -54,20 +54,21 @@ namespace PetProj.Controls
             // копируем свойства объекта в GUI
             updating++;
 
-            var start = new MmsPoint(this, lineStyles.GetProperty(f => f.StartPoint));
-            var end = new MmsPoint(this, lineStyles.GetProperty(f => f.EndPoint));
+            var start = lineStyles.GetProperty(f => f.StartPoint);
+            var end = lineStyles.GetProperty(f => f.EndPoint);
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;
             float length = (float)Math.Sqrt(dx * dx + dy * dy);
             var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            if (angle < 0) angle = 360 + angle;
             tbStartX.Text = start.X.ToString();
             tbStartY.Text = start.Y.ToString();
             tbEndX.Text = end.X.ToString();
             tbEndY.Text = end.Y.ToString();
             tbDeltaX.Text = $"{dx}";
             tbDeltaY.Text = $"{dy}";
-            tbLength.Text = $"{length}";
-            tbAngle.Text = $"{angle}";
+            tbLength.Text = $"{length:F1}";
+            tbAngle.Text = $"{angle:F1}";
 
             updating--;
         }
@@ -77,51 +78,32 @@ namespace PetProj.Controls
             if (updating > 0 || selection == null) return; // we are in updating mode
 
             // вызывем событие
-            StartChanging(this, new ChangingEventArgs("Border Style"));
+            StartChanging(this, new ChangingEventArgs("Line Geometry"));
 
             // получаем список объектов
-            var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
+            var lineStyles = selection.Select(f => f.Geometry as AddLineGeometry).ToList();
 
             // посылаем значения назад из GUI в объект
-            //borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
-            //borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
-            //borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
-            //borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
-            //borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
+            lineStyles.SetProperty(f => f.Points[0] = new PointF(float.Parse(tbStartX.Text), float.Parse(tbStartY.Text)));
+            lineStyles.SetProperty(f => f.Points[1] = f.EndPoint = new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
 
             // вызывем событие
             Changed(this, EventArgs.Empty);
         }
 
-        private void cbVisible_CheckedChanged(object sender, EventArgs e)
+        private void tbText_Validated(object sender, EventArgs e)
         {
-            //lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
-            //    lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
-            UpdateObject();
-        }
-
-        private void lbColor_Click(object sender, EventArgs e)
-        {
-            //var dlg = new ColorDialog { Color = lbColor.BackColor };
-            //if (dlg.ShowDialog() == DialogResult.OK)
-            //    lbColor.BackColor = dlg.Color;
-        }
-
-        private void cbPattern_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            var g = e.Graphics;
-            // рисуем фон окна редактора
-            e.DrawBackground();
-            var rect = new Rectangle(e.Bounds.X, e.Bounds.Top, e.Bounds.Width - 1, e.Bounds.Height - 1);
-            rect.Inflate(-4, 0);
-            using (var p = new Pen(e.ForeColor))
+            try
             {
-                p.Width = 2;
-                p.DashStyle = (DashStyle) e.Index;
-                g.DrawLine(p, new Point(rect.Left, rect.Top + rect.Height/2),
-                           new Point(rect.Right, rect.Top + rect.Height/2));
+                UpdateObject();
+                errorProv.Clear();
             }
-            e.DrawFocusRectangle();
+            catch 
+            {
+                var tbox = (TextBox)sender;
+                errorProv.SetError(tbox, $"{tbox.Text} не число!");
+                tbox.Focus();
+            }
         }
     }
 }

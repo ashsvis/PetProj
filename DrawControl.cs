@@ -22,6 +22,7 @@ namespace PetProj
         private EditorMode editorMode;
 
         public bool IsDynamicalEnter { get; set; } = true;
+        public bool IsDrawOrtoMode { get; set; } = false;
 
         public EditorMode EditorMode => editorMode;
         public int MouseClickCount => mouseClickCount;
@@ -179,6 +180,15 @@ namespace PetProj
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
+            if (IsDrawOrtoMode)
+            {
+                var dx = Math.Abs(mousePosition.X - firstMouseDown.X);
+                var dy = Math.Abs(mousePosition.Y - firstMouseDown.Y);
+                if (dx < dy)
+                    mousePosition.X = firstMouseDown.X;
+                else
+                    mousePosition.Y = firstMouseDown.Y;
+            }
             var pt2 = PrepareMousePosition(mousePosition);
             using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
             {
@@ -389,13 +399,9 @@ namespace PetProj
         private void zoomPad_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 PressLeftMouseButton(e.Location);
-            }
             else if (e.Button == MouseButtons.Right)
-            {
                 PressRightMouseButton(e.Location);
-            }
         }
 
         private void PressLeftMouseButton(PointF point, bool calledByCode = false)
@@ -450,6 +456,16 @@ namespace PetProj
                     case EditorMode.BuildLines:
                         // построение отрезков линий по двум точкам (концы отрезка)
                         pt1 = firstMouseDown;
+                        if (IsDrawOrtoMode)
+                        {
+                            var dx = Math.Abs(firstMouseDown.X - mousePosition.X);
+                            var dy = Math.Abs(firstMouseDown.Y - mousePosition.Y);
+                            if (dx < dy)
+                                mousePosition.X = firstMouseDown.X;
+                            else
+                                mousePosition.Y = firstMouseDown.Y;
+                        }
+
                         pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
@@ -602,36 +618,34 @@ namespace PetProj
                 {
                     case EditorMode.BuildLines:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {new MmsPoint(this, pt)}");
+                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {pt}");
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown;
                             var pt2 = PrepareMousePosition(mousePosition);
                             OnToolTipChanged?.Invoke(this,
-                                $"Укажите вторую точку отрезка: ({new MmsPoint(this, pt1)} - {new MmsPoint(this, pt2)}), длина: {MmsPoint.GetLength(this, pt1, pt2)}");
+                                $"Укажите вторую точку отрезка: ({pt1} - {pt2}), длина: {pt1.DotScalar(pt2)}");
                         }
                         break;
                     case EditorMode.BuildRectangles:
                         if (mouseClickCount == 0)
                             OnToolTipChanged?.Invoke(this,
-                                $"Укажите первый угол прямоугольника: {new MmsPoint(this, pt)}");
+                                $"Укажите первый угол прямоугольника: {pt}");
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown; // первая точка нажатия
                             var pt3 = PrepareMousePosition(mousePosition); // вторая точка нажатия
                             var pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
                             var pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
-                            int dpi = this.DeviceDpi;
-                            var kf = 25.4 / dpi;
-                            var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y)) * kf;
-                            var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y)) * kf;
+                            var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
+                            var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y));
                             OnToolTipChanged?.Invoke(this,
-                                $"Укажите противоположный угол прямоугольника: {new MmsPoint(this, pt3)}, ширина: {width}, высота: {height}," +
+                                $"Укажите противоположный угол прямоугольника: {pt3}, ширина: {width}, высота: {height}," +
                                 $" площадь: {width * height}, периметр: {(width + height) * 2}");
                         }
                         break;
                     default:
-                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {new MmsPoint(this, pt)}");
+                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {pt}. Размер области рисования: {ClientSize}");
                         break;
                 }
             }
@@ -923,7 +937,7 @@ namespace PetProj
 
         private void zoomPad_OnPanOrZoom(object sender, ZoomControl.PanOrZoomEventArgs e)
         {
-            OnToolTipChanged?.Invoke(this, $"Смещение: {new MmsPoint(this, e.ViewPort)}, зум: {e.Zoom}");
+            OnToolTipChanged?.Invoke(this, $"Смещение: {e.ViewPort}, зум: {e.Zoom}. Размер области рисования: {ClientSize}");
         }
 
         public void SetFirstPoint(double pxX, double pxY)
@@ -931,7 +945,7 @@ namespace PetProj
             mousePosition = new PointF((float)pxX, (float)pxY);
             PressLeftMouseButton(mousePosition, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
-            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {new MmsPoint(this, mousePosition)}");
+            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {mousePosition}. Размер области рисования: {ClientSize}");
         }
 
         public void EscapeKeyPressed()
@@ -939,12 +953,12 @@ namespace PetProj
             PressRightMouseButton(MousePosition, calledByCode: true);
         }
 
-        public void SetLineLengthAndAngle(double lengthmm, double angledeg)
+        public void SetLineLengthAndAngle(double length, double angledeg)
         {
             // построение отрезков линий по первой точке (начало отрезка), длине и углу наклона
             var pt1 = firstMouseDown;
             double angleRad = angledeg * (Math.PI / 180);
-            var pt2 = new PointF(pt1.X + (float)(lengthmm * Math.Cos(angleRad)), pt1.Y + (float)(lengthmm * Math.Sin(angleRad)));
+            var pt2 = new PointF(pt1.X + (float)(length * Math.Cos(angleRad)), pt1.Y + (float)(length * Math.Sin(angleRad)));
             AddLine(pt1, pt2);
             //PressLeftMouseButton(pt2, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pt2.X, (int)pt2.Y, 0));
