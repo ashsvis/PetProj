@@ -180,16 +180,16 @@ namespace PetProj
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
+            var pt2 = PrepareMousePosition(mousePosition);
             if (IsDrawOrtoMode)
             {
-                var dx = Math.Abs(mousePosition.X - firstMouseDown.X);
-                var dy = Math.Abs(mousePosition.Y - firstMouseDown.Y);
+                var dx = Math.Abs(pt2.X - firstMouseDown.X);
+                var dy = Math.Abs(pt2.Y - firstMouseDown.Y);
                 if (dx < dy)
-                    mousePosition.X = firstMouseDown.X;
+                    pt2.X = firstMouseDown.X;
                 else
-                    mousePosition.Y = firstMouseDown.Y;
+                    pt2.Y = firstMouseDown.Y;
             }
-            var pt2 = PrepareMousePosition(mousePosition);
             using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
             {
                 pen.StartCap = LineCap.Round;
@@ -216,20 +216,33 @@ namespace PetProj
         /// <param name="pen"></param>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        private static void DrawAngleLine(Graphics graphics, Pen pen, PointF start, PointF end)
+        private void DrawAngleLine(Graphics graphics, Pen pen, PointF start, PointF end)
         {
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;
             float length = (float)Math.Sqrt(dx * dx + dy * dy);
-            if (length == 0) return; // Отрезок вырожден в точку
+            if (length == 0)
+            { 
+                // Отрезок вырожден в точку
+                return;
+            }
             // выносная линия, горизонтальная
             var b1 = PointF.Add(start, new SizeF(length, 0));
             graphics.DrawLine(pen, start, b1);
-            var rect = new RectangleF(start.X - length, start.Y - length, length * 2, length * 2);
-            var angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            var arcrect = new RectangleF(start.X - length, start.Y - length, length * 2, length * 2);
+            var angle = Math.Atan2(dy, dx);
+            var cx = start.X + length * Math.Cos(angle / 2);
+            var cy = start.Y + length * Math.Sin(angle / 2);
+            var mid = new PointF((float)cx, (float)cy);
+            var angleDegree = (float)(angle * 180 / Math.PI);
+            var L = Math.PI * length * Math.Abs(angleDegree) / 180;
+            if (L < 35)
+                mid = new PointF(end.X + 5, end.Y + 25);
+            var sarc = $"{angleDegree}°";
             try
             {
-                graphics.DrawArc(pen, rect, 0, (float)angle);
+                graphics.DrawArc(pen, arcrect, 0, angleDegree);
+                DrawText(graphics, pen, SystemBrushes.ButtonShadow, mid, sarc);
             }
             catch { }
         }
@@ -249,7 +262,11 @@ namespace PetProj
             float px = dy;
             float py = -dx;
             float length = (float)Math.Sqrt(px * px + py * py);
-            if (length == 0) return; // Отрезок вырожден в точку
+            if (length == 0)
+            {
+                // Отрезок вырожден в точку
+                return;
+            }
             px /= length;
             py /= length;
             // перпендикуляр в начале отрезка
@@ -264,12 +281,16 @@ namespace PetProj
             graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);
             PointF mid = px > 0 ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
             var slength = $"{length}";
+            DrawText(graphics, pen, Brushes.White, mid, slength);
+        }
+
+        private void DrawText(Graphics graphics, Pen pen, Brush background, PointF mid, string slength)
+        {
             using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
             {
                 var ms = graphics.MeasureString(slength, font);
                 var rect = new RectangleF(mid.X - ms.Width / 2, mid.Y - ms.Height / 2, ms.Width, ms.Height);
-                using (var brush = new SolidBrush(BackColor))
-                    graphics.FillRectangles(brush, new RectangleF[] { rect });
+                graphics.FillRectangles(background, new RectangleF[] { rect });
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
                 using (var brush = new SolidBrush(Color.Black))
                     graphics.DrawString(slength, font, brush, rect);
@@ -470,15 +491,16 @@ namespace PetProj
                         pt1 = firstMouseDown;
                         if (IsDrawOrtoMode)
                         {
-                            var dx = Math.Abs(firstMouseDown.X - mousePosition.X);
-                            var dy = Math.Abs(firstMouseDown.Y - mousePosition.Y);
+                            pt2 = PrepareMousePosition(mousePosition);
+                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
+                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
                             if (dx < dy)
-                                mousePosition.X = firstMouseDown.X;
+                                pt2.X = firstMouseDown.X;
                             else
-                                mousePosition.Y = firstMouseDown.Y;
+                                pt2.Y = firstMouseDown.Y;
                         }
-
-                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        else
+                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
                         mouseClickCount = 0;

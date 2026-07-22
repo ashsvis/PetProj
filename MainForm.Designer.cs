@@ -56,6 +56,7 @@
             this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,8 +91,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.timerUpdateControls = new System.Windows.Forms.Timer(this.components);
             this.propsHolder = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -100,11 +99,9 @@
             this.panelTools = new System.Windows.Forms.FlowLayoutPanel();
             this.splitterHolders = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.placeHolder.SuspendLayout();
             this.propsHolder.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panLeftCaption.SuspendLayout();
@@ -242,7 +239,7 @@
             this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
             this.tsmiUndo.Name = "tsmiUndo";
             this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiUndo.Size = new System.Drawing.Size(209, 22);
             this.tsmiUndo.Text = "&Отмена действия";
             this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
@@ -252,14 +249,14 @@
             this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
             this.tsmiRedo.Name = "tsmiRedo";
             this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiRedo.Size = new System.Drawing.Size(209, 22);
             this.tsmiRedo.Text = "&Отмена действия";
             this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiCut
             // 
@@ -268,7 +265,7 @@
             this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCut.Name = "tsmiCut";
             this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCut.Size = new System.Drawing.Size(209, 22);
             this.tsmiCut.Text = "Вырезат&ь";
             // 
             // tsmiCopy
@@ -278,7 +275,7 @@
             this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCopy.Name = "tsmiCopy";
             this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCopy.Size = new System.Drawing.Size(209, 22);
             this.tsmiCopy.Text = "&Копировать";
             // 
             // tsmiPaste
@@ -288,20 +285,20 @@
             this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiPaste.Name = "tsmiPaste";
             this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(209, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Enabled = false;
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(209, 22);
             this.tsmiDelete.Text = "Удалить";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
@@ -309,7 +306,7 @@
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
             this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
+            this.tsmiSelectAll.Size = new System.Drawing.Size(209, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
@@ -347,6 +344,14 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // tsmiOrto
+            // 
+            this.tsmiOrto.Name = "tsmiOrto";
+            this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.tsmiOrto.Size = new System.Drawing.Size(210, 22);
+            this.tsmiOrto.Text = "Ортогональность";
+            this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
             // 
             // tsmiDynamicalEnter
             // 
@@ -652,40 +657,12 @@
             // 
             this.placeHolder.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.placeHolder.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.placeHolder.Controls.Add(this.textBox2);
-            this.placeHolder.Controls.Add(this.textBox1);
             this.placeHolder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.placeHolder.Location = new System.Drawing.Point(254, 49);
             this.placeHolder.Margin = new System.Windows.Forms.Padding(0);
             this.placeHolder.Name = "placeHolder";
             this.placeHolder.Size = new System.Drawing.Size(1049, 650);
             this.placeHolder.TabIndex = 3;
-            // 
-            // textBox2
-            // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Location = new System.Drawing.Point(105, 23);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(70, 23);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.Visible = false;
-            this.textBox2.WordWrap = false;
-            this.textBox2.Enter += new System.EventHandler(this.textBox1_Enter);
-            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
-            // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Location = new System.Drawing.Point(28, 23);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(70, 23);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Visible = false;
-            this.textBox1.WordWrap = false;
-            this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
-            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // timerUpdateControls
             // 
@@ -768,14 +745,6 @@
             this.splitterHolders.TabIndex = 5;
             this.splitterHolders.TabStop = false;
             // 
-            // tsmiOrto
-            // 
-            this.tsmiOrto.Name = "tsmiOrto";
-            this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.tsmiOrto.Size = new System.Drawing.Size(210, 22);
-            this.tsmiOrto.Text = "Ортогональность";
-            this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -803,8 +772,6 @@
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.placeHolder.ResumeLayout(false);
-            this.placeHolder.PerformLayout();
             this.propsHolder.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panLeftCaption.ResumeLayout(false);
@@ -874,8 +841,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripButton tsbMoveCopy;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveCopy;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Panel propsHolder;
         private System.Windows.Forms.Splitter splitterHolders;
         private System.Windows.Forms.Button btnHideShowLeftPanel;
