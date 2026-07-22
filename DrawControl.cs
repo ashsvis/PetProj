@@ -242,7 +242,7 @@ namespace PetProj
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="halfLength"></param>
-        private static void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength)
+        private void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength)
         {
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;
@@ -262,6 +262,18 @@ namespace PetProj
             graphics.DrawLine(pen, de, ee);
             // выносная линия, соединяющая два перпендикуляра
             graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);
+            PointF mid = px > 0 ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
+            var slength = $"{length}";
+            using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
+            {
+                var ms = graphics.MeasureString(slength, font);
+                var rect = new RectangleF(mid.X - ms.Width / 2, mid.Y - ms.Height / 2, ms.Width, ms.Height);
+                using (var brush = new SolidBrush(BackColor))
+                    graphics.FillRectangles(brush, new RectangleF[] { rect });
+                graphics.DrawRectangles(pen, new RectangleF[] { rect });
+                using (var brush = new SolidBrush(Color.Black))
+                    graphics.DrawString(slength, font, brush, rect);
+            }
         }
 
         /// <summary>

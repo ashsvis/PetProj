@@ -97,7 +97,7 @@ namespace PetProj
                         }
                         if (!textBox1.Visible)
                         {
-                            textBox1.Visible = true;
+                            textBox1.Visible = false; // true;
                             textBox1.Focus();
                             textBox1.SelectAll();
                         }
@@ -130,7 +130,7 @@ namespace PetProj
                                 }
                             }
                         }
-                        if (!textBox2.Visible) textBox2.Visible = true;
+                        if (!textBox2.Visible) textBox2.Visible = false; // true;
                         pt = PointF.Add(pt, new SizeF(textBox1.Width + 5, 0));
                         if (e.clickCount == 0)
                             textBox2.Location = Point.Ceiling(pt);
