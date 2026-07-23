@@ -88,11 +88,11 @@ namespace PetProj.Figures
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public virtual bool Contains(PointF point) 
+        public virtual bool Contains(PointF point, float kf) 
         {
             using (var path = GetRendererPath())
             {
-                using (var pen = new Pen(Color.Black, 3))
+                using (var pen = new Pen(Color.Black, 2f * kf))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;

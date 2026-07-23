@@ -657,7 +657,7 @@ namespace PetProj
         {
             mousePosition = e.Location;
             var pt = PrepareMousePosition(mousePosition);
-            OnCursorMoved?.Invoke(this, (mouseClickCount, firstMouseDown, e.Location));
+            OnCursorMoved?.Invoke(this, (mouseClickCount, firstMouseDown, Point.Ceiling(/*e.Location*/pt)));
 
             if (e.Button == MouseButtons.None)
             {
@@ -678,8 +678,7 @@ namespace PetProj
                         break;
                     case EditorMode.BuildRectangles:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this,
-                                $"Укажите первый угол прямоугольника: {pt}");
+                            OnToolTipChanged?.Invoke(this, $"Укажите первый угол прямоугольника: {pt}");
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown; // первая точка нажатия
@@ -728,7 +727,7 @@ namespace PetProj
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();
-                var fig = figures.LastOrDefault(x => x.Contains(pt));
+                var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(1.0f / zoomPad.ZoomScale)));
                 if (fig != null)
                     underCursor.Add(fig);
             }
