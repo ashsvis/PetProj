@@ -1,11 +1,9 @@
-﻿using System;
+﻿using PetProj.Geometries;
+using PetProj.Selections;
+using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using PetProj.Common;
-using PetProj.Geometries;
-using PetProj.Selections;
 
 namespace PetProj.Controls
 {
@@ -58,8 +56,8 @@ namespace PetProj.Controls
             if (angle < 0) angle = 360 + angle;
             tbDeltaX.Text = $"{dx}";
             tbDeltaY.Text = $"{dy}";
-            tbLength.Text = $"{length:F1}";
-            tbAngle.Text = $"{angle:F1}";
+            tbLength.Text = $"{length:0.####}";
+            tbAngle.Text = $"{angle:0.#}";
         }
 
         private void UpdateObject()

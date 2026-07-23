@@ -101,6 +101,10 @@
             this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tslParamName1 = new System.Windows.Forms.ToolStripLabel();
+            this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
+            this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
+            this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -477,7 +481,11 @@
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stbOrto});
+            this.stbOrto,
+            this.tslParamName1,
+            this.tstbTextParam1,
+            this.tslParamName2,
+            this.tstbTextParam2});
             this.toolStrip2.Location = new System.Drawing.Point(0, 674);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(1303, 25);
@@ -770,6 +778,36 @@
             this.tsmiMoveCopy.Text = "Копировать";
             this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
             // 
+            // tslParamName1
+            // 
+            this.tslParamName1.Name = "tslParamName1";
+            this.tslParamName1.Size = new System.Drawing.Size(74, 22);
+            this.tslParamName1.Text = "Параметр 1:";
+            this.tslParamName1.Visible = false;
+            // 
+            // tstbTextParam1
+            // 
+            this.tstbTextParam1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstbTextParam1.Name = "tstbTextParam1";
+            this.tstbTextParam1.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam1.Visible = false;
+            this.tstbTextParam1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbTextParam1_KeyDown);
+            // 
+            // tslParamName2
+            // 
+            this.tslParamName2.Name = "tslParamName2";
+            this.tslParamName2.Size = new System.Drawing.Size(74, 22);
+            this.tslParamName2.Text = "Параметр 2:";
+            this.tslParamName2.Visible = false;
+            // 
+            // tstbTextParam2
+            // 
+            this.tstbTextParam2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstbTextParam2.Name = "tstbTextParam2";
+            this.tstbTextParam2.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam2.Visible = false;
+            this.tstbTextParam2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbTextParam1_KeyDown);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -881,6 +919,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiOrto;
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton stbOrto;
+        private System.Windows.Forms.ToolStripLabel tslParamName1;
+        private System.Windows.Forms.ToolStripTextBox tstbTextParam1;
+        private System.Windows.Forms.ToolStripLabel tslParamName2;
+        private System.Windows.Forms.ToolStripTextBox tstbTextParam2;
     }
 }
 

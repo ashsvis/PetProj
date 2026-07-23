@@ -4,7 +4,6 @@ using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.Selections;
-using PetProj.Styles;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,6 +39,8 @@ namespace PetProj
 
         public event EventHandler OnSelectionMode;
         public event EventHandler<string> OnToolTipChanged;
+        public event EventHandler<EditorMode> OnChangeMode;
+        public event EventHandler<object[]> OnChangeParams;
         public event EventHandler<(int, PointF, Point)> OnCursorMoved;
         public event EventHandler<Selection> OnSelected;
 
@@ -433,22 +434,6 @@ namespace PetProj
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.DrawLine(pen, pt3, pt4);
             }
-            if (IsDynamicalEnter)
-            {
-                switch (editorMode)
-                {
-                    case EditorMode.BuildLines:
-                        //var text = mouseClickCount == 0 ? "Первая точка:" : "Следующая точка";
-                        //float kf = (float)(1f / zoomPad.ZoomScale);
-                        //using (var font = new Font("Arial", (float)(10f * kf)))
-                        //{
-                        //    var ms = graphics.MeasureString(text, font);
-                        //    var pt = PointF.Add(mousePosition, new SizeF(1f * kf, 1f * kf));
-                        //    graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
-                        //}
-                        break;
-                }
-            }
         }
 
         /// <summary>
@@ -679,13 +664,15 @@ namespace PetProj
                 {
                     case EditorMode.BuildLines:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this, $"Укажите первую точку отрезка: {pt}");
+                        {
+                            OnChangeParams?.Invoke(this, new object[] { PrepareMousePosition(mousePosition) });
+                        }
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown;
                             var pt2 = PrepareMousePosition(mousePosition);
-                            OnToolTipChanged?.Invoke(this,
-                                $"Укажите вторую точку отрезка: ({pt1} - {pt2}), длина: {pt1.DotScalar(pt2)}");
+                            var vector = pt2.Vector(pt1);
+                            OnChangeParams?.Invoke(this, new object[] { vector.Length(), vector.AngleDegree() });
                         }
                         break;
                     case EditorMode.BuildRectangles:
@@ -839,7 +826,11 @@ namespace PetProj
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
                     break;
                 case EditorMode.BuildLines:
+                    OnChangeMode?.Invoke(this, selection);
                     OnToolTipChanged?.Invoke(this, "Укажите первую точку отрезка:");
+                    break;
+                default:
+                    OnChangeMode?.Invoke(this, selection);
                     break;
             }
         }
@@ -1002,17 +993,41 @@ namespace PetProj
             OnToolTipChanged?.Invoke(this, $"Смещение: {e.ViewPort}, зум: {e.Zoom}. Размер области рисования: {ClientSize}");
         }
 
+        public void EscapeKeyPressed()
+        {
+            PressRightMouseButton(MousePosition, calledByCode: true);
+        }
+
+        public void SetParameters(string[] strings)
+        {
+            switch (editorMode)
+            {
+                case EditorMode.BuildLines:
+                    if (strings.Length == 2)
+                    {
+                        if (mouseClickCount == 0)
+                        {
+                            if (double.TryParse(strings[0], out double ppX) &&
+                                double.TryParse(strings[1], out double ppY))
+                                SetFirstPoint(ppX, ppY);
+                        }
+                        else
+                        {
+                            if (double.TryParse(strings[0], out double length) &&
+                                double.TryParse(strings[1], out double angledeg))
+                                SetLineLengthAndAngle(length, angledeg);
+                        }
+                    }
+                    break;
+            }
+        }
+
         public void SetFirstPoint(double pxX, double pxY)
         {
             mousePosition = new PointF((float)pxX, (float)pxY);
             PressLeftMouseButton(mousePosition, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
             OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {mousePosition}. Размер области рисования: {ClientSize}");
-        }
-
-        public void EscapeKeyPressed()
-        {
-            PressRightMouseButton(MousePosition, calledByCode: true);
         }
 
         public void SetLineLengthAndAngle(double length, double angledeg)

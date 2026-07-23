@@ -16,13 +16,52 @@ namespace PetProj
         {
             InitializeComponent();
             drawControl = new DrawControl() { Dock = DockStyle.Fill };
-            drawControl.OnSelectionMode += drawControl_OnSelectionMode;
             drawControl.OnToolTipChanged += DrawControl_OnToolTipChanged;
+            drawControl.OnSelectionMode += drawControl_OnSelectionMode;
+            drawControl.OnChangeParams += DrawControl_OnChangeParams;
             drawControl.OnCursorMoved += DrawControl_OnCursorMoved;
-            drawControl.Enter += DrawControl_Enter;
+            drawControl.OnChangeMode += DrawControl_OnChangeMode;
             drawControl.OnSelected += DrawControl_OnSelected;
             placeHolder.Controls.Add(drawControl);
             ConnectEditors();
+        }
+
+        private void DrawControl_OnChangeParams(object sender, object[] parametes)
+        {
+            switch (drawControl.EditorMode)
+            {
+                case EditorMode.BuildLines:
+                    if (drawControl.MouseClickCount == 0)
+                    {
+                        var pt = (PointF)parametes[0];
+                        tslParamName1.Text = "X:";
+                        tstbTextParam1.Text = pt.X.ToString();
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Y:";
+                        tstbTextParam2.Text = pt.Y.ToString();
+                    }
+                    else
+                    {
+                        tslParamName1.Text = "Длина:";
+                        tstbTextParam1.Text = $"{parametes[0]}";
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Угол:";
+                        tstbTextParam2.Text = $"{parametes[1]}";
+                    }
+                    break;
+            }
+        }
+
+        private void DrawControl_OnChangeMode(object sender, EditorMode e)
+        {
+            tslParamName1.Visible = true;
+            tstbTextParam1.Visible = true;
+            tslParamName2.Visible = true;
+            tstbTextParam2.Visible = true;
+            tstbTextParam1.Focus();
+            tstbTextParam1.SelectAll();
         }
 
         private void ConnectEditors()
@@ -80,11 +119,6 @@ namespace PetProj
             BuildInterface();
         }
 
-        private void DrawControl_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void DrawControl_OnCursorMoved(object sender, (int clickCount, PointF first, Point location) e)
         {
 
@@ -103,9 +137,21 @@ namespace PetProj
         private void drawControl_OnSelectionMode(object sender, EventArgs e)
         {
             drawControl.OnSelectionMode -= drawControl_OnSelectionMode;
+            tslParamName1.Visible = false;
+            tstbTextParam1.Visible = false;
+            tslParamName2.Visible = false;
+            tstbTextParam2.Visible = false;
             // переключение режимов редактора при нажатии на кнопки интерфейса
             SelectEditorMode(tsbArrow);
             drawControl.OnSelectionMode += drawControl_OnSelectionMode;
+        }
+
+        private void tstbTextParam1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                drawControl.SetParameters(new string[] { tstbTextParam1.Text, tstbTextParam2.Text });
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -330,11 +376,6 @@ namespace PetProj
         {
             SelectEditorMode(sender);
             drawControl.MoveCopySelected();
-        }
-
-        private void textBox1_Enter(object sender, EventArgs e)
-        {
-            ((TextBox)sender).SelectAll();
         }
 
         private void btnHideShowLeftPanel_Click(object sender, EventArgs e)
