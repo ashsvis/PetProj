@@ -53,6 +53,13 @@ namespace PetProj.Figures
                  AllowedGeometryOperations.Skew | AllowedGeometryOperations.Vertex | AllowedGeometryOperations.Pathed | AllowedGeometryOperations.Warp))
             { Name = "Marker" };
         }
+
+        public static void BuildLayerGeomentry(Figure layer)
+        {
+            var path = new GraphicsPath();
+            path.AddLine(Point.Empty, Point.Empty);
+            layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Layer" };
+        }
     }
 
 }

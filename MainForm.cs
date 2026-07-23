@@ -30,6 +30,7 @@ namespace PetProj
             panelTools.Controls.Clear();
             var editors = new[]
             {
+                typeof(PropertyCategoriesShower),
                 typeof(BorderStyleEditor),
                 typeof(LineGeometryEditor),
             };
@@ -60,8 +61,18 @@ namespace PetProj
 
         private  void BuildInterface()
         {
-            foreach (var editor in panelTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
-                editor.Build(drawControl.SelectionController.Selection);
+            var selection = drawControl.SelectionController.Selection;
+            if (selection.Count > 0)
+            { 
+                foreach (var editor in panelTools.Controls.OfType<IEditor<Selection>>())
+                    editor.Build(selection);
+            }
+            else
+            {
+                var layerselection = new Selection { drawControl.Layer };
+                foreach (var editor in panelTools.Controls.OfType<IEditor<Selection>>())
+                    editor.Build(layerselection);
+            }
         }
 
         private void DrawControl_OnSelected(object sender, Selection e)
@@ -103,6 +114,7 @@ namespace PetProj
             drawControl.IsDynamicalEnter = Properties.Settings.Default.ModeDynamicalEnter;
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
+            BuildInterface();
         }
 
         /// <summary>

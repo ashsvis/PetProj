@@ -4,6 +4,7 @@ using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.Selections;
+using PetProj.Styles;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -42,9 +43,13 @@ namespace PetProj
         public event EventHandler<(int, PointF, Point)> OnCursorMoved;
         public event EventHandler<Selection> OnSelected;
 
+        public Figure Layer { get; set; }
+
         public DrawControl()
         {
             InitializeComponent();
+            Layer = new Figure();
+            FigureBuilder.BuildLayerGeomentry(Layer);
             undoRedoManager = new UndoRedoManager();
             undoRedoManager.OnStateChaned += (o, e) => zoomPad.Invalidate();
             selectionController = new SelectionController();
@@ -92,6 +97,16 @@ namespace PetProj
             //}
 
             DrawDefaultCursor(graphics, mousePosition);
+            if (editorMode == EditorMode.BuildLines)
+            {
+                float kf = (float)(1f / zoomPad.ZoomScale);
+                var text = mouseClickCount == 0 ? $"Первая точка: {PrepareMousePosition(mousePosition)}" : "Следующая точка";
+                using (var pen = new Pen(Color.Black, kf))
+                using (var font = new Font("Arial", (float)(10f * kf)))
+                {
+                    graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                }
+            }
             if (mouseClickCount == 1)
             {
                 switch (editorMode)
@@ -242,7 +257,7 @@ namespace PetProj
             try
             {
                 graphics.DrawArc(pen, arcrect, 0, angleDegree);
-                DrawText(graphics, pen, SystemBrushes.ButtonShadow, mid, sarc);
+                DrawTextAtCenter(graphics, pen, SystemBrushes.ButtonShadow, mid, sarc);
             }
             catch { }
         }
@@ -281,19 +296,32 @@ namespace PetProj
             graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);
             PointF mid = px > 0 ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
             var slength = $"{length}";
-            DrawText(graphics, pen, Brushes.White, mid, slength);
+            DrawTextAtCenter(graphics, pen, Brushes.White, mid, slength);
         }
 
-        private void DrawText(Graphics graphics, Pen pen, Brush background, PointF mid, string slength)
+        private void DrawTextAtCenter(Graphics graphics, Pen pen, Brush background, PointF mid, string text)
         {
             using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
             {
-                var ms = graphics.MeasureString(slength, font);
+                var ms = graphics.MeasureString(text, font);
                 var rect = new RectangleF(mid.X - ms.Width / 2, mid.Y - ms.Height / 2, ms.Width, ms.Height);
                 graphics.FillRectangles(background, new RectangleF[] { rect });
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
                 using (var brush = new SolidBrush(Color.Black))
-                    graphics.DrawString(slength, font, brush, rect);
+                    graphics.DrawString(text, font, brush, rect);
+            }
+        }
+
+        private void DrawTextAtLocation(Graphics graphics, Pen pen, Brush background, PointF location, string text)
+        {
+            using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
+            {
+                var ms = graphics.MeasureString(text, font);
+                var rect = new RectangleF(location.X, location.Y, ms.Width, ms.Height);
+                graphics.FillRectangles(background, new RectangleF[] { rect });
+                graphics.DrawRectangles(pen, new RectangleF[] { rect });
+                using (var brush = new SolidBrush(Color.Black))
+                    graphics.DrawString(text, font, brush, rect);
             }
         }
 
@@ -410,15 +438,14 @@ namespace PetProj
                 switch (editorMode)
                 {
                     case EditorMode.BuildLines:
-                        var text = mouseClickCount == 0 ? "Первая точка:" : "Следующая точка";
-                        using (var font = new Font("Arial", (float)(10f / zoomPad.ZoomScale)))
-                        {
-                            var ms = graphics.MeasureString(text, font);
-                            var pt = PointF.Add(mousePosition, new SizeF(3f, -ms.Height - 3f));
-                            if (mouseClickCount > 0)
-                                pt.Y += ms.Height + 3f;
-                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
-                        }
+                        //var text = mouseClickCount == 0 ? "Первая точка:" : "Следующая точка";
+                        //float kf = (float)(1f / zoomPad.ZoomScale);
+                        //using (var font = new Font("Arial", (float)(10f * kf)))
+                        //{
+                        //    var ms = graphics.MeasureString(text, font);
+                        //    var pt = PointF.Add(mousePosition, new SizeF(1f * kf, 1f * kf));
+                        //    graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(pt));
+                        //}
                         break;
                 }
             }

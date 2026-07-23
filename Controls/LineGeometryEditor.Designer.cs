@@ -201,7 +201,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(99, 23);
             this.label6.TabIndex = 9;
-            this.label6.Text = "Угол, °";
+            this.label6.Text = "Угол в градусах";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbStartX

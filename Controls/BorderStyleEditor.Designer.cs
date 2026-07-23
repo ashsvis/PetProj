@@ -39,7 +39,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelCaption = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -163,9 +163,9 @@
             this.tableLayoutPanel1.Controls.Add(this.lbWidth, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelCaption, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -200,21 +200,21 @@
             this.label2.Text = "Показывать";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label3
+            // labelCaption
             // 
-            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(1, 1);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(1);
-            this.label3.Size = new System.Drawing.Size(198, 26);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Контуры фигуры";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCaption.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelCaption, 2);
+            this.labelCaption.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelCaption.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCaption.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelCaption.Location = new System.Drawing.Point(1, 1);
+            this.labelCaption.Margin = new System.Windows.Forms.Padding(0);
+            this.labelCaption.Name = "labelCaption";
+            this.labelCaption.Padding = new System.Windows.Forms.Padding(1);
+            this.labelCaption.Size = new System.Drawing.Size(198, 26);
+            this.labelCaption.TabIndex = 8;
+            this.labelCaption.Text = "Контуры фигуры";
+            this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // BorderStyleEditor
             // 
@@ -222,7 +222,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
             this.Name = "BorderStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.Size = new System.Drawing.Size(200, 153);
@@ -247,6 +247,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelCaption;
     }
 }
