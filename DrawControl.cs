@@ -83,7 +83,7 @@ namespace PetProj
                 fig.Renderer.Render(graphics, fig);
 
             // отрисовка временно подсвеченных под курсором или рамкой выделения
-            underCursor.Render(graphics, Color.Black, (float)zoomPad.ZoomScale);
+            underCursor.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
@@ -101,7 +101,8 @@ namespace PetProj
             if (editorMode == EditorMode.BuildLines)
             {
                 float kf = (float)(1f / zoomPad.ZoomScale);
-                var text = mouseClickCount == 0 ? $"Первая точка: {PrepareMousePosition(mousePosition)}" : "Следующая точка";
+                var pt = PrepareMousePosition(mousePosition);
+                var text = mouseClickCount == 0 ? $"Первая точка X:{pt.X} Y:{pt.Y}" : "Следующая точка";
                 using (var pen = new Pen(Color.Black, kf))
                 using (var font = new Font("Arial", (float)(10f * kf)))
                 {
@@ -693,7 +694,7 @@ namespace PetProj
                         }
                         break;
                     default:
-                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {pt}. Размер области рисования: {ClientSize}");
+                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
                         break;
                 }
             }
@@ -990,7 +991,8 @@ namespace PetProj
 
         private void zoomPad_OnPanOrZoom(object sender, ZoomControl.PanOrZoomEventArgs e)
         {
-            OnToolTipChanged?.Invoke(this, $"Смещение: {e.ViewPort}, зум: {e.Zoom}. Размер области рисования: {ClientSize}");
+            var pt = e.ViewPort;
+            OnToolTipChanged?.Invoke(this, $"Смещение dX:{pt.X} dY:{pt.Y}, зум: {e.Zoom}");
         }
 
         public void EscapeKeyPressed()
@@ -1027,7 +1029,8 @@ namespace PetProj
             mousePosition = new PointF((float)pxX, (float)pxY);
             PressLeftMouseButton(mousePosition, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
-            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора: {mousePosition}. Размер области рисования: {ClientSize}");
+            var pt = PrepareMousePosition(mousePosition);
+            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
         }
 
         public void SetLineLengthAndAngle(double length, double angledeg)

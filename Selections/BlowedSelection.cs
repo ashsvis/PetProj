@@ -71,30 +71,30 @@ namespace PetProj.Selections
         {
             foreach (var figure in selected)
             {
-                var blowedColor = color; // Color.Gray;
+                var blowedColor = Color.White;
                 // получаем путь для рисования методом фигуры
                 using (var path = figure.Geometry.Path)
                 {
-                    using (var pen = new Pen(figure.Style.BorderStyle.Color, figure.Style.BorderStyle.Width / zoomScale))
+                    using (var pen = new Pen(/*figure.Style.BorderStyle.Color*/blowedColor, (figure.Style.BorderStyle.Width + 2f) / zoomScale))
                     {
                         graphics.DrawPath(pen, path);
-                        using (var blowedPen = new Pen(blowedColor, pen.Width / zoomScale))
-                        {
-                            blowedPen.StartCap = LineCap.Round;
-                            blowedPen.EndCap = LineCap.Round;
-                            var width = 10f / zoomScale;
-                            var i = 0f;
+                        //using (var blowedPen = new Pen(blowedColor, pen.Width / zoomScale))
+                        //{
+                        //    blowedPen.StartCap = LineCap.Round;
+                        //    blowedPen.EndCap = LineCap.Round;
+                        //    var width = 2f / zoomScale;
+                        //    var i = 0f;
 
                             
-                            while (i < width)
-                            {
-                                blowedPen.Color = blowedColor;
-                                blowedPen.Width += 0.6f;
-                                graphics.DrawPath(blowedPen, path);
-                                blowedColor = Color.FromArgb(blowedColor.A / 2, blowedColor);
-                                i += 1f / zoomScale;
-                            }
-                        }
+                        //    while (i < width)
+                        //    {
+                        //        blowedPen.Color = blowedColor;
+                        //        blowedPen.Width += 0.6f;
+                        //        graphics.DrawPath(blowedPen, path);
+                        //        blowedColor = Color.FromArgb(blowedColor.A / 2, blowedColor);
+                        //        i += 1f / zoomScale;
+                        //    }
+                        //}
                     }
                 }
             }
