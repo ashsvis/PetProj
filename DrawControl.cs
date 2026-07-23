@@ -764,6 +764,7 @@ namespace PetProj
         private Figure CreateLine(PointF pt1, PointF pt2)
         {
             Figure line = new Figure();
+            line.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             FigureBuilder.BuildAddLineGeometry(line, pt1);
             ((AddLineGeometry)line.Geometry).AddPoint(pt2);
             line.Style.FillStyle.IsVisible = false;

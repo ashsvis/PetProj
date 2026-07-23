@@ -153,7 +153,7 @@
             this.label3.Padding = new System.Windows.Forms.Padding(1);
             this.label3.Size = new System.Drawing.Size(198, 25);
             this.label3.TabIndex = 8;
-            this.label3.Text = "Геометрия отрезка";
+            this.label3.Text = "Геометрия";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2

@@ -213,7 +213,7 @@
             this.labelCaption.Padding = new System.Windows.Forms.Padding(1);
             this.labelCaption.Size = new System.Drawing.Size(198, 26);
             this.labelCaption.TabIndex = 8;
-            this.labelCaption.Text = "Контуры фигуры";
+            this.labelCaption.Text = "Контур";
             this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // BorderStyleEditor

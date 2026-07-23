@@ -52,11 +52,11 @@ namespace PetProj.Controls
             // копируем свойства объекта в GUI
             updating++;
 
-            cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
-            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
+            cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle, DashStyle.Solid);
+            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 0);
             nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
-            lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
-            cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
+            lbColor.BackColor = borderStyles.GetProperty(f => f.Color, Color.Gray);
+            cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible, true);
 
             updating--;
         }

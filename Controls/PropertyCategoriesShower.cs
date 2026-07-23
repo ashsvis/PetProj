@@ -32,16 +32,20 @@ namespace PetProj.Controls
 
             if (selection.Count > 1)
             {
-                labelCaption.Text = "Выбрано несколько объектов";
-                Visible = true;
+                var categories = selection.Select(f => f.Geometry.Name).Distinct().ToList();
+                if (categories.Count == 1)
+                    labelCaption.Text = $"{categories.First()} ({selection.Count})";
+                else
+                    labelCaption.Text = $"Несколько фигур ({selection.Count})";
             }
-            else if (selection.First().Geometry.Name == "Layer")
+            else if (selection.First().Geometry.Name == "Слой")
             {
                 labelCaption.Text = "Ничего не выбрано";
-                Visible = true;
             }
-            else
-                Visible = false;
+            else 
+            {
+                labelCaption.Text = selection.First().Geometry.Name;
+            }
 
             // копируем свойства объекта в GUI
             updating++;

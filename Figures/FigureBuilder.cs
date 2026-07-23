@@ -20,10 +20,10 @@ namespace PetProj.Figures
         /// <param name="isSmoothed">Сглаживание</param>
         public static void BuildAddLineGeometry(Figure figure, PointF startPoint, bool isClosed = false, bool isSmoothed = false)
         {
-            figure.Style.BorderStyle.Width = 1f;
+            //figure.Style.BorderStyle.Width = 1f;
             figure.Geometry = new AddLineGeometry(startPoint)
             {
-                Name = "AddLine",
+                Name = "Отрезок",
                 IsClosed = isClosed,
                 IsSmoothed = isSmoothed
             };
@@ -51,14 +51,14 @@ namespace PetProj.Figures
             marker.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.All ^
                 (AllowedGeometryOperations.Size | AllowedGeometryOperations.Rotate | AllowedGeometryOperations.Select |
                  AllowedGeometryOperations.Skew | AllowedGeometryOperations.Vertex | AllowedGeometryOperations.Pathed | AllowedGeometryOperations.Warp))
-            { Name = "Marker" };
+            { Name = "Маркер" };
         }
 
         public static void BuildLayerGeomentry(Figure layer)
         {
             var path = new GraphicsPath();
-            path.AddLine(Point.Empty, Point.Empty);
-            layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Layer" };
+            //path.AddLine(Point.Empty, Point.Empty);
+            layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Слой" };
         }
     }
 
