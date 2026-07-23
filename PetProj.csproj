@@ -184,6 +184,7 @@
     <None Include="Resources\redo.png" />
     <None Include="Resources\move.png" />
     <None Include="Resources\movecopy.png" />
+    <None Include="Resources\ortho.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

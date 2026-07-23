@@ -110,8 +110,13 @@ namespace PetProj
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            drawControl.IsDrawOrtoMode = Properties.Settings.Default.ModeDrawOrto;
-            drawControl.IsDynamicalEnter = Properties.Settings.Default.ModeDynamicalEnter;
+            var modeOrto = Properties.Settings.Default.ModeDrawOrto;
+            drawControl.IsDrawOrtoMode = modeOrto;
+            tsmiOrto.Checked = modeOrto;
+            stbOrto.Checked = modeOrto;
+            var modeDynamicEnter = Properties.Settings.Default.ModeDynamicalEnter;
+            drawControl.IsDynamicalEnter = modeDynamicEnter;
+            tsmiDynamicalEnter.Checked = modeDynamicEnter;
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
             BuildInterface();
@@ -391,6 +396,7 @@ namespace PetProj
         private void tsmiDynamicalEnter_Click(object sender, EventArgs e)
         {
             var mode = !drawControl.IsDynamicalEnter;
+            tsmiDynamicalEnter.Checked = mode;
             drawControl.IsDynamicalEnter = mode;
             drawControl.UpdateInterface();
             Properties.Settings.Default.ModeDynamicalEnter = mode;
@@ -400,6 +406,8 @@ namespace PetProj
         private void tsmiOrto_Click(object sender, EventArgs e)
         {
             var mode = !drawControl.IsDrawOrtoMode;
+            tsmiOrto.Checked = mode;
+            stbOrto.Checked = mode;
             drawControl.IsDrawOrtoMode = mode;
             Properties.Settings.Default.ModeDrawOrto = mode;
             Properties.Settings.Default.Save();
