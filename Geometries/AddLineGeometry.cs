@@ -68,6 +68,7 @@ namespace PetProj.Geometries
         {
             var geometry = new AddLineGeometry(StartPoint)
             {
+                Name = Name,
                 IsClosed = IsClosed,
                 IsSmoothed = IsSmoothed,
             };

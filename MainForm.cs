@@ -72,6 +72,29 @@ namespace PetProj
                         tstbTextParam2.Text = $"{parametes[1]}";
                     }
                     break;
+                case EditorMode.MoveSelected:
+                case EditorMode.MoveCopySelected:
+                    if (drawControl.MouseClickCount == 0)
+                    {
+                        var pt = (PointF)parametes[0];
+                        tslParamName1.Text = "X:";
+                        tstbTextParam1.Text = pt.X.ToString();
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Y:";
+                        tstbTextParam2.Text = pt.Y.ToString();
+                    }
+                    else
+                    {
+                        var pt = (PointF)parametes[0];
+                        tslParamName1.Text = "Смещение X:";
+                        tstbTextParam1.Text = pt.X.ToString();
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Смещение Y:";
+                        tstbTextParam2.Text = pt.Y.ToString();
+                    }
+                    break;
             }
         }
 

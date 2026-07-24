@@ -129,6 +129,11 @@ namespace PetProj
                     break;
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
+                    pt = PrepareMousePosition(mousePosition);
+                    text = (mouseClickCount == 0 ? $"Базовая точка " : $"Вторая точка ") + $" X:{pt.X} Y:{pt.Y}";
+                    using (var pen = new Pen(Color.Black, kf))
+                    using (var font = new Font("Arial", (float)(10f * kf)))
+                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
                     if (mouseClickCount == 1)
                         DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                     break;
@@ -170,6 +175,15 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
+            if (IsDrawOrtoMode)
+            {
+                var dx = Math.Abs(pt2.X - firstMouseDown.X);
+                var dy = Math.Abs(pt2.Y - firstMouseDown.Y);
+                if (dx < dy)
+                    pt2.X = firstMouseDown.X;
+                else
+                    pt2.Y = firstMouseDown.Y;
+            }
             using (var pen = new Pen(Color.Gray, (float)(2.6f / zoomPad.ZoomScale)) { DashStyle = DashStyle.Dash })
             {
                 pen.StartCap = LineCap.Round;
@@ -564,7 +578,18 @@ namespace PetProj
                         break;
                     case EditorMode.MoveSelected:
                         pt1 = firstMouseDown;
-                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        if (IsDrawOrtoMode)
+                        {
+                            pt2 = PrepareMousePosition(mousePosition);
+                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
+                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
+                            if (dx < dy)
+                                pt2.X = firstMouseDown.X;
+                            else
+                                pt2.Y = firstMouseDown.Y;
+                        }
+                        else
+                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (movedoffsets) =>
                             {
@@ -578,7 +603,18 @@ namespace PetProj
                         break;
                     case EditorMode.MoveCopySelected:
                         pt1 = firstMouseDown;
-                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        if (IsDrawOrtoMode)
+                        {
+                            pt2 = PrepareMousePosition(mousePosition);
+                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
+                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
+                            if (dx < dy)
+                                pt2.X = firstMouseDown.X;
+                            else
+                                pt2.Y = firstMouseDown.Y;
+                        }
+                        else
+                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (addedfigs) =>
                             {
@@ -689,6 +725,18 @@ namespace PetProj
                             var vector1 = pt2.Vector(pt1);
                             var vector2 = pt3.Vector(pt2);
                             OnChangeParams?.Invoke(this, new object[] { vector1.Length(), vector2.Length() });
+                        }
+                        break;
+                    case EditorMode.MoveSelected:
+                    case EditorMode.MoveCopySelected:
+                        if (mouseClickCount == 0)
+                            OnChangeParams?.Invoke(this, new object[] { pt });
+                        else if (mouseClickCount == 1)
+                        {
+                            var pt1 = firstMouseDown;
+                            var pt2 = PrepareMousePosition(mousePosition);
+                            var vector = pt2.Vector(pt1);
+                            OnChangeParams?.Invoke(this, new object[] { vector });
                         }
                         break;
                     default:
@@ -1039,6 +1087,57 @@ namespace PetProj
                             }
                         }
                     }
+                    break;
+                case EditorMode.MoveSelected:
+                case EditorMode.MoveCopySelected:
+                    if (strings.Length == 2)
+                    {
+                        if (mouseClickCount == 0)
+                        {
+                            if (double.TryParse(strings[0], out double ppX) &&
+                                double.TryParse(strings[1], out double ppY))
+                                SetFirstPoint(ppX, ppY);
+                        }
+                        else
+                        {
+                            if (double.TryParse(strings[0], out double shiftX) &&
+                                double.TryParse(strings[1], out double shiftY))
+                                SetShiftPoint(shiftX, shiftY);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private void SetShiftPoint(double shiftX, double shiftY)
+        {
+            switch (editorMode)
+            {
+                case EditorMode.MoveSelected:
+                    selectionController.Selection.Translate((float)shiftX, (float)shiftY,
+                        (movedoffsets) =>
+                        {
+                            undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
+                        });
+                    // предыдущий выбор стирается, т.к. перемещение - однократная операция
+                    selectionController.Selection.Clear();
+                    mouseClickCount = 0;
+                    SetMode(EditorMode.Selection);
+                    Changed = true;
+                    break;
+                case EditorMode.MoveCopySelected:
+                    selectionController.Selection.TranslateCopy((float)shiftX, (float)shiftY,
+                        (addedfigs) =>
+                        {
+                            undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
+                            // предыдущий выбор стирается
+                            selectionController.Selection.Clear();
+                            // добавленые фигуры добавляюся в выбор
+                            foreach (var fig in addedfigs)
+                                selectionController.Selection.Add(fig);
+                        });
+                    Changed = true;
+                    OnChangeParams?.Invoke(this, new object[] { new PointF((float)shiftX, (float)shiftY) });
                     break;
             }
         }
