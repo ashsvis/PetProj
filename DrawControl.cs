@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -99,35 +98,40 @@ namespace PetProj
             //}
 
             DrawDefaultCursor(graphics, mousePosition);
-            if (editorMode == EditorMode.BuildLines)
+            float kf = (float)(1f / zoomPad.ZoomScale);
+            PointF pt;
+            string text;
+            switch (editorMode)
             {
-                float kf = (float)(1f / zoomPad.ZoomScale);
-                var pt = PrepareMousePosition(mousePosition);
-                var text = mouseClickCount == 0 ? $"Первая точка X:{pt.X} Y:{pt.Y}" : "Следующая точка";
-                using (var pen = new Pen(Color.Black, kf))
-                using (var font = new Font("Arial", (float)(10f * kf)))
-                {
-                    graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
-                }
-            }
-            if (mouseClickCount == 1)
-            {
-                switch (editorMode)
-                {
-                    case EditorMode.Selection:
+                case EditorMode.Selection:
+                    if (mouseClickCount == 1)
                         DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
+                    break;
+                case EditorMode.BuildLines:
+                    {
+                        pt = PrepareMousePosition(mousePosition);
+                        text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
+                        using (var pen = new Pen(Color.Black, kf))
+                        using (var font = new Font("Arial", (float)(10f * kf)))
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                        if (mouseClickCount == 1)
+                            DrawRibbonLine(graphics, firstMouseDown, mousePosition);
                         break;
-                    case EditorMode.BuildLines:
-                        DrawRibbonLine(graphics, firstMouseDown, mousePosition);
-                        break;
-                    case EditorMode.BuildRectangles:
+                    }
+                case EditorMode.BuildRectangles:
+                    pt = PrepareMousePosition(mousePosition);
+                    text = (mouseClickCount == 0 ? $"Укажите точку первого угла " : $"Укажите точку второго угла ") + $" X:{pt.X} Y:{pt.Y}";
+                    using (var pen = new Pen(Color.Black, kf))
+                    using (var font = new Font("Arial", (float)(10f * kf)))
+                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    if (mouseClickCount == 1)
                         DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
-                        break;
-                    case EditorMode.MoveSelected:
-                    case EditorMode.MoveCopySelected:
+                    break;
+                case EditorMode.MoveSelected:
+                case EditorMode.MoveCopySelected:
+                    if (mouseClickCount == 1)
                         DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
-                        break;
-                }
+                    break;
             }
         }
 
@@ -193,6 +197,28 @@ namespace PetProj
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
             using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
+            if (mouseClickCount == 1)
+            {
+                if (IsDynamicalEnter)
+                {
+                    using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                    {
+                        var kf = (float)(50f / zoomPad.ZoomScale);
+                        var p1 = pt1;
+                        var p2 = pt2;
+                        if (pt2.X > pt1.X)
+                        {
+                            DrawSizeLine(graphics, pen, new PointF(p1.X, p2.Y), new PointF(p2.X, p2.Y), kf, pt2.Y > pt1.Y);
+                            DrawSizeLine(graphics, pen, new PointF(p2.X, p1.Y), new PointF(p2.X, p2.Y), kf, pt2.Y < pt1.Y);
+                        }
+                        else
+                        {
+                            DrawSizeLine(graphics, pen, new PointF(p1.X, p2.Y), new PointF(p2.X, p2.Y), kf, pt2.Y < pt1.Y);
+                            DrawSizeLine(graphics, pen, new PointF(p2.X, p1.Y), new PointF(p2.X, p2.Y), kf, pt2.Y > pt1.Y);
+                        }
+                    }
+                }
+            }
         }
 
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
@@ -260,7 +286,7 @@ namespace PetProj
             try
             {
                 graphics.DrawArc(pen, arcrect, 0, angleDegree);
-                DrawTextAtCenter(graphics, pen, SystemBrushes.ButtonShadow, mid, sarc);
+                DrawTextAtCenter(graphics, pen, Brushes.White, mid, sarc);
             }
             catch { }
         }
@@ -273,7 +299,7 @@ namespace PetProj
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="halfLength"></param>
-        private void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength)
+        private void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength, bool? side = null)
         {
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;
@@ -287,17 +313,19 @@ namespace PetProj
             }
             px /= length;
             py /= length;
+
+            bool kind = side ?? px > 0;
             // перпендикуляр в начале отрезка
-            PointF df = px > 0 ? new PointF(start.X, start.Y) : new PointF(start.X + px * halfLength, start.Y + py * halfLength);
-            PointF ef = px <= 0 ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
+            PointF df = kind ? new PointF(start.X, start.Y) : new PointF(start.X + px * halfLength, start.Y + py * halfLength);
+            PointF ef = !kind ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
             graphics.DrawLine(pen, df, ef);
             // перпендикуляр в конце отрезка
-            PointF de = px > 0 ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
-            PointF ee = px <= 0 ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
+            PointF de = kind ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
+            PointF ee = !kind ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
             graphics.DrawLine(pen, de, ee);
             // выносная линия, соединяющая два перпендикуляра
-            graphics.DrawLine(pen, px > 0 ? ef : df, px > 0 ? ee : de);
-            PointF mid = px > 0 ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
+            graphics.DrawLine(pen, kind ? ef : df, kind ? ee : de);
+            PointF mid = kind ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
             var slength = $"{length}";
             DrawTextAtCenter(graphics, pen, Brushes.White, mid, slength);
         }
@@ -637,9 +665,7 @@ namespace PetProj
                 {
                     case EditorMode.BuildLines:
                         if (mouseClickCount == 0)
-                        {
-                            OnChangeParams?.Invoke(this, new object[] { PrepareMousePosition(mousePosition) });
-                        }
+                            OnChangeParams?.Invoke(this, new object[] { pt });
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown;
@@ -650,7 +676,7 @@ namespace PetProj
                         break;
                     case EditorMode.BuildRectangles:
                         if (mouseClickCount == 0)
-                            OnToolTipChanged?.Invoke(this, $"Укажите первый угол прямоугольника: {pt}");
+                            OnChangeParams?.Invoke(this, new object[] { pt });
                         else if (mouseClickCount == 1)
                         {
                             var pt1 = firstMouseDown; // первая точка нажатия
@@ -659,9 +685,10 @@ namespace PetProj
                             var pt4 = new PointF(pt1.X, pt3.Y); // расчётная точка
                             var width = Math.Sqrt((pt2.X - pt1.X) * (pt2.X - pt1.X) + (pt2.Y - pt1.Y) * (pt2.Y - pt1.Y));
                             var height = Math.Sqrt((pt3.X - pt2.X) * (pt3.X - pt2.X) + (pt3.Y - pt2.Y) * (pt3.Y - pt2.Y));
-                            OnToolTipChanged?.Invoke(this,
-                                $"Укажите противоположный угол прямоугольника: {pt3}, ширина: {width}, высота: {height}," +
-                                $" площадь: {width * height}, периметр: {(width + height) * 2}");
+
+                            var vector1 = pt2.Vector(pt1);
+                            var vector2 = pt3.Vector(pt2);
+                            OnChangeParams?.Invoke(this, new object[] { vector1.Length(), vector2.Length() });
                         }
                         break;
                     default:
@@ -992,7 +1019,41 @@ namespace PetProj
                         }
                     }
                     break;
+                case EditorMode.BuildRectangles:
+                    if (strings.Length == 2)
+                    {
+                        if (mouseClickCount == 0)
+                        {
+                            if (double.TryParse(strings[0], out double ppX) &&
+                                double.TryParse(strings[1], out double ppY))
+                                SetFirstPoint(ppX, ppY);
+                        }
+                        else
+                        {
+                            if (double.TryParse(strings[0], out double width) &&
+                                double.TryParse(strings[1], out double height))
+                            {
+                                SetRectangleWidthAndHeight(
+                                    Math.Sign(mousePosition.X - firstMouseDown.X) * width, 
+                                    Math.Sign(mousePosition.Y - firstMouseDown.Y) * height);
+                            }
+                        }
+                    }
+                    break;
             }
+        }
+
+        private void SetRectangleWidthAndHeight(double width, double height)
+        {
+            // построение прямоугольника по двум точкам диагонали
+            var pt1 = firstMouseDown; // первая точка нажатия
+            var pt2 = new PointF(pt1.X + (float)width, pt1.Y); // раcчётная точка
+            var pt3 = new PointF(pt1.X + (float)width, pt1.Y + (float)height); // раcчётная точка
+            var pt4 = new PointF(pt1.X, pt1.Y + (float)height); // раcчётная точка
+            AddRectangle(pt1, pt2, pt3, pt4);
+            // сброс количества нажатий, следующий прямоугольник будет строиться заново
+            mouseClickCount = 0;
+            Changed = true;
         }
 
         public void SetFirstPoint(double pxX, double pxY)
@@ -1011,7 +1072,6 @@ namespace PetProj
             double angleRad = angledeg * (Math.PI / 180);
             var pt2 = new PointF(pt1.X + (float)(length * Math.Cos(angleRad)), pt1.Y + (float)(length * Math.Sin(angleRad)));
             AddLine(pt1, pt2);
-            //PressLeftMouseButton(pt2, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pt2.X, (int)pt2.Y, 0));
             // сброс количества нажатий, следующий прямоугольник будет строиться заново
             mouseClickCount = 0;

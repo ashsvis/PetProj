@@ -51,6 +51,27 @@ namespace PetProj
                         tstbTextParam2.Text = $"{parametes[1]}";
                     }
                     break;
+                case EditorMode.BuildRectangles:
+                    if (drawControl.MouseClickCount == 0)
+                    {
+                        var pt = (PointF)parametes[0];
+                        tslParamName1.Text = "X:";
+                        tstbTextParam1.Text = pt.X.ToString();
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Y:";
+                        tstbTextParam2.Text = pt.Y.ToString();
+                    }
+                    else
+                    {
+                        tslParamName1.Text = "Ширина:";
+                        tstbTextParam1.Text = $"{parametes[0]}";
+                        tstbTextParam1.Focus();
+                        tstbTextParam1.SelectAll();
+                        tslParamName2.Text = "Высота:";
+                        tstbTextParam2.Text = $"{parametes[1]}";
+                    }
+                    break;
             }
         }
 
