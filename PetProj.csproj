@@ -59,6 +59,8 @@
     <Compile Include="Commands\MoveFiguresCommand.cs" />
     <Compile Include="Commands\RemoveFigureCommand.cs" />
     <Compile Include="Common\ICommand.cs" />
+    <Compile Include="Common\ImageWrapper.cs" />
+    <Compile Include="Common\IntersectHelper.cs" />
     <Compile Include="Common\IUndoRedoSupport.cs" />
     <Compile Include="Common\ParseHelper.cs" />
     <Compile Include="Common\PointFExtension.cs" />

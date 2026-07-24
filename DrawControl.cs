@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -594,34 +595,8 @@ namespace PetProj
                     {
                         if (selMode)
                         {
-                            // захватываем рамкой объекты частично
-                            var points = path.PathPoints;
-                            List<PointF> interpolatedPoints = new List<PointF>();
-                            for (int i = 0; i < points.Length - 1; i++)
-                            {
-                                PointF current = points[i];
-                                PointF next = points[i + 1];
-                                // Если отрезок длинный, interpolate
-                                if (Distance(current, next) > (1.0f / zoomPad.ZoomScale))
-                                {
-                                    int numSteps = 100; // Number of intermediate points
-                                    for (int step = 1; step <= numSteps; step++)
-                                    {
-                                        float t = (step / (float)numSteps);
-                                        PointF interpolated = new PointF(
-                                            (int)(current.X + t * (next.X - current.X)),
-                                            (int)(current.Y + t * (next.Y - current.Y))
-                                        );
-                                        interpolatedPoints.Add(interpolated);
-                                    }
-                                }
-                                else
-                                {
-                                    // Keep the original point if it's a vertex
-                                    interpolatedPoints.Add(current);
-                                }
-                            }
-                            if (interpolatedPoints.Any(p => rectangle.Contains(p)))
+                            // захватываем рамкой объекты даже частично
+                            if (fig.Intersects(rectangle))
                             {
                                 if (ModifierKeys.HasFlag(Keys.Shift))
                                     onUnselect(selectionController.Selection, fig);
@@ -632,10 +607,7 @@ namespace PetProj
                         else
                         {
                             // захватываем рамкой объекты целиком
-                            var figrect = path.GetBounds();
-                            var rect = new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-                            figrect.Intersect(rect);
-                            if (figrect.Equals(path.GetBounds()))
+                            if (fig.Contains(rectangle))
                             {
                                 if (ModifierKeys.HasFlag(Keys.Shift))
                                     onUnselect(selectionController.Selection, fig);
