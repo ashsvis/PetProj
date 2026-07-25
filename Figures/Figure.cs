@@ -103,15 +103,7 @@ namespace PetProj.Figures
 
     public enum MarkerType
     {
-        Scale,
-        SizeX,
-        SizeY,
-        Rotate,
-        SkewX,
-        SkewY,
         Vertex,
-        Gradient,
-        ControlBezier,
-        Warp
+        Middle,
     }
 }

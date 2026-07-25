@@ -4,7 +4,6 @@ using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.ObjectBindings;
-using PetProj.Renderers;
 using PetProj.Selections;
 using System;
 using System.Collections.Generic;
@@ -91,15 +90,8 @@ namespace PetProj
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
-                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Magenta);
-
-            //// отрисовка маркеров
-            //foreach (var marker in selectionController.Markers)
-            //{
-            //    //marker.Transform.Matrix.Scale(1 / scaleFactor, 1 / scaleFactor);
-            //    marker.Renderer.Render(graphics, marker);
-            //    //marker.Transform.Matrix.Scale(scaleFactor, scaleFactor);
-            //}
+                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, 
+                (float)zoomPad.ZoomScale);
 
             DrawDefaultCursor(graphics, mousePosition);
             float kf = (float)(1f / zoomPad.ZoomScale);
@@ -206,7 +198,7 @@ namespace PetProj
 
                 graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
                 // отрисовка выделения
-                selectionController.Selection.Render(graphics, Color.Magenta);
+                selectionController.Selection.Render(graphics, Color.LightPink);
                 graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
 
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;
@@ -222,7 +214,7 @@ namespace PetProj
             var pt2 = PrepareMousePosition(mousePosition);
             var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-            using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
+            using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoomPad.ZoomScale)))
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
             if (mouseClickCount == 1)
             {
@@ -261,7 +253,7 @@ namespace PetProj
                 else
                     pt2.Y = firstMouseDown.Y;
             }
-            using (var pen = new Pen(Color.Magenta, (float)(2.6f / zoomPad.ZoomScale)))
+            using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoomPad.ZoomScale)))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;

@@ -111,33 +111,7 @@ namespace PetProj.Controllers
                         OnSelectedFigureChanged();
                     }
                 }
-                //строим маркеры
-                //UpdateMarkers();
             }
-        }
-
-        /// <summary>
-        /// Метод строит маркеры у объекта Selection
-        /// </summary>
-        public void UpdateMarkers()
-        {
-            var list = new List<Figure>(selection);
-            selection.Clear();
-            foreach (var figure in list) selection.Add(figure);
-            //строим маркеры
-            BuildMarkers();
-        }
-
-        private void BuildMarkers()
-        {
-            // стираем предыдущие маркеры
-            Markers.Clear();
-            // если ничего не выбрано, выходим
-            if (Selection.Count == 0) return;
-
-            // задаём геометрию маркеров по умолчанию 
-            foreach (var marker in Markers)
-                FigureBuilder.BuildMarkerGeometry(marker);
         }
 
         /// <summary>

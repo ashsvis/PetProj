@@ -141,7 +141,7 @@ namespace PetProj.Selections
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics, Color color)
+        public void Render(Graphics graphics, Color color, float kf = 1f)
         {
             foreach (var figure in selected)
             {
@@ -149,9 +149,42 @@ namespace PetProj.Selections
                 using (var path = figure.Geometry.Path)
                 {
                     // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = new Pen(color /*Color*/))
+                    using (var pen = new Pen(color, 2.6f / kf))
                     { 
                         graphics.DrawPath(pen, path); 
+                    }
+                }
+            }
+            // рисуем маркеры у выбранных фигур
+            using (var pen = new Pen(Color.Lime, 0f))
+            {
+                foreach (var figure in selected)
+                {
+                    // получаем путь для рисования методом фигуры
+                    using (var path = figure.Geometry.Path)
+                    {
+                        var points = path.PathPoints;
+                        var rects = new List<RectangleF>();
+                        for(int i = 0; i < points.Length; i++)
+                        {
+                            var pt = points[i];
+                            var rect = new RectangleF(pt.X - 4f / kf, pt.Y - 4f / kf, 8f / kf, 8f / kf);
+                            rects.Add(rect);
+                        }
+                        graphics.DrawRectangles(pen, rects.ToArray());
+                        if (figure.Geometry is AddLineGeometry _)
+                        {
+                            var pt1 = points[0];
+                            var pt2 = points[1];
+                            var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
+                            graphics.DrawLines(pen, new PointF[] 
+                            {  
+                                new PointF(pt.X, pt.Y - 5f / kf),
+                                new PointF(pt.X + 5f / kf, pt.Y + 5f / kf),
+                                new PointF(pt.X - 5f / kf, pt.Y + 5f / kf),
+                                new PointF(pt.X, pt.Y - 5f / kf),
+                            });
+                        }
                     }
                 }
             }
