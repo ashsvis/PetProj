@@ -42,7 +42,7 @@ namespace PetProj
             var modeObjBinding = Properties.Settings.Default.ModeObjectBinding;
             drawControl.IsObjectBinding = modeObjBinding;
             tsmiObjectBinding.Checked = modeObjBinding;
-            //tsbObjectBinding.Checked = modeObjBinding;
+            tsbObjectBinding.Checked = modeObjBinding;
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
             BuildInterface();
@@ -516,10 +516,18 @@ namespace PetProj
         {
             var mode = !drawControl.IsObjectBinding;
             tsmiObjectBinding.Checked = mode;
-            //tsbObjectBinding.Checked = mode;
+            tsbObjectBinding.Checked = mode;
             drawControl.IsObjectBinding = mode;
             Properties.Settings.Default.ModeObjectBinding = mode;
             Properties.Settings.Default.Save();
+        }
+
+        private void tsbObjectBinding_Paint(object sender, PaintEventArgs e)
+        {
+            var gr = e.Graphics;
+            var rect = tsbObjectBinding.Bounds;
+            rect.Inflate(-3, -3);
+            gr.DrawRectangle(Pens.Red, rect);
         }
     }
 }

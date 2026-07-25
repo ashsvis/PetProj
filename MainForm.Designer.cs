@@ -106,7 +106,7 @@
             this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
             this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
             this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
-            this.tsbObjectBinding = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsbObjectBinding = new PetProj.ToolStripSplitButtonCheckable();
             this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToCenter = new System.Windows.Forms.ToolStripMenuItem();
@@ -786,13 +786,13 @@
             this.toolStrip2.TabIndex = 6;
             this.toolStrip2.Text = "toolStrip2";
             // 
-            // stbOrto
+            // tsbOrto
             // 
             this.tsbOrto.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbOrto.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbOrto.Image = global::PetProj.Properties.Resources.ortho;
             this.tsbOrto.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOrto.Name = "stbOrto";
+            this.tsbOrto.Name = "tsbOrto";
             this.tsbOrto.Size = new System.Drawing.Size(23, 22);
             this.tsbOrto.Text = " Ортогональное ограничение перемещений курсора";
             this.tsbOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
@@ -832,6 +832,7 @@
             // tsbObjectBinding
             // 
             this.tsbObjectBinding.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbObjectBinding.Checked = false;
             this.tsbObjectBinding.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbObjectBinding.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBindToEndPoint,
@@ -845,6 +846,7 @@
             this.tsbObjectBinding.Size = new System.Drawing.Size(32, 22);
             this.tsbObjectBinding.Text = "Привязка курсора к опорным точкам";
             this.tsbObjectBinding.ButtonClick += new System.EventHandler(this.tsmiObjectBinding_Click);
+            this.tsbObjectBinding.Paint += new System.Windows.Forms.PaintEventHandler(this.tsbObjectBinding_Paint);
             // 
             // tsmiBindToEndPoint
             // 
@@ -990,7 +992,7 @@
         private System.Windows.Forms.ToolStripTextBox tstbTextParam1;
         private System.Windows.Forms.ToolStripLabel tslParamName2;
         private System.Windows.Forms.ToolStripTextBox tstbTextParam2;
-        private System.Windows.Forms.ToolStripSplitButton tsbObjectBinding;
+        private ToolStripSplitButtonCheckable tsbObjectBinding;
         private System.Windows.Forms.ToolStripMenuItem tsmiBindToEndPoint;
         private System.Windows.Forms.ToolStripMenuItem tsmiBindToMiddle;
         private System.Windows.Forms.ToolStripMenuItem tsmiBindToCenter;

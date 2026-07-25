@@ -125,6 +125,9 @@
     <Compile Include="Styles\DefaultFill.cs" />
     <Compile Include="Styles\Fill.cs" />
     <Compile Include="Styles\Style.cs" />
+    <Compile Include="ToolStripSplitButtonCheckable.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ZoomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -188,6 +191,7 @@
     <None Include="Resources\movecopy.png" />
     <None Include="Resources\ortho.png" />
     <None Include="Resources\binding.png" />
+    <None Include="Resources\bindingChecked.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />
