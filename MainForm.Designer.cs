@@ -56,6 +56,7 @@
             this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiObjectBinding = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,11 +101,17 @@
             this.splitterHolders = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.stbOrto = new System.Windows.Forms.ToolStripButton();
+            this.tsbOrto = new System.Windows.Forms.ToolStripButton();
             this.tslParamName1 = new System.Windows.Forms.ToolStripLabel();
             this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
             this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
             this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
+            this.tsbObjectBinding = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBindToCenter = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiBindParameters = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -246,7 +253,7 @@
             this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
             this.tsmiUndo.Name = "tsmiUndo";
             this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiUndo.Size = new System.Drawing.Size(209, 22);
             this.tsmiUndo.Text = "&Отмена действия";
             this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
@@ -256,14 +263,14 @@
             this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
             this.tsmiRedo.Name = "tsmiRedo";
             this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiRedo.Size = new System.Drawing.Size(209, 22);
             this.tsmiRedo.Text = "&Отмена действия";
             this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiCut
             // 
@@ -272,7 +279,7 @@
             this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCut.Name = "tsmiCut";
             this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCut.Size = new System.Drawing.Size(209, 22);
             this.tsmiCut.Text = "Вырезат&ь";
             // 
             // tsmiCopy
@@ -282,7 +289,7 @@
             this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCopy.Name = "tsmiCopy";
             this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCopy.Size = new System.Drawing.Size(209, 22);
             this.tsmiCopy.Text = "&Копировать";
             // 
             // tsmiPaste
@@ -292,20 +299,20 @@
             this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiPaste.Name = "tsmiPaste";
             this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(209, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Enabled = false;
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(209, 22);
             this.tsmiDelete.Text = "Удалить";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
@@ -313,7 +320,7 @@
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
             this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
+            this.tsmiSelectAll.Size = new System.Drawing.Size(209, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
@@ -323,6 +330,7 @@
             this.tsmiMove,
             this.tsmiMoveCopy,
             this.toolStripMenuItem1,
+            this.tsmiObjectBinding,
             this.tsmiOrto,
             this.tsmiDynamicalEnter});
             this.tsmiCommands.Name = "tsmiCommands";
@@ -334,7 +342,7 @@
             this.tsmiMove.Enabled = false;
             this.tsmiMove.Image = global::PetProj.Properties.Resources.move;
             this.tsmiMove.Name = "tsmiMove";
-            this.tsmiMove.Size = new System.Drawing.Size(210, 22);
+            this.tsmiMove.Size = new System.Drawing.Size(301, 22);
             this.tsmiMove.Text = "Переместить";
             this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
             // 
@@ -343,21 +351,30 @@
             this.tsmiMoveCopy.Enabled = false;
             this.tsmiMoveCopy.Image = global::PetProj.Properties.Resources.movecopy;
             this.tsmiMoveCopy.Name = "tsmiMoveCopy";
-            this.tsmiMoveCopy.Size = new System.Drawing.Size(210, 22);
+            this.tsmiMoveCopy.Size = new System.Drawing.Size(301, 22);
             this.tsmiMoveCopy.Text = "Копировать";
             this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(298, 6);
+            // 
+            // tsmiObjectBinding
+            // 
+            this.tsmiObjectBinding.Image = global::PetProj.Properties.Resources.binding;
+            this.tsmiObjectBinding.Name = "tsmiObjectBinding";
+            this.tsmiObjectBinding.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.tsmiObjectBinding.Size = new System.Drawing.Size(301, 22);
+            this.tsmiObjectBinding.Text = "Привязка курсора к опорным точкам";
+            this.tsmiObjectBinding.Click += new System.EventHandler(this.tsmiObjectBinding_Click);
             // 
             // tsmiOrto
             // 
             this.tsmiOrto.Image = global::PetProj.Properties.Resources.ortho;
             this.tsmiOrto.Name = "tsmiOrto";
             this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.tsmiOrto.Size = new System.Drawing.Size(210, 22);
+            this.tsmiOrto.Size = new System.Drawing.Size(301, 22);
             this.tsmiOrto.Text = "Ортогональность";
             this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
             // 
@@ -365,7 +382,7 @@
             // 
             this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
             this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(210, 22);
+            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(301, 22);
             this.tsmiDynamicalEnter.Text = "Динамический ввод";
             this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
@@ -757,11 +774,12 @@
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stbOrto,
+            this.tsbOrto,
             this.tslParamName1,
             this.tstbTextParam1,
             this.tslParamName2,
-            this.tstbTextParam2});
+            this.tstbTextParam2,
+            this.tsbObjectBinding});
             this.toolStrip2.Location = new System.Drawing.Point(0, 674);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(1303, 25);
@@ -770,20 +788,20 @@
             // 
             // stbOrto
             // 
-            this.stbOrto.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.stbOrto.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.stbOrto.Image = global::PetProj.Properties.Resources.ortho;
-            this.stbOrto.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.stbOrto.Name = "stbOrto";
-            this.stbOrto.Size = new System.Drawing.Size(23, 22);
-            this.stbOrto.Text = " Ортогональное ограничение перемещений курсора";
-            this.stbOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
+            this.tsbOrto.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbOrto.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOrto.Image = global::PetProj.Properties.Resources.ortho;
+            this.tsbOrto.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOrto.Name = "stbOrto";
+            this.tsbOrto.Size = new System.Drawing.Size(23, 22);
+            this.tsbOrto.Text = " Ортогональное ограничение перемещений курсора";
+            this.tsbOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
             // 
             // tslParamName1
             // 
             this.tslParamName1.Name = "tslParamName1";
-            this.tslParamName1.Size = new System.Drawing.Size(74, 22);
-            this.tslParamName1.Text = "Параметр 1:";
+            this.tslParamName1.Size = new System.Drawing.Size(17, 22);
+            this.tslParamName1.Text = "X:";
             this.tslParamName1.Visible = false;
             // 
             // tstbTextParam1
@@ -791,14 +809,15 @@
             this.tstbTextParam1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstbTextParam1.Name = "tstbTextParam1";
             this.tstbTextParam1.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam1.Text = "0";
             this.tstbTextParam1.Visible = false;
             this.tstbTextParam1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbTextParam1_KeyDown);
             // 
             // tslParamName2
             // 
             this.tslParamName2.Name = "tslParamName2";
-            this.tslParamName2.Size = new System.Drawing.Size(74, 22);
-            this.tslParamName2.Text = "Параметр 2:";
+            this.tslParamName2.Size = new System.Drawing.Size(17, 22);
+            this.tslParamName2.Text = "Y:";
             this.tslParamName2.Visible = false;
             // 
             // tstbTextParam2
@@ -806,8 +825,55 @@
             this.tstbTextParam2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstbTextParam2.Name = "tstbTextParam2";
             this.tstbTextParam2.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam2.Text = "0";
             this.tstbTextParam2.Visible = false;
             this.tstbTextParam2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbTextParam1_KeyDown);
+            // 
+            // tsbObjectBinding
+            // 
+            this.tsbObjectBinding.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbObjectBinding.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbObjectBinding.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiBindToEndPoint,
+            this.tsmiBindToMiddle,
+            this.tsmiBindToCenter,
+            this.toolStripSeparator11,
+            this.tsmiBindParameters});
+            this.tsbObjectBinding.Image = global::PetProj.Properties.Resources.binding;
+            this.tsbObjectBinding.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbObjectBinding.Name = "tsbObjectBinding";
+            this.tsbObjectBinding.Size = new System.Drawing.Size(32, 22);
+            this.tsbObjectBinding.Text = "Привязка курсора к опорным точкам";
+            this.tsbObjectBinding.ButtonClick += new System.EventHandler(this.tsmiObjectBinding_Click);
+            // 
+            // tsmiBindToEndPoint
+            // 
+            this.tsmiBindToEndPoint.Name = "tsmiBindToEndPoint";
+            this.tsmiBindToEndPoint.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToEndPoint.Text = "Конточка";
+            // 
+            // tsmiBindToMiddle
+            // 
+            this.tsmiBindToMiddle.Name = "tsmiBindToMiddle";
+            this.tsmiBindToMiddle.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToMiddle.Text = "Середина";
+            // 
+            // tsmiBindToCenter
+            // 
+            this.tsmiBindToCenter.Name = "tsmiBindToCenter";
+            this.tsmiBindToCenter.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToCenter.Text = "Центр";
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(260, 6);
+            // 
+            // tsmiBindParameters
+            // 
+            this.tsmiBindParameters.Name = "tsmiBindParameters";
+            this.tsmiBindParameters.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindParameters.Text = "Параметры объектной привязки...";
             // 
             // MainForm
             // 
@@ -919,11 +985,18 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiDynamicalEnter;
         private System.Windows.Forms.ToolStripMenuItem tsmiOrto;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton stbOrto;
+        private System.Windows.Forms.ToolStripButton tsbOrto;
         private System.Windows.Forms.ToolStripLabel tslParamName1;
         private System.Windows.Forms.ToolStripTextBox tstbTextParam1;
         private System.Windows.Forms.ToolStripLabel tslParamName2;
         private System.Windows.Forms.ToolStripTextBox tstbTextParam2;
+        private System.Windows.Forms.ToolStripSplitButton tsbObjectBinding;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindToEndPoint;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindToMiddle;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindToCenter;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindParameters;
+        private System.Windows.Forms.ToolStripMenuItem tsmiObjectBinding;
     }
 }
 

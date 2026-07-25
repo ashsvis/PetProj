@@ -23,6 +23,7 @@ namespace PetProj
 
         public bool IsDynamicalEnter { get; set; } = true;
         public bool IsDrawOrtoMode { get; set; } = false;
+        public bool IsObjectBinding { get; set; } = false;
 
         public EditorMode EditorMode => editorMode;
         public int MouseClickCount => mouseClickCount;
@@ -109,31 +110,40 @@ namespace PetProj
                     break;
                 case EditorMode.BuildLines:
                     {
-                        pt = PrepareMousePosition(mousePosition);
-                        text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
-                        using (var pen = new Pen(Color.Black, kf))
-                        using (var font = new Font("Arial", (float)(10f * kf)))
-                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                        if (IsDynamicalEnter)
+                        {
+                            pt = PrepareMousePosition(mousePosition);
+                            text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
+                            using (var pen = new Pen(Color.Black, kf))
+                            using (var font = new Font("Arial", (float)(10f * kf)))
+                                graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                        }
                         if (mouseClickCount == 1)
                             DrawRibbonLine(graphics, firstMouseDown, mousePosition);
                         break;
                     }
                 case EditorMode.BuildRectangles:
-                    pt = PrepareMousePosition(mousePosition);
-                    text = (mouseClickCount == 0 ? $"Укажите точку первого угла " : $"Укажите точку второго угла ") + $" X:{pt.X} Y:{pt.Y}";
-                    using (var pen = new Pen(Color.Black, kf))
-                    using (var font = new Font("Arial", (float)(10f * kf)))
-                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    if (IsDynamicalEnter)
+                    {
+                        pt = PrepareMousePosition(mousePosition);
+                        text = (mouseClickCount == 0 ? $"Укажите точку первого угла " : $"Укажите точку второго угла ") + $" X:{pt.X} Y:{pt.Y}";
+                        using (var pen = new Pen(Color.Black, kf))
+                        using (var font = new Font("Arial", (float)(10f * kf)))
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    }
                     if (mouseClickCount == 1)
                         DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
                     break;
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
-                    pt = PrepareMousePosition(mousePosition);
-                    text = (mouseClickCount == 0 ? $"Базовая точка " : $"Вторая точка ") + $" X:{pt.X} Y:{pt.Y}";
-                    using (var pen = new Pen(Color.Black, kf))
-                    using (var font = new Font("Arial", (float)(10f * kf)))
-                        graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    if (IsDynamicalEnter)
+                    {
+                        pt = PrepareMousePosition(mousePosition);
+                        text = (mouseClickCount == 0 ? $"Базовая точка " : $"Вторая точка ") + $" X:{pt.X} Y:{pt.Y}";
+                        using (var pen = new Pen(Color.Black, kf))
+                        using (var font = new Font("Arial", (float)(10f * kf)))
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    }
                     if (mouseClickCount == 1)
                         DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                     break;

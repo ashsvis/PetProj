@@ -26,86 +26,110 @@ namespace PetProj
             ConnectEditors();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            var modeOrto = Properties.Settings.Default.ModeDrawOrto;
+            drawControl.IsDrawOrtoMode = modeOrto;
+            tsmiOrto.Checked = modeOrto;
+            tsbOrto.Checked = modeOrto;
+            var modeDynamicEnter = Properties.Settings.Default.ModeDynamicalEnter;
+            drawControl.IsDynamicalEnter = modeDynamicEnter;
+            tsmiDynamicalEnter.Checked = modeDynamicEnter;
+            tslParamName1.Visible = false;
+            tstbTextParam1.Visible = false;
+            tslParamName2.Visible = false;
+            tstbTextParam2.Visible = false;
+            var modeObjBinding = Properties.Settings.Default.ModeObjectBinding;
+            drawControl.IsObjectBinding = modeObjBinding;
+            tsmiObjectBinding.Checked = modeObjBinding;
+            //tsbObjectBinding.Checked = modeObjBinding;
+            ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
+            timerUpdateControls.Enabled = true;
+            BuildInterface();
+        }
+
         private void DrawControl_OnChangeParams(object sender, object[] parametes)
         {
-            switch (drawControl.EditorMode)
+            if (drawControl.IsDynamicalEnter)
             {
-                case EditorMode.BuildLines:
-                    if (drawControl.MouseClickCount == 0)
-                    {
-                        var pt = (PointF)parametes[0];
-                        tslParamName1.Text = "X:";
-                        tstbTextParam1.Text = pt.X.ToString();
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Y:";
-                        tstbTextParam2.Text = pt.Y.ToString();
-                    }
-                    else
-                    {
-                        tslParamName1.Text = "Длина:";
-                        tstbTextParam1.Text = $"{parametes[0]}";
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Угол:";
-                        tstbTextParam2.Text = $"{parametes[1]}";
-                    }
-                    break;
-                case EditorMode.BuildRectangles:
-                    if (drawControl.MouseClickCount == 0)
-                    {
-                        var pt = (PointF)parametes[0];
-                        tslParamName1.Text = "X:";
-                        tstbTextParam1.Text = pt.X.ToString();
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Y:";
-                        tstbTextParam2.Text = pt.Y.ToString();
-                    }
-                    else
-                    {
-                        tslParamName1.Text = "Ширина:";
-                        tstbTextParam1.Text = $"{parametes[0]}";
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Высота:";
-                        tstbTextParam2.Text = $"{parametes[1]}";
-                    }
-                    break;
-                case EditorMode.MoveSelected:
-                case EditorMode.MoveCopySelected:
-                    if (drawControl.MouseClickCount == 0)
-                    {
-                        var pt = (PointF)parametes[0];
-                        tslParamName1.Text = "X:";
-                        tstbTextParam1.Text = pt.X.ToString();
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Y:";
-                        tstbTextParam2.Text = pt.Y.ToString();
-                    }
-                    else
-                    {
-                        var pt = (PointF)parametes[0];
-                        tslParamName1.Text = "Смещение X:";
-                        tstbTextParam1.Text = pt.X.ToString();
-                        tstbTextParam1.Focus();
-                        tstbTextParam1.SelectAll();
-                        tslParamName2.Text = "Смещение Y:";
-                        tstbTextParam2.Text = pt.Y.ToString();
-                    }
-                    break;
+                tslParamName1.Visible = true;
+                tstbTextParam1.Visible = true;
+                tslParamName2.Visible = true;
+                tstbTextParam2.Visible = true;
+                switch (drawControl.EditorMode)
+                {
+                    case EditorMode.BuildLines:
+                        if (drawControl.MouseClickCount == 0)
+                        {
+                            var pt = (PointF)parametes[0];
+                            tslParamName1.Text = "X:";
+                            tstbTextParam1.Text = pt.X.ToString();
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Y:";
+                            tstbTextParam2.Text = pt.Y.ToString();
+                        }
+                        else
+                        {
+                            tslParamName1.Text = "Длина:";
+                            tstbTextParam1.Text = $"{parametes[0]}";
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Угол:";
+                            tstbTextParam2.Text = $"{parametes[1]}";
+                        }
+                        break;
+                    case EditorMode.BuildRectangles:
+                        if (drawControl.MouseClickCount == 0)
+                        {
+                            var pt = (PointF)parametes[0];
+                            tslParamName1.Text = "X:";
+                            tstbTextParam1.Text = pt.X.ToString();
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Y:";
+                            tstbTextParam2.Text = pt.Y.ToString();
+                        }
+                        else
+                        {
+                            tslParamName1.Text = "Ширина:";
+                            tstbTextParam1.Text = $"{parametes[0]}";
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Высота:";
+                            tstbTextParam2.Text = $"{parametes[1]}";
+                        }
+                        break;
+                    case EditorMode.MoveSelected:
+                    case EditorMode.MoveCopySelected:
+                        if (drawControl.MouseClickCount == 0)
+                        {
+                            var pt = (PointF)parametes[0];
+                            tslParamName1.Text = "X:";
+                            tstbTextParam1.Text = pt.X.ToString();
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Y:";
+                            tstbTextParam2.Text = pt.Y.ToString();
+                        }
+                        else
+                        {
+                            var pt = (PointF)parametes[0];
+                            tslParamName1.Text = "Смещение X:";
+                            tstbTextParam1.Text = pt.X.ToString();
+                            tstbTextParam1.Focus();
+                            tstbTextParam1.SelectAll();
+                            tslParamName2.Text = "Смещение Y:";
+                            tstbTextParam2.Text = pt.Y.ToString();
+                        }
+                        break;
+                }
             }
         }
 
         private void DrawControl_OnChangeMode(object sender, EditorMode e)
         {
-            tslParamName1.Visible = true;
-            tstbTextParam1.Visible = true;
-            tslParamName2.Visible = true;
-            tstbTextParam2.Visible = true;
-            tstbTextParam1.Focus();
-            tstbTextParam1.SelectAll();
+            DrawControl_OnChangeParams(sender, new object[] { PointF.Empty });
         }
 
         private void ConnectEditors()
@@ -196,20 +220,6 @@ namespace PetProj
             {
                 drawControl.SetParameters(new string[] { tstbTextParam1.Text, tstbTextParam2.Text });
             }
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            var modeOrto = Properties.Settings.Default.ModeDrawOrto;
-            drawControl.IsDrawOrtoMode = modeOrto;
-            tsmiOrto.Checked = modeOrto;
-            stbOrto.Checked = modeOrto;
-            var modeDynamicEnter = Properties.Settings.Default.ModeDynamicalEnter;
-            drawControl.IsDynamicalEnter = modeDynamicEnter;
-            tsmiDynamicalEnter.Checked = modeDynamicEnter;
-            ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
-            timerUpdateControls.Enabled = true;
-            BuildInterface();
         }
 
         /// <summary>
@@ -484,6 +494,10 @@ namespace PetProj
             tsmiDynamicalEnter.Checked = mode;
             drawControl.IsDynamicalEnter = mode;
             drawControl.UpdateInterface();
+            tslParamName1.Visible = mode;
+            tstbTextParam1.Visible = mode;
+            tslParamName2.Visible = mode;
+            tstbTextParam2.Visible = mode;
             Properties.Settings.Default.ModeDynamicalEnter = mode;
             Properties.Settings.Default.Save();
         }
@@ -492,9 +506,19 @@ namespace PetProj
         {
             var mode = !drawControl.IsDrawOrtoMode;
             tsmiOrto.Checked = mode;
-            stbOrto.Checked = mode;
+            tsbOrto.Checked = mode;
             drawControl.IsDrawOrtoMode = mode;
             Properties.Settings.Default.ModeDrawOrto = mode;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tsmiObjectBinding_Click(object sender, EventArgs e)
+        {
+            var mode = !drawControl.IsObjectBinding;
+            tsmiObjectBinding.Checked = mode;
+            //tsbObjectBinding.Checked = mode;
+            drawControl.IsObjectBinding = mode;
+            Properties.Settings.Default.ModeObjectBinding = mode;
             Properties.Settings.Default.Save();
         }
     }

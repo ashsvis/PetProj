@@ -58,5 +58,17 @@ namespace PetProj.Properties {
                 this["ModeDrawOrto"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ModeObjectBinding {
+            get {
+                return ((bool)(this["ModeObjectBinding"]));
+            }
+            set {
+                this["ModeObjectBinding"] = value;
+            }
+        }
     }
 }
