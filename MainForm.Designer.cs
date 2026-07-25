@@ -132,7 +132,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1303, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1306, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -475,7 +475,7 @@
             this.tsbRect});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1303, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1306, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -665,10 +665,10 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 699);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 723);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1303, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1306, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -686,7 +686,7 @@
             this.placeHolder.Location = new System.Drawing.Point(254, 49);
             this.placeHolder.Margin = new System.Windows.Forms.Padding(0);
             this.placeHolder.Name = "placeHolder";
-            this.placeHolder.Size = new System.Drawing.Size(1049, 625);
+            this.placeHolder.Size = new System.Drawing.Size(1052, 649);
             this.placeHolder.TabIndex = 3;
             // 
             // timerUpdateControls
@@ -700,7 +700,7 @@
             this.propsHolder.Location = new System.Drawing.Point(0, 49);
             this.propsHolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.propsHolder.Name = "propsHolder";
-            this.propsHolder.Size = new System.Drawing.Size(250, 625);
+            this.propsHolder.Size = new System.Drawing.Size(250, 649);
             this.propsHolder.TabIndex = 4;
             // 
             // tableLayoutPanel1
@@ -715,7 +715,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(250, 625);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(250, 649);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panLeftCaption
@@ -727,7 +727,7 @@
             this.panLeftCaption.Margin = new System.Windows.Forms.Padding(0);
             this.panLeftCaption.MinimumSize = new System.Drawing.Size(20, 0);
             this.panLeftCaption.Name = "panLeftCaption";
-            this.panLeftCaption.Size = new System.Drawing.Size(20, 625);
+            this.panLeftCaption.Size = new System.Drawing.Size(20, 649);
             this.panLeftCaption.TabIndex = 3;
             this.panLeftCaption.Paint += new System.Windows.Forms.PaintEventHandler(this.panLeftCaption_Paint);
             // 
@@ -756,7 +756,7 @@
             this.panelTools.Location = new System.Drawing.Point(20, 0);
             this.panelTools.Margin = new System.Windows.Forms.Padding(0);
             this.panelTools.Name = "panelTools";
-            this.panelTools.Size = new System.Drawing.Size(230, 625);
+            this.panelTools.Size = new System.Drawing.Size(230, 649);
             this.panelTools.TabIndex = 4;
             // 
             // splitterHolders
@@ -766,7 +766,7 @@
             this.splitterHolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitterHolders.MinSize = 19;
             this.splitterHolders.Name = "splitterHolders";
-            this.splitterHolders.Size = new System.Drawing.Size(4, 625);
+            this.splitterHolders.Size = new System.Drawing.Size(4, 649);
             this.splitterHolders.TabIndex = 5;
             this.splitterHolders.TabStop = false;
             // 
@@ -780,9 +780,9 @@
             this.tslParamName2,
             this.tstbTextParam2,
             this.tsbObjectBinding});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 674);
+            this.toolStrip2.Location = new System.Drawing.Point(0, 698);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(1303, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(1306, 25);
             this.toolStrip2.TabIndex = 6;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -846,6 +846,7 @@
             this.tsbObjectBinding.Size = new System.Drawing.Size(32, 22);
             this.tsbObjectBinding.Text = "Привязка курсора к опорным точкам";
             this.tsbObjectBinding.ButtonClick += new System.EventHandler(this.tsmiObjectBinding_Click);
+            this.tsbObjectBinding.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbObjectBinding_DropDownItemClicked);
             this.tsbObjectBinding.Paint += new System.Windows.Forms.PaintEventHandler(this.tsbObjectBinding_Paint);
             // 
             // tsmiBindToEndPoint
@@ -881,7 +882,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1303, 721);
+            this.ClientSize = new System.Drawing.Size(1306, 745);
             this.Controls.Add(this.placeHolder);
             this.Controls.Add(this.splitterHolders);
             this.Controls.Add(this.propsHolder);
@@ -896,7 +897,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Чертилка";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStrip1.ResumeLayout(false);

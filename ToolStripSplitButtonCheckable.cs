@@ -23,7 +23,7 @@ namespace PetProj
             {
                 var rect = e.ClipRectangle;
                 rect.Height -= 1;
-                rect.Width = rect.Height;
+                rect.Width -= 1;
                 // Здесь логика отрисовки для «нажатого» состояния
                 using (var pen = new Pen(Color.FromArgb(0, 120, 215)))
                 {

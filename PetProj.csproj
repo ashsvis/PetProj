@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Figures\Figure.cs" />
     <Compile Include="MmsPoint.cs" />
+    <Compile Include="ObjectBindings\AllowedObjectBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\AllowedRendererDecorators.cs" />

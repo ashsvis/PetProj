@@ -1,5 +1,6 @@
 ﻿using PetProj.Common;
 using PetProj.Controls;
+using PetProj.ObjectBindings;
 using PetProj.Selections;
 using System;
 using System.Drawing;
@@ -43,9 +44,22 @@ namespace PetProj
             drawControl.IsObjectBinding = modeObjBinding;
             tsmiObjectBinding.Checked = modeObjBinding;
             tsbObjectBinding.Checked = modeObjBinding;
+            tsbObjectBinding.DropDown.Closing += DropDown_Closing;
+            drawControl.AllowedObjectBindings = (AllowedObjectBindings)Properties.Settings.Default.ObjectBindingFlags;
+            tsmiBindToEndPoint.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.EndPoint);
+            tsmiBindToMiddle.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
+            tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
             BuildInterface();
+        }
+
+        private void DropDown_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+            {
+                e.Cancel = true; // Отменяем закрытие
+            }
         }
 
         private void DrawControl_OnChangeParams(object sender, object[] parametes)
@@ -528,6 +542,34 @@ namespace PetProj
             var rect = tsbObjectBinding.Bounds;
             rect.Inflate(-3, -3);
             gr.DrawRectangle(Pens.Red, rect);
+        }
+
+        private void tsbObjectBinding_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == tsmiBindParameters)
+            {
+                ((ToolStripSplitButton)sender).DropDown.Close();
+                return;
+            }
+            if (e.ClickedItem == tsmiBindToEndPoint)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.EndPoint;
+                tsmiBindToEndPoint.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.EndPoint);
+            }
+            else if (e.ClickedItem == tsmiBindToMiddle)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Middle;
+                tsmiBindToMiddle.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
+            }
+            else if (e.ClickedItem == tsmiBindToCenter)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Center;
+                tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
+            }
+            else
+                return;
+            Properties.Settings.Default.ObjectBindingFlags = (uint)drawControl.AllowedObjectBindings;
+            Properties.Settings.Default.Save();
         }
     }
 }

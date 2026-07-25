@@ -3,6 +3,8 @@ using PetProj.Common;
 using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
+using PetProj.ObjectBindings;
+using PetProj.Renderers;
 using PetProj.Selections;
 using System;
 using System.Collections.Generic;
@@ -46,6 +48,7 @@ namespace PetProj
         public event EventHandler<Selection> OnSelected;
 
         public Figure Layer { get; set; }
+        public  AllowedObjectBindings AllowedObjectBindings { get; set; }
 
         public DrawControl()
         {

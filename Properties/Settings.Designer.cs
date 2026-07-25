@@ -70,5 +70,17 @@ namespace PetProj.Properties {
                 this["ModeObjectBinding"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public uint ObjectBindingFlags {
+            get {
+                return ((uint)(this["ObjectBindingFlags"]));
+            }
+            set {
+                this["ObjectBindingFlags"] = value;
+            }
+        }
     }
 }
