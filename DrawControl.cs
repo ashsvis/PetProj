@@ -85,13 +85,25 @@ namespace PetProj
             foreach (var fig in figures)
                 fig.Renderer.Render(graphics, fig);
 
-            // отрисовка временно подсвеченных под курсором или рамкой выделения
-            underCursor.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
+            // отрисовка маркеров на фигурах под курсором, при построении линий
+            if (IsObjectBinding && (editorMode == EditorMode.BuildLines || 
+                editorMode == EditorMode.BuildRectangles) && mouseClickCount == 1)
+            {
+                var location = PrepareMousePosition(PointToClient(MousePosition));
+                var query = selectionController.BindingMarkers.Select(marker => (marker, 
+                             $"{Math.Abs(marker.Position.X - location.X):00000}{Math.Abs(marker.Position.Y - location.Y):00000}")).OrderBy(x => x.Item2);
+                // рисуем ближайший маркер привязки к текущему курсору
+                foreach (var item in query.Take(1))
+                    item.marker.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
+            }
+            else
+                // отрисовка временно подсвеченных под курсором или рамкой выделения
+                underCursor.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
-                editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, 
-                (float)zoomPad.ZoomScale);
+                    editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink,
+                    (float)zoomPad.ZoomScale);
 
             // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
@@ -469,7 +481,7 @@ namespace PetProj
             var pt2 = PrepareMousePosition(new PointF(zoomPad.Width, mousePosition.Y));
             var pt3 = PrepareMousePosition(new PointF(mousePosition.X, 0));
             var pt4 = PrepareMousePosition(new PointF(mousePosition.X, zoomPad.Height));
-            using (var pen = new Pen(Color.Gray, 0))
+            using (var pen = new Pen(Color.FromArgb(50, Color.Black), 0))
             {
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.DrawLine(pen, pt3, pt4);
@@ -553,6 +565,13 @@ namespace PetProj
                         }
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+
+                        var query = selectionController.BindingMarkers.Select(marker => (marker,
+                                     $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
+                        if (query.Count() > 0)
+                            // принимаем позицию ближайшего маркера привязки к текущему курсору
+                            pt2 = PrepareMousePosition(query.First().marker.Position);
+
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
                         mouseClickCount = 0;
@@ -677,7 +696,7 @@ namespace PetProj
                         }
                     }
                 }
-                selectionController.BuildMarkers();
+                selectionController.BuildMarkers(selectionController.Selection);
             }
         }
 
@@ -761,15 +780,22 @@ namespace PetProj
                                 underCursor.Remove(fig);
                         }
                     );
+
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
-            if (mouseClickCount == 0)
+            if (mouseClickCount == 0 ||
+                (mouseClickCount == 1 && (editorMode == EditorMode.BuildLines || editorMode == EditorMode.BuildRectangles)))
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();
                 var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(1.0f / zoomPad.ZoomScale)));
                 if (fig != null)
+                {
                     underCursor.Add(fig);
+                    selectionController.BuildBindingMarkers(underCursor);
+                }
+                else
+                    selectionController.ClearMarkers();
             }
 
             zoomPad.Invalidate();
@@ -978,7 +1004,7 @@ namespace PetProj
             selectionController.Clear();
             foreach (var fig in figures)
                 selectionController.Selection.Add(fig);
-            selectionController.BuildMarkers();
+            selectionController.BuildMarkers(selectionController.Selection);
             zoomPad.Invalidate();
         }
 

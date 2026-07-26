@@ -4,6 +4,7 @@ using PetProj.Selections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PetProj.Controllers
@@ -29,11 +30,13 @@ namespace PetProj.Controllers
     {
         private readonly Selection selection;
         private readonly List<Marker> markers;
+        private readonly List<Marker> bindingMarkers;
 
         public SelectionController()
         {
             selection = new Selection();
             markers = new List<Marker>();
+            bindingMarkers = new List<Marker>();
         }
 
         /// <summary>
@@ -45,6 +48,11 @@ namespace PetProj.Controllers
         /// Маркеры
         /// </summary>
         public List<Marker> Markers { get { return markers; } }
+
+        /// <summary>
+        /// Маркеры привязок
+        /// </summary>
+        public List<Marker> BindingMarkers { get { return bindingMarkers; } }
 
         /// <summary>
         /// Изменилась выделенная фигура/фигуры
@@ -62,6 +70,7 @@ namespace PetProj.Controllers
         public void Clear()
         {
             markers.Clear();
+            bindingMarkers.Clear();
             selection.Clear();
             OnSelectedFigureChanged();
         }
@@ -112,7 +121,7 @@ namespace PetProj.Controllers
                         OnSelectedFigureChanged();
                     }
                 }
-                BuildMarkers();
+                BuildMarkers(Selection);
             }
         }
 
@@ -200,15 +209,16 @@ namespace PetProj.Controllers
         {
             // стираем предыдущие маркеры
             Markers.Clear();
+            BindingMarkers.Clear();
         }
 
-        public void BuildMarkers()
+        public void BuildMarkers(IEnumerable<Figure> selection)
         {
             // стираем предыдущие маркеры
             Markers.Clear();
             // если ничего не выбрано, выходим
-            if (Selection.Count == 0) return;
-            foreach (var fig in Selection)
+            if (selection.Count() == 0) return;
+            foreach (var fig in selection)
             {
                 using (var path = fig.GetRendererPath())
                 {
@@ -225,6 +235,33 @@ namespace PetProj.Controllers
                         var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
                         var marker = CreateMarker(fig, MarkerType.Middle, pt);
                         Markers.Add(marker);
+                    }
+                }
+            }
+        }
+        public void BuildBindingMarkers(IEnumerable<Figure> selection)
+        {
+            // стираем предыдущие маркеры
+            BindingMarkers.Clear();
+            // если ничего не выбрано, выходим
+            if (selection.Count() == 0) return;
+            foreach (var fig in selection)
+            {
+                using (var path = fig.GetRendererPath())
+                {
+                    var points = path.PathPoints;
+                    for (var i = 0; i < points.Length; i++)
+                    {
+                        var marker = CreateMarker(fig, MarkerType.BindingVertex, points[i], i);
+                        BindingMarkers.Add(marker);
+                    }
+                    if (fig.Geometry is AddLineGeometry _)
+                    {
+                        var pt1 = points[0];
+                        var pt2 = points[1];
+                        var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
+                        var marker = CreateMarker(fig, MarkerType.BindingMiddle, pt);
+                        BindingMarkers.Add(marker);
                     }
                 }
             }
