@@ -87,7 +87,7 @@ namespace PetProj
 
             // отрисовка маркеров на фигурах под курсором, при построении линий
             if (IsObjectBinding && (editorMode == EditorMode.BuildLines || 
-                editorMode == EditorMode.BuildRectangles) && mouseClickCount == 1)
+                editorMode == EditorMode.BuildRectangles))
             {
                 var location = PrepareMousePosition(PointToClient(MousePosition));
                 var query = selectionController.BindingMarkers.Select(marker => (marker, 
@@ -509,6 +509,16 @@ namespace PetProj
             {
                 // при первом нажатии запоминаем точку нажатия
                 firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+
+                if (IsObjectBinding && !calledByCode)
+                {
+                    var query = selectionController.BindingMarkers.Select(marker => (marker,
+                                 $"{Math.Abs(marker.Position.X - firstMouseDown.X):00000}{Math.Abs(marker.Position.Y - firstMouseDown.Y):00000}")).OrderBy(x => x.Item2);
+                    if (query.Count() > 0)
+                        // принимаем позицию ближайшего маркера привязки к текущему курсору
+                        firstMouseDown = PrepareMousePosition(query.First().marker.Position);
+                }
+
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
                 {
