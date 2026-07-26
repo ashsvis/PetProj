@@ -161,8 +161,25 @@ namespace PetProj.Controllers
                         Index = index,
                         Owner = owner
                     };
+                case MarkerType.BindingVertex:
+                    return new BindingVertexMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Index = index,
+                        Owner = owner
+                    };
                 case MarkerType.Middle:
                     return new MiddleMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Owner = owner
+                    };
+                case MarkerType.BindingMiddle:
+                    return new BindingMiddleMarker
                     {
                         MarkerType = markerType,
                         Cursor = Cursors.Hand,

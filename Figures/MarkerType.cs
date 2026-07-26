@@ -4,5 +4,7 @@
     {
         Vertex,
         Middle,
+        BindingVertex,
+        BindingMiddle,
     }
 }

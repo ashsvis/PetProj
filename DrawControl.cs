@@ -93,9 +93,9 @@ namespace PetProj
                 editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, 
                 (float)zoomPad.ZoomScale);
 
-            // отрисовка маркеров
+            // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
-                marker.Render(graphics, Color.Lime, (float)zoomPad.ZoomScale);
+                marker.Render(graphics, Color.Blue, (float)zoomPad.ZoomScale);
 
             DrawDefaultCursor(graphics, mousePosition);
             float kf = (float)(1f / zoomPad.ZoomScale);
@@ -858,6 +858,7 @@ namespace PetProj
         {
             editorMode = selection;
             mouseClickCount = 0;
+            underCursor.Clear();
             zoomPad.Invalidate();
             switch (editorMode)
             {
@@ -866,8 +867,14 @@ namespace PetProj
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
                     break;
                 case EditorMode.BuildLines:
+                case EditorMode.BuildRectangles:
+                    selectionController.Clear();
                     OnChangeMode?.Invoke(this, selection);
-                    OnToolTipChanged?.Invoke(this, "Укажите первую точку отрезка:");
+                    break;
+                case EditorMode.MoveSelected:
+                case EditorMode.MoveCopySelected:
+                    selectionController.ClearMarkers();
+                    OnChangeMode?.Invoke(this, selection);
                     break;
                 default:
                     OnChangeMode?.Invoke(this, selection);

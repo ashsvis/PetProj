@@ -95,6 +95,8 @@
     <Compile Include="Figures\FigureBuilder.cs" />
     <Compile Include="Figures\Marker.cs" />
     <Compile Include="Figures\MarkerType.cs" />
+    <Compile Include="Figures\BindingMiddleMarker.cs" />
+    <Compile Include="Figures\BindingVertexMarker.cs" />
     <Compile Include="Figures\MiddleMarker.cs" />
     <Compile Include="Figures\VertexMarker.cs" />
     <Compile Include="Geometries\AddLineGeometry.cs" />
