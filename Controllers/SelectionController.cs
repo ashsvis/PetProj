@@ -1,4 +1,5 @@
 ﻿using PetProj.Figures;
+using PetProj.Geometries;
 using PetProj.Selections;
 using System;
 using System.Collections.Generic;
@@ -111,6 +112,7 @@ namespace PetProj.Controllers
                         OnSelectedFigureChanged();
                     }
                 }
+                BuildMarkers();
             }
         }
 
@@ -144,6 +146,71 @@ namespace PetProj.Controllers
         public Cursor GetCursor(Point location, Keys modifierKeys, MouseButtons button)
         {
             return Cursors.Default;
+        }
+
+        private Marker CreateMarker(Figure owner, MarkerType markerType, PointF point, int index = 0)
+        {
+            switch (markerType)
+            {
+                case MarkerType.Vertex:
+                    return new VertexMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Index = index,
+                        Owner = owner
+                    };
+                case MarkerType.Middle:
+                    return new MiddleMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Owner = owner
+                    };
+                default:
+                    return new Marker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                    };
+            }
+        }
+
+        public void ClearMarkers()
+        {
+            // стираем предыдущие маркеры
+            Markers.Clear();
+        }
+
+        public void BuildMarkers()
+        {
+            // стираем предыдущие маркеры
+            Markers.Clear();
+            // если ничего не выбрано, выходим
+            if (Selection.Count == 0) return;
+            foreach (var fig in Selection)
+            {
+                using (var path = fig.GetRendererPath())
+                {
+                    var points = path.PathPoints;
+                    for (var i = 0; i < points.Length; i++)
+                    {
+                        var marker = CreateMarker(fig, MarkerType.Vertex, points[i], i);
+                        Markers.Add(marker);
+                    }
+                    if (fig.Geometry is AddLineGeometry _)
+                    {
+                        var pt1 = points[0];
+                        var pt2 = points[1];
+                        var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
+                        var marker = CreateMarker(fig, MarkerType.Middle, pt);
+                        Markers.Add(marker);
+                    }
+                }
+            }
         }
     }
 }

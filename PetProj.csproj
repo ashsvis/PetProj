@@ -94,6 +94,9 @@
     <Compile Include="EditorMode.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
     <Compile Include="Figures\Marker.cs" />
+    <Compile Include="Figures\MarkerType.cs" />
+    <Compile Include="Figures\MiddleMarker.cs" />
+    <Compile Include="Figures\VertexMarker.cs" />
     <Compile Include="Geometries\AddLineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />

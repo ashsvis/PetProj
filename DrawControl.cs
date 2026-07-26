@@ -93,6 +93,10 @@ namespace PetProj
                 editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, 
                 (float)zoomPad.ZoomScale);
 
+            // отрисовка маркеров
+            foreach (var marker in selectionController.Markers)
+                marker.Render(graphics, Color.Lime, (float)zoomPad.ZoomScale);
+
             DrawDefaultCursor(graphics, mousePosition);
             float kf = (float)(1f / zoomPad.ZoomScale);
             PointF pt;
@@ -355,19 +359,6 @@ namespace PetProj
             {
                 var ms = graphics.MeasureString(text, font);
                 var rect = new RectangleF(mid.X - ms.Width / 2, mid.Y - ms.Height / 2, ms.Width, ms.Height);
-                graphics.FillRectangles(background, new RectangleF[] { rect });
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
-                using (var brush = new SolidBrush(Color.Black))
-                    graphics.DrawString(text, font, brush, rect);
-            }
-        }
-
-        private void DrawTextAtLocation(Graphics graphics, Pen pen, Brush background, PointF location, string text)
-        {
-            using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
-            {
-                var ms = graphics.MeasureString(text, font);
-                var rect = new RectangleF(location.X, location.Y, ms.Width, ms.Height);
                 graphics.FillRectangles(background, new RectangleF[] { rect });
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
                 using (var brush = new SolidBrush(Color.Black))
@@ -686,19 +677,15 @@ namespace PetProj
                         }
                     }
                 }
+                selectionController.BuildMarkers();
             }
-        }
-
-        private double Distance(PointF current, PointF next)
-        {
-            return Math.Sqrt(Math.Pow(next.X - current.X, 2) + Math.Pow(next.Y - current.Y, 2));
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
             var pt = PrepareMousePosition(mousePosition);
-            OnCursorMoved?.Invoke(this, (mouseClickCount, firstMouseDown, Point.Ceiling(/*e.Location*/pt)));
+            OnCursorMoved?.Invoke(this, (mouseClickCount, firstMouseDown, Point.Ceiling(pt)));
 
             if (e.Button == MouseButtons.None)
             {
@@ -738,6 +725,7 @@ namespace PetProj
                             OnChangeParams?.Invoke(this, new object[] { pt });
                         else if (mouseClickCount == 1)
                         {
+                            selectionController.ClearMarkers();
                             var pt1 = firstMouseDown;
                             var pt2 = PrepareMousePosition(mousePosition);
                             var vector = pt2.Vector(pt1);
@@ -857,7 +845,7 @@ namespace PetProj
         {
             foreach (var fig in selectionController.Selection)
                 undoRedoManager.Execute(new RemoveFigureCommand(figures, fig));
-            selectionController.Selection.Clear();
+            selectionController.Clear();
             underCursor.Clear();
             Changed = true;
         }
@@ -980,9 +968,10 @@ namespace PetProj
         /// </summary>
         public void SelectAll()
         {
-            selectionController.Selection.Clear();
+            selectionController.Clear();
             foreach (var fig in figures)
                 selectionController.Selection.Add(fig);
+            selectionController.BuildMarkers();
             zoomPad.Invalidate();
         }
 
@@ -991,7 +980,7 @@ namespace PetProj
         /// </summary>
         public void Undo()
         {
-            selectionController.Selection.Clear();
+            selectionController.Clear();
             undoRedoManager.Undo();
             Changed = true;
         }
@@ -1001,7 +990,7 @@ namespace PetProj
         /// </summary>
         public void Redo()
         {
-            selectionController.Selection.Clear();
+            selectionController.Clear();
             undoRedoManager.Redo();
             Changed = true;
         }

@@ -389,7 +389,7 @@ namespace PetProj
         /// <param name="e"></param>
         private void tsmiSelectAll_Click(object sender, EventArgs e)
         {
-            drawControl.SelectAll();
+            drawControl.SelectAll();          
         }
 
         /// <summary>

@@ -5,12 +5,10 @@ namespace PetProj.Common
 {
     public static class PointFExtension
     {
-// ReSharper disable InconsistentNaming
         public const float PI = (float)Math.PI;
         public const float PI2 = 2 * PI;
         public const float TO_DEGREES = 180 / (float)Math.PI;
         public const float TO_RADIANS = (float)Math.PI / 180;
-// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Длина (модуль) вектора
@@ -19,7 +17,7 @@ namespace PetProj.Common
         /// <returns>число</returns>
         public static float Length(this PointF vector)
         {
-            return (float) Math.Sqrt(vector.X*vector.X + vector.Y*vector.Y);
+            return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
         }
 
         /// <summary>

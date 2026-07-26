@@ -155,39 +155,6 @@ namespace PetProj.Selections
                     }
                 }
             }
-            // рисуем маркеры у выбранных фигур
-            using (var pen = new Pen(Color.Lime, 0f))
-            {
-                foreach (var figure in selected)
-                {
-                    // получаем путь для рисования методом фигуры
-                    using (var path = figure.Geometry.Path)
-                    {
-                        var points = path.PathPoints;
-                        var rects = new List<RectangleF>();
-                        for(int i = 0; i < points.Length; i++)
-                        {
-                            var pt = points[i];
-                            var rect = new RectangleF(pt.X - 4f / kf, pt.Y - 4f / kf, 8f / kf, 8f / kf);
-                            rects.Add(rect);
-                        }
-                        graphics.DrawRectangles(pen, rects.ToArray());
-                        if (figure.Geometry is AddLineGeometry _)
-                        {
-                            var pt1 = points[0];
-                            var pt2 = points[1];
-                            var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                            graphics.DrawLines(pen, new PointF[] 
-                            {  
-                                new PointF(pt.X, pt.Y - 5f / kf),
-                                new PointF(pt.X + 5f / kf, pt.Y + 5f / kf),
-                                new PointF(pt.X - 5f / kf, pt.Y + 5f / kf),
-                                new PointF(pt.X, pt.Y - 5f / kf),
-                            });
-                        }
-                    }
-                }
-            }
         }
 
         /// <summary>

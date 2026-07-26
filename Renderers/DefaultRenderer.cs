@@ -15,20 +15,18 @@ namespace PetProj.Renderers
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public override void Render(Graphics graphics, Figure figure)
         {
+            using (var brush = figure.Style.FillStyle.GetBrush(figure))
+            using (var pen = figure.Style.BorderStyle.GetPen(figure))
             // получаем путь для рисования методом фигуры
             using (var path = figure.Geometry.Path)
             {
                 // если разрешено использование заливки
                 if (figure.Style.FillStyle != null &&
                     figure.Style.FillStyle.IsVisible)
-                    // то получаем кисть из стиля рисования фигуры
-                    using (var brush = figure.Style.FillStyle.GetBrush(figure))
                         graphics.FillPath(brush, path);
                 // если разрешено рисование контура
                 if (figure.Style.BorderStyle != null &&
                     figure.Style.BorderStyle.IsVisible)
-                    // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = figure.Style.BorderStyle.GetPen(figure))
                         graphics.DrawPath(pen, path);
             }
         }

@@ -94,16 +94,4 @@ namespace PetProj.Figures
             return path;
         }
     }
-
-    public class VertexMarker : Marker
-    {
-        public int Index { get; set; }
-        public Figure Owner { get; set; }
-    }
-
-    public enum MarkerType
-    {
-        Vertex,
-        Middle,
-    }
 }

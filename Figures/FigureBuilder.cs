@@ -9,7 +9,7 @@ namespace PetProj.Figures
     /// </summary>
     public static class FigureBuilder
     {
-        private const int MARKER_SIZE = 8;
+        //private const int MARKER_SIZE = 8;
 
         /// <summary>
         /// Построение пути для ломаной линии
