@@ -86,8 +86,7 @@ namespace PetProj
                 fig.Renderer.Render(graphics, fig);
 
             // отрисовка маркеров на фигурах под курсором, при построении линий
-            if (IsObjectBinding && (editorMode == EditorMode.BuildLines || 
-                editorMode == EditorMode.BuildRectangles))
+            if (IsObjectBinding && (editorMode != EditorMode.Selection))
             {
                 var location = PrepareMousePosition(PointToClient(MousePosition));
                 var query = selectionController.BindingMarkers.Select(marker => (marker, 
@@ -576,11 +575,14 @@ namespace PetProj
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                        var query = selectionController.BindingMarkers.Select(marker => (marker,
-                                     $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
-                        if (query.Count() > 0)
-                            // принимаем позицию ближайшего маркера привязки к текущему курсору
-                            pt2 = PrepareMousePosition(query.First().marker.Position);
+                        if (IsObjectBinding)
+                        {
+                            var query = selectionController.BindingMarkers.Select(marker => (marker,
+                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
+                            if (query.Count() > 0)
+                                // принимаем позицию ближайшего маркера привязки к текущему курсору
+                                pt2 = PrepareMousePosition(query.First().marker.Position);
+                        }
 
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
@@ -603,6 +605,7 @@ namespace PetProj
                         break;
                     case EditorMode.MoveSelected:
                         pt1 = firstMouseDown;
+
                         if (IsDrawOrtoMode)
                         {
                             pt2 = PrepareMousePosition(mousePosition);
@@ -615,6 +618,16 @@ namespace PetProj
                         }
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+
+                        if (IsObjectBinding)
+                        {
+                            var query = selectionController.BindingMarkers.Select(marker => (marker,
+                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
+                            if (query.Count() > 0)
+                                // принимаем позицию ближайшего маркера привязки к текущему курсору
+                                pt2 = PrepareMousePosition(query.First().marker.Position);
+                        }
+
                         selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (movedoffsets) =>
                             {
@@ -640,6 +653,16 @@ namespace PetProj
                         }
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+
+                        if (IsObjectBinding)
+                        {
+                            var query = selectionController.BindingMarkers.Select(marker => (marker,
+                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
+                            if (query.Count() > 0)
+                                // принимаем позицию ближайшего маркера привязки к текущему курсору
+                                pt2 = PrepareMousePosition(query.First().marker.Position);
+                        }
+
                         selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (addedfigs) =>
                             {
@@ -761,9 +784,6 @@ namespace PetProj
                             OnChangeParams?.Invoke(this, new object[] { vector });
                         }
                         break;
-                    default:
-                        OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
-                        break;
                 }
             }
 
@@ -793,8 +813,7 @@ namespace PetProj
 
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
-            if (mouseClickCount == 0 ||
-                (mouseClickCount == 1 && (editorMode == EditorMode.BuildLines || editorMode == EditorMode.BuildRectangles)))
+            if (mouseClickCount == 0 || mouseClickCount == 1 && editorMode != EditorMode.Selection)
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();
@@ -805,7 +824,7 @@ namespace PetProj
                     selectionController.BuildBindingMarkers(underCursor);
                 }
                 else
-                    selectionController.ClearMarkers();
+                    selectionController.ClearBindingMarkers();
             }
 
             zoomPad.Invalidate();

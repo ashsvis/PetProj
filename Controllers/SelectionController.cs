@@ -209,6 +209,11 @@ namespace PetProj.Controllers
         {
             // стираем предыдущие маркеры
             Markers.Clear();
+        }
+
+        public void ClearBindingMarkers()
+        {
+            // стираем предыдущие маркеры
             BindingMarkers.Clear();
         }
 
