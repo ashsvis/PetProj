@@ -825,7 +825,10 @@ namespace PetProj
                 if (fig != null)
                 {
                     underCursor.Add(fig);
-                    selectionController.BuildBindingMarkers(underCursor, AllowedObjectBindings, firstMouseDown);
+                    var allowed = AllowedObjectBindings;
+                    if (editorMode == EditorMode.BuildRectangles)
+                        allowed = allowed ^ AllowedObjectBindings.Normal;
+                    selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);
                 }
                 else
                     selectionController.ClearBindingMarkers();
