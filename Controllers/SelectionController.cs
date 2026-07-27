@@ -1,10 +1,12 @@
 ﻿using PetProj.Figures;
 using PetProj.Geometries;
+using PetProj.ObjectBindings;
 using PetProj.Selections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace PetProj.Controllers
@@ -244,7 +246,8 @@ namespace PetProj.Controllers
                 }
             }
         }
-        public void BuildBindingMarkers(IEnumerable<Figure> selection)
+
+        public void BuildBindingMarkers(IEnumerable<Figure> selection, AllowedObjectBindings allowed)
         {
             // стираем предыдущие маркеры
             BindingMarkers.Clear();
@@ -257,16 +260,31 @@ namespace PetProj.Controllers
                     var points = path.PathPoints;
                     for (var i = 0; i < points.Length; i++)
                     {
-                        var marker = CreateMarker(fig, MarkerType.BindingVertex, points[i], i);
-                        BindingMarkers.Add(marker);
+                        // поиск конечных точек
+                        if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+                        {
+                            var marker = CreateMarker(fig, MarkerType.BindingVertex, points[i], i);
+                            BindingMarkers.Add(marker);
+                        }
                     }
                     if (fig.Geometry is AddLineGeometry _)
                     {
                         var pt1 = points[0];
                         var pt2 = points[1];
-                        var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                        var marker = CreateMarker(fig, MarkerType.BindingMiddle, pt);
-                        BindingMarkers.Add(marker);
+                        // поиск средней точки на отрезке
+                        if (allowed.HasFlag(AllowedObjectBindings.Middle))
+                        {
+                            var mid = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
+                            var marker = CreateMarker(fig, MarkerType.BindingMiddle, mid);
+                            BindingMarkers.Add(marker);
+                        }
+                        // поиск нормали на отрезке к текущей точке курсора
+                        if (allowed.HasFlag(AllowedObjectBindings.Normal))
+                        {
+
+                            //var marker = CreateMarker(fig, MarkerType.BindingNormal, pt);
+                            //BindingMarkers.Add(marker);
+                        }
                     }
                 }
             }

@@ -47,6 +47,10 @@ namespace PetProj
         public event EventHandler<Selection> OnSelected;
 
         public Figure Layer { get; set; }
+
+        /// <summary>
+        /// Текущие режимы объектных привязок
+        /// </summary>
         public  AllowedObjectBindings AllowedObjectBindings { get; set; }
 
         public DrawControl()
@@ -529,7 +533,7 @@ namespace PetProj
                 // при первом нажатии запоминаем точку нажатия
                 firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                if (!calledByCode)
+                if (!calledByCode && editorMode != EditorMode.Selection)
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
                     firstMouseDown = FindBindingPoint(firstMouseDown);
 
@@ -817,11 +821,11 @@ namespace PetProj
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();
-                var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(1.0f / zoomPad.ZoomScale)));
+                var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(8f / zoomPad.ZoomScale)));
                 if (fig != null)
                 {
                     underCursor.Add(fig);
-                    selectionController.BuildBindingMarkers(underCursor);
+                    selectionController.BuildBindingMarkers(underCursor, AllowedObjectBindings);
                 }
                 else
                     selectionController.ClearBindingMarkers();

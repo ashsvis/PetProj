@@ -6,5 +6,7 @@
         Middle,
         BindingVertex,
         BindingMiddle,
+        BindingCenter,
+        BindingNormal
     }
 }

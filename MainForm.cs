@@ -49,6 +49,7 @@ namespace PetProj
             tsmiBindToEndPoint.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.EndPoint);
             tsmiBindToMiddle.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
             tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
+            tsmiBindToNormal.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
             ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
             timerUpdateControls.Enabled = true;
             BuildInterface();
@@ -557,6 +558,11 @@ namespace PetProj
             {
                 drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Center;
                 tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
+            }
+            else if (e.ClickedItem == tsmiBindToNormal)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Normal;
+                tsmiBindToNormal.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
             }
             else
                 return;
