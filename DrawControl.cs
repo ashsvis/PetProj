@@ -160,6 +160,12 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Рисуем глобальную точку нуля (левый верхний угол)
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="color"></param>
+        /// <param name="zoomScale"></param>
         private void DrawZeroOrigin(Graphics graphics, Color color, float zoomScale)
         {
             using (var pen = new Pen(color, (float)(2f / zoomScale)))
@@ -191,6 +197,13 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Рисуем линию, соединющую точки начала и конца перемещения
+        /// Также рисуются перемещаемые фигуры
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
         private void DrawRibbonMoved(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
@@ -213,7 +226,7 @@ namespace PetProj
 
                 graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
                 // отрисовка выделения
-                selectionController.Selection.Render(graphics, Color.LightPink);
+                selectionController.Selection.Render(graphics, Color.LightPink, (float)zoomPad.ZoomScale);
                 graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
 
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;
@@ -223,6 +236,12 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Рисуем прямоугольник при построении
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
         private void DrawRibbonRectangle(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
@@ -255,6 +274,12 @@ namespace PetProj
             }
         }
 
+        /// <summary>
+        /// Рисуем отрезок при построении
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
         private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
@@ -364,6 +389,14 @@ namespace PetProj
             DrawTextAtCenter(graphics, pen, Brushes.White, mid, slength);
         }
 
+        /// <summary>
+        /// Рисуем текст с привязкой к середине
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="background"></param>
+        /// <param name="mid"></param>
+        /// <param name="text"></param>
         private void DrawTextAtCenter(Graphics graphics, Pen pen, Brush background, PointF mid, string text)
         {
             using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
@@ -509,14 +542,9 @@ namespace PetProj
                 // при первом нажатии запоминаем точку нажатия
                 firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                if (IsObjectBinding && !calledByCode)
-                {
-                    var query = selectionController.BindingMarkers.Select(marker => (marker,
-                                 $"{Math.Abs(marker.Position.X - firstMouseDown.X):00000}{Math.Abs(marker.Position.Y - firstMouseDown.Y):00000}")).OrderBy(x => x.Item2);
-                    if (query.Count() > 0)
-                        // принимаем позицию ближайшего маркера привязки к текущему курсору
-                        firstMouseDown = PrepareMousePosition(query.First().marker.Position);
-                }
+                if (!calledByCode)
+                    //поиск ближайшей точки привязки, если включен режим объектной привязки
+                    firstMouseDown = FindBindingPoint(firstMouseDown);
 
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
@@ -575,14 +603,8 @@ namespace PetProj
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                        if (IsObjectBinding)
-                        {
-                            var query = selectionController.BindingMarkers.Select(marker => (marker,
-                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
-                            if (query.Count() > 0)
-                                // принимаем позицию ближайшего маркера привязки к текущему курсору
-                                pt2 = PrepareMousePosition(query.First().marker.Position);
-                        }
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt2 = FindBindingPoint(pt2);
 
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
@@ -596,6 +618,10 @@ namespace PetProj
                         // построение прямоугольника по двум точкам диагонали
                         pt1 = firstMouseDown; // первая точка нажатия
                         pt3 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition); // вторая точка нажатия
+
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt3 = FindBindingPoint(pt3);
+
                         pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
                         pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
                         AddRectangle(pt1, pt2, pt3, pt4);
@@ -619,14 +645,8 @@ namespace PetProj
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                        if (IsObjectBinding)
-                        {
-                            var query = selectionController.BindingMarkers.Select(marker => (marker,
-                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
-                            if (query.Count() > 0)
-                                // принимаем позицию ближайшего маркера привязки к текущему курсору
-                                pt2 = PrepareMousePosition(query.First().marker.Position);
-                        }
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt2 = FindBindingPoint(pt2);
 
                         selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (movedoffsets) =>
@@ -654,14 +674,8 @@ namespace PetProj
                         else
                             pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                        if (IsObjectBinding)
-                        {
-                            var query = selectionController.BindingMarkers.Select(marker => (marker,
-                                         $"{Math.Abs(marker.Position.X - pt2.X):00000}{Math.Abs(marker.Position.Y - pt2.Y):00000}")).OrderBy(x => x.Item2);
-                            if (query.Count() > 0)
-                                // принимаем позицию ближайшего маркера привязки к текущему курсору
-                                pt2 = PrepareMousePosition(query.First().marker.Position);
-                        }
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt2 = FindBindingPoint(pt2);
 
                         selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (addedfigs) =>
@@ -673,6 +687,20 @@ namespace PetProj
                 }
             }
             zoomPad.Invalidate();
+        }
+
+        private PointF FindBindingPoint(PointF point)
+        {
+            if (IsObjectBinding)
+            {
+                var query = selectionController.BindingMarkers.Select(marker => (marker,
+                             $"{Math.Abs(marker.Position.X - point.X):00000}{Math.Abs(marker.Position.Y - point.Y):00000}")).OrderBy(x => x.Item2);
+                if (query.Count() > 0)
+                    // принимаем позицию ближайшего маркера привязки к текущему курсору
+                    point = query.First().marker.Position;
+            }
+
+            return point;
         }
 
         private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
@@ -843,6 +871,13 @@ namespace PetProj
 
             zoomPad.Invalidate();
         }
+
+        /// <summary>
+        /// Создать отрезок на двух точках
+        /// </summary>
+        /// <param name="pt1"></param>
+        /// <param name="pt2"></param>
+        /// <returns></returns>
         private Figure CreateLine(PointF pt1, PointF pt2)
         {
             Figure line = new Figure();
@@ -1216,8 +1251,8 @@ namespace PetProj
             mousePosition = new PointF((float)pxX, (float)pxY);
             PressLeftMouseButton(mousePosition, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
-            var pt = PrepareMousePosition(mousePosition);
-            OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
+            //var pt = PrepareMousePosition(mousePosition);
+            //OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
         }
 
         public void SetLineLengthAndAngle(double length, double angledeg)
