@@ -1,4 +1,5 @@
-﻿using PetProj.Figures;
+﻿using PetProj.Common;
+using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.ObjectBindings;
 using PetProj.Selections;
@@ -197,6 +198,14 @@ namespace PetProj.Controllers
                         Position = point,
                         Owner = owner
                     };
+                case MarkerType.BindingNormal:
+                    return new BindingNormalMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Owner = owner
+                    };
                 default:
                     return new Marker
                     {
@@ -247,7 +256,7 @@ namespace PetProj.Controllers
             }
         }
 
-        public void BuildBindingMarkers(IEnumerable<Figure> selection, AllowedObjectBindings allowed)
+        public void BuildBindingMarkers(IEnumerable<Figure> selection, AllowedObjectBindings allowed, PointF basePoint)
         {
             // стираем предыдущие маркеры
             BindingMarkers.Clear();
@@ -278,12 +287,14 @@ namespace PetProj.Controllers
                             var marker = CreateMarker(fig, MarkerType.BindingMiddle, mid);
                             BindingMarkers.Add(marker);
                         }
-                        // поиск нормали на отрезке к текущей точке курсора
+                        // поиск проекции базовой точки на отрезок 
                         if (allowed.HasFlag(AllowedObjectBindings.Normal))
                         {
-
-                            //var marker = CreateMarker(fig, MarkerType.BindingNormal, pt);
-                            //BindingMarkers.Add(marker);
+                            if (PointFExtension.ProjectPointOnSegment(pt1, pt2, basePoint, out PointF norm))
+                            {
+                                var marker = CreateMarker(fig, MarkerType.BindingNormal, norm);
+                                BindingMarkers.Add(marker);
+                            }
                         }
                     }
                 }

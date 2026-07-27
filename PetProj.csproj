@@ -92,6 +92,7 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorMode.cs" />
+    <Compile Include="Figures\BindingNormalMarker.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
     <Compile Include="Figures\Marker.cs" />
     <Compile Include="Figures\MarkerType.cs" />
