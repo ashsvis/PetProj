@@ -1,5 +1,6 @@
 ﻿using PetProj.Common;
 using PetProj.Controls;
+using PetProj.Dialogs;
 using PetProj.ObjectBindings;
 using PetProj.Selections;
 using System;
@@ -40,19 +41,24 @@ namespace PetProj
             tstbTextParam1.Visible = false;
             tslParamName2.Visible = false;
             tstbTextParam2.Visible = false;
+            tsbObjectBinding.DropDown.Closing += DropDown_Closing;
+            LoadObjectBindingsSettings();
+            ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
+            timerUpdateControls.Enabled = true;
+            BuildInterface();
+        }
+
+        private void LoadObjectBindingsSettings()
+        {
             var modeObjBinding = Properties.Settings.Default.ModeObjectBinding;
             drawControl.IsObjectBinding = modeObjBinding;
             tsmiObjectBinding.Checked = modeObjBinding;
             tsbObjectBinding.Checked = modeObjBinding;
-            tsbObjectBinding.DropDown.Closing += DropDown_Closing;
             drawControl.AllowedObjectBindings = (AllowedObjectBindings)Properties.Settings.Default.ObjectBindingFlags;
             tsmiBindToEndPoint.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.EndPoint);
             tsmiBindToMiddle.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
             tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
             tsmiBindToNormal.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
-            ShowHideLeftPanel(Properties.Settings.Default.HideLeftPanel);
-            timerUpdateControls.Enabled = true;
-            BuildInterface();
         }
 
         private void DropDown_Closing(object sender, ToolStripDropDownClosingEventArgs e)
@@ -542,6 +548,11 @@ namespace PetProj
             if (e.ClickedItem == tsmiBindParameters)
             {
                 ((ToolStripSplitButton)sender).DropDown.Close();
+                var dlg = new DrawingModesForm("Объектная привязка");
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    LoadObjectBindingsSettings();
+                }
                 return;
             }
             if (e.ClickedItem == tsmiBindToEndPoint)

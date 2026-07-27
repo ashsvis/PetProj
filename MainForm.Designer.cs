@@ -110,9 +110,9 @@
             this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToCenter = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBindToNormal = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiBindParameters = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiBindToNormal = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -867,6 +867,12 @@
             this.tsmiBindToCenter.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindToCenter.Text = "Центр";
             // 
+            // tsmiBindToNormal
+            // 
+            this.tsmiBindToNormal.Name = "tsmiBindToNormal";
+            this.tsmiBindToNormal.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToNormal.Text = "Нормаль";
+            // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
@@ -877,12 +883,6 @@
             this.tsmiBindParameters.Name = "tsmiBindParameters";
             this.tsmiBindParameters.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindParameters.Text = "Параметры объектной привязки...";
-            // 
-            // tsmiBindToNormal
-            // 
-            this.tsmiBindToNormal.Name = "tsmiBindToNormal";
-            this.tsmiBindToNormal.Size = new System.Drawing.Size(263, 22);
-            this.tsmiBindToNormal.Text = "Нормаль";
             // 
             // MainForm
             // 
