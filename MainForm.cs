@@ -30,7 +30,7 @@ namespace PetProj
         private void MainForm_Load(object sender, EventArgs e)
         {
             var modeOrto = Properties.Settings.Default.ModeDrawOrto;
-            drawControl.IsDrawOrtoMode = modeOrto;
+            drawControl.IsDrawOrthoMode = modeOrto;
             tsmiOrto.Checked = modeOrto;
             tsbOrto.Checked = modeOrto;
             var modeDynamicEnter = Properties.Settings.Default.ModeDynamicalEnter;
@@ -226,14 +226,6 @@ namespace PetProj
             // переключение режимов редактора при нажатии на кнопки интерфейса
             SelectEditorMode(tsbArrow);
             drawControl.OnSelectionMode += drawControl_OnSelectionMode;
-        }
-
-        private void tstbTextParam1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                drawControl.SetParameters(new string[] { tstbTextParam1.Text, tstbTextParam2.Text });
-            }
         }
 
         /// <summary>
@@ -518,10 +510,10 @@ namespace PetProj
 
         private void tsmiOrto_Click(object sender, EventArgs e)
         {
-            var mode = !drawControl.IsDrawOrtoMode;
+            var mode = !drawControl.IsDrawOrthoMode;
             tsmiOrto.Checked = mode;
             tsbOrto.Checked = mode;
-            drawControl.IsDrawOrtoMode = mode;
+            drawControl.IsDrawOrthoMode = mode;
             Properties.Settings.Default.ModeDrawOrto = mode;
             Properties.Settings.Default.Save();
         }
@@ -570,6 +562,20 @@ namespace PetProj
                 return;
             Properties.Settings.Default.ObjectBindingFlags = (uint)drawControl.AllowedObjectBindings;
             Properties.Settings.Default.Save();
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    drawControl.EscapeKeyPressed();
+                    break;
+                case Keys.Enter:
+                    if (tstbTextParam1.Focused || tstbTextParam2.Focused)
+                        drawControl.SetParameters(new string[] { tstbTextParam1.Text, tstbTextParam2.Text });
+                    break;
+            }
         }
     }
 }

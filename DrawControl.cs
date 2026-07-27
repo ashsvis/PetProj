@@ -23,7 +23,7 @@ namespace PetProj
         private EditorMode editorMode;
 
         public bool IsDynamicalEnter { get; set; } = true;
-        public bool IsDrawOrtoMode { get; set; } = false;
+        public bool IsDrawOrthoMode { get; set; } = false;
         public bool IsObjectBinding { get; set; } = false;
 
         public EditorMode EditorMode => editorMode;
@@ -60,6 +60,7 @@ namespace PetProj
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
             selectionController.EditorModeChanged += _ => UpdateInterface();
+            
         }
 
         private void BuildInterface()
@@ -208,15 +209,8 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
-            if (IsDrawOrtoMode)
-            {
-                var dx = Math.Abs(pt2.X - firstMouseDown.X);
-                var dy = Math.Abs(pt2.Y - firstMouseDown.Y);
-                if (dx < dy)
-                    pt2.X = firstMouseDown.X;
-                else
-                    pt2.Y = firstMouseDown.Y;
-            }
+            //поиск ортогональной точки, если включен режим ортогонального построения
+            pt2 = FindOrthoPoint(pt2);
             using (var pen = new Pen(Color.Gray, (float)(2.6f / zoomPad.ZoomScale)) { DashStyle = DashStyle.Dash })
             {
                 pen.StartCap = LineCap.Round;
@@ -284,15 +278,8 @@ namespace PetProj
         {
             var pt1 = firstMouseDown;
             var pt2 = PrepareMousePosition(mousePosition);
-            if (IsDrawOrtoMode)
-            {
-                var dx = Math.Abs(pt2.X - firstMouseDown.X);
-                var dy = Math.Abs(pt2.Y - firstMouseDown.Y);
-                if (dx < dy)
-                    pt2.X = firstMouseDown.X;
-                else
-                    pt2.Y = firstMouseDown.Y;
-            }
+            //поиск ортогональной точки, если включен режим ортогонального построения
+            pt2 = FindOrthoPoint(pt2);
             using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoomPad.ZoomScale)))
             {
                 pen.StartCap = LineCap.Round;
@@ -590,19 +577,9 @@ namespace PetProj
                     case EditorMode.BuildLines:
                         // построение отрезков линий по двум точкам (концы отрезка)
                         pt1 = firstMouseDown;
-                        if (IsDrawOrtoMode)
-                        {
-                            pt2 = PrepareMousePosition(mousePosition);
-                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
-                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
-                            if (dx < dy)
-                                pt2.X = firstMouseDown.X;
-                            else
-                                pt2.Y = firstMouseDown.Y;
-                        }
-                        else
-                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
-
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        //поиск ортогональной точки, если включен режим ортогонального построения
+                        pt2 = FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = FindBindingPoint(pt2);
 
@@ -631,20 +608,9 @@ namespace PetProj
                         break;
                     case EditorMode.MoveSelected:
                         pt1 = firstMouseDown;
-
-                        if (IsDrawOrtoMode)
-                        {
-                            pt2 = PrepareMousePosition(mousePosition);
-                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
-                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
-                            if (dx < dy)
-                                pt2.X = firstMouseDown.X;
-                            else
-                                pt2.Y = firstMouseDown.Y;
-                        }
-                        else
-                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
-
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        //поиск ортогональной точки, если включен режим ортогонального построения
+                        pt2 = FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = FindBindingPoint(pt2);
 
@@ -661,19 +627,9 @@ namespace PetProj
                         break;
                     case EditorMode.MoveCopySelected:
                         pt1 = firstMouseDown;
-                        if (IsDrawOrtoMode)
-                        {
-                            pt2 = PrepareMousePosition(mousePosition);
-                            var dx = Math.Abs(firstMouseDown.X - pt2.X);
-                            var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
-                            if (dx < dy)
-                                pt2.X = firstMouseDown.X;
-                            else
-                                pt2.Y = firstMouseDown.Y;
-                        }
-                        else
-                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
-
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        //поиск ортогональной точки, если включен режим ортогонального построения
+                        pt2 = FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = FindBindingPoint(pt2);
 
@@ -687,6 +643,22 @@ namespace PetProj
                 }
             }
             zoomPad.Invalidate();
+        }
+
+        private PointF FindOrthoPoint(PointF pt2)
+        {
+            if (IsDrawOrthoMode)
+            {
+                pt2 = PrepareMousePosition(mousePosition);
+                var dx = Math.Abs(firstMouseDown.X - pt2.X);
+                var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
+                if (dx < dy)
+                    pt2.X = firstMouseDown.X;
+                else
+                    pt2.Y = firstMouseDown.Y;
+            }
+
+            return pt2;
         }
 
         private PointF FindBindingPoint(PointF point)
@@ -1079,6 +1051,7 @@ namespace PetProj
         {
             selectionController.Clear();
             undoRedoManager.Undo();
+            OnSelected?.Invoke(this, selectionController.Selection);
             Changed = true;
         }
 
@@ -1089,6 +1062,7 @@ namespace PetProj
         {
             selectionController.Clear();
             undoRedoManager.Redo();
+            OnSelected?.Invoke(this, selectionController.Selection);
             Changed = true;
         }
 
