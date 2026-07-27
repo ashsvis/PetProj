@@ -33,8 +33,6 @@ namespace PetProj.Selections
 
         }
 
-        //public Color Color { get; set; } = Color.Magenta;
-
         /// <summary>
         /// Очистка списка выделенных фигур
         /// </summary>
@@ -62,41 +60,17 @@ namespace PetProj.Selections
         }
 
         /// <summary>
-        /// Ищем попадание в контур фигуры
-        /// </summary>
-        /// <param name="point">Положение курсора</param>
-        /// <returns>Контур фигуры найден</returns>
-        public bool IsHit(List<Figure> figures, Point point)
-        {
-            var found = false;
-            using (var pen = new Pen(Color.Black, 5))
-            {
-                // просмотр начинаем с конца списка - там самые "верхние" фигуры
-                for (var i = figures.Count - 1; i >= 0; i--)
-                {
-                    var fig = figures[i];
-                    var path = fig.GetRendererPath();
-                    // проверяем также попадание на контур фигуры
-                    if (!path.IsOutlineVisible(point, pen)) continue;
-                    found = true;
-                    break;
-                }
-            }
-            return found;
-        }
-
-        /// <summary>
         /// Ищем фигуру в данной точке
         /// </summary>
         /// <param name="layer">Ссылка на слой</param>
         /// <param name="point">Положение курсора</param>
         /// <param name="figure">Найденная фигура или null</param>
         /// <returns>True - фигура найдена</returns>
-        public bool FindFigureAt(List<Figure> figures, PointF point, out Figure figure)
+        public bool FindFigureAt(List<Figure> figures, PointF point, float kf, out Figure figure)
         {
             figure = null;
             var found = false;
-            using (var pen = new Pen(Color.Black, 5))
+            using (var pen = new Pen(Color.Black, 5f / kf))
             {
                 // просмотр начинаем с конца списка - там самые "верхние" фигуры
                 for (var i = figures.Count - 1; i >= 0; i--)

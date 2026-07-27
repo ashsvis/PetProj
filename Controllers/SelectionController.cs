@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace PetProj.Controllers
@@ -102,10 +101,10 @@ namespace PetProj.Controllers
         /// </summary>
         /// <param name="location">Координаты курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
-        public void OnMouseDown(List<Figure> figures, PointF location, Keys modifierKeys)
+        public void OnMouseDown(List<Figure> figures, PointF location, Keys modifierKeys, float kf = 1f)
         {
             // попробуем найти фигуру...
-            if (selection.FindFigureAt(figures, location, out Figure fig))
+            if (selection.FindFigureAt(figures, location, kf, out Figure fig))
             {
                 // фигура найдена.
                 // если этой фигуры не было в списке
