@@ -1,5 +1,4 @@
-﻿using PetProj.Controllers;
-using PetProj.Figures;
+﻿using PetProj.Figures;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -45,13 +44,9 @@ namespace PetProj.Renderers
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 using (var penX = new Pen(Color.FromArgb(80, Color.LightSalmon), (float)(2f / zoom)))
-                {
                     graphics.DrawLine(penX, new PointF(0f, 0f), drawControl.PrepareMousePositionX(new PointF(drawControl.ClientSize.Width, 0f)));
-                }
                 using (var penY = new Pen(Color.FromArgb(80, Color.LightGreen), (float)(2f / zoom)))
-                {
                     graphics.DrawLine(penY, new PointF(0f, 0f), drawControl.PrepareMousePositionY(new PointF(0f, drawControl.ClientSize.Height)));
-                }
                 graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(50f / zoom, 0f));
                 graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(0f, 50f / zoom));
                 var rect = new RectangleF(-4f / zoom, -4f / zoom, 8f / zoom, 8f / zoom);
@@ -127,7 +122,16 @@ namespace PetProj.Renderers
             }
         }
 
-        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, IList<Figure> figures, PointF firstMouseDown, PointF mousePosition)
+        /// <summary>
+        /// Рисование перемещения отрезка за середину
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="figures"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
+        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, 
+            IList<Figure> figures, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
             var pt1 = firstMouseDown;
@@ -135,9 +139,17 @@ namespace PetProj.Renderers
             //поиск ортогональной точки, если включен режим ортогонального построения
             pt2 = drawControl.FindOrthoPoint(pt2);
             using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+            using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+            using (var penB = new Pen(Color.Silver, 2.6f / zoom))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
+                foreach (var figure in figures)
+                {
+                    // получаем путь для рисования методом фигуры
+                    using (var path = figure.Geometry.Path)
+                        graphics.DrawPath(penB, path);
+                }
 
                 var state = graphics.Save();
 
@@ -147,13 +159,7 @@ namespace PetProj.Renderers
                 {
                     // получаем путь для рисования методом фигуры
                     using (var path = figure.Geometry.Path)
-                    {
-                        // то получаем карандаш из стиля рисования фигуры
-                        using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
-                        {
-                            graphics.DrawPath(penA, path);
-                        }
-                    }
+                        graphics.DrawPath(penA, path);
                 }
                 graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
 
@@ -161,6 +167,44 @@ namespace PetProj.Renderers
                 graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.Restore(state);
+            }
+        }
+
+        /// <summary>
+        /// Рисование перемещения линии с маркером на конце
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="markers"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
+        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, 
+            IList<(Figure, int)> markers, PointF firstMouseDown, PointF mousePosition)
+        {
+            float zoom = drawControl.Zoom;
+            //var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            //поиск ортогональной точки, если включен режим ортогонального построения
+            pt2 = drawControl.FindOrthoPoint(pt2);
+            using (var pen = new Pen(Color.Silver, (float)(2.6f / zoom)))
+            using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+                // отрисовка выделения
+                foreach (var (Owner, Index) in markers)
+                {
+                    using (var path = Owner.Geometry.Path)
+                    {
+                        var points = path.PathPoints;
+                        if (points.Length == 2)
+                        {
+                            graphics.DrawLine(pen, points[0], points[1]);
+                            var pt1 = Index == 0 ? points[1] : points[0];
+                            graphics.DrawLine(penA, pt1, pt2);
+                        }
+                    }
+                }
             }
         }
 

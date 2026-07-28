@@ -57,6 +57,7 @@
     <Compile Include="Commands\CreateFigureCommand.cs" />
     <Compile Include="Commands\CreateFiguresCommand.cs" />
     <Compile Include="Commands\MoveFiguresCommand.cs" />
+    <Compile Include="Commands\MoveMarkersCommand.cs" />
     <Compile Include="Commands\RemoveFigureCommand.cs" />
     <Compile Include="Common\ICommand.cs" />
     <Compile Include="Common\ImageWrapper.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\IGeometry.cs" />
     <Compile Include="Geometries\IMoveGeometry.cs" />
+    <Compile Include="Geometries\IMoveMarker.cs" />
     <Compile Include="Geometries\PrimitiveGeometry.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

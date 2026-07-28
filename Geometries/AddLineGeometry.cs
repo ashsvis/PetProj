@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace PetProj.Geometries
 {
-    public sealed class AddLineGeometry : Geometry, IGeometry, IMoveGeometry
+    public sealed class AddLineGeometry : Geometry, IGeometry, IMoveGeometry, IMoveMarker
     {
         public readonly List<PointF> Points = new List<PointF>();
 
@@ -93,6 +93,17 @@ namespace PetProj.Geometries
             for (var i = 0; i < Points.Count; i++)
                 Points[i] = PointF.Add(Points[i], new SizeF(offsetX, offsetY));
             EndPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
+        }
+
+        public void Move(int index, float offsetX, float offsetY)
+        {
+            if (index == 0)
+                Points[0] = PointF.Add(Points[0], new SizeF(offsetX, offsetY));
+            else if (index == 1)
+            {
+                Points[1] = PointF.Add(Points[1], new SizeF(offsetX, offsetY));
+                EndPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
+            }
         }
     }
 }

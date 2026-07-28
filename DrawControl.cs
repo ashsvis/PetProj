@@ -169,6 +169,9 @@ namespace PetProj
                     if (mouseClickCount == 1)
                     {
                         this.DrawRibbonMoved(graphics, markers.Where(m => m is MiddleMarker).Select(m => m.Owner).ToList(), firstMouseDown, mousePosition);
+                        this.DrawRibbonMoved(graphics, 
+                            markers.Where(m => m is VertexMarker).Cast<VertexMarker>().Select(m => (m.Owner, m.Index)).ToList(), 
+                            firstMouseDown, mousePosition);
                     }
                     break;
             }
@@ -352,22 +355,8 @@ namespace PetProj
                             //поиск ближайшей точки привязки, если включен режим объектной привязки
                             pt2 = this.FindBindingPoint(pt2);
                             // перемещение отрезков за середину
-                            List<(Figure, PointF)> offsets = new List<(Figure, PointF)>();
-                            foreach (var figure in markers.Where(m => m is MiddleMarker).Select(m => m.Owner))
-                            {
-                                // если перемещение поддерживается
-                                if (figure.Geometry is IMoveGeometry _)
-                                {
-                                    // добавляем в список
-                                    offsets.Add((figure, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
-                                }
-                            }
-                            // если список не пуст, выполняем метод перемещения
-                            if (offsets.Count > 0)
-                            {
-                                undoRedoManager.Execute(new MoveFiguresCommand(offsets));
-                                selectionController.BuildMarkers(selectionController.Selection);
-                            }
+                            MoveByMiddle(pt1, pt2);
+                            SizeByVertex(pt1, pt2);
                             Changed = true;
                         }
                         mouseClickCount = 0;
@@ -376,6 +365,57 @@ namespace PetProj
                 }
             }
             zoomPad.Invalidate();
+        }
+
+        /// <summary>
+        /// Перемещение отрезка за середину
+        /// </summary>
+        /// <param name="pt1"></param>
+        /// <param name="pt2"></param>
+        private void MoveByMiddle(PointF pt1, PointF pt2)
+        {
+            var offsets = new List<(Figure, PointF)>();
+            foreach (var figure in markers.Where(m => m is MiddleMarker).Select(m => m.Owner))
+            {
+                // если перемещение поддерживается
+                if (figure.Geometry is IMoveGeometry _)
+                {
+                    // добавляем в список
+                    offsets.Add((figure, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
+                }
+            }
+            // если список не пуст, выполняем метод перемещения
+            if (offsets.Count > 0)
+            {
+                undoRedoManager.Execute(new MoveFiguresCommand(offsets));
+                selectionController.BuildMarkers(selectionController.Selection);
+            }
+        }
+
+        /// <summary>
+        /// Изменение размера отрезка при перемещении маркера конца
+        /// </summary>
+        /// <param name="pt1"></param>
+        /// <param name="pt2"></param>
+        private void SizeByVertex(PointF pt1, PointF pt2)
+        {
+            var offsets = new List<(Figure, PointF, int)>();
+            foreach (var (Owner, Index) in markers.Where(m => m is VertexMarker vertex)
+                .Cast<VertexMarker>().Select(x => (x.Owner, x.Index)))
+            {
+                // если перемещение поддерживается
+                if (Owner.Geometry is IMoveGeometry _)
+                {
+                    // добавляем в список
+                    offsets.Add((Owner, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y), Index));
+                }
+            }
+            // если список не пуст, выполняем метод перемещения
+            if (offsets.Count > 0)
+            {
+                undoRedoManager.Execute(new MoveMarkersCommand(offsets));
+                selectionController.BuildMarkers(selectionController.Selection);
+            }
         }
 
         private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
