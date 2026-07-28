@@ -36,6 +36,7 @@ namespace PetProj
 
         private readonly List<Figure> figures = new List<Figure>();
         private readonly SelectionController selectionController;
+        private readonly List<Marker> markers = new List<Marker>();
 
         private readonly UndoRedoManager undoRedoManager;
 
@@ -113,7 +114,7 @@ namespace PetProj
 
             // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
-                marker.Render(graphics, Color.Blue, (float)zoomPad.ZoomScale);
+                marker.Render(graphics, markers.Contains(marker) ? Color.Red : Color.Blue, (float)zoomPad.ZoomScale);
 
             this.DrawDefaultCursor(graphics, mousePosition);
             float kf = (float)(1f / zoomPad.ZoomScale);
@@ -164,6 +165,12 @@ namespace PetProj
                     if (mouseClickCount == 1)
                         this.DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                     break;
+                case EditorMode.MoveMarkers:
+                    if (mouseClickCount == 1)
+                    {
+                        this.DrawRibbonMoved(graphics, markers.Where(m => m is MiddleMarker).Select(m => m.Owner).ToList(), firstMouseDown, mousePosition);
+                    }
+                    break;
             }
         }
 
@@ -192,26 +199,6 @@ namespace PetProj
         }
 
         /// <summary>
-        /// Обратный перерасчёт позиции первого нажатия мыши
-        /// при масштабировании и панарамировании
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        //public PointF GetFirstMouseDownPosition()
-        //{
-        //    PointF[] arr = new PointF[] { firstMouseDown };
-        //    var origin = zoomPad.Origin;
-        //    var zoom = (float)zoomPad.ZoomScale;
-
-        //    Matrix matrix = new Matrix();
-        //    matrix.Scale(zoom, zoom);
-        //    matrix.Translate(-origin.X, -origin.Y);
-        //    matrix.TransformPoints(arr);
-        //    matrix.Dispose();
-        //    return new PointF(arr[0].X, arr[0].Y);
-        //}
-
-        /// <summary>
         /// Нажатие кнопки указателя
         /// </summary>
         /// <param name="sender"></param>
@@ -233,10 +220,23 @@ namespace PetProj
                 // при первом нажатии запоминаем точку нажатия
                 firstMouseDown = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
 
-                if (!calledByCode && editorMode != EditorMode.Selection)
+                if (!calledByCode)
+                {
+                    if (editorMode == EditorMode.Selection && selectionController.Markers.Count > 0)
+                    {
+                        var items = selectionController.Markers.Where(m => m.Target(Zoom).Contains(firstMouseDown));
+                        if (items.Count() > 0)
+                        {
+                            markers.Clear();
+                            markers.AddRange(items);
+                            SetMode(EditorMode.MoveMarkers);
+                            mouseClickCount++;
+                            return;
+                        }
+                    }
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
                     firstMouseDown = this.FindBindingPoint(firstMouseDown);
-
+                }
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
                 {
@@ -317,7 +317,6 @@ namespace PetProj
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-
                         selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (movedoffsets) =>
                             {
@@ -336,13 +335,43 @@ namespace PetProj
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-
                         selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (addedfigs) =>
                             {
                                 undoRedoManager.Execute(new CreateFiguresCommand(figures, addedfigs));
                             });
                         Changed = true;
+                        break;
+                    case EditorMode.MoveMarkers:
+                        if (markers.Count > 0)
+                        {
+                            pt1 = markers.First().Position;
+                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                            //поиск ортогональной точки, если включен режим ортогонального построения
+                            pt2 = this.FindOrthoPoint(pt2);
+                            //поиск ближайшей точки привязки, если включен режим объектной привязки
+                            pt2 = this.FindBindingPoint(pt2);
+                            // перемещение отрезков за середину
+                            List<(Figure, PointF)> offsets = new List<(Figure, PointF)>();
+                            foreach (var figure in markers.Where(m => m is MiddleMarker).Select(m => m.Owner))
+                            {
+                                // если перемещение поддерживается
+                                if (figure.Geometry is IMoveGeometry _)
+                                {
+                                    // добавляем в список
+                                    offsets.Add((figure, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
+                                }
+                            }
+                            // если список не пуст, выполняем метод перемещения
+                            if (offsets.Count > 0)
+                            {
+                                undoRedoManager.Execute(new MoveFiguresCommand(offsets));
+                                selectionController.BuildMarkers(selectionController.Selection);
+                            }
+                            Changed = true;
+                        }
+                        mouseClickCount = 0;
+                        SetMode(EditorMode.Selection);
                         break;
                 }
             }
@@ -379,6 +408,18 @@ namespace PetProj
             {
                 switch (editorMode)
                 {
+                    case EditorMode.Selection:
+                        if (mouseClickCount == 0 && selectionController.Markers.Count > 0)
+                        {
+                            var marker = selectionController.Markers.LastOrDefault(m => m.Target(Zoom).Contains(pt));
+                            if (marker is MiddleMarker middle)
+                                Cursor = Cursors.SizeAll;
+                            else if (marker is VertexMarker vertex)
+                                Cursor = Cursors.Hand;
+                            else
+                                Cursor = Cursors.Cross;
+                        }
+                        break;
                     case EditorMode.BuildLines:
                         if (mouseClickCount == 0)
                             OnChangeParams?.Invoke(this, new object[] { pt });

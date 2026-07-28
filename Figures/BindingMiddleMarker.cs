@@ -4,8 +4,6 @@ namespace PetProj.Figures
 {
     public class BindingMiddleMarker : Marker
     {
-        public Figure Owner { get; set; }
-
         public override void Render(Graphics graphics, Color color, float zoomScale)
         {
             var rect = new RectangleF(-MARKER_SIZE / 2f / zoomScale, -MARKER_SIZE / 2f / zoomScale, MARKER_SIZE / zoomScale, MARKER_SIZE / zoomScale);

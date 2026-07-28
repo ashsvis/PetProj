@@ -11,12 +11,20 @@ namespace PetProj.Figures
         public PointF Position { get; set; }
         public PointF AnchorPosition { get; set; }
         public MarkerType MarkerType { get; set; }
+        public Figure Owner { get; set; }
+
+        public RectangleF Target(float zoomScale)
+        {
+            var rect = new RectangleF(-MARKER_SIZE / 2f / zoomScale, -MARKER_SIZE / 2f / zoomScale, MARKER_SIZE / zoomScale, MARKER_SIZE / zoomScale);
+            rect.Offset(Position);
+            return rect;
+        }
 
         public virtual void Render(Graphics graphics, Color color, float zoomScale)
         {
             var rect = new RectangleF(-MARKER_SIZE / 2f / zoomScale, -MARKER_SIZE / 2f / zoomScale, MARKER_SIZE / zoomScale, MARKER_SIZE / zoomScale);
             rect.Offset(Position);
-            using (var brush = new SolidBrush(Color.Blue))
+            using (var brush = new SolidBrush(color))
             {
                 graphics.FillRectangle(brush, rect);
             }

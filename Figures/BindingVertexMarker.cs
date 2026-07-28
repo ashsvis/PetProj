@@ -5,7 +5,6 @@ namespace PetProj.Figures
     public class BindingVertexMarker : Marker
     {
         public int Index { get; set; }
-        public Figure Owner { get; set; }
 
         public override void Render(Graphics graphics, Color color, float zoomScale)
         {

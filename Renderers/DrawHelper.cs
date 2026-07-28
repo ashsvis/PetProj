@@ -1,5 +1,7 @@
 ﻿using PetProj.Controllers;
+using PetProj.Figures;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -116,6 +118,43 @@ namespace PetProj.Renderers
                 graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
                 // отрисовка выделения
                 drawControl.SelectionController.Selection.Render(graphics, Color.LightPink, (float)zoom);
+                graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
+
+                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphics.DrawLine(pen, pt1, pt2);
+                graphics.Restore(state);
+            }
+        }
+
+        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, IList<Figure> figures, PointF firstMouseDown, PointF mousePosition)
+        {
+            float zoom = drawControl.Zoom;
+            var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            //поиск ортогональной точки, если включен режим ортогонального построения
+            pt2 = drawControl.FindOrthoPoint(pt2);
+            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+
+                var state = graphics.Save();
+
+                graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
+                // отрисовка выделения
+                foreach (var figure in figures)
+                {
+                    // получаем путь для рисования методом фигуры
+                    using (var path = figure.Geometry.Path)
+                    {
+                        // то получаем карандаш из стиля рисования фигуры
+                        using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+                        {
+                            graphics.DrawPath(penA, path);
+                        }
+                    }
+                }
                 graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
 
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;

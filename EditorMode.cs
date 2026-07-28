@@ -7,5 +7,6 @@
         BuildRectangles,
         MoveSelected,
         MoveCopySelected,
+        MoveMarkers,
     }
 }
