@@ -4,6 +4,7 @@ using PetProj.Controllers;
 using PetProj.Figures;
 using PetProj.Geometries;
 using PetProj.ObjectBindings;
+using PetProj.Renderers;
 using PetProj.Selections;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace PetProj
 
         public EditorMode EditorMode => editorMode;
         public int MouseClickCount => mouseClickCount;
+        public PointF FirstMouseDown => firstMouseDown;
+        public PointF CurrentMousePosition => mousePosition;
 
         private readonly BlowedSelection underCursor = new BlowedSelection();
 
@@ -63,8 +66,7 @@ namespace PetProj
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
-            selectionController.EditorModeChanged += _ => UpdateInterface();
-            
+            selectionController.EditorModeChanged += _ => UpdateInterface();            
         }
 
         private void BuildInterface()
@@ -84,7 +86,7 @@ namespace PetProj
             var graphics = e.Graphics;
             if (graphics == null) return;
             // рисуем начало координат и направление осей
-            DrawZeroOrigin(graphics, Color.LightGray, (float)zoomPad.ZoomScale);
+            this.DrawZeroOrigin(graphics, Color.LightGray);
 
             // отрисовка созданных фигур
             foreach (var fig in figures)
@@ -113,7 +115,7 @@ namespace PetProj
             foreach (var marker in selectionController.Markers)
                 marker.Render(graphics, Color.Blue, (float)zoomPad.ZoomScale);
 
-            DrawDefaultCursor(graphics, mousePosition);
+            this.DrawDefaultCursor(graphics, mousePosition);
             float kf = (float)(1f / zoomPad.ZoomScale);
             PointF pt;
             string text;
@@ -121,7 +123,7 @@ namespace PetProj
             {
                 case EditorMode.Selection:
                     if (mouseClickCount == 1)
-                        DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
+                        this.DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
                     break;
                 case EditorMode.BuildLines:
                     {
@@ -134,7 +136,7 @@ namespace PetProj
                                 graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
                         }
                         if (mouseClickCount == 1)
-                            DrawRibbonLine(graphics, firstMouseDown, mousePosition);
+                            this.DrawRibbonLine(graphics, firstMouseDown, mousePosition);
                         break;
                     }
                 case EditorMode.BuildRectangles:
@@ -147,7 +149,7 @@ namespace PetProj
                             graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
                     }
                     if (mouseClickCount == 1)
-                        DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
+                        this.DrawRibbonRectangle(graphics, firstMouseDown, mousePosition);
                     break;
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
@@ -160,268 +162,14 @@ namespace PetProj
                             graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
                     }
                     if (mouseClickCount == 1)
-                        DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
+                        this.DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                     break;
             }
         }
 
-        /// <summary>
-        /// Рисуем глобальную точку нуля (левый верхний угол)
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="color"></param>
-        /// <param name="zoomScale"></param>
-        private void DrawZeroOrigin(Graphics graphics, Color color, float zoomScale)
-        {
-            using (var pen = new Pen(color, (float)(2f / zoomScale)))
-            {
-                pen.StartCap = LineCap.Round;
-                pen.EndCap = LineCap.Round;
-                var gs = graphics.Save();
-                graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                using (var penX = new Pen(Color.FromArgb(80, Color.LightSalmon), (float)(2f / zoomScale)))
-                {
-                    graphics.DrawLine(penX, new PointF(0f, 0f), PrepareMousePositionX(new PointF(zoomPad.Width, 0f)));
-                }
-                using (var penY = new Pen(Color.FromArgb(80, Color.LightGreen), (float)(2f / zoomScale)))
-                {
-                    graphics.DrawLine(penY, new PointF(0f, 0f), PrepareMousePositionY(new PointF(0f, zoomPad.Height)));
-                }
-                graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(50f / zoomScale, 0f));
-                graphics.DrawLine(pen, new PointF(0f, 0f), new PointF(0f, 50f / zoomScale));
-                var rect = new RectangleF(-4f / zoomScale, -4f / zoomScale, 8f / zoomScale, 8f / zoomScale);
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
-                using (var font = new Font("Arial", 10f / zoomScale))
-                using (var brush = new SolidBrush(color))
-                {
-                    graphics.DrawString("X", font, brush, new PointF(50f / zoomScale, 0f));
-                    graphics.DrawString("Y", font, brush, new PointF(0f, 50f / zoomScale));
-                }
-                graphics.Restore(gs);
-            }
-        }
-
-        /// <summary>
-        /// Рисуем линию, соединющую точки начала и конца перемещения
-        /// Также рисуются перемещаемые фигуры
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="firstMouseDown"></param>
-        /// <param name="mousePosition"></param>
-        private void DrawRibbonMoved(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
-        {
-            var pt1 = firstMouseDown;
-            var pt2 = PrepareMousePosition(mousePosition);
-            //поиск ортогональной точки, если включен режим ортогонального построения
-            pt2 = FindOrthoPoint(pt2);
-            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoomPad.ZoomScale)) { DashStyle = DashStyle.Dash })
-            {
-                pen.StartCap = LineCap.Round;
-                pen.EndCap = LineCap.Round;
-
-                var state = graphics.Save();
-
-                graphics.TranslateTransform(pt2.X - pt1.X, pt2.Y - pt1.Y);
-                // отрисовка выделения
-                selectionController.Selection.Render(graphics, Color.LightPink, (float)zoomPad.ZoomScale);
-                graphics.TranslateTransform(-pt2.X + pt1.X, -pt2.Y + pt1.Y);
-
-                graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                graphics.DrawLine(pen, pt1, pt2);
-                graphics.Restore(state);
-            }
-        }
-
-        /// <summary>
-        /// Рисуем прямоугольник при построении
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="firstMouseDown"></param>
-        /// <param name="mousePosition"></param>
-        private void DrawRibbonRectangle(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
-        {
-            var pt1 = firstMouseDown;
-            var pt2 = PrepareMousePosition(mousePosition);
-            var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
-                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-            using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoomPad.ZoomScale)))
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
-            if (mouseClickCount == 1)
-            {
-                if (IsDynamicalEnter)
-                {
-                    using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
-                    {
-                        var kf = (float)(50f / zoomPad.ZoomScale);
-                        var p1 = pt1;
-                        var p2 = pt2;
-                        if (pt2.X > pt1.X)
-                        {
-                            DrawSizeLine(graphics, pen, new PointF(p1.X, p2.Y), new PointF(p2.X, p2.Y), kf, pt2.Y > pt1.Y);
-                            DrawSizeLine(graphics, pen, new PointF(p2.X, p1.Y), new PointF(p2.X, p2.Y), kf, pt2.Y < pt1.Y);
-                        }
-                        else
-                        {
-                            DrawSizeLine(graphics, pen, new PointF(p1.X, p2.Y), new PointF(p2.X, p2.Y), kf, pt2.Y < pt1.Y);
-                            DrawSizeLine(graphics, pen, new PointF(p2.X, p1.Y), new PointF(p2.X, p2.Y), kf, pt2.Y > pt1.Y);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Рисуем отрезок при построении
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="firstMouseDown"></param>
-        /// <param name="mousePosition"></param>
-        private void DrawRibbonLine(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
-        {
-            var pt1 = firstMouseDown;
-            var pt2 = PrepareMousePosition(mousePosition);
-            //поиск ортогональной точки, если включен режим ортогонального построения
-            pt2 = FindOrthoPoint(pt2);
-            using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoomPad.ZoomScale)))
-            {
-                pen.StartCap = LineCap.Round;
-                pen.EndCap = LineCap.Round;
-                graphics.DrawLine(pen, pt1, pt2);
-            }
-            if (mouseClickCount == 1)
-            {
-                if (IsDynamicalEnter)
-                {
-                    using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
-                    {
-                        DrawSizeLine(graphics, pen, pt1, pt2, (float)(50f / zoomPad.ZoomScale)); // Выноска размера 50 пикселей
-                        DrawAngleLine(graphics, pen, pt1, pt2);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Рисуем дугу, показывающую угол наклона отрезка к горизонтали
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="pen"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        private void DrawAngleLine(Graphics graphics, Pen pen, PointF start, PointF end)
-        {
-            float dx = end.X - start.X;
-            float dy = end.Y - start.Y;
-            float length = (float)Math.Sqrt(dx * dx + dy * dy);
-            if (length == 0)
-            { 
-                // Отрезок вырожден в точку
-                return;
-            }
-            // выносная линия, горизонтальная
-            var b1 = PointF.Add(start, new SizeF(length, 0));
-            graphics.DrawLine(pen, start, b1);
-            var arcrect = new RectangleF(start.X - length, start.Y - length, length * 2, length * 2);
-            var angle = Math.Atan2(dy, dx);
-            var cx = start.X + length * Math.Cos(angle / 2);
-            var cy = start.Y + length * Math.Sin(angle / 2);
-            var mid = new PointF((float)cx, (float)cy);
-            var angleDegree = (float)(angle * 180 / Math.PI);
-            var L = Math.PI * length * Math.Abs(angleDegree) / 180;
-            if (L < 35)
-                mid = new PointF(end.X + 5, end.Y + 25);
-            var sarc = $"{angleDegree}°";
-            try
-            {
-                graphics.DrawArc(pen, arcrect, 0, angleDegree);
-                DrawTextAtCenter(graphics, pen, Brushes.White, mid, sarc);
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Рисуем размерную линию для отрезка
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="pen"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="halfLength"></param>
-        private void DrawSizeLine(Graphics graphics, Pen pen, PointF start, PointF end, float halfLength, bool? side = null)
-        {
-            float dx = end.X - start.X;
-            float dy = end.Y - start.Y;
-            float px = dy;
-            float py = -dx;
-            float length = (float)Math.Sqrt(px * px + py * py);
-            if (length == 0)
-            {
-                // Отрезок вырожден в точку
-                return;
-            }
-            px /= length;
-            py /= length;
-
-            bool kind = side ?? px > 0;
-            // перпендикуляр в начале отрезка
-            PointF df = kind ? new PointF(start.X, start.Y) : new PointF(start.X + px * halfLength, start.Y + py * halfLength);
-            PointF ef = !kind ? new PointF(start.X, start.Y) : new PointF(start.X - px * halfLength, start.Y - py * halfLength);
-            graphics.DrawLine(pen, df, ef);
-            // перпендикуляр в конце отрезка
-            PointF de = kind ? new PointF(end.X, end.Y) : new PointF(end.X + px * halfLength, end.Y + py * halfLength);
-            PointF ee = !kind ? new PointF(end.X, end.Y) : new PointF(end.X - px * halfLength, end.Y - py * halfLength);
-            graphics.DrawLine(pen, de, ee);
-            // выносная линия, соединяющая два перпендикуляра
-            graphics.DrawLine(pen, kind ? ef : df, kind ? ee : de);
-            PointF mid = kind ? new PointF((ef.X + ee.X) / 2, (ef.Y + ee.Y) / 2) : new PointF((df.X + de.X) / 2, (df.Y + de.Y) / 2);
-            var slength = $"{length}";
-            DrawTextAtCenter(graphics, pen, Brushes.White, mid, slength);
-        }
-
-        /// <summary>
-        /// Рисуем текст с привязкой к середине
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="pen"></param>
-        /// <param name="background"></param>
-        /// <param name="mid"></param>
-        /// <param name="text"></param>
-        private void DrawTextAtCenter(Graphics graphics, Pen pen, Brush background, PointF mid, string text)
-        {
-            using (var font = new Font("Segoe UI", (float)(10f / zoomPad.ZoomScale)))
-            {
-                var ms = graphics.MeasureString(text, font);
-                var rect = new RectangleF(mid.X - ms.Width / 2, mid.Y - ms.Height / 2, ms.Width, ms.Height);
-                graphics.FillRectangles(background, new RectangleF[] { rect });
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
-                using (var brush = new SolidBrush(Color.Black))
-                    graphics.DrawString(text, font, brush, rect);
-            }
-        }
-
-        /// <summary>
-        /// Рисуем резиновый прямоугольник выбора
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="firstMouseDown"></param>
-        /// <param name="mousePosition"></param>
-        private void DrawRibbonSelectionRect(Graphics graphics, PointF firstMouseDown, PointF mousePosition)
-        {
-            var pt1 = firstMouseDown;
-            var pt2 = PrepareMousePosition(mousePosition);
-            var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
-                Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-            var color = pt1.X > pt2.X ? Color.Green : Color.Blue;
-            using (var brush = new SolidBrush(Color.FromArgb(50, color)))
-                graphics.FillRectangle(brush, rect);
-            using (var pen = new Pen(Color.Black, 0))
-            {
-                if (pt1.X > pt2.X) pen.DashStyle = DashStyle.Dash;
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
-            }
-        }
+        public PointF Origin => zoomPad.Origin;
+        public float Zoom => (float)zoomPad.ZoomScale;
+        public Graphics ZoomPadGraphics => zoomPad.CreateGraphics();
 
         /// <summary>
         /// Перерасчёт позиции мыши при масштабировании и панарамировании
@@ -449,67 +197,19 @@ namespace PetProj
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public PointF GetFirstMouseDownPosition()
-        {
-            PointF[] arr = new PointF[] { firstMouseDown };
-            var origin = zoomPad.Origin;
-            var zoom = (float)zoomPad.ZoomScale;
+        //public PointF GetFirstMouseDownPosition()
+        //{
+        //    PointF[] arr = new PointF[] { firstMouseDown };
+        //    var origin = zoomPad.Origin;
+        //    var zoom = (float)zoomPad.ZoomScale;
 
-            Matrix matrix = new Matrix();
-            matrix.Scale(zoom, zoom);
-            matrix.Translate(-origin.X, -origin.Y);
-            matrix.TransformPoints(arr);
-            matrix.Dispose();
-            return new PointF(arr[0].X, arr[0].Y);
-        }
-
-        private PointF PrepareMousePositionX(PointF p)
-        {
-            PointF[] arr = new PointF[] { p };
-            Matrix matrix = new Matrix();
-
-            var zoom = (float)zoomPad.ZoomScale;
-            var origin = zoomPad.Origin;
-
-            matrix.Translate(origin.X, 0);
-            matrix.Scale(1 / zoom, 1);
-            matrix.TransformPoints(arr);
-            matrix.Dispose();
-            return new PointF(arr[0].X, arr[0].Y);
-        }
-
-        private PointF PrepareMousePositionY(PointF p)
-        {
-            PointF[] arr = new PointF[] { p };
-            Matrix matrix = new Matrix();
-
-            var zoom = (float)zoomPad.ZoomScale;
-            var origin = zoomPad.Origin;
-
-            matrix.Translate(0, origin.Y);
-            matrix.Scale(1, 1 / zoom);
-            matrix.TransformPoints(arr);
-            matrix.Dispose();
-            return new PointF(arr[0].X, arr[0].Y);
-        }
-
-        /// <summary>
-        /// Рисуем курсор-перекрестье на всё окно
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="mousePosition"></param>
-        private void DrawDefaultCursor(Graphics graphics, PointF mousePosition)
-        {
-            var pt1 = PrepareMousePosition(new PointF(0, mousePosition.Y));
-            var pt2 = PrepareMousePosition(new PointF(zoomPad.Width, mousePosition.Y));
-            var pt3 = PrepareMousePosition(new PointF(mousePosition.X, 0));
-            var pt4 = PrepareMousePosition(new PointF(mousePosition.X, zoomPad.Height));
-            using (var pen = new Pen(Color.FromArgb(50, Color.Black), 0))
-            {
-                graphics.DrawLine(pen, pt1, pt2);
-                graphics.DrawLine(pen, pt3, pt4);
-            }
-        }
+        //    Matrix matrix = new Matrix();
+        //    matrix.Scale(zoom, zoom);
+        //    matrix.Translate(-origin.X, -origin.Y);
+        //    matrix.TransformPoints(arr);
+        //    matrix.Dispose();
+        //    return new PointF(arr[0].X, arr[0].Y);
+        //}
 
         /// <summary>
         /// Нажатие кнопки указателя
@@ -535,7 +235,7 @@ namespace PetProj
 
                 if (!calledByCode && editorMode != EditorMode.Selection)
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
-                    firstMouseDown = FindBindingPoint(firstMouseDown);
+                    firstMouseDown = this.FindBindingPoint(firstMouseDown);
 
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
@@ -555,7 +255,7 @@ namespace PetProj
                         var selMode = pt1.X > pt2.X;
                         var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                             Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                        SelectUnselectByFrame(selMode, rectangle,
+                        selectionController.SelectUnselectByFrame(Width, Height, figures, ModifierKeys, selMode, rectangle,
                                 (manager, fig) =>
                                 {
                                     if (!selectionController.Selection.Contains(fig))
@@ -583,9 +283,9 @@ namespace PetProj
                         pt1 = firstMouseDown;
                         pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         //поиск ортогональной точки, если включен режим ортогонального построения
-                        pt2 = FindOrthoPoint(pt2);
+                        pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
-                        pt2 = FindBindingPoint(pt2);
+                        pt2 = this.FindBindingPoint(pt2);
 
                         AddLine(pt1, pt2);
                         // сброс количества нажатий, следующий прямоугольник будет строиться заново
@@ -601,7 +301,7 @@ namespace PetProj
                         pt3 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition); // вторая точка нажатия
 
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
-                        pt3 = FindBindingPoint(pt3);
+                        pt3 = this.FindBindingPoint(pt3);
 
                         pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
                         pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
@@ -614,9 +314,9 @@ namespace PetProj
                         pt1 = firstMouseDown;
                         pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         //поиск ортогональной точки, если включен режим ортогонального построения
-                        pt2 = FindOrthoPoint(pt2);
+                        pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
-                        pt2 = FindBindingPoint(pt2);
+                        pt2 = this.FindBindingPoint(pt2);
 
                         selectionController.Selection.Translate(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (movedoffsets) =>
@@ -633,9 +333,9 @@ namespace PetProj
                         pt1 = firstMouseDown;
                         pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                         //поиск ортогональной точки, если включен режим ортогонального построения
-                        pt2 = FindOrthoPoint(pt2);
+                        pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
-                        pt2 = FindBindingPoint(pt2);
+                        pt2 = this.FindBindingPoint(pt2);
 
                         selectionController.Selection.TranslateCopy(pt2.X - pt1.X, pt2.Y - pt1.Y,
                             (addedfigs) =>
@@ -647,36 +347,6 @@ namespace PetProj
                 }
             }
             zoomPad.Invalidate();
-        }
-
-        private PointF FindOrthoPoint(PointF pt2)
-        {
-            if (IsDrawOrthoMode)
-            {
-                pt2 = PrepareMousePosition(mousePosition);
-                var dx = Math.Abs(firstMouseDown.X - pt2.X);
-                var dy = Math.Abs(firstMouseDown.Y - pt2.Y);
-                if (dx < dy)
-                    pt2.X = firstMouseDown.X;
-                else
-                    pt2.Y = firstMouseDown.Y;
-            }
-
-            return pt2;
-        }
-
-        private PointF FindBindingPoint(PointF point)
-        {
-            if (IsObjectBinding)
-            {
-                var query = selectionController.BindingMarkers.Select(marker => (marker,
-                             $"{Math.Abs(marker.Position.X - point.X):00000}{Math.Abs(marker.Position.Y - point.Y):00000}")).OrderBy(x => x.Item2);
-                if (query.Count() > 0)
-                    // принимаем позицию ближайшего маркера привязки к текущему курсору
-                    point = query.First().marker.Position;
-            }
-
-            return point;
         }
 
         private void PressRightMouseButton(Point screenMouseLocation, bool calledByCode = false)
@@ -697,44 +367,6 @@ namespace PetProj
             }
             else if (editorMode != EditorMode.Selection)
                 SetMode(EditorMode.Selection);
-        }
-
-        private void SelectUnselectByFrame(bool selMode, RectangleF rectangle,
-            Action<IListManage, Figure> onSelect, Action<IListManage, Figure> onUnselect)
-        {
-            using (var image = new Bitmap(Width, Height))
-            using (var g = Graphics.FromImage(image))
-            {
-                foreach (var fig in figures)
-                {
-                    using (GraphicsPath path = fig.GetRendererPath())
-                    {
-                        if (selMode)
-                        {
-                            // захватываем рамкой объекты даже частично
-                            if (fig.Intersects(rectangle))
-                            {
-                                if (ModifierKeys.HasFlag(Keys.Shift))
-                                    onUnselect(selectionController.Selection, fig);
-                                else
-                                    onSelect(selectionController.Selection, fig);
-                            }
-                        }
-                        else
-                        {
-                            // захватываем рамкой объекты целиком
-                            if (fig.Contains(rectangle))
-                            {
-                                if (ModifierKeys.HasFlag(Keys.Shift))
-                                    onUnselect(selectionController.Selection, fig);
-                                else
-                                    onSelect(selectionController.Selection, fig);
-                            }
-                        }
-                    }
-                }
-                selectionController.BuildMarkers(selectionController.Selection);
-            }
         }
 
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
@@ -802,7 +434,7 @@ namespace PetProj
                 var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                     Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
                 underCursor.Clear();
-                SelectUnselectByFrame(selMode, rectangle,
+                selectionController.SelectUnselectByFrame(Width, Height, figures, ModifierKeys, selMode, rectangle,
                         (manager, fig) =>
                         {
                             if (!underCursor.Contains(fig))
