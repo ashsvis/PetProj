@@ -29,49 +29,53 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnShowTuningDialog = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnShowTuningDialog = new System.Windows.Forms.Button();
+            this.gbBindingModes = new System.Windows.Forms.GroupBox();
+            this.btnClearAllBindings = new System.Windows.Forms.Button();
+            this.btnSelectAllBindings = new System.Windows.Forms.Button();
+            this.cbBindingToNormal = new System.Windows.Forms.CheckBox();
+            this.cbBindingToCenter = new System.Windows.Forms.CheckBox();
+            this.cbBindingToMiddle = new System.Windows.Forms.CheckBox();
+            this.cbBindingToEndPoint = new System.Windows.Forms.CheckBox();
+            this.cbObjectTracking = new System.Windows.Forms.CheckBox();
+            this.cbObjectBindingMode = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnShowHelpWindow = new System.Windows.Forms.Button();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cbObjectBindingMode = new System.Windows.Forms.CheckBox();
-            this.gbBindingModes = new System.Windows.Forms.GroupBox();
-            this.cbObjectTracking = new System.Windows.Forms.CheckBox();
-            this.cbBindingToEndPoint = new System.Windows.Forms.CheckBox();
-            this.cbBindingToMiddle = new System.Windows.Forms.CheckBox();
-            this.cbBindingToCenter = new System.Windows.Forms.CheckBox();
-            this.cbBindingToNormal = new System.Windows.Forms.CheckBox();
-            this.btnSelectAllBindings = new System.Windows.Forms.Button();
-            this.btnClearAllBindings = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.gbBindingModes.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.gbBindingModes.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -90,6 +94,26 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(820, 408);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.btnShowTuningDialog);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 375);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(89, 30);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // btnShowTuningDialog
+            // 
+            this.btnShowTuningDialog.AutoSize = true;
+            this.btnShowTuningDialog.Enabled = false;
+            this.btnShowTuningDialog.Location = new System.Drawing.Point(3, 3);
+            this.btnShowTuningDialog.Name = "btnShowTuningDialog";
+            this.btnShowTuningDialog.Size = new System.Drawing.Size(83, 24);
+            this.btnShowTuningDialog.TabIndex = 1;
+            this.btnShowTuningDialog.Text = "Настройка...";
+            this.btnShowTuningDialog.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -117,6 +141,161 @@
             this.tabPage1.Text = "Шаг и сетка";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.numericUpDown1);
+            this.groupBox3.Controls.Add(this.textBox4);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.textBox3);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Location = new System.Drawing.Point(409, 29);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(391, 109);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Шаг сетки";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(145, 76);
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(71, 22);
+            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(145, 48);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(71, 22);
+            this.textBox4.TabIndex = 1;
+            this.textBox4.Text = "10";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(90, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Шаг сетки по X:";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(146, 21);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(70, 22);
+            this.textBox3.TabIndex = 0;
+            this.textBox3.Text = "10";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 78);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(133, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Основная линия через:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 51);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Шаг сетки по Y:";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.checkBox4);
+            this.groupBox2.Location = new System.Drawing.Point(6, 29);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(397, 109);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Шаг привязки";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(124, 47);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(71, 22);
+            this.textBox2.TabIndex = 1;
+            this.textBox2.Text = "10";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(125, 19);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(70, 22);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "10";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(111, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Шаг привязки по Y:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Шаг привязки по X:";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = true;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox4.Location = new System.Drawing.Point(11, 78);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(162, 17);
+            this.checkBox4.TabIndex = 2;
+            this.checkBox4.Text = "Равный шаг по осям X и Y";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(411, 6);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(77, 17);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Сетка (F7)";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(6, 6);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(98, 17);
+            this.checkBox3.TabIndex = 0;
+            this.checkBox3.Text = "Привязка (F9)";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.gbBindingModes);
@@ -130,16 +309,110 @@
             this.tabPage2.Text = "Объектная привязка";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btnShowTuningDialog
+            // gbBindingModes
             // 
-            this.btnShowTuningDialog.AutoSize = true;
-            this.btnShowTuningDialog.Enabled = false;
-            this.btnShowTuningDialog.Location = new System.Drawing.Point(3, 3);
-            this.btnShowTuningDialog.Name = "btnShowTuningDialog";
-            this.btnShowTuningDialog.Size = new System.Drawing.Size(83, 24);
-            this.btnShowTuningDialog.TabIndex = 1;
-            this.btnShowTuningDialog.Text = "Настройка...";
-            this.btnShowTuningDialog.UseVisualStyleBackColor = true;
+            this.gbBindingModes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbBindingModes.Controls.Add(this.button4);
+            this.gbBindingModes.Controls.Add(this.button3);
+            this.gbBindingModes.Controls.Add(this.button2);
+            this.gbBindingModes.Controls.Add(this.button1);
+            this.gbBindingModes.Controls.Add(this.btnClearAllBindings);
+            this.gbBindingModes.Controls.Add(this.btnSelectAllBindings);
+            this.gbBindingModes.Controls.Add(this.cbBindingToNormal);
+            this.gbBindingModes.Controls.Add(this.cbBindingToCenter);
+            this.gbBindingModes.Controls.Add(this.cbBindingToMiddle);
+            this.gbBindingModes.Controls.Add(this.cbBindingToEndPoint);
+            this.gbBindingModes.Location = new System.Drawing.Point(6, 29);
+            this.gbBindingModes.Name = "gbBindingModes";
+            this.gbBindingModes.Size = new System.Drawing.Size(794, 275);
+            this.gbBindingModes.TabIndex = 1;
+            this.gbBindingModes.TabStop = false;
+            this.gbBindingModes.Text = "Режимы объектной привязки";
+            // 
+            // btnClearAllBindings
+            // 
+            this.btnClearAllBindings.AutoSize = true;
+            this.btnClearAllBindings.Location = new System.Drawing.Point(694, 51);
+            this.btnClearAllBindings.Name = "btnClearAllBindings";
+            this.btnClearAllBindings.Size = new System.Drawing.Size(88, 24);
+            this.btnClearAllBindings.TabIndex = 2;
+            this.btnClearAllBindings.Text = "Очистить все";
+            this.btnClearAllBindings.UseVisualStyleBackColor = true;
+            this.btnClearAllBindings.Click += new System.EventHandler(this.btnClearAllBindings_Click);
+            // 
+            // btnSelectAllBindings
+            // 
+            this.btnSelectAllBindings.AutoSize = true;
+            this.btnSelectAllBindings.Location = new System.Drawing.Point(694, 21);
+            this.btnSelectAllBindings.Name = "btnSelectAllBindings";
+            this.btnSelectAllBindings.Size = new System.Drawing.Size(88, 24);
+            this.btnSelectAllBindings.TabIndex = 2;
+            this.btnSelectAllBindings.Text = "Выбрать все";
+            this.btnSelectAllBindings.UseVisualStyleBackColor = true;
+            this.btnSelectAllBindings.Click += new System.EventHandler(this.btnSelectAllBindings_Click);
+            // 
+            // cbBindingToNormal
+            // 
+            this.cbBindingToNormal.AutoSize = true;
+            this.cbBindingToNormal.Location = new System.Drawing.Point(31, 90);
+            this.cbBindingToNormal.Name = "cbBindingToNormal";
+            this.cbBindingToNormal.Size = new System.Drawing.Size(74, 17);
+            this.cbBindingToNormal.TabIndex = 0;
+            this.cbBindingToNormal.Text = "Нормаль";
+            this.cbBindingToNormal.UseVisualStyleBackColor = true;
+            // 
+            // cbBindingToCenter
+            // 
+            this.cbBindingToCenter.AutoSize = true;
+            this.cbBindingToCenter.Location = new System.Drawing.Point(31, 67);
+            this.cbBindingToCenter.Name = "cbBindingToCenter";
+            this.cbBindingToCenter.Size = new System.Drawing.Size(59, 17);
+            this.cbBindingToCenter.TabIndex = 0;
+            this.cbBindingToCenter.Text = "Центр";
+            this.cbBindingToCenter.UseVisualStyleBackColor = true;
+            // 
+            // cbBindingToMiddle
+            // 
+            this.cbBindingToMiddle.AutoSize = true;
+            this.cbBindingToMiddle.Location = new System.Drawing.Point(31, 44);
+            this.cbBindingToMiddle.Name = "cbBindingToMiddle";
+            this.cbBindingToMiddle.Size = new System.Drawing.Size(78, 17);
+            this.cbBindingToMiddle.TabIndex = 0;
+            this.cbBindingToMiddle.Text = "Середина";
+            this.cbBindingToMiddle.UseVisualStyleBackColor = true;
+            // 
+            // cbBindingToEndPoint
+            // 
+            this.cbBindingToEndPoint.AutoSize = true;
+            this.cbBindingToEndPoint.Location = new System.Drawing.Point(31, 21);
+            this.cbBindingToEndPoint.Name = "cbBindingToEndPoint";
+            this.cbBindingToEndPoint.Size = new System.Drawing.Size(77, 17);
+            this.cbBindingToEndPoint.TabIndex = 0;
+            this.cbBindingToEndPoint.Text = "Конточка";
+            this.cbBindingToEndPoint.UseVisualStyleBackColor = true;
+            // 
+            // cbObjectTracking
+            // 
+            this.cbObjectTracking.AutoSize = true;
+            this.cbObjectTracking.Location = new System.Drawing.Point(411, 6);
+            this.cbObjectTracking.Name = "cbObjectTracking";
+            this.cbObjectTracking.Size = new System.Drawing.Size(193, 17);
+            this.cbObjectTracking.TabIndex = 0;
+            this.cbObjectTracking.Text = "Объектное отслеживание (F11)";
+            this.cbObjectTracking.UseVisualStyleBackColor = true;
+            this.cbObjectTracking.Visible = false;
+            // 
+            // cbObjectBindingMode
+            // 
+            this.cbObjectBindingMode.AutoSize = true;
+            this.cbObjectBindingMode.Location = new System.Drawing.Point(6, 6);
+            this.cbObjectBindingMode.Name = "cbObjectBindingMode";
+            this.cbObjectBindingMode.Size = new System.Drawing.Size(159, 17);
+            this.cbObjectBindingMode.TabIndex = 0;
+            this.cbObjectBindingMode.Text = "Объектная привязка (F3)";
+            this.cbObjectBindingMode.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -184,270 +457,53 @@
             this.btnShowHelpWindow.Text = "Справка";
             this.btnShowHelpWindow.UseVisualStyleBackColor = true;
             // 
-            // flowLayoutPanel2
+            // button4
             // 
-            this.flowLayoutPanel2.AutoSize = true;
-            this.flowLayoutPanel2.Controls.Add(this.btnShowTuningDialog);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 375);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(89, 30);
-            this.flowLayoutPanel2.TabIndex = 0;
+            this.button4.Enabled = false;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Image = global::PetProj.Properties.Resources.normalmarker;
+            this.button4.Location = new System.Drawing.Point(6, 88);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(18, 18);
+            this.button4.TabIndex = 3;
+            this.button4.UseVisualStyleBackColor = true;
             // 
-            // cbObjectBindingMode
+            // button3
             // 
-            this.cbObjectBindingMode.AutoSize = true;
-            this.cbObjectBindingMode.Location = new System.Drawing.Point(6, 6);
-            this.cbObjectBindingMode.Name = "cbObjectBindingMode";
-            this.cbObjectBindingMode.Size = new System.Drawing.Size(159, 17);
-            this.cbObjectBindingMode.TabIndex = 0;
-            this.cbObjectBindingMode.Text = "Объектная привязка (F3)";
-            this.cbObjectBindingMode.UseVisualStyleBackColor = true;
+            this.button3.Enabled = false;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Image = global::PetProj.Properties.Resources.centermarker;
+            this.button3.Location = new System.Drawing.Point(6, 65);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(18, 18);
+            this.button3.TabIndex = 3;
+            this.button3.UseVisualStyleBackColor = true;
             // 
-            // gbBindingModes
+            // button2
             // 
-            this.gbBindingModes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbBindingModes.Controls.Add(this.btnClearAllBindings);
-            this.gbBindingModes.Controls.Add(this.btnSelectAllBindings);
-            this.gbBindingModes.Controls.Add(this.cbBindingToNormal);
-            this.gbBindingModes.Controls.Add(this.cbBindingToCenter);
-            this.gbBindingModes.Controls.Add(this.cbBindingToMiddle);
-            this.gbBindingModes.Controls.Add(this.cbBindingToEndPoint);
-            this.gbBindingModes.Location = new System.Drawing.Point(6, 29);
-            this.gbBindingModes.Name = "gbBindingModes";
-            this.gbBindingModes.Size = new System.Drawing.Size(794, 275);
-            this.gbBindingModes.TabIndex = 1;
-            this.gbBindingModes.TabStop = false;
-            this.gbBindingModes.Text = "Режимы объектной привязки";
+            this.button2.Enabled = false;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = global::PetProj.Properties.Resources.middlemarker;
+            this.button2.Location = new System.Drawing.Point(6, 42);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(18, 18);
+            this.button2.TabIndex = 3;
+            this.button2.UseVisualStyleBackColor = true;
             // 
-            // cbObjectTracking
+            // button1
             // 
-            this.cbObjectTracking.AutoSize = true;
-            this.cbObjectTracking.Location = new System.Drawing.Point(411, 6);
-            this.cbObjectTracking.Name = "cbObjectTracking";
-            this.cbObjectTracking.Size = new System.Drawing.Size(193, 17);
-            this.cbObjectTracking.TabIndex = 0;
-            this.cbObjectTracking.Text = "Объектное отслеживание (F11)";
-            this.cbObjectTracking.UseVisualStyleBackColor = true;
-            this.cbObjectTracking.Visible = false;
-            // 
-            // cbBindingToEndPoint
-            // 
-            this.cbBindingToEndPoint.AutoSize = true;
-            this.cbBindingToEndPoint.Location = new System.Drawing.Point(31, 21);
-            this.cbBindingToEndPoint.Name = "cbBindingToEndPoint";
-            this.cbBindingToEndPoint.Size = new System.Drawing.Size(77, 17);
-            this.cbBindingToEndPoint.TabIndex = 0;
-            this.cbBindingToEndPoint.Text = "Конточка";
-            this.cbBindingToEndPoint.UseVisualStyleBackColor = true;
-            // 
-            // cbBindingToMiddle
-            // 
-            this.cbBindingToMiddle.AutoSize = true;
-            this.cbBindingToMiddle.Location = new System.Drawing.Point(31, 44);
-            this.cbBindingToMiddle.Name = "cbBindingToMiddle";
-            this.cbBindingToMiddle.Size = new System.Drawing.Size(78, 17);
-            this.cbBindingToMiddle.TabIndex = 0;
-            this.cbBindingToMiddle.Text = "Середина";
-            this.cbBindingToMiddle.UseVisualStyleBackColor = true;
-            // 
-            // cbBindingToCenter
-            // 
-            this.cbBindingToCenter.AutoSize = true;
-            this.cbBindingToCenter.Location = new System.Drawing.Point(31, 67);
-            this.cbBindingToCenter.Name = "cbBindingToCenter";
-            this.cbBindingToCenter.Size = new System.Drawing.Size(59, 17);
-            this.cbBindingToCenter.TabIndex = 0;
-            this.cbBindingToCenter.Text = "Центр";
-            this.cbBindingToCenter.UseVisualStyleBackColor = true;
-            // 
-            // cbBindingToNormal
-            // 
-            this.cbBindingToNormal.AutoSize = true;
-            this.cbBindingToNormal.Location = new System.Drawing.Point(31, 90);
-            this.cbBindingToNormal.Name = "cbBindingToNormal";
-            this.cbBindingToNormal.Size = new System.Drawing.Size(74, 17);
-            this.cbBindingToNormal.TabIndex = 0;
-            this.cbBindingToNormal.Text = "Нормаль";
-            this.cbBindingToNormal.UseVisualStyleBackColor = true;
-            // 
-            // btnSelectAllBindings
-            // 
-            this.btnSelectAllBindings.AutoSize = true;
-            this.btnSelectAllBindings.Location = new System.Drawing.Point(694, 21);
-            this.btnSelectAllBindings.Name = "btnSelectAllBindings";
-            this.btnSelectAllBindings.Size = new System.Drawing.Size(88, 24);
-            this.btnSelectAllBindings.TabIndex = 2;
-            this.btnSelectAllBindings.Text = "Выбрать все";
-            this.btnSelectAllBindings.UseVisualStyleBackColor = true;
-            this.btnSelectAllBindings.Click += new System.EventHandler(this.btnSelectAllBindings_Click);
-            // 
-            // btnClearAllBindings
-            // 
-            this.btnClearAllBindings.AutoSize = true;
-            this.btnClearAllBindings.Location = new System.Drawing.Point(694, 51);
-            this.btnClearAllBindings.Name = "btnClearAllBindings";
-            this.btnClearAllBindings.Size = new System.Drawing.Size(88, 24);
-            this.btnClearAllBindings.TabIndex = 2;
-            this.btnClearAllBindings.Text = "Очистить все";
-            this.btnClearAllBindings.UseVisualStyleBackColor = true;
-            this.btnClearAllBindings.Click += new System.EventHandler(this.btnClearAllBindings_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(411, 6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(77, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Сетка (F7)";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 6);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(98, 17);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Привязка (F9)";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.checkBox4);
-            this.groupBox2.Location = new System.Drawing.Point(6, 29);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(397, 109);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Шаг привязки";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.numericUpDown1);
-            this.groupBox3.Controls.Add(this.textBox4);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.textBox3);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(409, 29);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(391, 109);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Шаг сетки";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Шаг привязки по X:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(111, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Шаг привязки по Y:";
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Checked = true;
-            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox4.Location = new System.Drawing.Point(11, 78);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(162, 17);
-            this.checkBox4.TabIndex = 2;
-            this.checkBox4.Text = "Равный шаг по осям X и Y";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(125, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(70, 22);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "10";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(124, 47);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(71, 22);
-            this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "10";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Шаг сетки по X:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 51);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Шаг сетки по Y:";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(146, 21);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(70, 22);
-            this.textBox3.TabIndex = 0;
-            this.textBox3.Text = "10";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(145, 48);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(71, 22);
-            this.textBox4.TabIndex = 1;
-            this.textBox4.Text = "10";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 78);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(133, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Основная линия через:";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(145, 76);
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(71, 22);
-            this.numericUpDown1.TabIndex = 2;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.button1.Enabled = false;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::PetProj.Properties.Resources.endpointmarker;
+            this.button1.Location = new System.Drawing.Point(6, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(18, 18);
+            this.button1.TabIndex = 3;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // DrawingModesForm
             // 
@@ -465,21 +521,21 @@
             this.Load += new System.EventHandler(this.DrawingModesForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
-            this.gbBindingModes.ResumeLayout(false);
-            this.gbBindingModes.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.gbBindingModes.ResumeLayout(false);
+            this.gbBindingModes.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -520,5 +576,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -103,9 +103,29 @@ namespace PetProj.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap centermarker {
+            get {
+                object obj = ResourceManager.GetObject("centermarker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap endpoint {
             get {
                 object obj = ResourceManager.GetObject("endpoint", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap endpointmarker {
+            get {
+                object obj = ResourceManager.GetObject("endpointmarker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +146,16 @@ namespace PetProj.Properties {
         internal static System.Drawing.Bitmap middle {
             get {
                 object obj = ResourceManager.GetObject("middle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap middlemarker {
+            get {
+                object obj = ResourceManager.GetObject("middlemarker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -156,6 +186,16 @@ namespace PetProj.Properties {
         internal static System.Drawing.Bitmap normal {
             get {
                 object obj = ResourceManager.GetObject("normal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap normalmarker {
+            get {
+                object obj = ResourceManager.GetObject("normalmarker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

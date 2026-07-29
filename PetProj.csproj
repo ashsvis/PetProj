@@ -214,6 +214,10 @@
     <None Include="Resources\endpoint.png" />
     <None Include="Resources\normal.png" />
     <None Include="Resources\center.png" />
+    <None Include="Resources\endpointmarker.png" />
+    <None Include="Resources\middlemarker.png" />
+    <None Include="Resources\centermarker.png" />
+    <None Include="Resources\normalmarker.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />
