@@ -210,6 +210,10 @@
     <None Include="Resources\ortho.png" />
     <None Include="Resources\binding.png" />
     <None Include="Resources\bindingChecked.png" />
+    <None Include="Resources\middle.png" />
+    <None Include="Resources\endpoint.png" />
+    <None Include="Resources\normal.png" />
+    <None Include="Resources\center.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />
