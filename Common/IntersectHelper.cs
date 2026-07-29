@@ -40,12 +40,12 @@ namespace PetProj.Common
         /// <returns></returns>
         public static bool Contains(this Figure figure, RectangleF captured)
         {
-            using (var path = figure.GetRendererPath())
-            {
-                var figrect = path.GetBounds();
-                figrect.Intersect(captured);
-                return figrect.Equals(path.GetBounds());
-            }
+            if (captured.IsEmpty) return false;
+            var rect = figure.Geometry.Bounds;
+            if (rect.Width == 0 && rect.Height == 0)
+                return captured.Contains(rect.Location);
+            rect.Intersect(captured);
+            return rect.Equals(figure.Geometry.Bounds);
         }
 
         /// <summary>
@@ -56,11 +56,14 @@ namespace PetProj.Common
         /// <returns></returns>
         public static bool Intersects(this Figure figure, RectangleF captured)
         {
+            if (captured.IsEmpty) return false;
             using (var path = figure.GetRendererPath())
             {
-                var rect = path.GetBounds();
+                var rect = figure.Geometry.Bounds; //path.GetBounds();
+                if (rect.Width == 0 && rect.Height == 0)
+                    return captured.Contains(rect.Location);
                 rect.Intersect(captured);
-                if (rect.Equals(path.GetBounds()))
+                if (rect.Equals(figure.Geometry.Bounds/*path.GetBounds()*/))
                     return true; // содержится целиком
                 if (path.PathPoints.Any(p => captured.Contains(p)))
                     return true; // любая точка пути фигуры содержится в рамке

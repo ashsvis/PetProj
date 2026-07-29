@@ -19,6 +19,8 @@ namespace PetProj.Geometries
         /// </summary>
         public abstract GraphicsPath Path { get; set; }
 
+        public virtual RectangleF Bounds => Path.GetBounds();
+
         public virtual XElement GetXml()
         {
             var xfill = new XElement("Geometry");

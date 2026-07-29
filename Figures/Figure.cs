@@ -1,7 +1,6 @@
 ﻿using PetProj.Geometries;
 using PetProj.Renderers;
 using PetProj.Styles;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
 
@@ -29,6 +28,11 @@ namespace PetProj.Figures
         /// Свойство рисовальщика фигуры
         /// </summary>
         public Renderer Renderer { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Geometry.Name} {Geometry.Bounds}";
+        }
 
         public XElement GetXml()
         {

@@ -64,11 +64,6 @@ namespace PetProj.Controllers
         public event Action SelectedFigureChanged = delegate { };
 
         /// <summary>
-        /// Изменился режим работы редактора
-        /// </summary>
-        public event Action<EditorMode> EditorModeChanged = delegate { };
-
-        /// <summary>
         /// Очистить список выбранных фигур
         /// </summary>
         public void Clear()
@@ -279,18 +274,14 @@ namespace PetProj.Controllers
                 using (var path = fig.GetRendererPath())
                 {
                     var points = path.PathPoints;
-                    for (var i = 0; i < points.Length; i++)
+                    if (fig.Geometry is LineGeometry _)
                     {
-                        var marker = CreateMarker(fig, MarkerType.Vertex, points[i], i);
-                        Markers.Add(marker);
-                    }
-                    if (fig.Geometry is AddLineGeometry _)
-                    {
+                        for (var i = 0; i < points.Length; i++)
+                            Markers.Add(CreateMarker(fig, MarkerType.Vertex, points[i], i));
                         var pt1 = points[0];
                         var pt2 = points[1];
                         var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                        var marker = CreateMarker(fig, MarkerType.Middle, pt);
-                        Markers.Add(marker);
+                        Markers.Add(CreateMarker(fig, MarkerType.Middle, pt));
                     }
                 }
             }
@@ -316,7 +307,7 @@ namespace PetProj.Controllers
                             BindingMarkers.Add(marker);
                         }
                     }
-                    if (fig.Geometry is AddLineGeometry _)
+                    if (fig.Geometry is LineGeometry _)
                     {
                         var pt1 = points[0];
                         var pt2 = points[1];

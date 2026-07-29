@@ -67,7 +67,6 @@ namespace PetProj
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
-            selectionController.EditorModeChanged += _ => UpdateInterface();            
         }
 
         private void BuildInterface()
@@ -89,9 +88,25 @@ namespace PetProj
             // рисуем начало координат и направление осей
             this.DrawZeroOrigin(graphics, Color.LightGray);
 
+            var zoom = (float)zoomPad.ZoomScale;
+
             // отрисовка созданных фигур
             foreach (var fig in figures)
-                fig.Renderer.Render(graphics, fig);
+            {
+                var bounds = fig.Geometry.Bounds;
+                // если фигура вырождена в точку, то охватываюший прямоугольник пуст
+                if (bounds.Width == 0 && bounds.Height == 0)
+                {
+                    bounds.Width += 1.6f / zoom;
+                    bounds.Height += 1.6f / zoom;
+                    // рисуем точку в позиции этой фигуры
+                    using (var brush = new SolidBrush(fig.Style.BorderStyle.Color))
+                        graphics.FillRectangle(brush, bounds);
+                }
+                else
+                    // рисуем стандартно
+                    fig.Renderer.Render(graphics, fig);
+            }
 
             // отрисовка маркеров на фигурах под курсором, при построении линий
             if (IsObjectBinding && (editorMode != EditorMode.Selection))
@@ -101,11 +116,11 @@ namespace PetProj
                              $"{Math.Abs(marker.Position.X - location.X):00000}{Math.Abs(marker.Position.Y - location.Y):00000}")).OrderBy(x => x.Item2);
                 // рисуем ближайший маркер привязки к текущему курсору
                 foreach (var item in query.Take(1))
-                    item.marker.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
+                    item.marker.Render(graphics, Color.White, zoom);
             }
             else
                 // отрисовка временно подсвеченных под курсором или рамкой выделения
-                underCursor.Render(graphics, Color.White, (float)zoomPad.ZoomScale);
+                underCursor.Render(graphics, Color.White, zoom);
 
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
@@ -114,10 +129,10 @@ namespace PetProj
 
             // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
-                marker.Render(graphics, markers.Contains(marker) ? Color.Red : Color.Blue, (float)zoomPad.ZoomScale);
+                marker.Render(graphics, markers.Contains(marker) ? Color.Red : Color.Blue, zoom);
 
             this.DrawDefaultCursor(graphics, mousePosition);
-            float kf = (float)(1f / zoomPad.ZoomScale);
+            float kf = (float)(1f / zoom);
             PointF pt;
             string text;
             switch (editorMode)
@@ -231,14 +246,20 @@ namespace PetProj
                         if (items.Count() > 0)
                         {
                             markers.Clear();
-                            markers.AddRange(items);
+                            foreach (var marker in items)
+                            {
+                                // отсечение маркеров, принадлежащих одной фигуре и имеющих одинаковую позицию
+                                if (markers.Any(m => m.Owner == marker.Owner && m.Position == marker.Position)) continue;
+                                markers.Add(marker);
+                            }
                             SetMode(EditorMode.MoveMarkers);
                             mouseClickCount++;
                             return;
                         }
                     }
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
-                    firstMouseDown = this.FindBindingPoint(firstMouseDown);
+                    if (editorMode != EditorMode.Selection)
+                        firstMouseDown = this.FindBindingPoint(firstMouseDown);
                 }
                 mouseClickCount++;
                 if (editorMode == EditorMode.Selection)
@@ -451,11 +472,11 @@ namespace PetProj
                     case EditorMode.Selection:
                         if (mouseClickCount == 0 && selectionController.Markers.Count > 0)
                         {
-                            var marker = selectionController.Markers.LastOrDefault(m => m.Target(Zoom).Contains(pt));
-                            if (marker is MiddleMarker middle)
-                                Cursor = Cursors.SizeAll;
-                            else if (marker is VertexMarker vertex)
+                            var marker = selectionController.Markers.FirstOrDefault(m => m.Target(Zoom).Contains(pt));
+                            if (marker is VertexMarker vertex)
                                 Cursor = Cursors.Hand;
+                            else if (marker is MiddleMarker middle)
+                                Cursor = Cursors.SizeAll;
                             else
                                 Cursor = Cursors.Cross;
                         }
@@ -574,8 +595,8 @@ namespace PetProj
         {
             Figure line = new Figure();
             line.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
-            FigureBuilder.BuildAddLineGeometry(line, pt1);
-            ((AddLineGeometry)line.Geometry).AddPoint(pt2);
+            FigureBuilder.BuildLineGeometry(line, pt1);
+            ((LineGeometry)line.Geometry).AddPoint(pt2);
             line.Style.FillStyle.IsVisible = false;
             return line;
         }
@@ -679,7 +700,7 @@ namespace PetProj
                 root.Add(xmodel);
                 foreach (var figure in figures)
                 {
-                    if (figure.Geometry is AddLineGeometry lineGeometry)
+                    if (figure.Geometry is LineGeometry lineGeometry)
                     {
                         if (lineGeometry.Points.Count == 2)
                         {

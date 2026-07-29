@@ -16,15 +16,11 @@ namespace PetProj.Figures
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
         /// <param name="startPoint">Начальная точка</param>
-        /// <param name="isClosed">Замкнутая</param>
-        /// <param name="isSmoothed">Сглаживание</param>
-        public static void BuildAddLineGeometry(Figure figure, PointF startPoint, bool isClosed = false, bool isSmoothed = false)
+        public static void BuildLineGeometry(Figure figure, PointF startPoint)
         {
-            figure.Geometry = new AddLineGeometry(startPoint)
+            figure.Geometry = new LineGeometry(startPoint)
             {
                 Name = "Отрезок",
-                IsClosed = isClosed,
-                IsSmoothed = isSmoothed
             };
         }
 

@@ -76,10 +76,8 @@ namespace PetProj.Selections
                 for (var i = figures.Count - 1; i >= 0; i--)
                 {
                     var fig = figures[i];
-                    var isClosed = !(fig.Geometry is IGeometry closedGeometry) ||
-                        closedGeometry != null && closedGeometry.IsClosed;
                     var path = fig.GetRendererPath();
-                    if (isClosed && path.IsVisible(point))
+                    if (path.IsVisible(point))
                     {
                         figure = fig;
                         found = true;

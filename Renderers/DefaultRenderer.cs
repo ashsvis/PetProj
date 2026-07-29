@@ -21,13 +21,15 @@ namespace PetProj.Renderers
             using (var path = figure.Geometry.Path)
             {
                 // если разрешено использование заливки
-                if (figure.Style.FillStyle != null &&
-                    figure.Style.FillStyle.IsVisible)
-                        graphics.FillPath(brush, path);
+                if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)         
+                { 
+                    graphics.FillPath(brush, path); 
+                }
                 // если разрешено рисование контура
-                if (figure.Style.BorderStyle != null &&
-                    figure.Style.BorderStyle.IsVisible)
-                        graphics.DrawPath(pen, path);
+                if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
+                {
+                    graphics.DrawPath(pen, path); 
+                }
             }
         }
 

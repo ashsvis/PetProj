@@ -107,10 +107,9 @@
     <Compile Include="Figures\BindingVertexMarker.cs" />
     <Compile Include="Figures\MiddleMarker.cs" />
     <Compile Include="Figures\VertexMarker.cs" />
-    <Compile Include="Geometries\AddLineGeometry.cs" />
+    <Compile Include="Geometries\LineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />
-    <Compile Include="Geometries\IGeometry.cs" />
     <Compile Include="Geometries\IMoveGeometry.cs" />
     <Compile Include="Geometries\IMoveMarker.cs" />
     <Compile Include="Geometries\PrimitiveGeometry.cs" />

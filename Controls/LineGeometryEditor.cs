@@ -23,7 +23,7 @@ namespace PetProj.Controls
         public void Build(Selection selection)
         {
             // проверка видимости
-            Visible = selection.ForAll(f => f.Geometry is AddLineGeometry) && selection.Count == 1;
+            Visible = selection.ForAll(f => f.Geometry is LineGeometry) && selection.Count == 1;
             // показываем редактор только если одна фигура и это отрезок
             if (!Visible || selection == null) return; // ничего не строим            
 
@@ -31,7 +31,7 @@ namespace PetProj.Controls
             this.selection = selection;
 
             // получаем список объектов
-            var lineStyles = selection.Select(f => f.Geometry as AddLineGeometry).ToList();
+            var lineStyles = selection.Select(f => f.Geometry as LineGeometry).ToList();
 
             // копируем свойства объекта в GUI
             updating++;
@@ -68,11 +68,11 @@ namespace PetProj.Controls
             StartChanging(this, new ChangingEventArgs("Line Geometry"));
 
             // получаем список объектов
-            var lineStyles = selection.Select(f => f.Geometry as AddLineGeometry).ToList();
+            var lineStyles = selection.Select(f => f.Geometry as LineGeometry).ToList();
 
             // посылаем значения назад из GUI в объект
             lineStyles.SetProperty(f => f.Points[0] = new PointF(float.Parse(tbStartX.Text), float.Parse(tbStartY.Text)));
-            lineStyles.SetProperty(f => f.Points[1] = f.EndPoint = new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
+            lineStyles.SetProperty(f => f.Points[1] = /*f.EndPoint =*/ new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
 
             var start = lineStyles.GetProperty(f => f.StartPoint);
             var end = lineStyles.GetProperty(f => f.EndPoint);

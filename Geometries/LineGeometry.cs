@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -6,19 +7,16 @@ using System.Xml.Linq;
 
 namespace PetProj.Geometries
 {
-    public sealed class AddLineGeometry : Geometry, IGeometry, IMoveGeometry, IMoveMarker
+    public sealed class LineGeometry : Geometry, IMoveGeometry, IMoveMarker
     {
         public readonly List<PointF> Points = new List<PointF>();
 
         public PointF StartPoint => Points.Count > 0 ? Points.First() : PointF.Empty;
-        public PointF EndPoint { get; set; }
-
-        /// <summary>
-        /// Признак замкнутого контура фигуры
-        /// </summary>
-        public bool IsClosed { get; set; } = true;
-
-        public bool IsSmoothed { get; set; }
+        public PointF EndPoint => Points.Count > 0 ? Points.Last() : PointF.Empty;
+        public override RectangleF Bounds => 
+            Points.Count == 2 
+               ? new RectangleF(Math.Min(Points[0].X, Points[1].X), Math.Min(Points[0].Y, Points[1].Y), 
+                   Math.Abs(Points[0].X - Points[1].X), Math.Abs(Points[0].Y - Points[1].Y)) : RectangleF.Empty;
 
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
@@ -30,24 +28,10 @@ namespace PetProj.Geometries
             get
             {
                 var path = new GraphicsPath();
-                if (Points.Count > 0)
+                if (Points.Count == 2)
                 {
-                    if (IsSmoothed)
-                    {
-                        var list = new List<PointF>(Points);
-                        list.AddRange(new[] { EndPoint });
-                        if (list.Count > 2)
-                            path.AddCurve(list.ToArray());
-                        else
-                            path.AddLines(list.ToArray());
-                    }
-                    else
-                    {
-                        path.AddLines(Points.ToArray());
-                        path.AddLines(new[] { EndPoint });
-                        if (IsClosed)
-                            path.CloseFigure();
-                    }
+                    var points = Points.ToArray();
+                    path.AddLines(points);
                 }
                 return path;
             }
@@ -58,22 +42,18 @@ namespace PetProj.Geometries
         /// Конструктор, недоступный вне проекта EditorModel
         /// (только для внутреннего использования)
         /// </summary>
-        internal AddLineGeometry(PointF point)
+        internal LineGeometry(PointF point)
         {
             Points.Add(point);
-            EndPoint = point;
         }
 
         public override Geometry DeepCopy()
         {
-            var geometry = new AddLineGeometry(StartPoint)
+            var geometry = new LineGeometry(StartPoint)
             {
                 Name = Name,
-                IsClosed = IsClosed,
-                IsSmoothed = IsSmoothed,
             };
             geometry.Points.AddRange(Points.Skip(1));
-            geometry.EndPoint = EndPoint;
             return geometry;
         }
 
@@ -85,14 +65,12 @@ namespace PetProj.Geometries
         public void AddPoint(PointF point)
         {
             if (!Points.Contains(point)) Points.Add(point);
-            EndPoint = point;
         }
 
         public void Move(float offsetX, float offsetY)
         {
             for (var i = 0; i < Points.Count; i++)
                 Points[i] = PointF.Add(Points[i], new SizeF(offsetX, offsetY));
-            EndPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
         }
 
         public void Move(int index, float offsetX, float offsetY)
@@ -100,10 +78,7 @@ namespace PetProj.Geometries
             if (index == 0)
                 Points[0] = PointF.Add(Points[0], new SizeF(offsetX, offsetY));
             else if (index == 1)
-            {
                 Points[1] = PointF.Add(Points[1], new SizeF(offsetX, offsetY));
-                EndPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
-            }
         }
     }
 }
