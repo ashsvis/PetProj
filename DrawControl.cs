@@ -774,6 +774,7 @@ namespace PetProj
         public void SetParameters(string[] strings)
         {
             buildLineController.SetParameters(strings);
+            buildRectangleController.SetParameters(strings);
             switch (editorMode)
             {
                 case EditorMode.MoveSelected:
