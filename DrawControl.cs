@@ -155,7 +155,7 @@ namespace PetProj
                             this.DrawRibbonLine(graphics, firstMouseDown, mousePosition);
                         break;
                     }
-                case EditorMode.BuildRectangles:
+                case EditorMode.BuildRectangle:
                     if (IsDynamicalEnter)
                     {
                         pt = PrepareMousePosition(mousePosition);
@@ -319,7 +319,7 @@ namespace PetProj
                         mouseClickCount++;
                         Changed = true;
                         break;
-                    case EditorMode.BuildRectangles:
+                    case EditorMode.BuildRectangle:
                         // построение прямоугольника по двум точкам диагонали
                         pt1 = firstMouseDown; // первая точка нажатия
                         pt3 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition); // вторая точка нажатия
@@ -330,8 +330,10 @@ namespace PetProj
                         pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
                         pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
                         AddRectangle(pt1, pt2, pt3, pt4);
-                        // сброс количества нажатий, следующий прямоугольник будет строиться заново
+
+                        selectionController.Selection.Clear();
                         mouseClickCount = 0;
+                        SetMode(EditorMode.Selection);
                         Changed = true;
                         break;
                     case EditorMode.MoveSelected:
@@ -492,7 +494,7 @@ namespace PetProj
                             OnChangeParams?.Invoke(this, new object[] { vector.Length(), vector.AngleDegree() });
                         }
                         break;
-                    case EditorMode.BuildRectangles:
+                    case EditorMode.BuildRectangle:
                         if (mouseClickCount == 0)
                             OnChangeParams?.Invoke(this, new object[] { pt });
                         else if (mouseClickCount == 1)
@@ -560,7 +562,7 @@ namespace PetProj
                 {
                     underCursor.Add(fig);
                     var allowed = AllowedObjectBindings;
-                    if (editorMode == EditorMode.BuildRectangles)
+                    if (editorMode == EditorMode.BuildRectangle)
                         allowed = allowed ^ AllowedObjectBindings.Normal;
                     selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);
                 }
@@ -670,8 +672,8 @@ namespace PetProj
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
                     break;
                 case EditorMode.BuildLines:
-                case EditorMode.BuildRectangles:
-                case EditorMode.BuildArcs:
+                case EditorMode.BuildRectangle:
+                case EditorMode.BuildArc:
                     selectionController.Clear();
                     OnChangeMode?.Invoke(this, selection);
                     break;
@@ -874,7 +876,7 @@ namespace PetProj
                         }
                     }
                     break;
-                case EditorMode.BuildRectangles:
+                case EditorMode.BuildRectangle:
                     if (strings.Length == 2)
                     {
                         if (mouseClickCount == 0)

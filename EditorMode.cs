@@ -4,8 +4,8 @@
     {
         Selection,
         BuildLines,
-        BuildRectangles,
-        BuildArcs,
+        BuildRectangle,
+        BuildArc,
         MoveSelected,
         MoveCopySelected,
         MoveMarkers,

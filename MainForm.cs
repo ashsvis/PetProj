@@ -101,7 +101,7 @@ namespace PetProj
                             tstbTextParam2.Text = $"{parametes[1]}";
                         }
                         break;
-                    case EditorMode.BuildRectangles:
+                    case EditorMode.BuildRectangle:
                         if (drawControl.MouseClickCount == 0)
                         {
                             var pt = (PointF)parametes[0];
@@ -280,13 +280,13 @@ namespace PetProj
             else if (sender == tsbRect)
             {
                 SwitchOffButtons();
-                drawControl.SetMode(EditorMode.BuildRectangles);
+                drawControl.SetMode(EditorMode.BuildRectangle);
                 tsbRect.Checked = true;
             }
             else if (sender == tsbArc)
             {
                 SwitchOffButtons();
-                drawControl.SetMode(EditorMode.BuildArcs);
+                drawControl.SetMode(EditorMode.BuildArc);
                 tsbArc.Checked = true;
             }
             else if (sender == tsbMove)
