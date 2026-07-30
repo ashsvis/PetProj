@@ -220,6 +220,7 @@
     <None Include="Resources\normalmarker.png" />
     <None Include="Resources\poligone.png" />
     <None Include="Resources\arc.png" />
+    <None Include="Resources\dyninput.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

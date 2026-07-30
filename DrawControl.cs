@@ -671,6 +671,7 @@ namespace PetProj
                     break;
                 case EditorMode.BuildLines:
                 case EditorMode.BuildRectangles:
+                case EditorMode.BuildArcs:
                     selectionController.Clear();
                     OnChangeMode?.Invoke(this, selection);
                     break;

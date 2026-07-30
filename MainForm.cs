@@ -37,6 +37,7 @@ namespace PetProj
             var modeDynamicEnter = Properties.Settings.Default.ModeDynamicalEnter;
             drawControl.IsDynamicalEnter = modeDynamicEnter;
             tsmiDynamicalEnter.Checked = modeDynamicEnter;
+            tsbDynamicalEnter.Checked = modeDynamicEnter;
             tslParamName1.Visible = false;
             tstbTextParam1.Visible = false;
             tslParamName2.Visible = false;
@@ -253,6 +254,7 @@ namespace PetProj
             tsbArrow.Checked = false;
             tsbLine.Checked = false;
             tsbRect.Checked = false;
+            tsbArc.Checked = false;
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
         }
@@ -280,6 +282,12 @@ namespace PetProj
                 SwitchOffButtons();
                 drawControl.SetMode(EditorMode.BuildRectangles);
                 tsbRect.Checked = true;
+            }
+            else if (sender == tsbArc)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.BuildArcs);
+                tsbArc.Checked = true;
             }
             else if (sender == tsbMove)
             {
@@ -506,6 +514,7 @@ namespace PetProj
         {
             var mode = !drawControl.IsDynamicalEnter;
             tsmiDynamicalEnter.Checked = mode;
+            tsbDynamicalEnter.Checked = mode;
             drawControl.IsDynamicalEnter = mode;
             drawControl.UpdateInterface();
             tslParamName1.Visible = mode;

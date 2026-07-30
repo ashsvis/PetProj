@@ -123,6 +123,16 @@ namespace PetProj.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dyninput {
+            get {
+                object obj = ResourceManager.GetObject("dyninput", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap endpoint {
             get {
                 object obj = ResourceManager.GetObject("endpoint", resourceCulture);

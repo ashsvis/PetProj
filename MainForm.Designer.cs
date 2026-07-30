@@ -44,7 +44,6 @@
             this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAppParameters = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,6 +104,8 @@
             this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiObjectBinding = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbDynamicalEnter = new System.Windows.Forms.ToolStripButton();
             this.tsbObjectBinding = new PetProj.ToolStripSplitButtonCheckable();
             this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
@@ -245,14 +246,6 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(298, 6);
-            // 
-            // tsmiDynamicalEnter
-            // 
-            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
-            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(301, 22);
-            this.tsmiDynamicalEnter.Text = "Динамический ввод";
-            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
             // tsmiServiceMenu
             // 
@@ -486,12 +479,13 @@
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbObjectBinding,
             this.tsbOrto,
             this.tslParamName1,
             this.tstbTextParam1,
             this.tslParamName2,
             this.tstbTextParam2,
-            this.tsbObjectBinding});
+            this.tsbDynamicalEnter});
             this.toolStrip2.Location = new System.Drawing.Point(0, 698);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(1306, 25);
@@ -822,6 +816,26 @@
             this.tsmiOrto.Text = "Ортогональность";
             this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
             // 
+            // tsmiDynamicalEnter
+            // 
+            this.tsmiDynamicalEnter.Image = global::PetProj.Properties.Resources.dyninput;
+            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
+            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(301, 22);
+            this.tsmiDynamicalEnter.Text = "Динамический ввод";
+            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            // 
+            // tsbDynamicalEnter
+            // 
+            this.tsbDynamicalEnter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbDynamicalEnter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDynamicalEnter.Image = global::PetProj.Properties.Resources.dyninput;
+            this.tsbDynamicalEnter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDynamicalEnter.Name = "tsbDynamicalEnter";
+            this.tsbDynamicalEnter.Size = new System.Drawing.Size(23, 22);
+            this.tsbDynamicalEnter.Text = "Динамический ввод";
+            this.tsbDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            // 
             // tsbObjectBinding
             // 
             this.tsbObjectBinding.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -900,14 +914,14 @@
             // 
             this.tsmiRectangle.Image = global::PetProj.Properties.Resources.rect;
             this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(180, 22);
+            this.tsmiRectangle.Size = new System.Drawing.Size(163, 22);
             this.tsmiRectangle.Text = "Прямоугольник";
             // 
             // tsmiPolygone
             // 
             this.tsmiPolygone.Image = global::PetProj.Properties.Resources.poligone;
             this.tsmiPolygone.Name = "tsmiPolygone";
-            this.tsmiPolygone.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPolygone.Size = new System.Drawing.Size(163, 22);
             this.tsmiPolygone.Text = "Полигон";
             // 
             // tsbArc
@@ -1048,6 +1062,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiRectangle;
         private System.Windows.Forms.ToolStripMenuItem tsmiPolygone;
         private ToolStripSplitButtonCheckable tsbArc;
+        private System.Windows.Forms.ToolStripButton tsbDynamicalEnter;
     }
 }
 
