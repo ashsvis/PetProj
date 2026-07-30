@@ -218,6 +218,8 @@
     <None Include="Resources\middlemarker.png" />
     <None Include="Resources\centermarker.png" />
     <None Include="Resources\normalmarker.png" />
+    <None Include="Resources\poligone.png" />
+    <None Include="Resources\arc.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

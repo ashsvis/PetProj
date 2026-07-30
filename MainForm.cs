@@ -481,13 +481,13 @@ namespace PetProj
             rect.Width -= 1;
             gr.DrawRectangle(SystemPens.ControlDarkDark, rect);
             var caption = "Свойства фигур";
-            using (var font = new Font("Segoe UI", 10f, FontStyle.Bold))
+            using (var font = new Font("Arial", 10f, FontStyle.Regular))
             {
                 var sz = gr.MeasureString(caption, font);
                 var gs = gr.Save();
-                gr.TranslateTransform(0f, (rect.Height + sz.Width + btnHideShowLeftPanel.Height) / 2f);
+                gr.TranslateTransform(0, (rect.Height + sz.Width + btnHideShowLeftPanel.Height) / 2f);
                 gr.RotateTransform(-90f);
-                gr.DrawString(caption, font, SystemBrushes.ActiveCaptionText, PointF.Empty);
+                gr.DrawString(caption, font, SystemBrushes.ActiveCaptionText, new PointF(0, 2f));
                 gr.Restore(gs);
             }
         }

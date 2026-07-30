@@ -63,6 +63,16 @@ namespace PetProj.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arc {
+            get {
+                object obj = ResourceManager.GetObject("arc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow {
             get {
                 object obj = ResourceManager.GetObject("arrow", resourceCulture);
@@ -206,6 +216,16 @@ namespace PetProj.Properties {
         internal static System.Drawing.Bitmap ortho {
             get {
                 object obj = ResourceManager.GetObject("ortho", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap poligone {
+            get {
+                object obj = ResourceManager.GetObject("poligone", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

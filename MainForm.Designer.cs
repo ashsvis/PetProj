@@ -91,7 +91,6 @@
             this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbLine = new System.Windows.Forms.ToolStripButton();
-            this.tsbRect = new System.Windows.Forms.ToolStripButton();
             this.tsmiCreateDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOpenDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSaveDocument = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +112,10 @@
             this.tsmiBindToNormal = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiBindParameters = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbRect = new PetProj.ToolStripSplitButtonCheckable();
+            this.tsmiRectangle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPolygone = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbArc = new PetProj.ToolStripSplitButtonCheckable();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -337,7 +340,8 @@
             this.toolStripSeparator8,
             this.tsbArrow,
             this.tsbLine,
-            this.tsbRect});
+            this.tsbRect,
+            this.tsbArc});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1306, 25);
@@ -682,16 +686,6 @@
             this.tsbLine.Text = "Построение отрезков";
             this.tsbLine.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
-            // tsbRect
-            // 
-            this.tsbRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRect.Image = global::PetProj.Properties.Resources.rect;
-            this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(23, 22);
-            this.tsbRect.Text = "Построение прямоугольников";
-            this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
-            // 
             // tsmiCreateDocument
             // 
             this.tsmiCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCreateDocument.Image")));
@@ -888,6 +882,45 @@
             this.tsmiBindParameters.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindParameters.Text = "Параметры объектной привязки...";
             // 
+            // tsbRect
+            // 
+            this.tsbRect.Checked = false;
+            this.tsbRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRectangle,
+            this.tsmiPolygone});
+            this.tsbRect.Image = global::PetProj.Properties.Resources.rect;
+            this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRect.Name = "tsbRect";
+            this.tsbRect.Size = new System.Drawing.Size(32, 22);
+            this.tsbRect.Text = "Построение прямоугольников";
+            this.tsbRect.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tsmiRectangle
+            // 
+            this.tsmiRectangle.Image = global::PetProj.Properties.Resources.rect;
+            this.tsmiRectangle.Name = "tsmiRectangle";
+            this.tsmiRectangle.Size = new System.Drawing.Size(180, 22);
+            this.tsmiRectangle.Text = "Прямоугольник";
+            // 
+            // tsmiPolygone
+            // 
+            this.tsmiPolygone.Image = global::PetProj.Properties.Resources.poligone;
+            this.tsmiPolygone.Name = "tsmiPolygone";
+            this.tsmiPolygone.Size = new System.Drawing.Size(180, 22);
+            this.tsmiPolygone.Text = "Полигон";
+            // 
+            // tsbArc
+            // 
+            this.tsbArc.Checked = false;
+            this.tsbArc.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbArc.Image = global::PetProj.Properties.Resources.arc;
+            this.tsbArc.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbArc.Name = "tsbArc";
+            this.tsbArc.Size = new System.Drawing.Size(32, 22);
+            this.tsbArc.Text = "Построение дуги";
+            this.tsbArc.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -975,7 +1008,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripButton tsbArrow;
         private System.Windows.Forms.ToolStripButton tsbLine;
-        private System.Windows.Forms.ToolStripButton tsbRect;
         private System.Windows.Forms.Timer timerUpdateControls;
         private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
@@ -1012,6 +1044,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiBindParameters;
         private System.Windows.Forms.ToolStripMenuItem tsmiObjectBinding;
         private System.Windows.Forms.ToolStripMenuItem tsmiBindToNormal;
+        private ToolStripSplitButtonCheckable tsbRect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRectangle;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPolygone;
+        private ToolStripSplitButtonCheckable tsbArc;
     }
 }
 
