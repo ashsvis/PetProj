@@ -144,20 +144,6 @@ namespace PetProj
                     if (mouseClickCount == 1)
                         this.DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
                     break;
-                //case EditorMode.BuildLines:
-                //    {
-                //        if (IsDynamicalEnter)
-                //        {
-                //            pt = PrepareMousePosition(mousePosition);
-                //            text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
-                //            using (var pen = new Pen(Color.Black, kf))
-                //            using (var font = new Font("Arial", (float)(10f * kf)))
-                //                graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
-                //        }
-                //        if (mouseClickCount == 1)
-                //            this.DrawRibbonLine(graphics, firstMouseDown, mousePosition);
-                //        break;
-                //    }
                 case EditorMode.BuildRectangle:
                     if (IsDynamicalEnter)
                     {
@@ -305,23 +291,6 @@ namespace PetProj
                         // сбрасывает количество нажатий
                         mouseClickCount = 0;
                         break;
-                    //case EditorMode.BuildLines:
-                    //    // построение отрезков линий по двум точкам (концы отрезка)
-                    //    pt1 = firstMouseDown;
-                    //    pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
-                    //    //поиск ортогональной точки, если включен режим ортогонального построения
-                    //    pt2 = this.FindOrthoPoint(pt2);
-                    //    //поиск ближайшей точки привязки, если включен режим объектной привязки
-                    //    pt2 = this.FindBindingPoint(pt2);
-
-                    //    AddLine(pt1, pt2);
-                    //    // сброс количества нажатий, следующий прямоугольник будет строиться заново
-                    //    mouseClickCount = 0;
-                    //    // точка начала следующего отрезка совпадает с концом предыдущего отрезка
-                    //    firstMouseDown = pt2;
-                    //    mouseClickCount++;
-                    //    Changed = true;
-                    //    break;
                     case EditorMode.BuildRectangle:
                         // построение прямоугольника по двум точкам диагонали
                         pt1 = firstMouseDown; // первая точка нажатия
@@ -491,17 +460,6 @@ namespace PetProj
                                 Cursor = Cursors.Cross;
                         }
                         break;
-                    //case EditorMode.BuildLines:
-                    //    if (mouseClickCount == 0)
-                    //        OnChangeParams?.Invoke(this, new object[] { pt });
-                    //    else if (mouseClickCount == 1)
-                    //    {
-                    //        var pt1 = firstMouseDown;
-                    //        var pt2 = PrepareMousePosition(mousePosition);
-                    //        var vector = pt2.Vector(pt1);
-                    //        OnChangeParams?.Invoke(this, new object[] { vector.Length(), vector.AngleDegree() });
-                    //    }
-                    //    break;
                     case EditorMode.BuildRectangle:
                         if (mouseClickCount == 0)
                             OnChangeParams?.Invoke(this, new object[] { pt });
@@ -865,25 +823,9 @@ namespace PetProj
 
         public void SetParameters(string[] strings)
         {
+            buildLineController.SetParameters(strings);
             switch (editorMode)
             {
-                case EditorMode.BuildLines:
-                    if (strings.Length == 2)
-                    {
-                        if (mouseClickCount == 0)
-                        {
-                            if (double.TryParse(strings[0], out double ppX) &&
-                                double.TryParse(strings[1], out double ppY))
-                                SetFirstPoint(ppX, ppY);
-                        }
-                        else
-                        {
-                            if (double.TryParse(strings[0], out double length) &&
-                                double.TryParse(strings[1], out double angledeg))
-                                SetLineLengthAndAngle(length, angledeg);
-                        }
-                    }
-                    break;
                 case EditorMode.BuildRectangle:
                     if (strings.Length == 2)
                     {
@@ -977,8 +919,6 @@ namespace PetProj
             mousePosition = new PointF((float)pxX, (float)pxY);
             PressLeftMouseButton(mousePosition, calledByCode: true);
             zoomPad_MouseMove(zoomPad, new MouseEventArgs(MouseButtons.None, 1, (int)pxX, (int)pxY, 0));
-            //var pt = PrepareMousePosition(mousePosition);
-            //OnToolTipChanged?.Invoke(this, $"Текущая точка курсора X:{pt.X} Y:{pt.Y}");
         }
 
         public void SetLineLengthAndAngle(double length, double angledeg)

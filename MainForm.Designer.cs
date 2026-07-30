@@ -947,7 +947,7 @@
             this.tsmiBuildArcByThreePoints.Image = global::PetProj.Properties.Resources.arc;
             this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
             this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByThreePoints.Text = "3 точки";
+            this.tsmiBuildArcByThreePoints.Text = "Три точки";
             // 
             // toolStripMenuItem2
             // 

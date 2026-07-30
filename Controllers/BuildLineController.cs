@@ -88,5 +88,27 @@ namespace PetProj.Controllers
                 }
             }
         }
+
+        public void SetParameters(string[] strings)
+        {
+            if (drawer.EditorMode == EditorMode.BuildLines)
+            {
+                if (strings.Length == 2)
+                {
+                    if (drawer.MouseClickCount == 0)
+                    {
+                        if (double.TryParse(strings[0], out double ppX) &&
+                            double.TryParse(strings[1], out double ppY))
+                            drawer.SetFirstPoint(ppX, ppY);
+                    }
+                    else
+                    {
+                        if (double.TryParse(strings[0], out double length) &&
+                            double.TryParse(strings[1], out double angledeg))
+                            drawer.SetLineLengthAndAngle(length, angledeg);
+                    }
+                }
+            }
+        }
     }
 }
