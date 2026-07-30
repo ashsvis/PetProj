@@ -67,6 +67,7 @@
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\BuildLineController.cs" />
+    <Compile Include="Controllers\BuildRectangleController.cs" />
     <Compile Include="Controls\PropertyCategoriesShower.cs">
       <SubType>UserControl</SubType>
     </Compile>

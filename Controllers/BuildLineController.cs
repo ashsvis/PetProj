@@ -12,16 +12,10 @@ namespace PetProj.Controllers
         public BuildLineController(DrawControl drawer, Control zoomer)
         {
             this.drawer = drawer;
-            drawer.OnChangeParams += Drawer_OnChangeParams;
             //
             zoomer.MouseDown += Container_MouseDown;
             zoomer.MouseMove += Container_MouseMove;
             zoomer.Paint += Container_Paint;
-        }
-
-        private void Drawer_OnChangeParams(object sender, object[] e)
-        {
-            //throw new System.NotImplementedException();
         }
 
         private void Container_Paint(object sender, PaintEventArgs e)
