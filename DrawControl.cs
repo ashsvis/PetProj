@@ -28,8 +28,8 @@ namespace PetProj
         public bool IsObjectBinding { get; set; } = false;
 
         public EditorMode EditorMode => editorMode;
-        public int MouseClickCount => mouseClickCount;
-        public PointF FirstMouseDown => firstMouseDown;
+        public int MouseClickCount { get => mouseClickCount; set => mouseClickCount = value; }
+        public PointF FirstMouseDown { get => firstMouseDown; set => firstMouseDown = value; }
         public PointF CurrentMousePosition => mousePosition;
 
         private readonly BlowedSelection underCursor = new BlowedSelection();
@@ -40,7 +40,7 @@ namespace PetProj
 
         private readonly UndoRedoManager undoRedoManager;
 
-        public bool Changed { get; private set; }
+        public bool Changed { get; set; }
         public SelectionController SelectionController => selectionController;
 
         public event EventHandler OnSelectionMode;
@@ -57,6 +57,8 @@ namespace PetProj
         /// </summary>
         public  AllowedObjectBindings AllowedObjectBindings { get; set; }
 
+        private readonly BuildLineController buildLineController;
+
         public DrawControl()
         {
             InitializeComponent();
@@ -67,6 +69,7 @@ namespace PetProj
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
+            buildLineController = new BuildLineController(this, zoomPad);
         }
 
         private void BuildInterface()
@@ -141,20 +144,20 @@ namespace PetProj
                     if (mouseClickCount == 1)
                         this.DrawRibbonSelectionRect(graphics, firstMouseDown, mousePosition);
                     break;
-                case EditorMode.BuildLines:
-                    {
-                        if (IsDynamicalEnter)
-                        {
-                            pt = PrepareMousePosition(mousePosition);
-                            text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
-                            using (var pen = new Pen(Color.Black, kf))
-                            using (var font = new Font("Arial", (float)(10f * kf)))
-                                graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
-                        }
-                        if (mouseClickCount == 1)
-                            this.DrawRibbonLine(graphics, firstMouseDown, mousePosition);
-                        break;
-                    }
+                //case EditorMode.BuildLines:
+                //    {
+                //        if (IsDynamicalEnter)
+                //        {
+                //            pt = PrepareMousePosition(mousePosition);
+                //            text = (mouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
+                //            using (var pen = new Pen(Color.Black, kf))
+                //            using (var font = new Font("Arial", (float)(10f * kf)))
+                //                graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                //        }
+                //        if (mouseClickCount == 1)
+                //            this.DrawRibbonLine(graphics, firstMouseDown, mousePosition);
+                //        break;
+                //    }
                 case EditorMode.BuildRectangle:
                     if (IsDynamicalEnter)
                     {
@@ -302,23 +305,23 @@ namespace PetProj
                         // сбрасывает количество нажатий
                         mouseClickCount = 0;
                         break;
-                    case EditorMode.BuildLines:
-                        // построение отрезков линий по двум точкам (концы отрезка)
-                        pt1 = firstMouseDown;
-                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
-                        //поиск ортогональной точки, если включен режим ортогонального построения
-                        pt2 = this.FindOrthoPoint(pt2);
-                        //поиск ближайшей точки привязки, если включен режим объектной привязки
-                        pt2 = this.FindBindingPoint(pt2);
+                    //case EditorMode.BuildLines:
+                    //    // построение отрезков линий по двум точкам (концы отрезка)
+                    //    pt1 = firstMouseDown;
+                    //    pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                    //    //поиск ортогональной точки, если включен режим ортогонального построения
+                    //    pt2 = this.FindOrthoPoint(pt2);
+                    //    //поиск ближайшей точки привязки, если включен режим объектной привязки
+                    //    pt2 = this.FindBindingPoint(pt2);
 
-                        AddLine(pt1, pt2);
-                        // сброс количества нажатий, следующий прямоугольник будет строиться заново
-                        mouseClickCount = 0;
-                        // точка начала следующего отрезка совпадает с концом предыдущего отрезка
-                        firstMouseDown = pt2;
-                        mouseClickCount++;
-                        Changed = true;
-                        break;
+                    //    AddLine(pt1, pt2);
+                    //    // сброс количества нажатий, следующий прямоугольник будет строиться заново
+                    //    mouseClickCount = 0;
+                    //    // точка начала следующего отрезка совпадает с концом предыдущего отрезка
+                    //    firstMouseDown = pt2;
+                    //    mouseClickCount++;
+                    //    Changed = true;
+                    //    break;
                     case EditorMode.BuildRectangle:
                         // построение прямоугольника по двум точкам диагонали
                         pt1 = firstMouseDown; // первая точка нажатия
@@ -461,6 +464,11 @@ namespace PetProj
                 SetMode(EditorMode.Selection);
         }
 
+        public void SendParamsOnChange(params object[] args)
+        {
+            OnChangeParams?.Invoke(this, args);
+        }
+
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
@@ -483,17 +491,17 @@ namespace PetProj
                                 Cursor = Cursors.Cross;
                         }
                         break;
-                    case EditorMode.BuildLines:
-                        if (mouseClickCount == 0)
-                            OnChangeParams?.Invoke(this, new object[] { pt });
-                        else if (mouseClickCount == 1)
-                        {
-                            var pt1 = firstMouseDown;
-                            var pt2 = PrepareMousePosition(mousePosition);
-                            var vector = pt2.Vector(pt1);
-                            OnChangeParams?.Invoke(this, new object[] { vector.Length(), vector.AngleDegree() });
-                        }
-                        break;
+                    //case EditorMode.BuildLines:
+                    //    if (mouseClickCount == 0)
+                    //        OnChangeParams?.Invoke(this, new object[] { pt });
+                    //    else if (mouseClickCount == 1)
+                    //    {
+                    //        var pt1 = firstMouseDown;
+                    //        var pt2 = PrepareMousePosition(mousePosition);
+                    //        var vector = pt2.Vector(pt1);
+                    //        OnChangeParams?.Invoke(this, new object[] { vector.Length(), vector.AngleDegree() });
+                    //    }
+                    //    break;
                     case EditorMode.BuildRectangle:
                         if (mouseClickCount == 0)
                             OnChangeParams?.Invoke(this, new object[] { pt });
@@ -609,7 +617,7 @@ namespace PetProj
         /// <param name="pt1">Первая точка</param>
         /// <param name="pt2">Вторая точка</param>
         /// <param name="loading">Признак загрузки из внешнего источника (для исключения поддержки undo)</param>
-        private void AddLine(PointF pt1, PointF pt2, bool loading = false)
+        public void AddLine(PointF pt1, PointF pt2, bool loading = false)
         {
             Figure line = CreateLine(pt1, pt2);
             if (loading)

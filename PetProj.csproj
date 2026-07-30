@@ -66,6 +66,7 @@
     <Compile Include="Common\ParseHelper.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
+    <Compile Include="Controllers\BuildLineController.cs" />
     <Compile Include="Controls\PropertyCategoriesShower.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,7 +121,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Figures\Figure.cs" />
-    <Compile Include="MmsPoint.cs" />
     <Compile Include="ObjectBindings\AllowedObjectBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

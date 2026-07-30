@@ -9,23 +9,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace PetProj.Controllers
 {
-    public enum EditorMode
-    {
-        Select,
-        FrameSelect,
-        AddLine,
-        ChangeGeometry,
-        Drag,
-        CreateFigure,
-        Skew,
-        Verticies,
-        Warp
-    }
-
     /// <summary>
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
     /// выполняет преобразования над фигурами
