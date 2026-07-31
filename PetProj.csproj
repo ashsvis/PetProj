@@ -68,6 +68,7 @@
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\BuildLineController.cs" />
     <Compile Include="Controllers\BuildRectangleController.cs" />
+    <Compile Include="Controllers\IBuildFigureController.cs" />
     <Compile Include="Controls\PropertyCategoriesShower.cs">
       <SubType>UserControl</SubType>
     </Compile>

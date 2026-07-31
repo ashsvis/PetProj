@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace PetProj.Controllers
 {
-    public class BuildRectangleController
+    public class BuildRectangleController : IBuildFigureController
     {
         private readonly DrawControl drawer;
         private readonly Control zoomer;
@@ -21,7 +21,7 @@ namespace PetProj.Controllers
             zoomer.Paint += Container_Paint;
         }
 
-        private void Container_Paint(object sender, PaintEventArgs e)
+        public void Container_Paint(object sender, PaintEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildRectangle)
             {
@@ -38,7 +38,7 @@ namespace PetProj.Controllers
             }
         }
 
-        private void Container_MouseDown(object sender, MouseEventArgs e)
+        public void Container_MouseDown(object sender, MouseEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildRectangle)
             {
@@ -64,7 +64,7 @@ namespace PetProj.Controllers
             }
         }
 
-        private void Container_MouseMove(object sender, MouseEventArgs e)
+        public void Container_MouseMove(object sender, MouseEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildRectangle)
             {

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PetProj.Controllers
 {
-    public class BuildLineController
+    public class BuildLineController : IBuildFigureController
     {
         private readonly DrawControl drawer;
 
@@ -18,7 +18,7 @@ namespace PetProj.Controllers
             zoomer.Paint += Container_Paint;
         }
 
-        private void Container_Paint(object sender, PaintEventArgs e)
+        public void Container_Paint(object sender, PaintEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildLines)
             {
@@ -36,7 +36,7 @@ namespace PetProj.Controllers
             }
         }
 
-        private void Container_MouseDown(object sender, MouseEventArgs e)
+        public void Container_MouseDown(object sender, MouseEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildLines)
             {
@@ -62,7 +62,7 @@ namespace PetProj.Controllers
             }
         }
 
-        private void Container_MouseMove(object sender, MouseEventArgs e)
+        public void Container_MouseMove(object sender, MouseEventArgs e)
         {
             if (drawer.EditorMode == EditorMode.BuildLines)
             {

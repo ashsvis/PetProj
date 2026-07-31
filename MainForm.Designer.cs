@@ -92,6 +92,10 @@
             this.tsmiRectangle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPolygone = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbArc = new PetProj.ToolStripSplitButtonCheckable();
+            this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildArcByBeginCenterEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiBuildArcByCenterBeginEnd = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
@@ -117,9 +121,10 @@
             this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
             this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
             this.tsbDynamicalEnter = new System.Windows.Forms.ToolStripButton();
-            this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiBuildArcByCenterBeginEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.началоЦентрУголToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.началоЦентрДлинаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.центрНачалоУголToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.центрНачалоДлинаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -695,14 +700,43 @@
             this.tsbArc.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbArc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBuildArcByThreePoints,
+            this.tsmiBuildArcByBeginCenterEnd,
+            this.началоЦентрУголToolStripMenuItem,
+            this.началоЦентрДлинаToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.tsmiBuildArcByCenterBeginEnd});
+            this.tsmiBuildArcByCenterBeginEnd,
+            this.центрНачалоУголToolStripMenuItem,
+            this.центрНачалоДлинаToolStripMenuItem});
             this.tsbArc.Image = global::PetProj.Properties.Resources.arc;
             this.tsbArc.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbArc.Name = "tsbArc";
             this.tsbArc.Size = new System.Drawing.Size(32, 22);
             this.tsbArc.Text = "Построение дуги";
             this.tsbArc.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tsmiBuildArcByThreePoints
+            // 
+            this.tsmiBuildArcByThreePoints.Image = global::PetProj.Properties.Resources.arc;
+            this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
+            this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByThreePoints.Text = "Три точки";
+            // 
+            // tsmiBuildArcByBeginCenterEnd
+            // 
+            this.tsmiBuildArcByBeginCenterEnd.Name = "tsmiBuildArcByBeginCenterEnd";
+            this.tsmiBuildArcByBeginCenterEnd.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByBeginCenterEnd.Text = "Начало, центр, конец";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(190, 6);
+            // 
+            // tsmiBuildArcByCenterBeginEnd
+            // 
+            this.tsmiBuildArcByCenterBeginEnd.Name = "tsmiBuildArcByCenterBeginEnd";
+            this.tsmiBuildArcByCenterBeginEnd.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByCenterBeginEnd.Text = "Центр, начало, конец";
             // 
             // statusStrip1
             // 
@@ -942,23 +976,29 @@
             this.tsbDynamicalEnter.Text = "Динамический ввод";
             this.tsbDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
-            // tsmiBuildArcByThreePoints
+            // началоЦентрУголToolStripMenuItem
             // 
-            this.tsmiBuildArcByThreePoints.Image = global::PetProj.Properties.Resources.arc;
-            this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
-            this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByThreePoints.Text = "Три точки";
+            this.началоЦентрУголToolStripMenuItem.Name = "началоЦентрУголToolStripMenuItem";
+            this.началоЦентрУголToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.началоЦентрУголToolStripMenuItem.Text = "Начало, центр, угол";
             // 
-            // toolStripMenuItem2
+            // началоЦентрДлинаToolStripMenuItem
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(190, 6);
+            this.началоЦентрДлинаToolStripMenuItem.Name = "началоЦентрДлинаToolStripMenuItem";
+            this.началоЦентрДлинаToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.началоЦентрДлинаToolStripMenuItem.Text = "Начало, центр, длина";
             // 
-            // tsmiBuildArcByCenterBeginEnd
+            // центрНачалоУголToolStripMenuItem
             // 
-            this.tsmiBuildArcByCenterBeginEnd.Name = "tsmiBuildArcByCenterBeginEnd";
-            this.tsmiBuildArcByCenterBeginEnd.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByCenterBeginEnd.Text = "Центр, начало, конец";
+            this.центрНачалоУголToolStripMenuItem.Name = "центрНачалоУголToolStripMenuItem";
+            this.центрНачалоУголToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.центрНачалоУголToolStripMenuItem.Text = "Центр, начало, угол";
+            // 
+            // центрНачалоДлинаToolStripMenuItem
+            // 
+            this.центрНачалоДлинаToolStripMenuItem.Name = "центрНачалоДлинаToolStripMenuItem";
+            this.центрНачалоДлинаToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.центрНачалоДлинаToolStripMenuItem.Text = "Центр, начало, длина";
             // 
             // MainForm
             // 
@@ -1091,6 +1131,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiBuildArcByThreePoints;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem tsmiBuildArcByCenterBeginEnd;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildArcByBeginCenterEnd;
+        private System.Windows.Forms.ToolStripMenuItem началоЦентрУголToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem началоЦентрДлинаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem центрНачалоУголToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem центрНачалоДлинаToolStripMenuItem;
     }
 }
 
