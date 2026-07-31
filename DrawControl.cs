@@ -20,6 +20,7 @@ namespace PetProj
     {
         private int mouseClickCount;
         private PointF firstMouseDown;
+        private PointF secondMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
 
@@ -30,6 +31,7 @@ namespace PetProj
         public EditorMode EditorMode => editorMode;
         public int MouseClickCount { get => mouseClickCount; set => mouseClickCount = value; }
         public PointF FirstMouseDown { get => firstMouseDown; set => firstMouseDown = value; }
+        public PointF SecondMouseDown { get => secondMouseDown; set => secondMouseDown = value; }
         public PointF CurrentMousePosition => mousePosition;
 
         private readonly BlowedSelection underCursor = new BlowedSelection();
@@ -59,6 +61,7 @@ namespace PetProj
 
         private readonly BuildLineController buildLineController;
         private readonly BuildRectangleController buildRectangleController;
+        private readonly BuildArcByThreePointsController buildArcByThreePointsController;
 
         public DrawControl()
         {
@@ -72,6 +75,7 @@ namespace PetProj
             selectionController.SelectedFigureChanged += BuildInterface;
             buildLineController = new BuildLineController(this, zoomPad);
             buildRectangleController = new BuildRectangleController(this, zoomPad);
+            buildArcByThreePointsController = new BuildArcByThreePointsController(this, zoomPad);
         }
 
         private void BuildInterface()
@@ -229,6 +233,7 @@ namespace PetProj
                                 markers.Add(marker);
                             }
                             SetMode(EditorMode.MoveMarkers);
+                            // прибавление чиста нажатий указателя через событие таймера
                             timerAddMouseCount.Enabled = true;
                             return;
                         }
@@ -237,6 +242,7 @@ namespace PetProj
                     if (editorMode != EditorMode.Selection)
                         firstMouseDown = this.FindBindingPoint(firstMouseDown);
                 }
+                // прибавление чиста нажатий указателя через событие таймера
                 timerAddMouseCount.Enabled = true;
                 if (editorMode == EditorMode.Selection)
                 {
@@ -246,6 +252,7 @@ namespace PetProj
             }
             else if (mouseClickCount == 1) // это второе нажатие
             {
+                secondMouseDown = PrepareMousePosition(mousePosition);
                 PointF pt1, pt2;
                 switch (editorMode)
                 {
@@ -326,6 +333,10 @@ namespace PetProj
                         }
                         mouseClickCount = 0;
                         SetMode(EditorMode.Selection);
+                        break;
+                    default:
+                        // прибавление чиста нажатий указателя через событие таймера
+                        timerAddMouseCount.Enabled = true;
                         break;
                 }
             }
@@ -587,18 +598,13 @@ namespace PetProj
                     // при выборе режима "Выбор фигур" вызывается поключенное событие для обновления интерфейса
                     OnSelectionMode?.Invoke(this, EventArgs.Empty);
                     break;
-                case EditorMode.BuildLines:
-                case EditorMode.BuildRectangle:
-                case EditorMode.BuildArc:
-                    selectionController.Clear();
-                    OnChangeMode?.Invoke(this, selection);
-                    break;
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
                     selectionController.ClearMarkers();
                     OnChangeMode?.Invoke(this, selection);
                     break;
                 default:
+                    selectionController.Clear();
                     OnChangeMode?.Invoke(this, selection);
                     break;
             }
@@ -775,6 +781,7 @@ namespace PetProj
         {
             buildLineController.SetParameters(strings);
             buildRectangleController.SetParameters(strings);
+            buildArcByThreePointsController.SetParameters(strings);
             switch (editorMode)
             {
                 case EditorMode.MoveSelected:

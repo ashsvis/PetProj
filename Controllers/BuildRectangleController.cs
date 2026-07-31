@@ -30,7 +30,7 @@ namespace PetProj.Controllers
                     var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
                     var text = (drawer.MouseClickCount == 0 ? $"Укажите точку первого угла " : $"Укажите точку второго угла ") + $" X:{pt.X} Y:{pt.Y}";
                     using (var pen = new Pen(Color.Black, drawer.Zoom))
-                    using (var font = new Font("Arial", (float)(10f * drawer.Zoom)))
+                    using (var font = new Font("Arial", (float)(10f / drawer.Zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black, drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
                 }
                 if (drawer.MouseClickCount == 1)
@@ -47,7 +47,7 @@ namespace PetProj.Controllers
                     var mousePosition = e.Location;
                     // построение прямоугольника по двум точкам диагонали
                     var pt1 = drawer.FirstMouseDown; // первая точка нажатия
-                    var pt3 = false/*calledByCode*/ ? mousePosition : drawer.PrepareMousePosition(mousePosition); // вторая точка нажатия
+                    var pt3 = drawer.PrepareMousePosition(mousePosition); // вторая точка нажатия
 
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt3 = drawer.FindBindingPoint(pt3);

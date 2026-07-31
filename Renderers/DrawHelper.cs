@@ -1,4 +1,5 @@
-﻿using PetProj.Figures;
+﻿using PetProj.Common;
+using PetProj.Figures;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -303,27 +304,56 @@ namespace PetProj.Renderers
         /// <param name="graphics"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonLine(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
+        public static void DrawRibbonLine(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
             var pt1 = firstMouseDown;
             var pt2 = drawControl.PrepareMousePosition(mousePosition);
             //поиск ортогональной точки, если включен режим ортогонального построения
             pt2 = drawControl.FindOrthoPoint(pt2);
-            using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
-            {
-                pen.StartCap = LineCap.Round;
-                pen.EndCap = LineCap.Round;
-                graphics.DrawLine(pen, pt1, pt2);
-            }
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            graphics.DrawLine(pen, pt1, pt2);
             if (drawControl.MouseClickCount == 1)
             {
                 if (drawControl.IsDynamicalEnter)
                 {
-                    using (var pen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                    using (var dynpen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
                     {
-                        drawControl.DrawSizeLine(graphics, pen, pt1, pt2, (float)(50f / zoom)); // Выноска размера 50 пикселей
-                        drawControl.DrawAngleLine(graphics, pen, pt1, pt2);
+                        drawControl.DrawSizeLine(graphics, dynpen, pt1, pt2, (float)(50f / zoom)); // Выноска размера 50 пикселей
+                        drawControl.DrawAngleLine(graphics, dynpen, pt1, pt2);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Рисуем дугу при построении
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
+        public static void DrawRibbonArc(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF secondMouseDown, PointF mousePosition)
+        {
+            float zoom = drawControl.Zoom;
+            var pt1 = firstMouseDown;
+            var pt2 = secondMouseDown;
+            var pt3 = drawControl.PrepareMousePosition(mousePosition);
+            //поиск ортогональной точки, если включен режим ортогонального построения
+            pt3 = drawControl.FindOrthoPoint(pt3);
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+
+            drawControl.DrawArcByThreePoints(graphics, pen, pt1, pt2, pt3);
+
+            if (drawControl.MouseClickCount == 2)
+            {
+                if (drawControl.IsDynamicalEnter)
+                {
+                    using (var dynpen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                    {
+                        drawControl.DrawSizeLine(graphics, dynpen, pt2, pt3, (float)(50f / zoom)); // Выноска размера 50 пикселей
+                        drawControl.DrawAngleLine(graphics, dynpen, pt2, pt3);
                     }
                 }
             }
@@ -365,6 +395,59 @@ namespace PetProj.Renderers
                 drawControl.DrawTextAtCenter(graphics, pen, Brushes.White, mid, sarc);
             }
             catch { }
+        }
+
+        public static void DrawArcByThreePoints(this DrawControl drawControl, Graphics graphics, Pen pen, PointF pt1, PointF pt2, PointF pt3)
+        {
+            float zoom = drawControl.Zoom;
+
+            float mx1 = (pt1.X + pt2.X) / 2f;
+            float my1 = (pt1.Y + pt2.Y) / 2f;
+            PointF mid1 = new PointF(mx1, my1);
+            float dx1 = pt2.X - pt1.X;
+            float dy1 = pt2.Y - pt1.Y;
+            float px1 = dy1;
+            float py1 = -dx1;
+            float length1 = (float)Math.Sqrt(px1 * px1 + py1 * py1);
+            if (length1 == 0) return; // отрезок вырожден в точку
+            px1 /= length1;
+            py1 /= length1;
+
+            float mx2 = (pt3.X + pt2.X) / 2f;
+            float my2 = (pt3.Y + pt2.Y) / 2f;
+            PointF mid2 = new PointF(mx2, my2);
+            float dx2 = pt3.X - pt2.X;
+            float dy2 = pt3.Y - pt2.Y;
+            float px2 = dy2;
+            float py2 = -dx2;
+            float length2 = (float)Math.Sqrt(px2 * px2 + py2 * py2);
+            if (length2 == 0) return; // отрезок вырожден в точку
+            px2 /= length2;
+            py2 /= length2;
+
+            // перпендикуляр в середине 1 отрезка
+            float halfLength = Math.Max(length1, length2); //50f / zoom;
+            PointF df1 = new PointF(mid1.X + px1 * halfLength, mid1.Y + py1 * halfLength);
+            PointF ef1 = new PointF(mid1.X - px1 * halfLength, mid1.Y - py1 * halfLength);
+            // перпендикуляр в середине 2 отрезка
+            PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
+            PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
+            // точка пересечения двух перпендикуляров
+            PointF cp = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            var r = cp.Vector(pt1).Length();
+            var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2f, r * 2f);
+            //graphics.DrawEllipse(pen, rect);
+            var startAngle = pt1.Vector(cp).AngleDegree();
+            var sweepAngle = pt3.Vector(cp).AngleDegree() - startAngle;
+            try
+            {
+                graphics.DrawArc(pen, rect, startAngle, sweepAngle);
+
+                graphics.DrawLine(Pens.Yellow, cp, pt1);
+                graphics.DrawLine(Pens.Yellow, cp, pt2);
+                graphics.DrawLine(Pens.Yellow, cp, pt3);
+            }
+            catch { } 
         }
 
         /// <summary>
@@ -426,6 +509,25 @@ namespace PetProj.Renderers
                 using (var brush = new SolidBrush(Color.Black))
                     graphics.DrawString(text, font, brush, rect);
             }
+        }
+    }
+
+    public static class SegmentIntersection
+    {
+        static public PointF Intersection(PointF A, PointF B, PointF C, PointF D)
+        {
+            double xo = A.X, yo = A.Y;
+            double p = B.X - A.X, q = B.Y - A.Y;
+
+            double x1 = C.X, y1 = C.Y;
+            double p1 = D.X - C.X, q1 = D.Y - C.Y;
+
+            double x = (xo * q * p1 - x1 * q1 * p - yo * p * p1 + y1 * p * p1) /
+                (q * p1 - q1 * p);
+            double y = (yo * p * q1 - y1 * p1 * q - xo * q * q1 + x1 * q * q1) /
+                (p * q1 - p1 * q);
+
+            return new PointF((float)x, (float)y);
         }
     }
 }

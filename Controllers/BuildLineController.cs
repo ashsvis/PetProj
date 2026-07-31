@@ -27,12 +27,15 @@ namespace PetProj.Controllers
                     var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
                     var text = (drawer.MouseClickCount == 0 ? $"Первая точка " : $"Следующая точка ") + $" X:{pt.X} Y:{pt.Y}";
                     using (var pen = new Pen(Color.Black, drawer.Zoom))
-                    using (var font = new Font("Arial", (float)(10f * drawer.Zoom)))
+                    using (var font = new Font("Arial", (float)(10f / drawer.Zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black,
                             drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
                 }
                 if (drawer.MouseClickCount == 1)
-                    drawer.DrawRibbonLine(e.Graphics, drawer.FirstMouseDown, drawer.CurrentMousePosition);
+                {
+                    using (var pen = new Pen(Color.LightPink, (float)(2.6f / drawer.Zoom)))
+                        drawer.DrawRibbonLine(e.Graphics, pen, drawer.FirstMouseDown, drawer.CurrentMousePosition);
+                }
             }
         }
 
@@ -44,7 +47,7 @@ namespace PetProj.Controllers
                 {
                     // построение отрезков линий по двум точкам (концы отрезка)
                     var pt1 = drawer.FirstMouseDown;
-                    var pt2 = false /* calledByCode */ ? drawer.CurrentMousePosition : drawer.PrepareMousePosition(drawer.CurrentMousePosition);
+                    var pt2 = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
                     //поиск ортогональной точки, если включен режим ортогонального построения
                     pt2 = drawer.FindOrthoPoint(pt2);
                     //поиск ближайшей точки привязки, если включен режим объектной привязки

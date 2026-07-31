@@ -286,7 +286,7 @@ namespace PetProj
             else if (sender == tsbArc)
             {
                 SwitchOffButtons();
-                drawControl.SetMode(EditorMode.BuildArc);
+                drawControl.SetMode(EditorMode.BuildArcThreePoints);
                 tsbArc.Checked = true;
             }
             else if (sender == tsbMove)
