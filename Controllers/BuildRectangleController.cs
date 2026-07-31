@@ -56,9 +56,7 @@ namespace PetProj.Controllers
                     var pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
                     drawer.AddRectangle(pt1, pt2, pt3, pt4);
 
-                    drawer.SelectionController.Selection.Clear();
-                    drawer.MouseClickCount = 0;
-                    drawer.SetMode(EditorMode.Selection);
+                    drawer.ClearMouseCount();
                     drawer.Changed = true;
                 }
             }

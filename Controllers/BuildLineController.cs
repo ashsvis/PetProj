@@ -55,13 +55,14 @@ namespace PetProj.Controllers
 
                     drawer.AddLine(pt1, pt2);
                     // сброс количества нажатий, следующий прямоугольник будет строиться заново
-                    drawer.MouseClickCount = 0;
                     // точка начала следующего отрезка совпадает с концом предыдущего отрезка
                     drawer.FirstMouseDown = pt2;
-                    drawer.MouseClickCount++;
+                    drawer.ClearMouseCount();
+                    drawer.AddMouseCount();
                     drawer.Changed = true;
-
                 }
+                //else if (drawer.MouseClickCount > 1)
+                //    drawer.MouseClickCount = 0;
             }
         }
 

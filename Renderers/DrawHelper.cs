@@ -325,6 +325,7 @@ namespace PetProj.Renderers
                     }
                 }
             }
+            drawControl.ToolTipChanged($"Количество нажатий: {drawControl.MouseClickCount}");
         }
 
         /// <summary>
@@ -438,9 +439,19 @@ namespace PetProj.Renderers
             var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2f, r * 2f);
             //graphics.DrawEllipse(pen, rect);
             var startAngle = pt1.Vector(cp).AngleDegree();
-            var sweepAngle = pt3.Vector(cp).AngleDegree() - startAngle;
+            var endAngle = pt3.Vector(cp).AngleDegree();
+            drawControl.ToolTipChanged($"Стартовый угол:{startAngle}, конечный угол: {endAngle}");
             try
             {
+                //if (startAngle < 0) startAngle = 360f + startAngle;
+                //if (endAngle < 0) endAngle = 360f + endAngle;
+
+                //if (startAngle > endAngle)
+                //    (startAngle, endAngle) = (endAngle, startAngle);
+
+                var sweepAngle = endAngle - startAngle;
+                //if (pt1.Y > pt3.Y) sweepAngle = -sweepAngle;
+
                 graphics.DrawArc(pen, rect, startAngle, sweepAngle);
 
                 graphics.DrawLine(Pens.Yellow, cp, pt1);

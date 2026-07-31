@@ -283,7 +283,7 @@ namespace PetProj
                             );
                         // при отсутствии других режимов - режим выбора, и второе нажатие
                         // сбрасывает количество нажатий
-                        mouseClickCount = 0;
+                        timerClearMouseCount.Enabled = true;
                         break;
                     case EditorMode.MoveSelected:
                         pt1 = firstMouseDown;
@@ -299,7 +299,7 @@ namespace PetProj
                             });
                         // предыдущий выбор стирается, т.к. перемещение - однократная операция
                         selectionController.Selection.Clear();
-                        mouseClickCount = 0;
+                        timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
                         Changed = true;
                         break;
@@ -331,12 +331,12 @@ namespace PetProj
                             SizeByVertex(pt1, pt2);
                             Changed = true;
                         }
-                        mouseClickCount = 0;
+                        timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
                         break;
                     default:
                         // прибавление чиста нажатий указателя через событие таймера
-                        timerAddMouseCount.Enabled = true;
+                        //timerAddMouseCount.Enabled = true;
                         break;
                 }
             }
@@ -399,14 +399,14 @@ namespace PetProj
             OnToolTipChanged?.Invoke(this, string.Empty);
             if (editorMode == EditorMode.MoveCopySelected)
             {
-                mouseClickCount = 0;
+                timerClearMouseCount.Enabled = true;
                 selectionController.Clear();
                 OnSelected?.Invoke(this, selectionController.Selection);
                 SetMode(EditorMode.Selection);
             }
             else if (editorMode == EditorMode.Selection)
             {
-                mouseClickCount = 0;
+                timerClearMouseCount.Enabled = true;
                 selectionController.Clear();
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
@@ -589,7 +589,7 @@ namespace PetProj
         public void SetMode(EditorMode selection)
         {
             editorMode = selection;
-            mouseClickCount = 0;
+            timerClearMouseCount.Enabled = true;
             underCursor.Clear();
             zoomPad.Invalidate();
             switch (editorMode)
@@ -772,6 +772,11 @@ namespace PetProj
             OnToolTipChanged?.Invoke(this, $"Смещение dX:{pt.X} dY:{pt.Y}, зум: {e.Zoom}");
         }
 
+        public void ToolTipChanged(string message)
+        {
+            OnToolTipChanged?.Invoke(this, message);
+        }
+
         public void EscapeKeyPressed()
         {
             PressRightMouseButton(MousePosition, calledByCode: true);
@@ -817,7 +822,7 @@ namespace PetProj
                         });
                     // предыдущий выбор стирается, т.к. перемещение - однократная операция
                     selectionController.Selection.Clear();
-                    mouseClickCount = 0;
+                    timerClearMouseCount.Enabled = true;
                     SetMode(EditorMode.Selection);
                     Changed = true;
                     break;
@@ -847,7 +852,7 @@ namespace PetProj
             var pt4 = new PointF(pt1.X, pt1.Y + (float)height); // раcчётная точка
             AddRectangle(pt1, pt2, pt3, pt4);
             // сброс количества нажатий, следующий прямоугольник будет строиться заново
-            mouseClickCount = 0;
+            timerClearMouseCount.Enabled = true;
             Changed = true;
         }
 
@@ -872,10 +877,29 @@ namespace PetProj
             Changed = true;
         }
 
+        public void AddMouseCount()
+        {
+            timerAddMouseCount.Enabled = true;
+        }
+
         private void timerAddMouseCount_Tick(object sender, EventArgs e)
         {
             timerAddMouseCount.Enabled = false;
             mouseClickCount++;
+        }
+
+        public void ClearMouseCount()
+        {
+            timerClearMouseCount.Enabled = true;
+        }
+
+        private void timerClearMouseCount_Tick(object sender, EventArgs e)
+        {
+            timerClearMouseCount.Enabled = false;
+            if (mouseClickCount > 0)
+            {
+                mouseClickCount = 0;
+            }
         }
     }
 }

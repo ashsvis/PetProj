@@ -322,7 +322,7 @@ namespace PetProj
             tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
-            tsslStatus.Text = $"{drawControl.EditorMode} {drawControl.MouseClickCount}";
+            //tsslStatus.Text = $"{drawControl.EditorMode} {drawControl.MouseClickCount}";
         }
 
         /// <summary>

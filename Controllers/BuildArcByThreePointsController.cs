@@ -1,6 +1,4 @@
-﻿using PetProj.Common;
-using PetProj.Renderers;
-using System;
+﻿using PetProj.Renderers;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -62,6 +60,7 @@ namespace PetProj.Controllers
                     pt = drawer.FindBindingPoint(pt);
                     pt = drawer.FindOrthoPoint(pt);
                     drawer.SecondMouseDown = pt;
+                    drawer.AddMouseCount();
                 }    
                 else if (drawer.MouseClickCount == 2)
                 {
@@ -79,7 +78,7 @@ namespace PetProj.Controllers
 
                     //drawer.SelectionController.Selection.Clear();
                     //drawer.MouseClickCount = 0;
-                    //drawer.SetMode(EditorMode.Selection);
+                    drawer.ClearMouseCount();
                     //drawer.Changed = true;
                 }
             }

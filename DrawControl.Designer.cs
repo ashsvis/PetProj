@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.zoomPad = new PetProj.ZoomControl();
             this.timerAddMouseCount = new System.Windows.Forms.Timer(this.components);
+            this.timerClearMouseCount = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // zoomPad
@@ -55,6 +56,11 @@
             // 
             this.timerAddMouseCount.Tick += new System.EventHandler(this.timerAddMouseCount_Tick);
             // 
+            // timerClearMouseCount
+            // 
+            this.timerClearMouseCount.Interval = 50;
+            this.timerClearMouseCount.Tick += new System.EventHandler(this.timerClearMouseCount_Tick);
+            // 
             // DrawControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -70,5 +76,6 @@
 
         private ZoomControl zoomPad;
         private System.Windows.Forms.Timer timerAddMouseCount;
+        private System.Windows.Forms.Timer timerClearMouseCount;
     }
 }
