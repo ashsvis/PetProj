@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace PetProj.Renderers
 {
@@ -440,19 +439,33 @@ namespace PetProj.Renderers
             var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2f, r * 2f);
             var startAngle = pt1.Vector(cp).AngleDegree();
             var endAngle = pt3.Vector(cp).AngleDegree();
-            drawControl.ToolTipChanged(
-                $"Стартовый угол: {(startAngle < 0 ? 360f + startAngle : startAngle)}, " +
-                $"конечный угол: {(endAngle < 0 ? 360f + endAngle : endAngle)}");
             try
             {
-                var sweepAngle = endAngle - startAngle;
-                //if (endAngle > startAngle)
-                graphics.DrawArc(pen, rect, startAngle, sweepAngle);
+                //if (startAngle < 0) startAngle += 180f;
+                //if (endAngle < 0) endAngle += 180f;
+
+                if (startAngle > endAngle)
+                    (startAngle, endAngle) = (endAngle, startAngle);
+
+                drawControl.ToolTipChanged( $"Стартовый угол: {startAngle}, конечный угол: {endAngle}");
+
+                graphics.DrawArc(pen, rect, startAngle, endAngle - startAngle);
                 graphics.DrawLine(Pens.Yellow, cp, pt1);
                 graphics.DrawLine(Pens.Yellow, cp, pt2);
                 graphics.DrawLine(Pens.Yellow, cp, pt3);
             }
             catch { } 
+        }
+
+        public static float GetAngle(float x1, float y1, float x2, float y2)
+        {
+            float radians = (float)Math.Atan((y2 - y1) / (x2 - x1));
+            return radians;
+        }
+
+        public static float GetAngleToDergrees(float x1, float y1, float x2, float y2)
+        {
+            return (float)(180 * GetAngle(x1, y1, x2, y2) / Math.PI);
         }
 
         /// <summary>
