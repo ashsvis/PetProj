@@ -434,20 +434,18 @@ namespace PetProj.Renderers
             PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
             PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
             // точка пересечения двух перпендикуляров
-            PointF cp = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
-            var r = cp.Vector(pt1).Length();
-            var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2f, r * 2f);
+            PointF center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            var r = center.Vector(pt1).Length();
+            var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
             try
             { 
                 #region блок коррекции углов дуги
-                var angle1 = pt1.Vector(cp).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
-                var angle2 = pt2.Vector(cp).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
-                var angle3 = pt3.Vector(cp).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
+                var angle1 = pt1.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+                var angle2 = pt2.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+                var angle3 = pt3.Vector(center).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
                 if (angle2 < angle1) angle2 += 360f;
                 if (angle3 < angle1) angle3 += 360f;
                 var sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
-                var sweep12 = angle2 - angle1; if (sweep12 < 0) sweep12 = 360f + sweep12;
-                var sweep23 = angle3 - angle2; if (sweep23 < 0) sweep23 = 360f + sweep23;
                 if (angle2 > angle3) sweepAngle = -360f + sweepAngle;
                 #endregion блок коррекции углов дуги
 

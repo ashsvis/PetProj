@@ -32,7 +32,7 @@ namespace PetProj.Geometries
             return xfill;
         }
 
-        public void SetXml(XElement xgeometry)
+        public virtual void SetXml(XElement xgeometry)
         {
             if (xgeometry == null || xgeometry.Name != "Geometry") return;
             var name = xgeometry.Attribute("Name")?.Value;

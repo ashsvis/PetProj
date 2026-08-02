@@ -111,6 +111,7 @@
     <Compile Include="Figures\BindingVertexMarker.cs" />
     <Compile Include="Figures\MiddleMarker.cs" />
     <Compile Include="Figures\VertexMarker.cs" />
+    <Compile Include="Geometries\ArcGeometry.cs" />
     <Compile Include="Geometries\LineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
     <Compile Include="Geometries\Geometry.cs" />

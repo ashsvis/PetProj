@@ -1,6 +1,7 @@
 ﻿using PetProj.Geometries;
 using PetProj.Renderers;
 using PetProj.Styles;
+using System;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
 
@@ -34,7 +35,7 @@ namespace PetProj.Figures
             return $"{Geometry.Name} {Geometry.Bounds}";
         }
 
-        public XElement GetXml()
+        public  XElement GetXml()
         {
             var xfigure = new XElement("Figure");
             xfigure.Add(Geometry.GetXml());
@@ -42,12 +43,14 @@ namespace PetProj.Figures
             return xfigure;
         }
 
-        public void SetXml(XElement xfigure)
+        public void SetXml(XElement xfigure, Func<string, Geometry> func)
         {
             if (xfigure == null || xfigure.Name != "Figure") return;
             var xgeometry = xfigure.Element("Geometry");
             if (xgeometry == null) return;
-            Geometry.SetXml(xgeometry);
+            var name = xgeometry.Attribute("Name")?.Value;
+            Geometry = func(name);
+            Geometry?.SetXml(xgeometry);
             var xstyle = xfigure.Element("Style");
             if (xstyle == null) return;
             Style.SetXml(xstyle);
@@ -94,8 +97,8 @@ namespace PetProj.Figures
         public virtual GraphicsPath GetRendererPath()
         {
             // создаём копию геометрии фигуры
-            var path = (GraphicsPath)Geometry.Path.Clone();
-            return path;
+            var path = (GraphicsPath)Geometry?.Path.Clone();
+            return path ?? new GraphicsPath();
         }
     }
 }

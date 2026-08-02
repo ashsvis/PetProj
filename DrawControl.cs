@@ -100,7 +100,7 @@ namespace PetProj
             // отрисовка созданных фигур
             foreach (var fig in figures)
             {
-                var bounds = fig.Geometry.Bounds;
+                var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
                 // если фигура вырождена в точку, то охватываюший прямоугольник пуст
                 if (bounds.Width == 0 && bounds.Height == 0)
                 {
@@ -546,6 +546,80 @@ namespace PetProj
         }
 
         /// <summary>
+        /// Создать дугу с центром, радиусом, начальным углом и углов створа
+        /// </summary>
+        /// <returns></returns>
+        private Figure CreateArc(PointF center, float radius, float startAngle, float sweepAngle)
+        {
+            Figure arc = new Figure();
+            arc.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
+            FigureBuilder.BuildArcGeometry(arc, center, radius, startAngle, sweepAngle);
+            arc.Style.FillStyle.IsVisible = false;
+            return arc;
+        }
+
+        public void AddArc(PointF center, float radius, float startAngle, float sweepAngle, bool loading = false)
+        {
+            Figure arc = CreateArc(center, radius, startAngle, sweepAngle);
+            if (loading)
+                figures.Add(arc);
+            else
+                undoRedoManager.Execute(new CreateFigureCommand(figures, arc));
+        }
+
+        public void AddArc(PointF pt1, PointF pt2, PointF pt3)
+        {
+            float mx1 = (pt1.X + pt2.X) / 2f;
+            float my1 = (pt1.Y + pt2.Y) / 2f;
+            PointF mid1 = new PointF(mx1, my1);
+            float dx1 = pt2.X - pt1.X;
+            float dy1 = pt2.Y - pt1.Y;
+            float px1 = dy1;
+            float py1 = -dx1;
+            float length1 = (float)Math.Sqrt(px1 * px1 + py1 * py1);
+            if (length1 == 0) return; // отрезок вырожден в точку
+            px1 /= length1;
+            py1 /= length1;
+
+            float mx2 = (pt3.X + pt2.X) / 2f;
+            float my2 = (pt3.Y + pt2.Y) / 2f;
+            PointF mid2 = new PointF(mx2, my2);
+            float dx2 = pt3.X - pt2.X;
+            float dy2 = pt3.Y - pt2.Y;
+            float px2 = dy2;
+            float py2 = -dx2;
+            float length2 = (float)Math.Sqrt(px2 * px2 + py2 * py2);
+            if (length2 == 0) return; // отрезок вырожден в точку
+            px2 /= length2;
+            py2 /= length2;
+
+            // перпендикуляр в середине 1 отрезка
+            float halfLength = Math.Max(length1, length2); //50f / zoom;
+            PointF df1 = new PointF(mid1.X + px1 * halfLength, mid1.Y + py1 * halfLength);
+            PointF ef1 = new PointF(mid1.X - px1 * halfLength, mid1.Y - py1 * halfLength);
+            // перпендикуляр в середине 2 отрезка
+            PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
+            PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
+            // точка пересечения двух перпендикуляров
+            PointF center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            var radius = center.Vector(pt1).Length();
+            
+            #region блок коррекции углов дуги
+            
+            var angle1 = pt1.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+            var angle2 = pt2.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+            var angle3 = pt3.Vector(center).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
+            if (angle2 < angle1) angle2 += 360f;
+            if (angle3 < angle1) angle3 += 360f;
+            var sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            if (angle2 > angle3) sweepAngle = -360f + sweepAngle;
+
+            #endregion блок коррекции углов дуги
+
+            AddArc(center, radius, angle1, sweepAngle);
+        }
+
+        /// <summary>
         /// Добавление прямоугольника по четырём точкам вершин отрезками линий
         /// </summary>
         /// <param name="pt1">Первая точка (левый верхний)</param>
@@ -625,16 +699,8 @@ namespace PetProj
                 root.Add(xmodel);
                 foreach (var figure in figures)
                 {
-                    if (figure.Geometry is LineGeometry lineGeometry)
-                    {
-                        if (lineGeometry.Points.Count == 2)
-                        {
-                            var xline = new XElement("Line");
-                            xline.Add(new XAttribute("Start", lineGeometry.StartPoint));
-                            xline.Add(new XAttribute("End", lineGeometry.EndPoint));
-                            xmodel.Add(xline);
-                        }
-                    }
+                    var xfigure = figure.GetXml();
+                    xmodel.Add(xfigure);
                 }
                 doc.Save(filename);
                 Changed = false;
@@ -667,10 +733,21 @@ namespace PetProj
                     var figureName = $"{xelement.Name}";
                     switch (figureName)
                     {
-                        case "Line":
-                            var pt1 = ParseHelper.ParsePointF(xelement.Attribute("Start")?.Value, PointF.Empty);
-                            var pt2 = ParseHelper.ParsePointF(xelement.Attribute("End")?.Value, PointF.Empty);
-                            AddLine(pt1, pt2, loading: true);
+                        case "Figure":
+                            var figure = new Figure();
+                            figure.SetXml(xelement, (geometryName) =>
+                            {
+                                switch (geometryName)
+                                {
+                                    case "Segment":
+                                        return new LineGeometry();
+                                    case "Arc":
+                                        return new ArcGeometry();
+                                    default:
+                                        return null;
+                                }
+                            });
+                            figures.Add(figure);
                             break;
                     }
                 }

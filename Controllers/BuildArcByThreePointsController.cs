@@ -72,14 +72,11 @@ namespace PetProj.Controllers
                     pt3 = drawer.FindBindingPoint(pt3);
                     pt3 = drawer.FindOrthoPoint(pt3);
 
-                    //var pt2 = new PointF(pt3.X, pt1.Y); // раcчётная точка
-                    //var pt4 = new PointF(pt1.X, pt3.Y); // раcчётная точка
-                    //drawer.AddRectangle(pt1, pt2, pt3, pt4);
+                    drawer.AddArc(pt1, pt2, pt3);
 
-                    //drawer.SelectionController.Selection.Clear();
-                    //drawer.MouseClickCount = 0;
+                    drawer.SelectionController.Selection.Clear();
                     drawer.ClearMouseCount();
-                    //drawer.Changed = true;
+                    drawer.Changed = true;
                 }
             }
         }

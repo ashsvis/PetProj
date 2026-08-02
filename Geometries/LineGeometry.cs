@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PetProj.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -38,6 +39,10 @@ namespace PetProj.Geometries
             set { }
         }
 
+        public LineGeometry()
+        {
+        }
+
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel
         /// (только для внутреннего использования)
@@ -57,9 +62,33 @@ namespace PetProj.Geometries
             return geometry;
         }
 
-        public new void SetXml(XElement xgeometry)
+        public override XElement GetXml()
         {
-            base.SetXml(xgeometry);
+            var xfill = new XElement("Geometry");
+            xfill.Add(new XAttribute("Name", Name));
+            var xpath = new XElement("Line");
+            xpath.Add(new XAttribute("Start", StartPoint.ToString()));
+            xpath.Add(new XAttribute("End", EndPoint.ToString()));
+            xfill.Add(xpath);
+            return xfill;
+        }
+
+        public override void SetXml(XElement xgeometry)
+        {
+            if (xgeometry == null || xgeometry.Name != "Geometry") return;
+            var name = xgeometry.Attribute("Name")?.Value;
+            if (string.IsNullOrWhiteSpace(name)) return;
+            Name = name;
+            var xpath = xgeometry.Element("Line");
+            if (xpath == null) return;
+            var sstart = xpath.Attribute("Start")?.Value;
+            var send = xpath.Attribute("End")?.Value;
+            if (!string.IsNullOrWhiteSpace(sstart) && !string.IsNullOrWhiteSpace(send))
+            {
+                Points.Clear();
+                Points.Add(ParseHelper.ParsePointF(sstart, PointF.Empty));
+                Points.Add(ParseHelper.ParsePointF(send, PointF.Empty));
+            }
         }
 
         public void AddPoint(PointF point)
