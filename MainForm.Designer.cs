@@ -266,7 +266,7 @@
             this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
             this.tsmiUndo.Name = "tsmiUndo";
             this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiUndo.Size = new System.Drawing.Size(209, 22);
             this.tsmiUndo.Text = "&Отмена действия";
             this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
@@ -276,14 +276,14 @@
             this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
             this.tsmiRedo.Name = "tsmiRedo";
             this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiRedo.Size = new System.Drawing.Size(209, 22);
             this.tsmiRedo.Text = "&Отмена действия";
             this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiCut
             // 
@@ -292,7 +292,7 @@
             this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCut.Name = "tsmiCut";
             this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCut.Size = new System.Drawing.Size(209, 22);
             this.tsmiCut.Text = "Вырезат&ь";
             // 
             // tsmiCopy
@@ -302,7 +302,7 @@
             this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCopy.Name = "tsmiCopy";
             this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCopy.Size = new System.Drawing.Size(209, 22);
             this.tsmiCopy.Text = "&Копировать";
             // 
             // tsmiPaste
@@ -312,20 +312,20 @@
             this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiPaste.Name = "tsmiPaste";
             this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(209, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Enabled = false;
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(209, 22);
             this.tsmiDelete.Text = "Удалить";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
@@ -333,7 +333,7 @@
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
             this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
+            this.tsmiSelectAll.Size = new System.Drawing.Size(209, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
@@ -1020,6 +1020,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Чертилка";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
