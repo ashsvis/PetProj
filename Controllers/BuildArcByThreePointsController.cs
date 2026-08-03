@@ -24,25 +24,26 @@ namespace PetProj.Controllers
         {
             if (drawer.EditorMode == EditorMode.BuildArcThreePoints)
             {
+                var zoom = drawer.Zoom;
                 if (drawer.IsDynamicalEnter)
                 {
                     var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
                     var text = (drawer.MouseClickCount == 0 
                         ? $"Начальная точка дуги " : drawer.MouseClickCount == 1 ? $"Вторая точка дуги " : "Конечная точка дуги") + $" X:{pt.X} Y:{pt.Y}";
-                    using (var pen = new Pen(Color.Black, drawer.Zoom))
-                    using (var font = new Font("Arial", (float)(10f / drawer.Zoom)))
+                    using (var pen = new Pen(Color.Black, zoom))
+                    using (var font = new Font("Arial", (float)(10f / zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black, drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
                 }
                 if (drawer.MouseClickCount == 1)
                 {
-                    using (var pen = new Pen(Color.Orange, (float)(2.6f / drawer.Zoom)) { DashStyle = DashStyle.Dash })
+                    using (var pen = new Pen(Color.Orange, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
                         drawer.DrawRibbonLine(e.Graphics, pen, drawer.FirstMouseDown, drawer.CurrentMousePosition);
                 }
                 else if (drawer.MouseClickCount == 2)
                 {
-                    using (var pen = new Pen(Color.Orange, (float)(2.6f / drawer.Zoom)) { DashStyle = DashStyle.Dash })
+                    using (var pen = new Pen(Color.Orange, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
                         drawer.DrawRibbonLine(e.Graphics, pen, drawer.SecondMouseDown, drawer.CurrentMousePosition);
-                    using (var pen = new Pen(Color.LightPink, (float)(2.6f / drawer.Zoom)))
+                    using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
                         drawer.DrawRibbonArc(e.Graphics, pen, drawer.FirstMouseDown, drawer.SecondMouseDown, drawer.CurrentMousePosition);
                 }
             }
@@ -68,7 +69,7 @@ namespace PetProj.Controllers
                     var pt1 = drawer.FirstMouseDown; // первая точка нажатия
                     var pt2 = drawer.SecondMouseDown; // вторая точка нажатия
                     var pt3 = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия
-                    //поиск ближайшей точки привязки, если включен режим объектной привязки
+                    // поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt3 = drawer.FindBindingPoint(pt3);
                     pt3 = drawer.FindOrthoPoint(pt3);
 
@@ -95,13 +96,10 @@ namespace PetProj.Controllers
                         drawer.SendParamsOnChange(new object[] { pt });
                     else if (drawer.MouseClickCount == 2)
                     {
-                        var pt1 = drawer.FirstMouseDown;    // первая точка нажатия
-                        var pt2 = drawer.SecondMouseDown;   // вторая точка нажатия
+                        var pt1 = drawer.FirstMouseDown;                                    // первая точка нажатия
+                        var pt2 = drawer.SecondMouseDown;                                   // вторая точка нажатия
                         var pt3 = drawer.PrepareMousePosition(drawer.CurrentMousePosition); // третья точка нажатия
-                        //var pt2 = new PointF(pt3.X, pt1.Y); // расчётная точка
-                        //var vector1 = pt2.Vector(pt1);
-                        //var vector2 = pt3.Vector(pt2);
-                        //drawer.SendParamsOnChange(new object[] { vector1.Length(), vector2.Length() });
+                        drawer.SendParamsOnChange(new object[] { pt1, pt2, pt3 });
                     }
                 }
             }

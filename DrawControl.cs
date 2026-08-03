@@ -122,7 +122,19 @@ namespace PetProj
                              $"{Math.Abs(marker.Position.X - location.X):00000}{Math.Abs(marker.Position.Y - location.Y):00000}")).OrderBy(x => x.Item2);
                 // рисуем ближайший маркер привязки к текущему курсору
                 foreach (var item in query.Take(1))
+                {
+                    // рисование перекрестья в центре дуги
+                    if (item.marker.Owner is Figure fig && fig.Geometry is ArcGeometry arc)
+                    {
+                        graphics.DrawLine(Pens.Black, 
+                            new PointF(arc.CenterPoint.X - 4f/ zoom, arc.CenterPoint.Y), 
+                            new PointF(arc.CenterPoint.X + 4f / zoom, arc.CenterPoint.Y));
+                        graphics.DrawLine(Pens.Black, 
+                            new PointF(arc.CenterPoint.X, arc.CenterPoint.Y - 4f / zoom), 
+                            new PointF(arc.CenterPoint.X, arc.CenterPoint.Y + 4f / zoom));
+                    }
                     item.marker.Render(graphics, Color.White, zoom);
+                }
             }
             else
                 // отрисовка временно подсвеченных под курсором или рамкой выделения

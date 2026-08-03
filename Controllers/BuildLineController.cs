@@ -52,7 +52,6 @@ namespace PetProj.Controllers
                     pt2 = drawer.FindOrthoPoint(pt2);
                     //поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt2 = drawer.FindBindingPoint(pt2);
-
                     drawer.AddLine(pt1, pt2);
                     // сброс количества нажатий, следующий прямоугольник будет строиться заново
                     // точка начала следующего отрезка совпадает с концом предыдущего отрезка
@@ -61,8 +60,6 @@ namespace PetProj.Controllers
                     drawer.AddMouseCount();
                     drawer.Changed = true;
                 }
-                //else if (drawer.MouseClickCount > 1)
-                //    drawer.MouseClickCount = 0;
             }
         }
 

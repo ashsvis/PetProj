@@ -193,31 +193,34 @@ namespace PetProj.Common
             return new PointF(vector.X, vector.Y);
         }
 
+        /// <summary>
+        /// Проекция точки c на отрезок (a, b)
+        /// </summary>
+        /// <param name="a">Начало отрезка</param>
+        /// <param name="b">Конец отрезка</param>
+        /// <param name="c">Проецируемая точка</param>
+        /// <param name="norm">точка проекции</param>
+        /// <returns>true - если проекция точки попадает на отрезок</returns>
         public static bool ProjectPointOnSegment(PointF a, PointF b, PointF c, out PointF norm)
         {
             norm = PointF.Empty;
             // Вектор AB
             double abX = b.X - a.X;
             double abY = b.Y - a.Y;
-
             // Скалярное произведение (AC · AB)
             double acX = c.X - a.X;
             double acY = c.Y - a.Y;
             double dotProduct = acX * abX + acY * abY;
-
             // Если отрезок вырожден (точки A и B совпадают)
             if (abX == 0 && abY == 0)
-                return false; //new PointF(a.X, a.Y);
-
+                return false;
             // Параметр t, показывающий положение проекции на прямой AB
             double t = dotProduct / (abX * abX + abY * abY);
-
             // Если проекция вне отрезка [0, 1], возвращаем ближайшую конечную точку
             if (t <= 0)
-                return false; //new PointF(a.X, a.Y);
+                return false;
             if (t >= 1)
-                return false; //new PointF(b.X, b.Y);
-
+                return false;
             // Иначе вычисляем и возвращаем проекцию внутри отрезка
             double projX = a.X + abX * t;
             double projY = a.Y + abY * t;

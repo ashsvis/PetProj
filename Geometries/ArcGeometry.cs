@@ -1,5 +1,6 @@
 ﻿using PetProj.Common;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
@@ -27,6 +28,23 @@ namespace PetProj.Geometries
             ? new PointF(CenterPoint.X + (float)(Radius * Math.Cos((StartAngle + SweepAngle) * (Math.PI / 180))),
                          CenterPoint.Y + (float)(Radius * Math.Sin((StartAngle + SweepAngle) * (Math.PI / 180))))
             : PointF.Empty;
+
+        public PointF[] QuadrantPoints
+        {
+            get 
+            {
+                var list = new List<PointF>();
+                foreach(var angle in new float[] { -360f, -270f, -180f, -90, 0f, 90f, 180f, 270f, 360f })
+                {
+                    if (angle >= StartAngle && angle <= StartAngle + SweepAngle)
+                    {
+                        list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos(angle * (Math.PI / 180))),
+                                            CenterPoint.Y + (float)(Radius * Math.Sin(angle * (Math.PI / 180)))));
+                    }
+                }
+                return list.ToArray();
+            }
+        }
 
         public ArcGeometry() { }    
 

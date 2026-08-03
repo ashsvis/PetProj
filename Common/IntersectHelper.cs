@@ -1,4 +1,5 @@
 ﻿using PetProj.Figures;
+using PetProj.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,15 +17,33 @@ namespace PetProj.Common
         /// <returns></returns>
         public static bool Contains(this Figure figure, PointF point, float kf)
         {
+            if ( figure.Geometry is ArcGeometry arc)
+            {
+                var marker = new Marker() { Owner = figure, Position = arc.CenterPoint };
+                var rect = marker.Target(1);
+                using (var path = new GraphicsPath())
+                {
+                    path.AddRectangle(rect);
+                    using (var pen = new Pen(Color.Black, 2f * kf))
+                    {
+                        pen.StartCap = LineCap.Round;
+                        pen.EndCap = LineCap.Round;
+                        if (path.IsVisible(point) || path.IsOutlineVisible(point, pen))
+                            return true;
+                    }
+                }
+            }
             using (var path = figure.GetRendererPath())
             {
                 using (var pen = new Pen(Color.Black, 2f * kf))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;
-                    return path.IsOutlineVisible(point, pen);
+                    if (path.IsOutlineVisible(point, pen))
+                        return true;
                 }
             }
+            return false;
         }
 
         /// <summary>
@@ -54,11 +73,11 @@ namespace PetProj.Common
             if (captured.IsEmpty) return false;
             using (var path = figure.GetRendererPath())
             {
-                var rect = figure.Geometry.Bounds; //path.GetBounds();
+                var rect = figure.Geometry.Bounds;
                 if (rect.Width == 0 && rect.Height == 0)
                     return captured.Contains(rect.Location);
                 rect.Intersect(captured);
-                if (rect.Equals(figure.Geometry.Bounds/*path.GetBounds()*/))
+                if (rect.Equals(figure.Geometry.Bounds))
                     return true; // содержится целиком
                 if (path.PathPoints.Any(p => captured.Contains(p)))
                     return true; // любая точка пути фигуры содержится в рамке
