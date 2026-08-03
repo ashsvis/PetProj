@@ -104,8 +104,8 @@ namespace PetProj.Common
         /// <returns></returns>
         public static PointF Rotate(this PointF vector, float angle)
         {
-            return new PointF((float) (vector.X*Math.Cos(angle) - vector.Y*Math.Sin(angle)),
-                              (float) (vector.X*Math.Sin(angle) + vector.Y*Math.Cos(angle)));
+            return new PointF((float) (vector.X * Math.Cos(angle) - vector.Y * Math.Sin(angle)),
+                              (float) (vector.X * Math.Sin(angle) + vector.Y * Math.Cos(angle)));
         }
 
         /// <summary>

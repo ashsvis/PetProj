@@ -201,13 +201,9 @@ namespace PetProj
         private void zoomPad_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 PressLeftMouseButton(e.Location);
-            }
             else if (e.Button == MouseButtons.Right)
-            {
                 PressRightMouseButton(e.Location);
-            }
         }
 
         private void PressLeftMouseButton(PointF point, bool calledByCode = false)
@@ -222,6 +218,7 @@ namespace PetProj
                 {
                     if (editorMode == EditorMode.Selection && selectionController.Markers.Count > 0)
                     {
+                        // определение нажатия на маркере
                         var items = selectionController.Markers.Where(m => m.Target(Zoom).Contains(firstMouseDown));
                         if (items.Count() > 0)
                         {
@@ -242,13 +239,16 @@ namespace PetProj
                     if (editorMode != EditorMode.Selection)
                         firstMouseDown = this.FindBindingPoint(firstMouseDown);
                 }
-                // прибавление чиста нажатий указателя через событие таймера
-                timerAddMouseCount.Enabled = true;
                 if (editorMode == EditorMode.Selection)
                 {
+                    var count = selectionController.Selection.Count;
                     selectionController.OnMouseDown(figures, firstMouseDown, ModifierKeys);
                     OnSelected?.Invoke(this, selectionController.Selection);
+                    if (count != selectionController.Selection.Count) 
+                        return;
                 }
+                // прибавление числа нажатий указателя через событие таймера
+                timerAddMouseCount.Enabled = true;
             }
             else if (mouseClickCount == 1) // это второе нажатие
             {
@@ -329,14 +329,11 @@ namespace PetProj
                             // перемещение отрезков за середину
                             MoveByMiddle(pt1, pt2);
                             SizeByVertex(pt1, pt2);
+                            firstMouseDown = pt2;
                             Changed = true;
                         }
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
-                        break;
-                    default:
-                        // прибавление чиста нажатий указателя через событие таймера
-                        //timerAddMouseCount.Enabled = true;
                         break;
                 }
             }
@@ -433,12 +430,8 @@ namespace PetProj
                         if (mouseClickCount == 0 && selectionController.Markers.Count > 0)
                         {
                             var marker = selectionController.Markers.FirstOrDefault(m => m.Target(Zoom).Contains(pt));
-                            if (marker is VertexMarker vertex)
-                                Cursor = Cursors.Hand;
-                            else if (marker is MiddleMarker middle)
-                                Cursor = Cursors.SizeAll;
-                            else
-                                Cursor = Cursors.Cross;
+                            if (marker is Marker _)
+                                Cursor = marker.Cursor;
                         }
                         break;
                     case EditorMode.MoveSelected:

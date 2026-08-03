@@ -398,10 +398,17 @@ namespace PetProj.Renderers
             catch { }
         }
 
+        /// <summary>
+        /// Рисуем дугу, проходящую через три точки
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="pt1"></param>
+        /// <param name="pt2"></param>
+        /// <param name="pt3"></param>
         public static void DrawArcByThreePoints(this DrawControl drawControl, Graphics graphics, Pen pen, PointF pt1, PointF pt2, PointF pt3)
         {
-            float zoom = drawControl.Zoom;
-
             float mx1 = (pt1.X + pt2.X) / 2f;
             float my1 = (pt1.Y + pt2.Y) / 2f;
             PointF mid1 = new PointF(mx1, my1);

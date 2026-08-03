@@ -9,11 +9,6 @@ namespace PetProj.Common
 {
     public static class IntersectHelper
     {
-        //public static bool Contains(this Figure figure, RectangleF rect)
-        //{
-        //    return figure.Contains(rect);
-        //}
-
         /// <summary>
         /// Контрур фигуры содержит искомую точку
         /// </summary>

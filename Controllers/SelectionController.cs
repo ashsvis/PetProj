@@ -207,7 +207,15 @@ namespace PetProj.Controllers
                     return new MiddleMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.Hand,
+                        Cursor = Cursors.SizeAll,
+                        Position = point,
+                        Owner = owner
+                    };
+                case MarkerType.Center:
+                    return new CenterMarker
+                    {
+                        MarkerType = markerType,
+                        Cursor = Cursors.SizeAll,
                         Position = point,
                         Owner = owner
                     };
@@ -259,15 +267,25 @@ namespace PetProj.Controllers
             {
                 using (var path = fig.GetRendererPath())
                 {
-                    var points = path.PathPoints;
-                    if (fig.Geometry is LineGeometry _)
+                    if (fig.Geometry is LineGeometry segment)
                     {
-                        for (var i = 0; i < points.Length; i++)
-                            Markers.Add(CreateMarker(fig, MarkerType.Vertex, points[i], i));
-                        var pt1 = points[0];
-                        var pt2 = points[1];
+                        var pt1 = segment.StartPoint;
+                        var pt2 = segment.EndPoint;
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt1, 0));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt2, 1));
                         var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
                         Markers.Add(CreateMarker(fig, MarkerType.Middle, pt));
+                    }
+                    else if (fig.Geometry is ArcGeometry arc)
+                    {
+                        var pt1 = arc.CenterPoint;
+                        var pt2 = arc.StartPoint;
+                        var pt3 = arc.EndPoint;
+                        var pt4 = arc.MiddlePoint;
+                        Markers.Add(CreateMarker(fig, MarkerType.Center, pt1, 0));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt2, 1));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt3, 2));
+                        Markers.Add(CreateMarker(fig, MarkerType.Middle, pt4));
                     }
                 }
             }

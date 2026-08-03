@@ -4,6 +4,7 @@
     {
         Vertex,
         Middle,
+        Center,
         BindingVertex,
         BindingMiddle,
         BindingCenter,
