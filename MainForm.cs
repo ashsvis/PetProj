@@ -60,6 +60,8 @@ namespace PetProj
             tsmiBindToMiddle.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
             tsmiBindToCenter.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
             tsmiBindToNormal.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
+            tsmiBindToQuadrant.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Quadrant);
+            tsmiBindToTangent.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Tangent);
         }
 
         private void DropDown_Closing(object sender, ToolStripDropDownClosingEventArgs e)
@@ -584,6 +586,16 @@ namespace PetProj
             {
                 drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Normal;
                 tsmiBindToNormal.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
+            }
+            else if (e.ClickedItem == tsmiBindToQuadrant)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Quadrant;
+                tsmiBindToQuadrant.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Quadrant);
+            }
+            else if (e.ClickedItem == tsmiBindToTangent)
+            {
+                drawControl.AllowedObjectBindings = drawControl.AllowedObjectBindings ^ AllowedObjectBindings.Tangent;
+                tsmiBindToTangent.Checked = drawControl.AllowedObjectBindings.HasFlag(AllowedObjectBindings.Tangent);
             }
             else
                 return;

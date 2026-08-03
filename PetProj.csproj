@@ -228,6 +228,10 @@
     <None Include="Resources\poligone.png" />
     <None Include="Resources\arc.png" />
     <None Include="Resources\dyninput.png" />
+    <None Include="Resources\quadrantmarker.png" />
+    <None Include="Resources\tangentmarker.png" />
+    <None Include="Resources\quadrant.png" />
+    <None Include="Resources\tangent.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

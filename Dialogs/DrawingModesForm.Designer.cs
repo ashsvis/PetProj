@@ -62,6 +62,10 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnShowHelpWindow = new System.Windows.Forms.Button();
+            this.cbBindingToQuadrant = new System.Windows.Forms.CheckBox();
+            this.cbBindingToTangent = new System.Windows.Forms.CheckBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -314,12 +318,16 @@
             this.gbBindingModes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbBindingModes.Controls.Add(this.button6);
+            this.gbBindingModes.Controls.Add(this.button5);
             this.gbBindingModes.Controls.Add(this.button4);
             this.gbBindingModes.Controls.Add(this.button3);
             this.gbBindingModes.Controls.Add(this.button2);
             this.gbBindingModes.Controls.Add(this.button1);
             this.gbBindingModes.Controls.Add(this.btnClearAllBindings);
             this.gbBindingModes.Controls.Add(this.btnSelectAllBindings);
+            this.gbBindingModes.Controls.Add(this.cbBindingToTangent);
+            this.gbBindingModes.Controls.Add(this.cbBindingToQuadrant);
             this.gbBindingModes.Controls.Add(this.cbBindingToNormal);
             this.gbBindingModes.Controls.Add(this.cbBindingToCenter);
             this.gbBindingModes.Controls.Add(this.cbBindingToMiddle);
@@ -356,7 +364,7 @@
             // cbBindingToNormal
             // 
             this.cbBindingToNormal.AutoSize = true;
-            this.cbBindingToNormal.Location = new System.Drawing.Point(31, 90);
+            this.cbBindingToNormal.Location = new System.Drawing.Point(30, 113);
             this.cbBindingToNormal.Name = "cbBindingToNormal";
             this.cbBindingToNormal.Size = new System.Drawing.Size(74, 17);
             this.cbBindingToNormal.TabIndex = 0;
@@ -457,13 +465,57 @@
             this.btnShowHelpWindow.Text = "Справка";
             this.btnShowHelpWindow.UseVisualStyleBackColor = true;
             // 
+            // cbBindingToQuadrant
+            // 
+            this.cbBindingToQuadrant.AutoSize = true;
+            this.cbBindingToQuadrant.Location = new System.Drawing.Point(30, 90);
+            this.cbBindingToQuadrant.Name = "cbBindingToQuadrant";
+            this.cbBindingToQuadrant.Size = new System.Drawing.Size(75, 17);
+            this.cbBindingToQuadrant.TabIndex = 0;
+            this.cbBindingToQuadrant.Text = "Квадрант";
+            this.cbBindingToQuadrant.UseVisualStyleBackColor = true;
+            // 
+            // cbBindingToTangent
+            // 
+            this.cbBindingToTangent.AutoSize = true;
+            this.cbBindingToTangent.Location = new System.Drawing.Point(30, 136);
+            this.cbBindingToTangent.Name = "cbBindingToTangent";
+            this.cbBindingToTangent.Size = new System.Drawing.Size(91, 17);
+            this.cbBindingToTangent.TabIndex = 0;
+            this.cbBindingToTangent.Text = "Касательная";
+            this.cbBindingToTangent.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Enabled = false;
+            this.button6.FlatAppearance.BorderSize = 0;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.Image = global::PetProj.Properties.Resources.tangentmarker;
+            this.button6.Location = new System.Drawing.Point(5, 134);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(18, 18);
+            this.button6.TabIndex = 3;
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Image = global::PetProj.Properties.Resources.quadrantmarker;
+            this.button5.Location = new System.Drawing.Point(5, 88);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(18, 18);
+            this.button5.TabIndex = 3;
+            this.button5.UseVisualStyleBackColor = true;
+            // 
             // button4
             // 
             this.button4.Enabled = false;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Image = global::PetProj.Properties.Resources.normalmarker;
-            this.button4.Location = new System.Drawing.Point(6, 88);
+            this.button4.Location = new System.Drawing.Point(5, 111);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(18, 18);
             this.button4.TabIndex = 3;
@@ -580,5 +632,9 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.CheckBox cbBindingToTangent;
+        private System.Windows.Forms.CheckBox cbBindingToQuadrant;
     }
 }

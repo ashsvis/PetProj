@@ -116,7 +116,9 @@
             this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToCenter = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBindToQuadrant = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToNormal = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBindToTangent = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiBindParameters = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbOrto = new System.Windows.Forms.ToolStripButton();
@@ -266,7 +268,7 @@
             this.tsmiUndo.Image = global::PetProj.Properties.Resources.undo;
             this.tsmiUndo.Name = "tsmiUndo";
             this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(209, 22);
+            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
             this.tsmiUndo.Text = "&Отмена действия";
             this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
             // 
@@ -276,14 +278,14 @@
             this.tsmiRedo.Image = global::PetProj.Properties.Resources.redo;
             this.tsmiRedo.Name = "tsmiRedo";
             this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(209, 22);
+            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
             this.tsmiRedo.Text = "&Отмена действия";
             this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
             // tsmiCut
             // 
@@ -292,7 +294,7 @@
             this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCut.Name = "tsmiCut";
             this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(209, 22);
+            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
             this.tsmiCut.Text = "Вырезат&ь";
             // 
             // tsmiCopy
@@ -302,7 +304,7 @@
             this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiCopy.Name = "tsmiCopy";
             this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(209, 22);
+            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
             this.tsmiCopy.Text = "&Копировать";
             // 
             // tsmiPaste
@@ -312,20 +314,20 @@
             this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmiPaste.Name = "tsmiPaste";
             this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(209, 22);
+            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
             this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Enabled = false;
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiDelete.Size = new System.Drawing.Size(209, 22);
+            this.tsmiDelete.Size = new System.Drawing.Size(217, 22);
             this.tsmiDelete.Text = "Удалить";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
@@ -333,7 +335,7 @@
             // 
             this.tsmiSelectAll.Name = "tsmiSelectAll";
             this.tsmiSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiSelectAll.Size = new System.Drawing.Size(209, 22);
+            this.tsmiSelectAll.Size = new System.Drawing.Size(217, 22);
             this.tsmiSelectAll.Text = "Выделить &все";
             this.tsmiSelectAll.Click += new System.EventHandler(this.tsmiSelectAll_Click);
             // 
@@ -897,7 +899,9 @@
             this.tsmiBindToEndPoint,
             this.tsmiBindToMiddle,
             this.tsmiBindToCenter,
+            this.tsmiBindToQuadrant,
             this.tsmiBindToNormal,
+            this.tsmiBindToTangent,
             this.toolStripSeparator11,
             this.tsmiBindParameters});
             this.tsbObjectBinding.Image = global::PetProj.Properties.Resources.binding;
@@ -930,12 +934,26 @@
             this.tsmiBindToCenter.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindToCenter.Text = "Центр";
             // 
+            // tsmiBindToQuadrant
+            // 
+            this.tsmiBindToQuadrant.Image = global::PetProj.Properties.Resources.quadrant;
+            this.tsmiBindToQuadrant.Name = "tsmiBindToQuadrant";
+            this.tsmiBindToQuadrant.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToQuadrant.Text = "Квадрант";
+            // 
             // tsmiBindToNormal
             // 
             this.tsmiBindToNormal.Image = global::PetProj.Properties.Resources.normal;
             this.tsmiBindToNormal.Name = "tsmiBindToNormal";
             this.tsmiBindToNormal.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindToNormal.Text = "Нормаль";
+            // 
+            // tsmiBindToTangent
+            // 
+            this.tsmiBindToTangent.Image = global::PetProj.Properties.Resources.tangent;
+            this.tsmiBindToTangent.Name = "tsmiBindToTangent";
+            this.tsmiBindToTangent.Size = new System.Drawing.Size(263, 22);
+            this.tsmiBindToTangent.Text = "Касательная";
             // 
             // toolStripSeparator11
             // 
@@ -1137,6 +1155,8 @@
         private System.Windows.Forms.ToolStripMenuItem началоЦентрДлинаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem центрНачалоУголToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem центрНачалоДлинаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindToQuadrant;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBindToTangent;
     }
 }
 

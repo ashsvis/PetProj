@@ -25,6 +25,8 @@ namespace PetProj.Dialogs
             cbBindingToMiddle.Checked = allowedObjectBindings.HasFlag(AllowedObjectBindings.Middle);
             cbBindingToCenter.Checked = allowedObjectBindings.HasFlag(AllowedObjectBindings.Center);
             cbBindingToNormal.Checked = allowedObjectBindings.HasFlag(AllowedObjectBindings.Normal);
+            cbBindingToQuadrant.Checked = allowedObjectBindings.HasFlag(AllowedObjectBindings.Quadrant);
+            cbBindingToTangent.Checked = allowedObjectBindings.HasFlag(AllowedObjectBindings.Tangent);
         }
 
         private void btnSelectAllBindings_Click(object sender, System.EventArgs e)
@@ -55,6 +57,10 @@ namespace PetProj.Dialogs
                 allowedObjectBindings = allowedObjectBindings ^ AllowedObjectBindings.Center;
             if (cbBindingToNormal.Checked)
                 allowedObjectBindings = allowedObjectBindings ^ AllowedObjectBindings.Normal;
+            if (cbBindingToQuadrant.Checked)
+                allowedObjectBindings = allowedObjectBindings ^ AllowedObjectBindings.Quadrant;
+            if (cbBindingToTangent.Checked)
+                allowedObjectBindings = allowedObjectBindings ^ AllowedObjectBindings.Tangent;
             Properties.Settings.Default.ObjectBindingFlags = (uint)allowedObjectBindings;
             Properties.Settings.Default.Save();
         }
