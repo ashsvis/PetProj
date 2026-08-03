@@ -114,7 +114,7 @@ namespace PetProj
                     // рисуем стандартно
                     fig.Renderer.Render(graphics, fig);
             }
-            // отрисовка маркеров на фигурах под курсором, при построении линий
+            // отрисовка маркеров привязки на фигурах под курсором, при построении линий
             if (IsObjectBinding && (editorMode != EditorMode.Selection))
             {
                 var location = PrepareMousePosition(PointToClient(MousePosition));

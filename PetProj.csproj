@@ -103,7 +103,9 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorMode.cs" />
+    <Compile Include="Figures\BindingCenterMarker.cs" />
     <Compile Include="Figures\BindingNormalMarker.cs" />
+    <Compile Include="Figures\BindingQudrantMarker.cs" />
     <Compile Include="Figures\CenterMarker.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
     <Compile Include="Figures\Marker.cs" />

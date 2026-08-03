@@ -223,7 +223,20 @@ namespace PetProj.Controllers
                     return new BindingMiddleMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.Hand,
+                        Position = point,
+                        Owner = owner
+                    };
+                case MarkerType.BindingCenter:
+                    return new BindingCenterMarker
+                    {
+                        MarkerType = markerType,
+                        Position = point,
+                        Owner = owner
+                    };
+                case MarkerType.BindingQuadrant:
+                    return new BindingQudrantMarker
+                    {
+                        MarkerType = markerType,
                         Position = point,
                         Owner = owner
                     };
@@ -231,7 +244,6 @@ namespace PetProj.Controllers
                     return new BindingNormalMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.Hand,
                         Position = point,
                         Owner = owner
                     };
@@ -239,7 +251,7 @@ namespace PetProj.Controllers
                     return new Marker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.Hand,
+                        Cursor = Cursors.UpArrow,
                         Position = point,
                     };
             }
@@ -301,36 +313,57 @@ namespace PetProj.Controllers
             {
                 using (var path = fig.GetRendererPath())
                 {
-                    var points = path.PathPoints;
-                    for (var i = 0; i < points.Length; i++)
+                    if (fig.Geometry is LineGeometry segment)
                     {
+                        var pt1 = segment.StartPoint;
+                        var pt2 = segment.EndPoint;
                         // поиск конечных точек
                         if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
                         {
-                            var marker = CreateMarker(fig, MarkerType.BindingVertex, points[i], i);
-                            BindingMarkers.Add(marker);
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
                         }
-                    }
-                    if (fig.Geometry is LineGeometry _)
-                    {
-                        var pt1 = points[0];
-                        var pt2 = points[1];
                         // поиск средней точки на отрезке
                         if (allowed.HasFlag(AllowedObjectBindings.Middle))
                         {
                             var mid = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                            var marker = CreateMarker(fig, MarkerType.BindingMiddle, mid);
-                            BindingMarkers.Add(marker);
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
                         }
                         // поиск проекции базовой точки на отрезок 
                         if (allowed.HasFlag(AllowedObjectBindings.Normal))
                         {
                             if (PointFExtension.ProjectPointOnSegment(pt1, pt2, basePoint, out PointF norm))
-                            {
-                                var marker = CreateMarker(fig, MarkerType.BindingNormal, norm);
-                                BindingMarkers.Add(marker);
-                            }
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, norm));
                         }
+                    }
+                    else if (fig.Geometry is ArcGeometry arc)
+                    {
+                        var pt1 = arc.StartPoint;
+                        var pt2 = arc.EndPoint;
+                        // поиск конечных точек
+                        if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+                        {
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
+                        }
+                        // поиск средней точки на дуге
+                        if (allowed.HasFlag(AllowedObjectBindings.Middle))
+                        {
+                            var mid = arc.MiddlePoint;
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
+                        }
+                        // поиск центра дуги
+                        if (allowed.HasFlag(AllowedObjectBindings.Center))
+                        {
+                            var center = arc.CenterPoint;
+                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingCenter, center));
+                        }
+                        // поиск проекции базовой точки на отрезок 
+                        //if (allowed.HasFlag(AllowedObjectBindings.Normal))
+                        //{
+                        //    if (PointFExtension.ProjectPointOnSegment(pt1, pt2, basePoint, out PointF norm))
+                        //        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, norm));
+                        //}
                     }
                 }
             }

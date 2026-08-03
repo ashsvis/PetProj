@@ -8,6 +8,7 @@
         BindingVertex,
         BindingMiddle,
         BindingCenter,
+        BindingQuadrant,
         BindingNormal
     }
 }
