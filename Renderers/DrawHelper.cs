@@ -358,6 +358,7 @@ namespace PetProj.Renderers
                     }
                 }
             }
+            drawControl.ToolTipChanged($"Количество нажатий: {drawControl.MouseClickCount}");
         }
 
         /// <summary>

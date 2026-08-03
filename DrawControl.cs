@@ -141,8 +141,7 @@ namespace PetProj
                 underCursor.Render(graphics, Color.White, zoom);
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
-                    editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink,
-                    (float)zoomPad.ZoomScale);
+                    editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, zoom);
             // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
                 marker.Render(graphics, markers.Contains(marker) ? Color.Red : Color.Blue, zoom);
@@ -485,10 +484,9 @@ namespace PetProj
                                 underCursor.Remove(fig);
                         }
                     );
-
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
-            if (mouseClickCount == 0 || mouseClickCount == 1 && editorMode != EditorMode.Selection)
+            if (mouseClickCount == 0 || (mouseClickCount == 1 || mouseClickCount == 2) && editorMode != EditorMode.Selection)
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();

@@ -77,12 +77,6 @@ namespace PetProj.Selections
                 {
                     var fig = figures[i];
                     var path = fig.GetRendererPath();
-                    if (path.IsVisible(point))
-                    {
-                        figure = fig;
-                        found = true;
-                        break;
-                    }
                     // проверяем также попадание на контур фигуры
                     if (!path.IsOutlineVisible(point, pen)) continue;
                     figure = fig;

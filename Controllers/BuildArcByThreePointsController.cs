@@ -96,10 +96,11 @@ namespace PetProj.Controllers
                         drawer.SendParamsOnChange(new object[] { pt });
                     else if (drawer.MouseClickCount == 2)
                     {
-                        var pt1 = drawer.FirstMouseDown;                                    // первая точка нажатия
-                        var pt2 = drawer.SecondMouseDown;                                   // вторая точка нажатия
-                        var pt3 = drawer.PrepareMousePosition(drawer.CurrentMousePosition); // третья точка нажатия
-                        drawer.SendParamsOnChange(new object[] { pt1, pt2, pt3 });
+                        drawer.SendParamsOnChange(new object[] { pt });
+                        //var pt1 = drawer.FirstMouseDown;                                    // первая точка нажатия
+                        //var pt2 = drawer.SecondMouseDown;                                   // вторая точка нажатия
+                        //var pt3 = drawer.PrepareMousePosition(drawer.CurrentMousePosition); // третья точка нажатия
+                        //drawer.SendParamsOnChange(new object[] { pt1, pt2, pt3 });
                     }
                 }
             }
