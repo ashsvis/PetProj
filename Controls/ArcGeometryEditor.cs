@@ -62,12 +62,12 @@ namespace PetProj.Controls
         {
             var sweepRad = Math.PI * sweepAngle / 180;
             var endAngle = startAngle + sweepAngle;
-            var arcLength = radius * sweepRad;
-            var segmentSquare = 0.5 * radius * radius * (sweepRad - Math.Sin(sweepRad));
+            var arcLength = Math.Abs(radius * sweepRad);
+            var segmentSquare = Math.Abs(0.5 * radius * radius * (sweepRad - Math.Sin(sweepRad)));
 
             tbEndAngle.Text = $"{endAngle:0.#}";
-            tbArcLength.Text = $"{arcLength:0.####}";
-            tbSegmentSquare.Text = $"{segmentSquare:0.####}";
+            tbArcLength.Text = $"{arcLength:0.#}";
+            tbSegmentSquare.Text = $"{segmentSquare:0.#}";
         }
 
         private void UpdateObject()
