@@ -79,8 +79,12 @@ namespace PetProj.Common
                 rect.Intersect(captured);
                 if (rect.Equals(figure.Geometry.Bounds))
                     return true; // содержится целиком
-                if (path.PathPoints.Any(p => captured.Contains(p)))
-                    return true; // любая точка пути фигуры содержится в рамке
+                try
+                {
+                    if (path.PathPoints.Any(p => captured.Contains(p)))
+                        return true; // любая точка пути фигуры содержится в рамке
+                }
+                catch { return false; }
                 // проверка частичного попадания, контур фигуры должен пересекаться с контуром рамки выбора
                 rect = path.GetBounds();
                 // если фигура не имеет ширины или длины, то задаём отсутсвующее измерение
