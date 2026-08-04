@@ -103,6 +103,7 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorMode.cs" />
+    <Compile Include="Figures\AllowedMarkerOperations.cs" />
     <Compile Include="Figures\BindingCenterMarker.cs" />
     <Compile Include="Figures\BindingNormalMarker.cs" />
     <Compile Include="Figures\BindingQudrantMarker.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Renderers\IRendererPath.cs" />
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />
+    <Compile Include="Renderers\SegmentIntersection.cs" />
     <Compile Include="Selections\BlowedSelection.cs" />
     <Compile Include="Selections\IListManage.cs" />
     <Compile Include="Selections\Selection.cs" />

@@ -1,5 +1,6 @@
 ﻿using PetProj.Common;
 using PetProj.Figures;
+using PetProj.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -131,7 +132,7 @@ namespace PetProj.Renderers
         /// <param name="figures"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, 
+        public static void DrawRibbonMovedFigures(this DrawControl drawControl, Graphics graphics, 
             IList<Figure> figures, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
@@ -179,30 +180,37 @@ namespace PetProj.Renderers
         /// <param name="markers"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonMoved(this DrawControl drawControl, Graphics graphics, 
-            IList<(Figure, int)> markers, PointF firstMouseDown, PointF mousePosition)
+        public static void DrawRibbonMovedMarkers(this DrawControl drawControl, Graphics graphics, 
+            IList<Marker> markers, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
-            //var pt1 = firstMouseDown;
-            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            var pt = drawControl.PrepareMousePosition(mousePosition);
             //поиск ортогональной точки, если включен режим ортогонального построения
-            pt2 = drawControl.FindOrthoPoint(pt2);
+            pt = drawControl.FindOrthoPoint(pt);
             using (var pen = new Pen(Color.Silver, (float)(2.6f / zoom)))
             using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
             {
                 pen.StartCap = LineCap.Round;
                 pen.EndCap = LineCap.Round;
                 // отрисовка выделения
-                foreach (var (Owner, Index) in markers)
+                foreach (var marker in markers)
                 {
-                    using (var path = Owner.Geometry.Path)
+                    if (marker.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex) &&
+                        marker is VertexMarker vertex)
                     {
-                        var points = path.PathPoints;
-                        if (points.Length == 2)
+                        if (marker.Owner.Geometry is LineGeometry segment)
                         {
-                            graphics.DrawLine(pen, points[0], points[1]);
-                            var pt1 = Index == 0 ? points[1] : points[0];
-                            graphics.DrawLine(penA, pt1, pt2);
+                            graphics.DrawLine(pen, segment.StartPoint, segment.EndPoint);
+                            var startPoint = vertex.Index == 0 ? segment.EndPoint : segment.StartPoint;
+                            graphics.DrawLine(penA, startPoint, pt);
+                        }
+                        else if (marker.Owner.Geometry is ArcGeometry arc)
+                        {
+                            drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
+                            drawControl.DrawArcByThreePoints(graphics, penA,
+                                vertex.Index == 1 ? pt : arc.StartPoint,
+                                vertex.Index == 2 ? pt : arc.MiddlePoint,
+                                vertex.Index == 3 ? pt : arc.EndPoint);
                         }
                     }
                 }
@@ -220,6 +228,21 @@ namespace PetProj.Renderers
                     pt2.X = drawControl.FirstMouseDown.X;
                 else
                     pt2.Y = drawControl.FirstMouseDown.Y;
+            }
+            return pt2;
+        }
+
+        public static PointF FindOrthoPoint(this DrawControl drawControl, PointF pt1, PointF pt2)
+        {
+            if (drawControl.IsDrawOrthoMode)
+            {
+                pt2 = drawControl.PrepareMousePosition(drawControl.CurrentMousePosition);
+                var dx = Math.Abs(pt1.X - pt2.X);
+                var dy = Math.Abs(pt1.Y - pt2.Y);
+                if (dx < dy)
+                    pt2.X = pt1.X;
+                else
+                    pt2.Y = pt1.Y;
             }
             return pt2;
         }
@@ -304,13 +327,16 @@ namespace PetProj.Renderers
         /// <param name="graphics"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonLine(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF mousePosition)
+        public static void DrawRibbonLine(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF mousePosition, bool ortho = true)
         {
             float zoom = drawControl.Zoom;
             var pt1 = firstMouseDown;
             var pt2 = drawControl.PrepareMousePosition(mousePosition);
-            //поиск ортогональной точки, если включен режим ортогонального построения
-            pt2 = drawControl.FindOrthoPoint(pt2);
+            if (ortho)
+            {
+                //поиск ортогональной точки, если включен режим ортогонального построения
+                pt2 = drawControl.FindOrthoPoint(pt2);
+            }
             pen.StartCap = LineCap.Round;
             pen.EndCap = LineCap.Round;
             graphics.DrawLine(pen, pt1, pt2);
@@ -340,8 +366,6 @@ namespace PetProj.Renderers
             var pt1 = firstMouseDown;
             var pt2 = secondMouseDown;
             var pt3 = drawControl.PrepareMousePosition(mousePosition);
-            //поиск ортогональной точки, если включен режим ортогонального построения
-            pt3 = drawControl.FindOrthoPoint(pt3);
             pen.StartCap = LineCap.Round;
             pen.EndCap = LineCap.Round;
 
@@ -462,6 +486,65 @@ namespace PetProj.Renderers
             catch { } 
         }
 
+        public static bool GetCenterRadiusAngleSweep(PointF pt1, PointF pt2, PointF pt3,
+                                                     out PointF center, out float radius, out float angle, out float sweep)
+        {
+            center = PointF.Empty;
+            radius = 0.0f;
+            angle = 0.0f;
+            sweep = 0.0f;
+
+            float mx1 = (pt1.X + pt2.X) / 2f;
+            float my1 = (pt1.Y + pt2.Y) / 2f;
+            PointF mid1 = new PointF(mx1, my1);
+            float dx1 = pt2.X - pt1.X;
+            float dy1 = pt2.Y - pt1.Y;
+            float px1 = dy1;
+            float py1 = -dx1;
+            float length1 = (float)Math.Sqrt(px1 * px1 + py1 * py1);
+            if (length1 == 0) return false; // отрезок вырожден в точку
+            px1 /= length1;
+            py1 /= length1;
+
+            float mx2 = (pt3.X + pt2.X) / 2f;
+            float my2 = (pt3.Y + pt2.Y) / 2f;
+            PointF mid2 = new PointF(mx2, my2);
+            float dx2 = pt3.X - pt2.X;
+            float dy2 = pt3.Y - pt2.Y;
+            float px2 = dy2;
+            float py2 = -dx2;
+            float length2 = (float)Math.Sqrt(px2 * px2 + py2 * py2);
+            if (length2 == 0) return false; // отрезок вырожден в точку
+            px2 /= length2;
+            py2 /= length2;
+
+            // перпендикуляр в середине 1 отрезка
+            float halfLength = Math.Max(length1, length2); //50f / zoom;
+            PointF df1 = new PointF(mid1.X + px1 * halfLength, mid1.Y + py1 * halfLength);
+            PointF ef1 = new PointF(mid1.X - px1 * halfLength, mid1.Y - py1 * halfLength);
+            // перпендикуляр в середине 2 отрезка
+            PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
+            PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
+            // точка пересечения двух перпендикуляров
+            center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            radius = center.Vector(pt1).Length();
+
+            #region блок коррекции углов дуги
+
+            var angle1 = pt1.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+            var angle2 = pt2.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+            var angle3 = pt3.Vector(center).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
+            if (angle2 < angle1) angle2 += 360f;
+            if (angle3 < angle1) angle3 += 360f;
+            var sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            if (angle2 > angle3) sweepAngle = -360f + sweepAngle;
+            #endregion блок коррекции углов дуги
+
+            angle = angle1;
+            sweep = sweepAngle;
+            return true;
+        }
+
         public static float GetAngle(float x1, float y1, float x2, float y2)
         {
             float radians = (float)Math.Atan((y2 - y1) / (x2 - x1));
@@ -532,25 +615,6 @@ namespace PetProj.Renderers
                 using (var brush = new SolidBrush(Color.Black))
                     graphics.DrawString(text, font, brush, rect);
             }
-        }
-    }
-
-    public static class SegmentIntersection
-    {
-        static public PointF Intersection(PointF A, PointF B, PointF C, PointF D)
-        {
-            double xo = A.X, yo = A.Y;
-            double p = B.X - A.X, q = B.Y - A.Y;
-
-            double x1 = C.X, y1 = C.Y;
-            double p1 = D.X - C.X, q1 = D.Y - C.Y;
-
-            double x = (xo * q * p1 - x1 * q1 * p - yo * p * p1 + y1 * p * p1) /
-                (q * p1 - q1 * p);
-            double y = (yo * p * q1 - y1 * p1 * q - xo * q * q1 + x1 * q * q1) /
-                (p * q1 - p1 * q);
-
-            return new PointF((float)x, (float)y);
         }
     }
 }

@@ -189,16 +189,6 @@ namespace PetProj.Controllers
                     return new VertexMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.Hand,
-                        Position = point,
-                        Index = index,
-                        Owner = owner
-                    };
-                case MarkerType.BindingVertex:
-                    return new BindingVertexMarker
-                    {
-                        MarkerType = markerType,
-                        Cursor = Cursors.Hand,
                         Position = point,
                         Index = index,
                         Owner = owner
@@ -207,7 +197,6 @@ namespace PetProj.Controllers
                     return new MiddleMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.SizeAll,
                         Position = point,
                         Owner = owner
                     };
@@ -215,8 +204,15 @@ namespace PetProj.Controllers
                     return new CenterMarker
                     {
                         MarkerType = markerType,
-                        Cursor = Cursors.SizeAll,
                         Position = point,
+                        Owner = owner
+                    };
+                case MarkerType.BindingVertex:
+                    return new BindingVertexMarker
+                    {
+                        MarkerType = markerType,
+                        Position = point,
+                        Index = index,
                         Owner = owner
                     };
                 case MarkerType.BindingMiddle:
@@ -290,14 +286,10 @@ namespace PetProj.Controllers
                     }
                     else if (fig.Geometry is ArcGeometry arc)
                     {
-                        var pt1 = arc.CenterPoint;
-                        var pt2 = arc.StartPoint;
-                        var pt3 = arc.EndPoint;
-                        var pt4 = arc.MiddlePoint;
-                        Markers.Add(CreateMarker(fig, MarkerType.Center, pt1, 0));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt2, 1));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt3, 2));
-                        Markers.Add(CreateMarker(fig, MarkerType.Middle, pt4));
+                        Markers.Add(CreateMarker(fig, MarkerType.Center, arc.CenterPoint, 0));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.StartPoint, 1));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.MiddlePoint, 2));
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.EndPoint, 3));
                     }
                 }
             }

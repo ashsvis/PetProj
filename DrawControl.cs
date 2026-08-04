@@ -171,9 +171,11 @@ namespace PetProj
                 case EditorMode.MoveMarkers:
                     if (mouseClickCount == 1)
                     {
-                        this.DrawRibbonMoved(graphics, markers.Where(m => m is MiddleMarker).Select(m => m.Owner).ToList(), firstMouseDown, mousePosition);
-                        this.DrawRibbonMoved(graphics, 
-                            markers.Where(m => m is VertexMarker).Cast<VertexMarker>().Select(m => (m.Owner, m.Index)).ToList(), 
+                        this.DrawRibbonMovedFigures(graphics, markers
+                            .Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveOwner))
+                            .Select(m => m.Owner).ToList(), firstMouseDown, mousePosition);
+                        this.DrawRibbonMovedMarkers(graphics,
+                            markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex)).ToList(),
                             firstMouseDown, mousePosition);
                     }
                     break;
@@ -331,16 +333,16 @@ namespace PetProj
                     case EditorMode.MoveMarkers:
                         if (markers.Count > 0)
                         {
-                            pt1 = markers.First().Position;
-                            pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                            var lastPosition = markers.First().Position;
+                            var currentPosition = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
                             //поиск ортогональной точки, если включен режим ортогонального построения
-                            pt2 = this.FindOrthoPoint(pt2);
+                            currentPosition = this.FindOrthoPoint(currentPosition);
                             //поиск ближайшей точки привязки, если включен режим объектной привязки
-                            pt2 = this.FindBindingPoint(pt2);
+                            currentPosition = this.FindBindingPoint(currentPosition);
                             // перемещение отрезков за середину
-                            MoveByMiddle(pt1, pt2);
-                            SizeByVertex(pt1, pt2);
-                            firstMouseDown = pt2;
+                            MoveFigureByMarker(lastPosition, currentPosition);
+                            MoveVertexByMarker(lastPosition, currentPosition);
+                            firstMouseDown = currentPosition;
                             Changed = true;
                         }
                         timerClearMouseCount.Enabled = true;
@@ -353,20 +355,18 @@ namespace PetProj
 
         /// <summary>
         /// Перемещение отрезка за середину
+        /// Перемещение дуги, окружности за центральную точку
+        /// Перемещение блока за базовую точку (Origin)
         /// </summary>
-        /// <param name="pt1"></param>
-        /// <param name="pt2"></param>
-        private void MoveByMiddle(PointF pt1, PointF pt2)
+        /// <param name="last"></param>
+        /// <param name="current"></param>
+        private void MoveFigureByMarker(PointF last, PointF current)
         {
             var offsets = new List<(Figure, PointF)>();
-            foreach (var figure in markers.Where(m => m is MiddleMarker).Select(m => m.Owner))
+            foreach (var figure in markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveOwner)).Select(m => m.Owner))
             {
-                // если перемещение поддерживается
-                if (figure.Geometry is IMoveGeometry _)
-                {
-                    // добавляем в список
-                    offsets.Add((figure, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y)));
-                }
+                // добавляем в список
+                offsets.Add((figure, new PointF(current.X - last.X, current.Y - last.Y)));
             }
             // если список не пуст, выполняем метод перемещения
             if (offsets.Count > 0)
@@ -379,19 +379,18 @@ namespace PetProj
         /// <summary>
         /// Изменение размера отрезка при перемещении маркера конца
         /// </summary>
-        /// <param name="pt1"></param>
-        /// <param name="pt2"></param>
-        private void SizeByVertex(PointF pt1, PointF pt2)
+        /// <param name="last"></param>
+        /// <param name="current"></param>
+        private void MoveVertexByMarker(PointF last, PointF current)
         {
             var offsets = new List<(Figure, PointF, int)>();
-            foreach (var (Owner, Index) in markers.Where(m => m is VertexMarker vertex)
-                .Cast<VertexMarker>().Select(x => (x.Owner, x.Index)))
+            foreach (var marker in markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex)))
             {
-                // если перемещение поддерживается
-                if (Owner.Geometry is IMoveGeometry _)
+                if (marker is VertexMarker vertex)
                 {
-                    // добавляем в список
-                    offsets.Add((Owner, new PointF(pt2.X - pt1.X, pt2.Y - pt1.Y), Index));
+                    //if (marker.Owner.Geometry is LineGeometry segment)
+                        // добавляем в список
+                        offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex.Index));
                 }
             }
             // если список не пуст, выполняем метод перемещения

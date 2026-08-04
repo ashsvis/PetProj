@@ -1,4 +1,5 @@
 ﻿using PetProj.Common;
+using PetProj.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -145,10 +146,44 @@ namespace PetProj.Geometries
 
         public void Move(int index, float offsetX, float offsetY)
         {
-            if (index == 0)
-                CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
-            //else if (index == 1)
-            //    Points[1] = PointF.Add(Points[1], new SizeF(offsetX, offsetY));
+            PointF center;
+            float radius, angle, sweep;
+            switch (index)
+            {
+                case 0:
+                    CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
+                    break;
+                case 1:
+                    var startPoint = PointF.Add(StartPoint, new SizeF(offsetX, offsetY));
+                    if (DrawHelper.GetCenterRadiusAngleSweep(startPoint, MiddlePoint, EndPoint, out center, out radius, out angle, out sweep))
+                    {
+                        CenterPoint = center;
+                        Radius = radius;
+                        StartAngle = angle;
+                        SweepAngle = sweep;
+                    }
+                    break;
+                case 2:
+                    var middlePoint = PointF.Add(MiddlePoint, new SizeF(offsetX, offsetY));
+                    if (DrawHelper.GetCenterRadiusAngleSweep(StartPoint, middlePoint, EndPoint, out center, out radius, out angle, out sweep))
+                    {
+                        CenterPoint = center;
+                        Radius = radius;
+                        StartAngle = angle;
+                        SweepAngle = sweep;
+                    }
+                    break;
+                case 3:
+                    var endPoint = PointF.Add(EndPoint, new SizeF(offsetX, offsetY));
+                    if (DrawHelper.GetCenterRadiusAngleSweep(StartPoint, MiddlePoint, endPoint, out center, out radius, out angle, out sweep))
+                    {
+                        CenterPoint = center;
+                        Radius = radius;
+                        StartAngle = angle;
+                        SweepAngle = sweep;
+                    }
+                    break;
+            }
         }
     }
 }

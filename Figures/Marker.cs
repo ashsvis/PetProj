@@ -7,11 +7,16 @@ namespace PetProj.Figures
     {
         protected const int MARKER_SIZE = 8;
 
-        public Cursor Cursor;
+        public virtual Cursor Cursor { get; set; }
         public PointF Position { get; set; }
         public PointF AnchorPosition { get; set; }
         public MarkerType MarkerType { get; set; }
         public Figure Owner { get; set; }
+
+        /// <summary>
+        /// Допустимые операции над геометрией
+        /// </summary>
+        public virtual AllowedMarkerOperations AllowedOperations { get; }
 
         public RectangleF Target(float zoomScale)
         {

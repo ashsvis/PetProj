@@ -42,7 +42,7 @@ namespace PetProj.Controllers
                 else if (drawer.MouseClickCount == 2)
                 {
                     using (var pen = new Pen(Color.Orange, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
-                        drawer.DrawRibbonLine(e.Graphics, pen, drawer.SecondMouseDown, drawer.CurrentMousePosition);
+                        drawer.DrawRibbonLine(e.Graphics, pen, drawer.SecondMouseDown, drawer.CurrentMousePosition, false);
                     using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
                         drawer.DrawRibbonArc(e.Graphics, pen, drawer.FirstMouseDown, drawer.SecondMouseDown, drawer.CurrentMousePosition);
                 }
@@ -71,7 +71,6 @@ namespace PetProj.Controllers
                     var pt3 = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия
                     // поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt3 = drawer.FindBindingPoint(pt3);
-                    pt3 = drawer.FindOrthoPoint(pt3);
 
                     drawer.AddArc(pt1, pt2, pt3);
 
