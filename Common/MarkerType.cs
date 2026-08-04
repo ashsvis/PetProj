@@ -1,4 +1,4 @@
-﻿namespace PetProj.Figures
+﻿namespace PetProj.Common
 {
     public enum MarkerType
     {

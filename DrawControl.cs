@@ -679,6 +679,9 @@ namespace PetProj
                     selectionController.ClearMarkers();
                     OnChangeMode?.Invoke(this, selection);
                     break;
+                case EditorMode.MoveMarkers:
+                    OnChangeMode?.Invoke(this, selection);
+                    break;
                 default:
                     selectionController.Clear();
                     OnChangeMode?.Invoke(this, selection);

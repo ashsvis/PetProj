@@ -1,8 +1,9 @@
-﻿using System.Drawing;
+﻿using PetProj.Figures;
+using System.Drawing;
 
-namespace PetProj.Figures
+namespace PetProj.ObjectBindings
 {
-    public class BindingMiddleMarker : Marker
+    public class BindingCenterMarker : Marker
     {
         public override void Render(Graphics graphics, Color color, float zoomScale)
         {
@@ -11,13 +12,7 @@ namespace PetProj.Figures
             rect.Offset(Position);
             using (var pen = new Pen(color, 1f / zoomScale))
             {
-                graphics.DrawLines(pen, new PointF[]
-                {
-                    new PointF(rect.X + rect.Width / 2, rect.Y),
-                    new PointF(rect.X + rect.Width, rect.Y + rect.Height),
-                    new PointF(rect.X, rect.Y + rect.Height),
-                    new PointF(rect.X + rect.Width / 2, rect.Y),
-                });
+                graphics.DrawEllipse(pen, rect);
             }
         }
     }

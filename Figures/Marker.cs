@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using PetProj.Common;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PetProj.Figures

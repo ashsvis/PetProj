@@ -1,7 +1,8 @@
-﻿using System.Drawing;
+﻿using PetProj.Figures;
+using System.Drawing;
 
-namespace PetProj.Figures
-{
+namespace PetProj.ObjectBindings
+{ 
     public class BindingVertexMarker : Marker
     {
         public int Index { get; set; }

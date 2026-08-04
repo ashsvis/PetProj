@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using PetProj.Figures;
+using System.Drawing;
 
-namespace PetProj.Figures
+namespace PetProj.ObjectBindings
 {
     public class BindingQudrantMarker : Marker
     {

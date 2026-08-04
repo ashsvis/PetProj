@@ -104,15 +104,15 @@
     </Compile>
     <Compile Include="EditorMode.cs" />
     <Compile Include="Figures\AllowedMarkerOperations.cs" />
-    <Compile Include="Figures\BindingCenterMarker.cs" />
-    <Compile Include="Figures\BindingNormalMarker.cs" />
-    <Compile Include="Figures\BindingQudrantMarker.cs" />
+    <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
+    <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
+    <Compile Include="ObjectBindings\BindingQudrantMarker.cs" />
     <Compile Include="Figures\CenterMarker.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
     <Compile Include="Figures\Marker.cs" />
-    <Compile Include="Figures\MarkerType.cs" />
-    <Compile Include="Figures\BindingMiddleMarker.cs" />
-    <Compile Include="Figures\BindingVertexMarker.cs" />
+    <Compile Include="Common\MarkerType.cs" />
+    <Compile Include="ObjectBindings\BindingMiddleMarker.cs" />
+    <Compile Include="ObjectBindings\BindingVertexMarker.cs" />
     <Compile Include="Figures\MiddleMarker.cs" />
     <Compile Include="Figures\VertexMarker.cs" />
     <Compile Include="Geometries\ArcGeometry.cs" />
