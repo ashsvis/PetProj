@@ -164,6 +164,7 @@ namespace PetProj
                 typeof(PropertyCategoriesShower),
                 typeof(BorderStyleEditor),
                 typeof(LineGeometryEditor),
+                typeof(ArcGeometryEditor),
             };
             foreach (var typeName in editors)
             {
@@ -187,6 +188,7 @@ namespace PetProj
 
         private void FigEditor_Changed(object sender, EventArgs e)
         {
+            drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
             drawControl.UpdateInterface();
         }
 

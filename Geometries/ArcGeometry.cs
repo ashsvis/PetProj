@@ -10,10 +10,10 @@ namespace PetProj.Geometries
 {
     public sealed class ArcGeometry : Geometry, IMoveGeometry, IMoveMarker
     {
-        public PointF CenterPoint { get; private set; }
-        public float Radius { get; private set; }
-        public float StartAngle { get; private set; }
-        public float SweepAngle { get; private set; }
+        public PointF CenterPoint { get; set; }
+        public float Radius { get; set; }
+        public float StartAngle { get; set; }
+        public float SweepAngle { get; set; }
 
         public PointF StartPoint => Radius > 0
             ? new PointF(CenterPoint.X + (float)(Radius * Math.Cos(StartAngle * (Math.PI / 180))), 
