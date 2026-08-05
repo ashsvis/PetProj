@@ -178,10 +178,10 @@ namespace PetProj.Renderers
         /// <param name="drawControl"></param>
         /// <param name="graphics"></param>
         /// <param name="markers"></param>
-        /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonMovedMarkers(this DrawControl drawControl, Graphics graphics, 
-            IList<Marker> markers, PointF firstMouseDown, PointF mousePosition)
+        /// 
+        public static void DrawRibbonMovedMarkers(this DrawControl drawControl, Graphics graphics,
+            IList<Marker> markers, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
             var pt = drawControl.PrepareMousePosition(mousePosition);
@@ -198,19 +198,23 @@ namespace PetProj.Renderers
                     if (marker.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex) &&
                         marker is VertexMarker vertex)
                     {
-                        if (marker.Owner.Geometry is LineGeometry segment)
+                        switch (marker.Owner.Geometry)
                         {
-                            graphics.DrawLine(pen, segment.StartPoint, segment.EndPoint);
-                            var startPoint = vertex.Index == 0 ? segment.EndPoint : segment.StartPoint;
-                            graphics.DrawLine(penA, startPoint, pt);
-                        }
-                        else if (marker.Owner.Geometry is ArcGeometry arc)
-                        {
-                            drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
-                            drawControl.DrawArcByThreePoints(graphics, penA,
-                                vertex.Index == 1 ? pt : arc.StartPoint,
-                                vertex.Index == 2 ? pt : arc.MiddlePoint,
-                                vertex.Index == 3 ? pt : arc.EndPoint);
+                            case LineGeometry segment:
+                                {
+                                    graphics.DrawLine(pen, segment.StartPoint, segment.EndPoint);
+                                    var startPoint = vertex.Index == 0 ? segment.EndPoint : segment.StartPoint;
+                                    graphics.DrawLine(penA, startPoint, pt);
+                                    break;
+                                }
+
+                            case ArcGeometry arc:
+                                drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
+                                drawControl.DrawArcByThreePoints(graphics, penA,
+                                    vertex.Index == 1 ? pt : arc.StartPoint,
+                                    vertex.Index == 2 ? pt : arc.MiddlePoint,
+                                    vertex.Index == 3 ? pt : arc.EndPoint);
+                                break;
                         }
                     }
                 }

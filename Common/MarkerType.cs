@@ -9,6 +9,7 @@
         BindingMiddle,
         BindingCenter,
         BindingQuadrant,
-        BindingNormal
+        BindingNormal,
+        BindingTangent
     }
 }

@@ -243,6 +243,13 @@ namespace PetProj.Controllers
                         Position = point,
                         Owner = owner
                     };
+                case MarkerType.BindingTangent:
+                    return new BindingTangentMarker
+                    {
+                        MarkerType = markerType,
+                        Position = point,
+                        Owner = owner
+                    };
                 default:
                     return new Marker
                     {
@@ -368,16 +375,20 @@ namespace PetProj.Controllers
                     if (allowed.HasFlag(AllowedObjectBindings.Normal))
                     {
                         // проекция точки проходит также через центр дуги
-                        if (PointFExtension.ProjectPointOnArc(arc, basePoint, out PointF[] norm))
+                        if (PointFExtension.ProjectPointOnArc(arc, basePoint, out PointF[] normals))
                         {
-                            foreach (var point in norm)
+                            foreach (var point in normals)
                                 BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));
                         }
                     }
                     // поиск точек касания от базовой точки к дуге 
                     if (allowed.HasFlag(AllowedObjectBindings.Tangent))
                     {
-
+                        if (PointFExtension.TangentPointOnArc(arc, basePoint, out PointF[] tangents))
+                        {
+                            foreach (var point in tangents)
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingTangent, point));
+                        }
                     }
                 }
             }

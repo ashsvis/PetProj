@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace PetProj.Common
 {
@@ -231,9 +233,9 @@ namespace PetProj.Common
             return true;
         }
 
-        public static bool ProjectPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norm)
+        public static bool ProjectPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norms)
         {
-            norm = new PointF[] { };
+            norms = new PointF[] { };
             if (basePoint == arc.CenterPoint || arc.Radius <= 0)
                 return false;
 
@@ -277,8 +279,46 @@ namespace PetProj.Common
                 PointF point2 = new PointF((float)(x1 + t2 * (x2 - x1)), (float)(y1 + t2 * (y2 - y1)));
                 list.Add(point2);
             }
-            norm = list.ToArray();
+            norms = list.ToArray();
             return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
+        }
+
+        public static bool TangentPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] tangents)
+        {
+            tangents = new PointF[] { };
+            if (basePoint == arc.CenterPoint || arc.Radius <= 0)
+                return false;
+            var ox = basePoint.X;
+            var oy = basePoint.Y;
+            var cx = arc.CenterPoint.X;
+            var cy = arc.CenterPoint.Y;
+            var radius = arc.Radius;
+
+            // Шаг 1: Проверяем, не внутри ли точка
+            double distanceOC = Math.Sqrt((cx - ox) * (cx - ox) + (cy - oy) * (cy - oy));
+            if (distanceOC < radius)
+            {
+                // Точка P лежит внутри окружности.
+                return false;
+            }
+
+            // Шаг 2: Вычисляем угол вектора OC
+            double angleOC = Math.Atan2(oy - cy, ox - cx);
+
+            // Шаг 3: Вычисляем угол для одной из точек касания
+            double angle = Math.Acos(radius / distanceOC);
+
+            // Шаг 4: Координаты точек касания
+            double tx1 = cx + radius * Math.Cos(angleOC + angle);
+            double ty1 = cy + radius * Math.Sin(angleOC + angle);
+
+            double tx2 = cx + radius * Math.Cos(angleOC - angle);
+            double ty2 = cy + radius * Math.Sin(angleOC - angle);
+
+            var list = new List<PointF>() { new PointF((float)tx1, (float)ty1), new PointF((float)tx2, (float)ty2) };
+
+            tangents = list.ToArray();
+            return true;
         }
     }
 }

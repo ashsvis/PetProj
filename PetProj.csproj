@@ -118,6 +118,7 @@
     <Compile Include="Figures\Marker.cs" />
     <Compile Include="Common\MarkerType.cs" />
     <Compile Include="ObjectBindings\BindingMiddleMarker.cs" />
+    <Compile Include="ObjectBindings\BindingTangentMarker.cs" />
     <Compile Include="ObjectBindings\BindingVertexMarker.cs" />
     <Compile Include="Figures\MiddleMarker.cs" />
     <Compile Include="Figures\VertexMarker.cs" />

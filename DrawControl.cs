@@ -121,15 +121,16 @@ namespace PetProj
                 var query = selectionController.BindingMarkers.Select(marker => (marker, 
                              $"{Math.Abs(marker.Position.X - location.X):00000}{Math.Abs(marker.Position.Y - location.Y):00000}")).OrderBy(x => x.Item2);
                 // рисуем ближайший маркер привязки к текущему курсору
+                using (var pen = new Pen(Color.Black, 1f / zoom))
                 foreach (var item in query.Take(1))
                 {
                     // рисование перекрестья в центре дуги
                     if (item.marker.Owner is Figure fig && fig.Geometry is ArcGeometry arc)
                     {
-                        graphics.DrawLine(Pens.Black, 
+                        graphics.DrawLine(pen, 
                             new PointF(arc.CenterPoint.X - 4f/ zoom, arc.CenterPoint.Y), 
                             new PointF(arc.CenterPoint.X + 4f / zoom, arc.CenterPoint.Y));
-                        graphics.DrawLine(Pens.Black, 
+                        graphics.DrawLine(pen, 
                             new PointF(arc.CenterPoint.X, arc.CenterPoint.Y - 4f / zoom), 
                             new PointF(arc.CenterPoint.X, arc.CenterPoint.Y + 4f / zoom));
                     }
@@ -176,7 +177,7 @@ namespace PetProj
                             .Select(m => m.Owner).ToList(), firstMouseDown, mousePosition);
                         this.DrawRibbonMovedMarkers(graphics,
                             markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex)).ToList(),
-                            firstMouseDown, mousePosition);
+                            mousePosition);
                     }
                     break;
             }
@@ -494,8 +495,17 @@ namespace PetProj
                 {
                     underCursor.Add(fig);
                     var allowed = AllowedObjectBindings;
-                    if (editorMode == EditorMode.BuildRectangle)
+                    if ((editorMode == EditorMode.BuildRectangle || editorMode == EditorMode.MoveMarkers) && allowed.HasFlag(AllowedObjectBindings.Normal))
                         allowed = allowed ^ AllowedObjectBindings.Normal;
+                    if ((editorMode == EditorMode.MoveMarkers) && 
+                        allowed.HasFlag(AllowedObjectBindings.Tangent) && fig.Geometry is LineGeometry segment)
+                    {
+                        var marker = markers.FirstOrDefault(m => m.Owner == fig);
+                        if (marker != null)
+                        {
+                            firstMouseDown = segment.StartPoint == marker.Position ? segment.EndPoint : segment.StartPoint;
+                        }
+                    }
                     selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);
                 }
                 else
