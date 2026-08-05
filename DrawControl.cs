@@ -495,15 +495,19 @@ namespace PetProj
                 {
                     underCursor.Add(fig);
                     var allowed = AllowedObjectBindings;
-                    if ((editorMode == EditorMode.BuildRectangle || editorMode == EditorMode.MoveMarkers) && allowed.HasFlag(AllowedObjectBindings.Normal))
-                        allowed = allowed ^ AllowedObjectBindings.Normal;
-                    if ((editorMode == EditorMode.MoveMarkers) && 
-                        allowed.HasFlag(AllowedObjectBindings.Tangent) && fig.Geometry is LineGeometry segment)
+                    //if ((editorMode == EditorMode.BuildRectangle || editorMode == EditorMode.MoveMarkers) && 
+                    //    allowed.HasFlag(AllowedObjectBindings.Normal) && fig.Geometry is ArcGeometry _)
+                    //    allowed = allowed ^ AllowedObjectBindings.Normal;
+                    if (editorMode == EditorMode.MoveMarkers)
                     {
-                        var marker = markers.FirstOrDefault(m => m.Owner == fig);
-                        if (marker != null)
+                        if (allowed.HasFlag(AllowedObjectBindings.Tangent))
                         {
-                            firstMouseDown = segment.StartPoint == marker.Position ? segment.EndPoint : segment.StartPoint;
+                            if (fig.Geometry is LineGeometry segment)
+                            {
+                                var marker = markers.FirstOrDefault(m => m.Owner == fig);
+                                if (marker != null)
+                                    firstMouseDown = segment.StartPoint == marker.Position ? segment.EndPoint : segment.StartPoint;
+                            }
                         }
                     }
                     selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);
