@@ -1,4 +1,4 @@
-﻿namespace PetProj
+﻿namespace PetProj.Common
 {
     public enum EditorMode
     {

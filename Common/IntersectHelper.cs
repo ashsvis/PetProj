@@ -71,32 +71,37 @@ namespace PetProj.Common
         public static bool Intersects(this Figure figure, RectangleF captured)
         {
             if (captured.IsEmpty) return false;
-            using (var path = figure.GetRendererPath())
+            try
             {
-                var rect = figure.Geometry.Bounds;
-                if (rect.Width == 0 && rect.Height == 0)
-                    return captured.Contains(rect.Location);
-                rect.Intersect(captured);
-                if (rect.Equals(figure.Geometry.Bounds))
-                    return true; // содержится целиком
-                try
+                using (var path = figure.GetRendererPath())
                 {
+                    if (path.PointCount == 0)
+                        return false;
+                    var rect = figure.Geometry.Bounds;
+                    if (rect.Width == 0 && rect.Height == 0)
+                        return captured.Contains(rect.Location);
+                    rect.Intersect(captured);
+                    if (rect.Equals(figure.Geometry.Bounds))
+                        return true; // содержится целиком
                     if (path.PathPoints.Any(p => captured.Contains(p)))
                         return true; // любая точка пути фигуры содержится в рамке
+                                     // проверка частичного попадания, контур фигуры должен пересекаться с контуром рамки выбора
+                    rect = path.GetBounds();
+                    // если фигура не имеет ширины или длины, то задаём отсутсвующее измерение
+                    if (rect.Width > 0 && rect.Height == 0) rect.Height = 1;
+                    else if (rect.Width == 0 && rect.Height > 0) rect.Width = 1;
+                    rect.Intersect(captured);
+                    if (rect.IsEmpty)
+                        return false; // не будет пересечений, т.к. области рамки и фигуры не пересекаются
+                    List<Point> framePoints = GetFramePoints(rect, captured);
+                    List<Point> figPoints = GetPathPoints(rect, path);
+                    var commonPoints = framePoints.Intersect(figPoints).ToList();
+                    return commonPoints.Count() > 0;
                 }
-                catch { return false; }
-                // проверка частичного попадания, контур фигуры должен пересекаться с контуром рамки выбора
-                rect = path.GetBounds();
-                // если фигура не имеет ширины или длины, то задаём отсутсвующее измерение
-                if (rect.Width > 0 && rect.Height == 0) rect.Height = 1;
-                else if (rect.Width == 0 && rect.Height > 0) rect.Width = 1;
-                rect.Intersect(captured);
-                if (rect.IsEmpty)
-                    return false; // не будет пересечений, т.к. области рамки и фигуры не пересекаются
-                List<Point> framePoints = GetFramePoints(rect, captured);
-                List<Point> figPoints = GetPathPoints(rect, path);
-                var commonPoints = framePoints.Intersect(figPoints).ToList();
-                return commonPoints.Count() > 0;
+            }
+            catch
+            {
+                return false;
             }
         }
 

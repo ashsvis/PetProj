@@ -265,6 +265,10 @@ namespace PetProj.Controllers
             BindingMarkers.Clear();
         }
 
+        /// <summary>
+        /// Строим маркеры перемещения
+        /// </summary>
+        /// <param name="selection"></param>
         public void BuildMarkers(IEnumerable<Figure> selection)
         {
             // стираем предыдущие маркеры
@@ -295,6 +299,12 @@ namespace PetProj.Controllers
             }
         }
 
+        /// <summary>
+        /// Строим маркеры объектной привязки
+        /// </summary>
+        /// <param name="selection"></param>
+        /// <param name="allowed"></param>
+        /// <param name="basePoint"></param>
         public void BuildBindingMarkers(IEnumerable<Figure> selection, AllowedObjectBindings allowed, PointF basePoint)
         {
             // стираем предыдущие маркеры
@@ -354,11 +364,20 @@ namespace PetProj.Controllers
                         foreach (var quadrantPoint in arc.QuadrantPoints)
                             BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingQuadrant, quadrantPoint));
                     }
-                    // поиск проекции базовой точки на отрезок 
+                    // поиск проекций базовой точки на дугу
                     if (allowed.HasFlag(AllowedObjectBindings.Normal))
                     {
-                    //    if (PointFExtension.ProjectPointOnSegment(pt1, pt2, basePoint, out PointF norm))
-                    //        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, norm));
+                        // проекция точки проходит также через центр дуги
+                        if (PointFExtension.ProjectPointOnArc(arc, basePoint, out PointF[] norm))
+                        {
+                            foreach (var point in norm)
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));
+                        }
+                    }
+                    // поиск точек касания от базовой точки к дуге 
+                    if (allowed.HasFlag(AllowedObjectBindings.Tangent))
+                    {
+
                     }
                 }
             }

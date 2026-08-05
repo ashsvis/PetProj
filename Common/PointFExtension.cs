@@ -1,5 +1,8 @@
-﻿using System;
+﻿using PetProj.Geometries;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PetProj.Common
 {
@@ -226,6 +229,56 @@ namespace PetProj.Common
             double projY = a.Y + abY * t;
             norm = new PointF((float)projX, (float)projY);
             return true;
+        }
+
+        public static bool ProjectPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norm)
+        {
+            norm = new PointF[] { };
+            if (basePoint == arc.CenterPoint || arc.Radius <= 0)
+                return false;
+
+            var x1 = basePoint.X;
+            var y1 = basePoint.Y;
+            var xc = arc.CenterPoint.X;
+            var yc = arc.CenterPoint.Y;
+
+            var arr = new PointF[] { basePoint };
+            using (var m = new Matrix())
+            {
+                m.RotateAt(180f, arc.CenterPoint);
+                m.TransformPoints(arr);
+            }
+            var x2 = arr[0].X;
+            var y2 = arr[0].Y;
+            var radius = arc.Radius;
+            // квадрат длины отрезка
+            double a = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+            // двойное скалярное произведение
+            double b = 2 * ((x2 - x1) * (x1 - xc) + (y2 - y1) * (y1 - yc));
+            // квадрат расстояния от начала отрезка до центра минус квадрат радиуса
+            double c = (x1 - xc) * (x1 - xc) + (y1 - yc) * (y1 - yc) - radius * radius;
+
+            double discriminant = b * b - 4 * a * c;
+
+            if (discriminant < 0)
+                return false;
+
+            double t1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            double t2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            var list = new List<PointF>();
+            if (t1 >= 0 && t1 <= 1)
+            {
+                PointF point1 = new PointF((float)(x1 + t1 * (x2 - x1)), (float)(y1 + t1 * (y2 - y1)));
+                list.Add(point1);
+            }
+
+            if (t2 >= 0 && t2 <= 1 && t2 != t1)
+            {
+                PointF point2 = new PointF((float)(x1 + t2 * (x2 - x1)), (float)(y1 + t2 * (y2 - y1)));
+                list.Add(point2);
+            }
+            norm = list.ToArray();
+            return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
         }
     }
 }

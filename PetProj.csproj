@@ -108,7 +108,7 @@
     <Compile Include="DrawControl.Designer.cs">
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorMode.cs" />
+    <Compile Include="Common\EditorMode.cs" />
     <Compile Include="Figures\AllowedMarkerOperations.cs" />
     <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
     <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
