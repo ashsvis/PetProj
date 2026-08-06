@@ -502,11 +502,18 @@ namespace PetProj
                     {
                         if (allowed.HasFlag(AllowedObjectBindings.Tangent))
                         {
-                            if (fig.Geometry is LineGeometry segment)
+                            if (fig.Geometry is ArcGeometry arc)
                             {
-                                var marker = markers.FirstOrDefault(m => m.Owner == fig);
-                                if (marker != null)
-                                    firstMouseDown = segment.StartPoint == marker.Position ? segment.EndPoint : segment.StartPoint;
+                                foreach (var marker in markers)
+                                {
+                                    if (marker.Owner.Geometry is LineGeometry segment)
+                                    {
+                                        selectionController.BuildBindingMarkers(underCursor, allowed, 
+                                            marker.Position == segment.EndPoint ? segment.StartPoint : segment.EndPoint);
+                                    }
+                                }
+                                zoomPad.Invalidate();
+                                return;
                             }
                         }
                     }
