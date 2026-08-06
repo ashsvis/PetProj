@@ -636,5 +636,14 @@ namespace PetProj
             tsbArc.Tag = EditorMode.BuildArcStartCenterEnd;
             tsbArc.Checked = true;
         }
+
+        private void tsmiBuildArcByCenterBeginEnd_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildArcCenterStartEnd);
+            tsbArc.Image = ((ToolStripMenuItem)sender).Image;
+            tsbArc.Tag = EditorMode.BuildArcCenterStartEnd;
+            tsbArc.Checked = true;
+        }
     }
 }

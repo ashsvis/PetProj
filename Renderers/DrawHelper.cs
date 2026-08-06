@@ -367,7 +367,6 @@ namespace PetProj.Renderers
         /// <param name="mousePosition"></param>
         public static void DrawRibbonArc(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF secondMouseDown, PointF mousePosition)
         {
-            float zoom = drawControl.Zoom;
             var pt1 = firstMouseDown;
             var pt2 = secondMouseDown;
             var pt3 = drawControl.PrepareMousePosition(mousePosition);
@@ -382,13 +381,21 @@ namespace PetProj.Renderers
                 case EditorMode.BuildArcStartCenterEnd:
                     drawControl.DrawArcByStartCenterEnd(graphics, pen, pt1, pt2, pt3);
                     break;
+                case EditorMode.BuildArcCenterStartEnd:
+                    drawControl.DrawArcByCenterStartEnd(graphics, pen, pt1, pt2, pt3);
+                    break;
             }
             if (drawControl.MouseClickCount == 2)
             {
                 if (drawControl.IsDynamicalEnter)
                 {
                     using (var dynpen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
-                        drawControl.DrawAngleLine(graphics, dynpen, pt2, pt3);
+                    {
+                        if (drawControl.EditorMode == EditorMode.BuildArcCenterStartEnd)
+                            drawControl.DrawAngleLine(graphics, dynpen, pt1, pt3);
+                        else
+                            drawControl.DrawAngleLine(graphics, dynpen, pt2, pt3);
+                    }
                 }
             }
             drawControl.ToolTipChanged($"Количество нажатий: {drawControl.MouseClickCount}");
@@ -455,6 +462,37 @@ namespace PetProj.Renderers
                 if (angle1 > angle2) sweepAngle = -360f + sweepAngle;
                 #endregion блок коррекции углов дуги
                 
+                if (drawControl.CtrlPressed)    // разворот направления рисования
+                    graphics.DrawArc(pen, rect, angle2, 360 - sweepAngle);
+                else
+                    graphics.DrawArc(pen, rect, angle1, sweepAngle);
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Рисуем дугу, с центром, проходящую из начала, к концу
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="center"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public static void DrawArcByCenterStartEnd(this DrawControl drawControl, Graphics graphics, Pen pen, PointF center, PointF start, PointF end)
+        {
+            var r = center.Vector(start).Length();
+            var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
+            try
+            {
+                #region блок коррекции углов дуги
+                var angle1 = start.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+                var angle2 = end.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+                if (angle2 < angle1) angle2 += 360f;
+                var sweepAngle = angle2 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+                if (angle1 > angle2) sweepAngle = -360f + sweepAngle;
+                #endregion блок коррекции углов дуги
+
                 if (drawControl.CtrlPressed)    // разворот направления рисования
                     graphics.DrawArc(pen, rect, angle2, 360 - sweepAngle);
                 else

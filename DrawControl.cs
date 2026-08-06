@@ -67,6 +67,7 @@ namespace PetProj
         private readonly BuildRectangleController buildRectangleController;
         private readonly BuildArcByThreePointsController buildArcByThreePointsController;
         private readonly BuildArcByStartCenterEndController buildArcByStartCenterEndController;
+        private readonly BuildArcByCenterStartEndController buildArcByCenterStartrEndController;
 
         public DrawControl()
         {
@@ -82,6 +83,7 @@ namespace PetProj
             buildRectangleController = new BuildRectangleController(this, zoomPad);
             buildArcByThreePointsController = new BuildArcByThreePointsController(this, zoomPad);
             buildArcByStartCenterEndController = new BuildArcByStartCenterEndController(this, zoomPad);
+            buildArcByCenterStartrEndController = new BuildArcByCenterStartEndController(this, zoomPad);
         }
 
         private void BuildInterface()
@@ -595,6 +597,27 @@ namespace PetProj
                 undoRedoManager.Execute(new CreateFigureCommand(figures, arc));
         }
 
+        public void AddArcByCenterStartEnd(PointF center, PointF start, PointF end)
+        {
+            var radius = center.Vector(start).Length();
+
+            #region блок коррекции углов дуги
+
+            var angle1 = start.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+            var angle2 = end.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+            if (angle2 < angle1) angle2 += 360f;
+            var sweepAngle = angle2 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            if (angle1 > angle2) sweepAngle = -360f + sweepAngle;
+
+            #endregion блок коррекции углов дуги
+
+            if (CtrlPressed)
+                AddArc(center, radius, angle2, 360f - sweepAngle);
+            else
+                AddArc(center, radius, angle1, sweepAngle);
+
+        }
+
         public void AddArcByStartCenterEnd(PointF start, PointF center, PointF end)
         {
             var radius = center.Vector(start).Length();
@@ -916,6 +939,8 @@ namespace PetProj
             buildLineController.SetParameters(strings);
             buildRectangleController.SetParameters(strings);
             buildArcByThreePointsController.SetParameters(strings);
+            buildArcByStartCenterEndController.SetParameters(strings);
+            buildArcByCenterStartrEndController.SetParameters(strings);
             switch (editorMode)
             {
                 case EditorMode.MoveSelected:
