@@ -42,6 +42,10 @@ namespace PetProj
 
         private readonly UndoRedoManager undoRedoManager;
 
+        public bool CtrlPressed => ModifierKeys.HasFlag(Keys.Control);
+        public bool ShiftPressed => ModifierKeys.HasFlag(Keys.Shift);
+        public bool AltPressed => ModifierKeys.HasFlag(Keys.Alt);
+
         public bool Changed { get; set; }
         public SelectionController SelectionController => selectionController;
 
@@ -62,6 +66,7 @@ namespace PetProj
         private readonly BuildLineController buildLineController;
         private readonly BuildRectangleController buildRectangleController;
         private readonly BuildArcByThreePointsController buildArcByThreePointsController;
+        private readonly BuildArcByStartCenterEndController buildArcByStartCenterEndController;
 
         public DrawControl()
         {
@@ -76,6 +81,7 @@ namespace PetProj
             buildLineController = new BuildLineController(this, zoomPad);
             buildRectangleController = new BuildRectangleController(this, zoomPad);
             buildArcByThreePointsController = new BuildArcByThreePointsController(this, zoomPad);
+            buildArcByStartCenterEndController = new BuildArcByStartCenterEndController(this, zoomPad);
         }
 
         private void BuildInterface()
@@ -589,7 +595,28 @@ namespace PetProj
                 undoRedoManager.Execute(new CreateFigureCommand(figures, arc));
         }
 
-        public void AddArc(PointF pt1, PointF pt2, PointF pt3)
+        public void AddArcByStartCenterEnd(PointF start, PointF center, PointF end)
+        {
+            var radius = center.Vector(start).Length();
+            
+            #region блок коррекции углов дуги
+
+            var angle1 = start.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+            var angle2 = end.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+            if (angle2 < angle1) angle2 += 360f;
+            var sweepAngle = angle2 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            if (angle1 > angle2) sweepAngle = -360f + sweepAngle;
+
+            #endregion блок коррекции углов дуги
+
+            if (CtrlPressed)
+                AddArc(center, radius, angle2, 360f - sweepAngle);
+            else
+                AddArc(center, radius, angle1, sweepAngle);
+
+        }
+
+        public void AddArcByThreePoints(PointF pt1, PointF pt2, PointF pt3)
         {
             float mx1 = (pt1.X + pt2.X) / 2f;
             float my1 = (pt1.Y + pt2.Y) / 2f;

@@ -722,12 +722,15 @@
             this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
             this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
             this.tsmiBuildArcByThreePoints.Text = "Три точки";
+            this.tsmiBuildArcByThreePoints.Click += new System.EventHandler(this.tsmiBuildArcByThreePoints_Click);
             // 
             // tsmiBuildArcByBeginCenterEnd
             // 
+            this.tsmiBuildArcByBeginCenterEnd.Image = global::PetProj.Properties.Resources.arcSCE;
             this.tsmiBuildArcByBeginCenterEnd.Name = "tsmiBuildArcByBeginCenterEnd";
             this.tsmiBuildArcByBeginCenterEnd.Size = new System.Drawing.Size(193, 22);
             this.tsmiBuildArcByBeginCenterEnd.Text = "Начало, центр, конец";
+            this.tsmiBuildArcByBeginCenterEnd.Click += new System.EventHandler(this.tsmiBuildArcByBeginCenterEnd_Click);
             // 
             // началоЦентрУголToolStripMenuItem
             // 

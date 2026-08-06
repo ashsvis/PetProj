@@ -290,7 +290,7 @@ namespace PetProj
             else if (sender == tsbArc)
             {
                 SwitchOffButtons();
-                drawControl.SetMode(EditorMode.BuildArcThreePoints);
+                drawControl.SetMode((EditorMode)(tsbArc.Tag ?? EditorMode.BuildArcThreePoints));
                 tsbArc.Checked = true;
             }
             else if (sender == tsbMove)
@@ -617,6 +617,24 @@ namespace PetProj
                         drawControl.SetParameters(new string[] { tstbTextParam1.Text, tstbTextParam2.Text });
                     break;
             }
+        }
+
+        private void tsmiBuildArcByThreePoints_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildArcThreePoints);
+            tsbArc.Image = ((ToolStripMenuItem)sender).Image;
+            tsbArc.Tag = EditorMode.BuildArcThreePoints;
+            tsbArc.Checked = true;
+        }
+
+        private void tsmiBuildArcByBeginCenterEnd_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildArcStartCenterEnd);
+            tsbArc.Image = ((ToolStripMenuItem)sender).Image;
+            tsbArc.Tag = EditorMode.BuildArcStartCenterEnd;
+            tsbArc.Checked = true;
         }
     }
 }

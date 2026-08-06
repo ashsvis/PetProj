@@ -66,6 +66,7 @@
     <Compile Include="Common\ParseHelper.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
+    <Compile Include="Controllers\BuildArcByStartCenterEndController.cs" />
     <Compile Include="Controllers\BuildArcByThreePointsController.cs" />
     <Compile Include="Controllers\BuildLineController.cs" />
     <Compile Include="Controllers\BuildRectangleController.cs" />
@@ -244,6 +245,7 @@
     <None Include="Resources\tangentmarker.png" />
     <None Include="Resources\quadrant.png" />
     <None Include="Resources\tangent.png" />
+    <None Include="Resources\arcSCE.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

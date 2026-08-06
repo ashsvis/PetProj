@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace PetProj.Controllers
 {
-    public class BuildArcByThreePointsController : IBuildFigureController
+    public class BuildArcByStartCenterEndController : IBuildFigureController
     {
         private readonly DrawControl drawer;
         private readonly Control zoomer;
 
-        public BuildArcByThreePointsController(DrawControl drawer, Control zoomer)
+        public BuildArcByStartCenterEndController(DrawControl drawer, Control zoomer)
         {
             this.drawer = drawer;
             this.zoomer = zoomer;
@@ -23,14 +23,15 @@ namespace PetProj.Controllers
 
         public void Container_Paint(object sender, PaintEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcThreePoints)
+            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
             {
                 var zoom = drawer.Zoom;
                 if (drawer.IsDynamicalEnter)
                 {
                     var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
-                    var text = (drawer.MouseClickCount == 0 
-                        ? $"Начальная точка дуги " : drawer.MouseClickCount == 1 ? $"Вторая точка дуги " : "Конечная точка дуги") + $" X:{pt.X} Y:{pt.Y}";
+                    var text = (drawer.MouseClickCount == 0
+                        ? $"Начальная точка дуги " : drawer.MouseClickCount == 1 
+                              ? $"Центральная точка дуги " : "Конечная точка дуги (удерживайте CTRL для изменения направления)") + $" X:{pt.X} Y:{pt.Y}";
                     using (var pen = new Pen(Color.Black, zoom))
                     using (var font = new Font("Arial", (float)(10f / zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black, drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
@@ -44,12 +45,6 @@ namespace PetProj.Controllers
                 {
                     using (var pen = new Pen(Color.Orange, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
                         drawer.DrawRibbonLine(e.Graphics, pen, drawer.SecondMouseDown, drawer.CurrentMousePosition, false);
-
-                    if (drawer.IsDynamicalEnter)
-                    {
-                        using (var dynpen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
-                            drawer.DrawSizeLine(e.Graphics, dynpen, drawer.SecondMouseDown, drawer.CurrentMousePosition, (float)(50f / zoom));
-                    }
                     using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
                         drawer.DrawRibbonArc(e.Graphics, pen, drawer.FirstMouseDown, drawer.SecondMouseDown, drawer.CurrentMousePosition);
                 }
@@ -58,7 +53,7 @@ namespace PetProj.Controllers
 
         public void Container_MouseDown(object sender, MouseEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcThreePoints)
+            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
             {
                 var mousePosition = e.Location;
                 if (drawer.MouseClickCount == 1)
@@ -69,7 +64,7 @@ namespace PetProj.Controllers
                     pt = drawer.FindOrthoPoint(pt);
                     drawer.SecondMouseDown = pt;
                     drawer.AddMouseCount();
-                }    
+                }
                 else if (drawer.MouseClickCount == 2)
                 {
                     // построение дуги трём точкам 
@@ -79,7 +74,7 @@ namespace PetProj.Controllers
                     // поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt3 = drawer.FindBindingPoint(pt3);
 
-                    drawer.AddArcByThreePoints(pt1, pt2, pt3);
+                    drawer.AddArcByStartCenterEnd(pt1, pt2, pt3);
 
                     drawer.SelectionController.Selection.Clear();
                     drawer.ClearMouseCount();
@@ -90,7 +85,7 @@ namespace PetProj.Controllers
 
         public void Container_MouseMove(object sender, MouseEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcThreePoints)
+            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
             {
                 if (e.Button == MouseButtons.None)
                 {
@@ -114,7 +109,7 @@ namespace PetProj.Controllers
 
         public void SetParameters(string[] strings)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcThreePoints)
+            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
             {
                 //if (strings.Length == 2)
                 //{

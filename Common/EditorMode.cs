@@ -6,6 +6,7 @@
         BuildLines,
         BuildRectangle,
         BuildArcThreePoints,
+        BuildArcStartCenterEnd,
         MoveSelected,
         MoveCopySelected,
         MoveMarkers,
