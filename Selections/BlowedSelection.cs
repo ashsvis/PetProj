@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace PetProj.Selections
 {
@@ -66,34 +67,17 @@ namespace PetProj.Selections
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics, Color color, float zoomScale)
+        public void Render(Graphics graphics, Color color, float zoomScale, Selection selection)
         {
-            foreach (var figure in selected)
+            foreach (var figure in selected.Where(x => !selection.Contains(x)))
             {
-                var blowedColor = Color.White;
+                var blowedColor = color;
                 // получаем путь для рисования методом фигуры
                 using (var path = figure.Geometry.Path)
                 {
-                    using (var pen = new Pen(/*figure.Style.BorderStyle.Color*/blowedColor, (figure.Style.BorderStyle.Width + 2f) / zoomScale))
+                    using (var pen = new Pen(blowedColor, (figure.Style.BorderStyle.Width + 2f) / zoomScale))
                     {
                         graphics.DrawPath(pen, path);
-                        //using (var blowedPen = new Pen(blowedColor, pen.Width / zoomScale))
-                        //{
-                        //    blowedPen.StartCap = LineCap.Round;
-                        //    blowedPen.EndCap = LineCap.Round;
-                        //    var width = 2f / zoomScale;
-                        //    var i = 0f;
-
-                            
-                        //    while (i < width)
-                        //    {
-                        //        blowedPen.Color = blowedColor;
-                        //        blowedPen.Width += 0.6f;
-                        //        graphics.DrawPath(blowedPen, path);
-                        //        blowedColor = Color.FromArgb(blowedColor.A / 2, blowedColor);
-                        //        i += 1f / zoomScale;
-                        //    }
-                        //}
                     }
                 }
             }
