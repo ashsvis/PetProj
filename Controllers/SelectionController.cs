@@ -375,7 +375,7 @@ namespace PetProj.Controllers
                     if (allowed.HasFlag(AllowedObjectBindings.Normal))
                     {
                         // проекция точки проходит также через центр дуги
-                        if (PointFExtension.ProjectPointOnArc(arc, basePoint, out PointF[] normals))
+                        if (PointFExtension.NormalPointOnArc(arc, basePoint, out PointF[] normals))
                         {
                             foreach (var point in normals)
                                 BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));

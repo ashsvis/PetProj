@@ -233,7 +233,7 @@ namespace PetProj.Common
             return true;
         }
 
-        public static bool ProjectPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norms)
+        public static bool NormalPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norms)
         {
             norms = new PointF[] { };
             if (basePoint == arc.CenterPoint || arc.Radius <= 0)
@@ -311,11 +311,17 @@ namespace PetProj.Common
             // Шаг 4: Координаты точек касания
             double tx1 = cx + radius * Math.Cos(angleOC + angle);
             double ty1 = cy + radius * Math.Sin(angleOC + angle);
+            var point1 = new PointF((float)tx1, (float)ty1);
 
             double tx2 = cx + radius * Math.Cos(angleOC - angle);
             double ty2 = cy + radius * Math.Sin(angleOC - angle);
+            var point2 = new PointF((float)tx2, (float)ty2);
 
-            var list = new List<PointF>() { new PointF((float)tx1, (float)ty1), new PointF((float)tx2, (float)ty2) };
+            var list = new List<PointF>
+            {
+                point1,
+                point2
+            };
 
             tangents = list.ToArray();
             return true;
