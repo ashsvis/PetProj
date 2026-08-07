@@ -79,7 +79,9 @@ namespace PetProj.Styles
         public Pen GetPen(Figure figure)
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
-            return new Pen(Color.FromArgb(Opacity, Color), Width) { DashStyle = DashStyle };
+            var pen = new Pen(Color.FromArgb(Opacity, Color), Width);
+            if (DashStyle >= 0) pen.DashStyle = DashStyle;
+            return pen;
         }
 
         public Border DeepCopy()

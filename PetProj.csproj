@@ -248,6 +248,8 @@
     <None Include="Resources\tangent.png" />
     <None Include="Resources\arcSCE.png" />
     <None Include="Resources\arcCSE.png" />
+    <None Include="Resources\transparent.png" />
+    <None Include="Resources\transparent4.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

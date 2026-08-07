@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbColor = new System.Windows.Forms.Label();
             this.cbVisible = new System.Windows.Forms.CheckBox();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.cbPattern = new System.Windows.Forms.ComboBox();
@@ -40,22 +39,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
+            this.lbColor = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbColor
-            // 
-            this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(103, 53);
-            this.lbColor.Margin = new System.Windows.Forms.Padding(1);
-            this.lbColor.Name = "lbColor";
-            this.lbColor.Size = new System.Drawing.Size(45, 19);
-            this.lbColor.TabIndex = 1;
-            this.lbColor.BackColorChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
-            this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
             // 
             // cbVisible
             // 
@@ -70,7 +58,7 @@
             // 
             // nudWidth
             // 
-            this.nudWidth.Location = new System.Drawing.Point(103, 101);
+            this.nudWidth.Location = new System.Drawing.Point(103, 102);
             this.nudWidth.Margin = new System.Windows.Forms.Padding(1);
             this.nudWidth.Name = "nudWidth";
             this.nudWidth.Size = new System.Drawing.Size(64, 23);
@@ -82,7 +70,7 @@
             this.cbPattern.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbPattern.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPattern.FormattingEnabled = true;
-            this.cbPattern.Location = new System.Drawing.Point(103, 127);
+            this.cbPattern.Location = new System.Drawing.Point(103, 128);
             this.cbPattern.Margin = new System.Windows.Forms.Padding(1);
             this.cbPattern.Name = "cbPattern";
             this.cbPattern.Size = new System.Drawing.Size(63, 24);
@@ -94,7 +82,7 @@
             // 
             this.lbPattern.AutoSize = true;
             this.lbPattern.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbPattern.Location = new System.Drawing.Point(1, 128);
+            this.lbPattern.Location = new System.Drawing.Point(1, 129);
             this.lbPattern.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbPattern.Name = "lbPattern";
             this.lbPattern.Size = new System.Drawing.Size(100, 24);
@@ -106,7 +94,7 @@
             // 
             this.lbWidth.AutoSize = true;
             this.lbWidth.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbWidth.Location = new System.Drawing.Point(1, 102);
+            this.lbWidth.Location = new System.Drawing.Point(1, 103);
             this.lbWidth.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbWidth.Name = "lbWidth";
             this.lbWidth.Size = new System.Drawing.Size(100, 23);
@@ -118,7 +106,7 @@
             // 
             this.lbOpacity.AutoSize = true;
             this.lbOpacity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOpacity.Location = new System.Drawing.Point(1, 76);
+            this.lbOpacity.Location = new System.Drawing.Point(1, 77);
             this.lbOpacity.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbOpacity.Name = "lbOpacity";
             this.lbOpacity.Size = new System.Drawing.Size(100, 23);
@@ -128,7 +116,7 @@
             // 
             // nudOpacity
             // 
-            this.nudOpacity.Location = new System.Drawing.Point(103, 75);
+            this.nudOpacity.Location = new System.Drawing.Point(103, 76);
             this.nudOpacity.Margin = new System.Windows.Forms.Padding(1);
             this.nudOpacity.Maximum = new decimal(new int[] {
             255,
@@ -136,7 +124,7 @@
             0,
             0});
             this.nudOpacity.Name = "nudOpacity";
-            this.nudOpacity.Size = new System.Drawing.Size(47, 23);
+            this.nudOpacity.Size = new System.Drawing.Size(63, 23);
             this.nudOpacity.TabIndex = 3;
             this.nudOpacity.Value = new decimal(new int[] {
             255,
@@ -175,7 +163,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 153);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 154);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
             // label1
@@ -216,6 +204,20 @@
             this.labelCaption.Text = "Контур";
             this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lbColor
+            // 
+            this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbColor.Image = global::PetProj.Properties.Resources.transparent4;
+            this.lbColor.Location = new System.Drawing.Point(103, 55);
+            this.lbColor.Margin = new System.Windows.Forms.Padding(1, 3, 1, 3);
+            this.lbColor.Name = "lbColor";
+            this.lbColor.Size = new System.Drawing.Size(64, 16);
+            this.lbColor.TabIndex = 1;
+            this.lbColor.BackColorChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
+            // 
             // BorderStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -225,7 +227,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 0, 2, 2);
             this.Name = "BorderStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(200, 153);
+            this.Size = new System.Drawing.Size(200, 154);
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);

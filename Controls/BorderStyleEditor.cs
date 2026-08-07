@@ -52,11 +52,31 @@ namespace PetProj.Controls
             // копируем свойства объекта в GUI
             updating++;
 
-            cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle, DashStyle.Solid);
+            //cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle, DashStyle.Solid);
+            if (borderStyles.GetProperty(f => f.DashStyle, out DashStyle style))
+                cbPattern.SelectedIndex = (int)style;
+            else
+                cbPattern.SelectedIndex = -1;
             nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 0);
             nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
-            lbColor.BackColor = borderStyles.GetProperty(f => f.Color, Color.Gray);
-            cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible, true);
+            //lbColor.BackColor = borderStyles.GetProperty(f => f.Color, Color.Transparent);
+            if (borderStyles.GetProperty(f => f.Color, out Color color))
+            {
+                lbColor.BackColor = color;
+                lbColor.Tag = color;
+                lbColor.Image = null;
+            }
+            else
+            {
+                lbColor.BackColor = Color.Turquoise;
+                lbColor.Tag = null;
+                lbColor.Image = Properties.Resources.transparent4;
+            }
+            //cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible, true);
+            if (borderStyles.GetProperty(f => f.IsVisible, out bool visible))
+                cbVisible.Checked = visible;
+            else
+                cbVisible.CheckState = CheckState.Indeterminate;
 
             updating--;
         }
@@ -72,11 +92,17 @@ namespace PetProj.Controls
             var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
 
             // посылаем значения назад из GUI в объект
-            borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
+            if (cbPattern.SelectedIndex >= 0)
+                borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
+
             borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
             borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
-            borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
-            borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
+            
+            if (lbColor.Tag != null)
+                borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
+
+            if (cbVisible.CheckState != CheckState.Indeterminate)
+                borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
 
             // вызывем событие
             Changed(this, EventArgs.Empty);
@@ -103,12 +129,15 @@ namespace PetProj.Controls
             e.DrawBackground();
             var rect = new Rectangle(e.Bounds.X, e.Bounds.Top, e.Bounds.Width - 1, e.Bounds.Height - 1);
             rect.Inflate(-4, 0);
-            using (var p = new Pen(e.ForeColor))
+            if (e.Index >= 0)
             {
-                p.Width = 2;
-                p.DashStyle = (DashStyle) e.Index;
-                g.DrawLine(p, new Point(rect.Left, rect.Top + rect.Height/2),
-                           new Point(rect.Right, rect.Top + rect.Height/2));
+                using (var p = new Pen(e.ForeColor))
+                {
+                    p.Width = 2;
+                    p.DashStyle = (DashStyle)e.Index;
+                    g.DrawLine(p, new Point(rect.Left, rect.Top + rect.Height / 2),
+                               new Point(rect.Right, rect.Top + rect.Height / 2));
+                }
             }
             e.DrawFocusRectangle();
         }

@@ -16,8 +16,7 @@ namespace PetProj.Controls
         /// Returns value of property if all of objects contain same value.
         /// Returns default(T) if objects contains different values
         /// </returns>
-        public static T GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector,
-            T defaultValue = default)
+        public static T GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector, T defaultValue = default)
         {
             T result = defaultValue;
             var isAssigned = false;
@@ -37,6 +36,31 @@ namespace PetProj.Controls
             }
 
             return result;
+        }
+
+        public static bool GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector, out T value, T defaultValue = default)
+        {
+            T result = defaultValue;
+            var isAssigned = false;
+
+            foreach (var val in list.Select(selector))
+            {
+                if (!isAssigned)
+                {
+                    result = val;
+                    isAssigned = true;
+                }
+                else
+                {
+                    if (!Equals(result, val))
+                    {
+                        value = defaultValue;
+                        return false;
+                    }
+                }
+            }
+            value = result;
+            return true;
         }
 
         /// <summary>
