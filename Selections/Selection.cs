@@ -70,7 +70,7 @@ namespace PetProj.Selections
         {
             figure = null;
             var found = false;
-            using (var pen = new Pen(Color.Black, 5f / kf))
+            using (var pen = new Pen(Color.Black, 1f / kf))
             {
                 // просмотр начинаем с конца списка - там самые "верхние" фигуры
                 for (var i = figures.Count - 1; i >= 0; i--)

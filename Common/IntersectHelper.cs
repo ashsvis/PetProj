@@ -24,18 +24,18 @@ namespace PetProj.Common
                 using (var path = new GraphicsPath())
                 {
                     path.AddRectangle(rect);
-                    using (var pen = new Pen(Color.Black, 2f * kf))
+                    using (var pen = new Pen(Color.Black, 0))
                     {
                         pen.StartCap = LineCap.Round;
                         pen.EndCap = LineCap.Round;
-                        if (path.IsVisible(point) || path.IsOutlineVisible(point, pen))
+                        if (/*path.IsVisible(point) || */path.IsOutlineVisible(point, pen))
                             return true;
                     }
                 }
             }
             using (var path = figure.GetRendererPath())
             {
-                using (var pen = new Pen(Color.Black, 2f * kf))
+                using (var pen = new Pen(Color.Black, 0))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;

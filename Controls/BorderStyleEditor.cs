@@ -68,7 +68,7 @@ namespace PetProj.Controls
             }
             else
             {
-                lbColor.BackColor = Color.Turquoise;
+                lbColor.BackColor = Color.Transparent;
                 lbColor.Tag = null;
                 lbColor.Image = Properties.Resources.transparent4;
             }
@@ -119,7 +119,12 @@ namespace PetProj.Controls
         {
             var dlg = new ColorDialog { Color = lbColor.BackColor };
             if (dlg.ShowDialog() == DialogResult.OK)
+            {
                 lbColor.BackColor = dlg.Color;
+                lbColor.Tag = dlg.Color;
+                lbColor.Image = null;
+                UpdateObject();
+            }
         }
 
         private void cbPattern_DrawItem(object sender, DrawItemEventArgs e)

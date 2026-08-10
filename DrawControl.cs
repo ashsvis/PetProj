@@ -500,7 +500,7 @@ namespace PetProj
             {
                 // определение фигуры непосредственно под курсором
                 underCursor.Clear();
-                var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(8f / zoomPad.ZoomScale)));
+                var fig = figures.LastOrDefault(x => x.Contains(pt, (float)(1f / zoomPad.ZoomScale)));
                 if (fig != null)
                 {
                     underCursor.Add(fig);
