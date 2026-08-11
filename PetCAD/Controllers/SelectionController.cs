@@ -130,7 +130,7 @@ namespace PetCAD.Controllers
 
         }
 
-        public void SelectUnselectByFrame(int width, int height, List<Figure> figures, Keys modifierKeys, bool selMode, RectangleF rectangle,
+        public void SelectUnselectByFrame(int width, int height, List<Figure> figures, bool shiftPressed, bool selMode, RectangleF rectangle,
             Action<IListManage, Figure> onSelect, Action<IListManage, Figure> onUnselect)
         {
             using (var image = new Bitmap(width, height))
@@ -145,7 +145,7 @@ namespace PetCAD.Controllers
                             // захватываем рамкой объекты даже частично
                             if (fig.Intersects(rectangle))
                             {
-                                if (modifierKeys.HasFlag(Keys.Shift))
+                                if (shiftPressed)
                                     onUnselect(this.Selection, fig);
                                 else
                                     onSelect(this.Selection, fig);
@@ -157,7 +157,7 @@ namespace PetCAD.Controllers
                             // захватываем рамкой объекты целиком
                             if (fig.Contains(rectangle))
                             {
-                                if (modifierKeys.HasFlag(Keys.Shift))
+                                if (shiftPressed)
                                     onUnselect(this.Selection, fig);
                                 else
                                     onSelect(this.Selection, fig);
@@ -302,6 +302,10 @@ namespace PetCAD.Controllers
                         Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.MiddlePoint, 2));
                         Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.EndPoint, 3));
                     }
+                    else if (fig.Geometry is BlockGeometry block)
+                    {
+                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, block.InsertPoint, 0));
+                    }
                 }
             }
         }
@@ -388,6 +392,75 @@ namespace PetCAD.Controllers
                         {
                             foreach (var point in tangents)
                                 BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingTangent, point));
+                        }
+                    }
+                }
+                else if (fig.Geometry is BlockGeometry block)
+                {
+                    foreach (var f in block.GetFigures())
+                    {
+                        if (f.Geometry is LineGeometry seg)
+                        {
+                            var pt1 = seg.StartPoint;
+                            var pt2 = seg.EndPoint;
+                            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+                            {
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
+                            }
+                            if (allowed.HasFlag(AllowedObjectBindings.Middle))
+                            {
+                                var mid = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
+                            }
+                        }
+                        else if (f.Geometry is ArcGeometry ar)
+                        {
+                            // поиск центра дуги
+                            if (allowed.HasFlag(AllowedObjectBindings.Center))
+                            {
+                                var center = ar.CenterPoint;
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingCenter, center));
+                            }
+                            var pt1 = ar.StartPoint;
+                            var pt2 = ar.EndPoint;
+                            // поиск конечных точек
+                            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+                            {
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
+                            }
+                            // поиск средней точки на дуге
+                            if (allowed.HasFlag(AllowedObjectBindings.Middle))
+                            {
+                                var mid = ar.MiddlePoint;
+                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
+                            }
+                            // поиск доступных квадрантов
+                            if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
+                            {
+                                foreach (var quadrantPoint in ar.QuadrantPoints)
+                                    BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingQuadrant, quadrantPoint));
+                            }
+                            // поиск проекций базовой точки на дугу
+                            if (allowed.HasFlag(AllowedObjectBindings.Normal))
+                            {
+                                // проекция точки проходит также через центр дуги
+                                if (PointFExtension.NormalPointOnArc(ar, basePoint, out PointF[] normals))
+                                {
+                                    foreach (var point in normals)
+                                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));
+                                }
+                            }
+                            // поиск точек касания от базовой точки к дуге 
+                            if (allowed.HasFlag(AllowedObjectBindings.Tangent))
+                            {
+                                if (PointFExtension.TangentPointOnArc(ar, basePoint, out PointF[] tangents))
+                                {
+                                    foreach (var point in tangents)
+                                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingTangent, point));
+                                }
+                            }
                         }
                     }
                 }

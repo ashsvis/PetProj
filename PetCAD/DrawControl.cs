@@ -37,16 +37,21 @@ namespace PetCAD
         private readonly BlowedSelection underCursor = new BlowedSelection();
 
         private readonly List<Figure> figures = new List<Figure>();
+        private readonly List<Figure> blocks = new List<Figure>();
         private readonly SelectionController selectionController;
         private readonly List<Marker> markers = new List<Marker>();
 
         private readonly UndoRedoManager undoRedoManager;
+        public UndoRedoManager UndoRedoManager => undoRedoManager;
 
         public bool CtrlPressed => ModifierKeys.HasFlag(Keys.Control);
         public bool ShiftPressed => ModifierKeys.HasFlag(Keys.Shift);
         public bool AltPressed => ModifierKeys.HasFlag(Keys.Alt);
 
         public bool Changed { get; set; }
+
+        public List<Figure> Figures => figures;
+        public List<Figure> Blocks => blocks;
         public SelectionController SelectionController => selectionController;
 
         public event EventHandler OnSelectionMode;
@@ -288,7 +293,7 @@ namespace PetCAD
                         var selMode = pt1.X > pt2.X;
                         var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                             Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                        selectionController.SelectUnselectByFrame(Width, Height, figures, ModifierKeys, selMode, rectangle,
+                        selectionController.SelectUnselectByFrame(Width, Height, figures, ShiftPressed, selMode, rectangle,
                                 (manager, fig) =>
                                 {
                                     if (!selectionController.Selection.Contains(fig))
@@ -484,7 +489,7 @@ namespace PetCAD
                 var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                     Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
                 underCursor.Clear();
-                selectionController.SelectUnselectByFrame(Width, Height, figures, ModifierKeys, selMode, rectangle,
+                selectionController.SelectUnselectByFrame(Width, Height, figures, ShiftPressed, selMode, rectangle,
                         (manager, fig) =>
                         {
                             if (!underCursor.Contains(fig))
@@ -544,6 +549,29 @@ namespace PetCAD
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
             zoomPad.Invalidate();
+        }
+
+        public Figure AddBlock(string name, PointF basePoint, Figure[] figures)
+        {
+            Figure block = new Figure();
+            block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
+            block.Style.FillStyle.IsVisible = false;
+            FigureBuilder.BuildBlockGeometry(name, block, basePoint, figures);
+            blocks.Add(block);
+            return block;
+        }
+
+        public void InsertBlock(PointF insertPoint, string blockName)
+        {
+            Figure block = new Figure();
+            block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
+            block.Style.FillStyle.IsVisible = false;
+            FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint);
+            if (block.Geometry is BlockGeometry blockGeometry)
+            {
+                blockGeometry.InsertPoint = insertPoint;
+                undoRedoManager.Execute(new CreateFigureCommand(figures, block));
+            }
         }
 
         /// <summary>

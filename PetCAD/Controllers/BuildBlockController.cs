@@ -1,8 +1,13 @@
-﻿using PetCAD.Common;
+﻿using PetCAD.Commands;
+using PetCAD.Common;
+using PetCAD.Figures;
 using PetCAD.Renderers;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace PetCAD.Controllers
 {
@@ -73,15 +78,39 @@ namespace PetCAD.Controllers
                 else if (drawer.MouseClickCount == 2)
                 {
                     // построение дуги трём точкам 
-                    var pt1 = drawer.FirstMouseDown; // первая точка нажатия (базовая точка вставки блока)
-                    var pt2 = drawer.SecondMouseDown; // вторая точка нажатия (первый угол рамки выделения)
-                    var pt3 = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия (другой угол рамки выделения)
+                    var ptBaseInsert = drawer.FirstMouseDown; // первая точка нажатия (базовая точка вставки блока)
+                    var ptFirstSelectCorner = drawer.SecondMouseDown; // вторая точка нажатия (первый угол рамки выделения)
+                    var ptSecondSelectCorner = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия (другой угол рамки выделения)
                     // поиск ближайшей точки привязки, если включен режим объектной привязки
-                    pt3 = drawer.FindBindingPoint(pt3);
+                    ptSecondSelectCorner = drawer.FindBindingPoint(ptSecondSelectCorner);
+
+                    var selMode = ptFirstSelectCorner.X > ptSecondSelectCorner.X;
+                    var rectangle = new RectangleF(Math.Min(ptFirstSelectCorner.X, ptSecondSelectCorner.X), Math.Min(ptFirstSelectCorner.Y, ptSecondSelectCorner.Y),
+                        Math.Abs(ptFirstSelectCorner.X - ptSecondSelectCorner.X), Math.Abs(ptFirstSelectCorner.Y - ptSecondSelectCorner.Y));
+                    var list = new List<Figure>();
+                    drawer.SelectionController.Selection.Clear();
+                    drawer.SelectionController.SelectUnselectByFrame(drawer.Width, drawer.Height, drawer.Figures, drawer.ShiftPressed, selMode, rectangle,
+                            (manager, fig) =>
+                            {
+                                if (!list.Contains(fig))
+                                    list.Add(fig);
+                            },
+                            (manager, fig) =>
+                            {
+                                if (list.Contains(fig))
+                                    list.Remove(fig);
+                            }
+                        );
 
                     // создание блока здесь
+                    if (list.Count > 0)
+                    {
+                        var block = drawer.AddBlock("Block", ptBaseInsert, list.ToArray());
+                        drawer.InsertBlock(ptBaseInsert, "Block");
 
-                    drawer.SelectionController.Selection.Clear();
+                        foreach (Figure fig in list)
+                            drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
+                    }
                     drawer.ClearMouseCount();
                     drawer.SetMode(EditorMode.Selection);
                     drawer.Changed = true;

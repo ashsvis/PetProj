@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Common\EditorMode.cs" />
     <Compile Include="Figures\AllowedMarkerOperations.cs" />
+    <Compile Include="Geometries\BlockGeometry.cs" />
     <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
     <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
     <Compile Include="ObjectBindings\BindingQudrantMarker.cs" />
