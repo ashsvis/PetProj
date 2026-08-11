@@ -73,7 +73,8 @@ namespace PetCAD
         private readonly BuildArcByThreePointsController buildArcByThreePointsController;
         private readonly BuildArcByStartCenterEndController buildArcByStartCenterEndController;
         private readonly BuildArcByCenterStartEndController buildArcByCenterStartrEndController;
-        private readonly BuildBlockController buildBlockController;
+        private readonly BuildBlockCreateController buildBlockCreateController;
+        private readonly BuildBlockInsertController buildBlockInsertController;
 
         public DrawControl()
         {
@@ -90,7 +91,8 @@ namespace PetCAD
             buildArcByThreePointsController = new BuildArcByThreePointsController(this, zoomPad);
             buildArcByStartCenterEndController = new BuildArcByStartCenterEndController(this, zoomPad);
             buildArcByCenterStartrEndController = new BuildArcByCenterStartEndController(this, zoomPad);
-            buildBlockController = new BuildBlockController(this, zoomPad);
+            buildBlockCreateController = new BuildBlockCreateController(this, zoomPad);
+            buildBlockInsertController = new BuildBlockInsertController(this, zoomPad);
         }
 
         private void BuildInterface()
@@ -971,7 +973,8 @@ namespace PetCAD
             buildArcByThreePointsController.SetParameters(strings);
             buildArcByStartCenterEndController.SetParameters(strings);
             buildArcByCenterStartrEndController.SetParameters(strings);
-            buildBlockController.SetParameters(strings);
+            buildBlockCreateController.SetParameters(strings);
+            buildBlockInsertController.SetParameters(strings);
             switch (editorMode)
             {
                 case EditorMode.MoveSelected:

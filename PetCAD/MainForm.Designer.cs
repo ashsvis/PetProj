@@ -59,6 +59,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
@@ -75,7 +76,6 @@
             this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
             this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
             this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOrto = new System.Windows.Forms.ToolStripButton();
             this.tsbDynamicalEnter = new System.Windows.Forms.ToolStripButton();
             this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
@@ -124,6 +124,7 @@
             this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBuildArcByBeginCenterEnd = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBuildArcByCenterBeginEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbInsertBlock = new PetCAD.ToolStripSplitButtonCheckable();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -343,7 +344,8 @@
             this.tsbRect,
             this.tsbArc,
             this.toolStripSeparator12,
-            this.tsbCreateBlock});
+            this.tsbCreateBlock,
+            this.tsbInsertBlock});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(916, 25);
@@ -374,6 +376,11 @@
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
             // 
             // statusStrip1
             // 
@@ -530,11 +537,6 @@
             this.tstbTextParam2.Size = new System.Drawing.Size(100, 25);
             this.tstbTextParam2.Text = "0";
             this.tstbTextParam2.Visible = false;
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbOrto
             // 
@@ -1003,6 +1005,17 @@
             this.tsmiBuildArcByCenterBeginEnd.Text = "Центр, начало, конец";
             this.tsmiBuildArcByCenterBeginEnd.Click += new System.EventHandler(this.tsmiBuildArcByCenterBeginEnd_Click);
             // 
+            // tsbInsertBlock
+            // 
+            this.tsbInsertBlock.Checked = false;
+            this.tsbInsertBlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbInsertBlock.Image = global::PetCAD.Properties.Resources.blockinsert;
+            this.tsbInsertBlock.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbInsertBlock.Name = "tsbInsertBlock";
+            this.tsbInsertBlock.Size = new System.Drawing.Size(32, 22);
+            this.tsbInsertBlock.Text = "Вставить блок";
+            this.tsbInsertBlock.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1139,6 +1152,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiBindToTangent;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripButton tsbCreateBlock;
+        private ToolStripSplitButtonCheckable tsbInsertBlock;
     }
 }
 

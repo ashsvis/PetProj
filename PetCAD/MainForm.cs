@@ -260,6 +260,7 @@ namespace PetCAD
             tsbRect.Checked = false;
             tsbArc.Checked = false;
             tsbCreateBlock.Checked = false;
+            tsbInsertBlock.Checked = false;
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
         }
@@ -299,6 +300,12 @@ namespace PetCAD
                 SwitchOffButtons();
                 drawControl.SetMode(EditorMode.BuildCreateBlock);
                 tsbCreateBlock.Checked = true;
+            }
+            else if (sender == tsbInsertBlock)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.BuildInsertBlock);
+                tsbInsertBlock.Checked = true;
             }
             else if (sender == tsbMove)
             {

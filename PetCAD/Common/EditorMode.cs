@@ -9,6 +9,7 @@
         BuildArcStartCenterEnd,
         BuildArcCenterStartEnd,
         BuildCreateBlock,
+        BuildInsertBlock,
         MoveSelected,
         MoveCopySelected,
         MoveMarkers,
