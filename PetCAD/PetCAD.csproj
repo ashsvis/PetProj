@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{13DAD82A-37A2-491A-B4A1-2CCD4EF2A94A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>PetCAD</RootNamespace>
+    <AssemblyName>PetCAD</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>чертилка.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ValueTuple" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\CreateFigureCommand.cs" />
+    <Compile Include="Commands\CreateFiguresCommand.cs" />
+    <Compile Include="Commands\MoveFiguresCommand.cs" />
+    <Compile Include="Commands\MoveMarkersCommand.cs" />
+    <Compile Include="Commands\RemoveFigureCommand.cs" />
+    <Compile Include="Common\ICommand.cs" />
+    <Compile Include="Common\ImageWrapper.cs" />
+    <Compile Include="Common\IntersectHelper.cs" />
+    <Compile Include="Common\IUndoRedoSupport.cs" />
+    <Compile Include="Common\ParseHelper.cs" />
+    <Compile Include="Common\PointFExtension.cs" />
+    <Compile Include="Common\UndoRedoManager.cs" />
+    <Compile Include="Controllers\BuildArcByCenterStartEndController.cs" />
+    <Compile Include="Controllers\BuildArcByStartCenterEndController.cs" />
+    <Compile Include="Controllers\BuildArcByThreePointsController.cs" />
+    <Compile Include="Controllers\BuildLineController.cs" />
+    <Compile Include="Controllers\BuildRectangleController.cs" />
+    <Compile Include="Controllers\IBuildFigureController.cs" />
+    <Compile Include="Controls\ArcGeometryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ArcGeometryEditor.Designer.cs">
+      <DependentUpon>ArcGeometryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PropertyCategoriesShower.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PropertyCategoriesShower.Designer.cs">
+      <DependentUpon>PropertyCategoriesShower.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LineGeometryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LineGeometryEditor.Designer.cs">
+      <DependentUpon>LineGeometryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BorderStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BorderStyleEditor.Designer.cs">
+      <DependentUpon>BorderStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ControlsHelper.cs" />
+    <Compile Include="Controls\IEditor.cs" />
+    <Compile Include="Dialogs\DrawingModesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DrawingModesForm.Designer.cs">
+      <DependentUpon>DrawingModesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DrawControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DrawControl.Designer.cs">
+      <DependentUpon>DrawControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\EditorMode.cs" />
+    <Compile Include="Figures\AllowedMarkerOperations.cs" />
+    <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
+    <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
+    <Compile Include="ObjectBindings\BindingQudrantMarker.cs" />
+    <Compile Include="Figures\CenterMarker.cs" />
+    <Compile Include="Figures\FigureBuilder.cs" />
+    <Compile Include="Figures\Marker.cs" />
+    <Compile Include="Common\MarkerType.cs" />
+    <Compile Include="ObjectBindings\BindingMiddleMarker.cs" />
+    <Compile Include="ObjectBindings\BindingTangentMarker.cs" />
+    <Compile Include="ObjectBindings\BindingVertexMarker.cs" />
+    <Compile Include="Figures\MiddleMarker.cs" />
+    <Compile Include="Figures\VertexMarker.cs" />
+    <Compile Include="Geometries\ArcGeometry.cs" />
+    <Compile Include="Geometries\LineGeometry.cs" />
+    <Compile Include="Geometries\AllowedGeometryOperations.cs" />
+    <Compile Include="Geometries\Geometry.cs" />
+    <Compile Include="Geometries\IMoveGeometry.cs" />
+    <Compile Include="Geometries\IMoveMarker.cs" />
+    <Compile Include="Geometries\PrimitiveGeometry.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Figures\Figure.cs" />
+    <Compile Include="ObjectBindings\AllowedObjectBindings.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\AllowedRendererDecorators.cs" />
+    <Compile Include="Renderers\DefaultRenderer.cs" />
+    <Compile Include="Renderers\DrawHelper.cs" />
+    <Compile Include="Renderers\GlowRendererDecorator.cs" />
+    <Compile Include="Renderers\IRendererPath.cs" />
+    <Compile Include="Renderers\Renderer.cs" />
+    <Compile Include="Renderers\RendererDecorator.cs" />
+    <Compile Include="Renderers\SegmentIntersection.cs" />
+    <Compile Include="Selections\BlowedSelection.cs" />
+    <Compile Include="Selections\IListManage.cs" />
+    <Compile Include="Selections\Selection.cs" />
+    <Compile Include="Controllers\SelectionController.cs" />
+    <Compile Include="Styles\AllowedFillDecorators.cs" />
+    <Compile Include="Styles\Border.cs" />
+    <Compile Include="Styles\DefaultFill.cs" />
+    <Compile Include="Styles\Fill.cs" />
+    <Compile Include="Styles\Style.cs" />
+    <Compile Include="ToolStripSplitButtonCheckable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ZoomControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ZoomControl.Designer.cs">
+      <DependentUpon>ZoomControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Controls\ArcGeometryEditor.resx">
+      <DependentUpon>ArcGeometryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PropertyCategoriesShower.resx">
+      <DependentUpon>PropertyCategoriesShower.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LineGeometryEditor.resx">
+      <DependentUpon>LineGeometryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
+      <DependentUpon>BorderStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DrawingModesForm.resx">
+      <DependentUpon>DrawingModesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DrawControl.resx">
+      <DependentUpon>DrawControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ZoomControl.resx">
+      <DependentUpon>ZoomControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo.png" />
+    <None Include="Resources\redo.png" />
+    <None Include="Resources\move.png" />
+    <None Include="Resources\movecopy.png" />
+    <None Include="Resources\ortho.png" />
+    <None Include="Resources\binding.png" />
+    <None Include="Resources\bindingChecked.png" />
+    <None Include="Resources\middle.png" />
+    <None Include="Resources\endpoint.png" />
+    <None Include="Resources\normal.png" />
+    <None Include="Resources\center.png" />
+    <None Include="Resources\endpointmarker.png" />
+    <None Include="Resources\middlemarker.png" />
+    <None Include="Resources\centermarker.png" />
+    <None Include="Resources\normalmarker.png" />
+    <None Include="Resources\poligone.png" />
+    <None Include="Resources\arc.png" />
+    <None Include="Resources\dyninput.png" />
+    <None Include="Resources\quadrantmarker.png" />
+    <None Include="Resources\tangentmarker.png" />
+    <None Include="Resources\quadrant.png" />
+    <None Include="Resources\tangent.png" />
+    <None Include="Resources\arcSCE.png" />
+    <None Include="Resources\arcCSE.png" />
+    <None Include="Resources\transparent.png" />
+    <None Include="Resources\transparent4.png" />
+    <Content Include="чертилка.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

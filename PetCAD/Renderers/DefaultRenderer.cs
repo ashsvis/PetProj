@@ -1,0 +1,44 @@
+﻿using PetCAD.Figures;
+using System.Drawing;
+
+namespace PetCAD.Renderers
+{
+    /// <summary>
+    /// Класс рисовальщика фигуры
+    /// </summary>
+    public class DefaultRenderer : Renderer
+    {
+        /// <summary>
+        /// Метод отрисовки фигуры на канве
+        /// </summary>
+        /// <param name="graphics">Канва для рисования</param>
+        /// <param name="figure">Фигура со свойствами для рисования</param>
+        public override void Render(Graphics graphics, Figure figure)
+        {
+            using (var brush = figure.Style.FillStyle.GetBrush(figure))
+            using (var pen = figure.Style.BorderStyle.GetPen(figure))
+            // получаем путь для рисования методом фигуры
+            using (var path = figure.Geometry.Path)
+            {
+                // если разрешено использование заливки
+                if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)         
+                { 
+                    graphics.FillPath(brush, path); 
+                }
+                // если разрешено рисование контура
+                if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
+                {
+                    graphics.DrawPath(pen, path); 
+                }
+            }
+        }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get { return AllowedRendererDecorators.All; }
+        }
+    }
+}
