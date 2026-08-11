@@ -207,13 +207,22 @@ namespace PetCAD.Renderers
                                     graphics.DrawLine(penA, startPoint, pt);
                                     break;
                                 }
-
                             case ArcGeometry arc:
                                 drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
                                 drawControl.DrawArcByThreePoints(graphics, penA,
                                     vertex.Index == 1 ? pt : arc.StartPoint,
                                     vertex.Index == 2 ? pt : arc.MiddlePoint,
                                     vertex.Index == 3 ? pt : arc.EndPoint);
+                                break;
+                            case BlockGeometry block:
+                                using (var path = marker.Owner.GetRendererPath())
+                                {
+                                    graphics.DrawPath(pen, path);
+                                    var m = new Matrix();
+                                    m.Translate(pt.X - block.InsertPoint.X, pt.Y - block.InsertPoint.Y);
+                                    path.Transform(m);
+                                    graphics.DrawPath(penA, path);
+                                }
                                 break;
                         }
                     }
