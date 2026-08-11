@@ -707,5 +707,23 @@ namespace PetCAD.Renderers
                     graphics.DrawString(text, font, brush, rect);
             }
         }
+
+        public static void DrawRibbonBlock(this DrawControl drawControl, Graphics graphics, Pen pen, string name, PointF point)
+        {
+            float zoom = drawControl.Zoom;
+            if (BlockGeometry.Blocks.ContainsKey(name))
+            {
+                Figure[] zeroBasedFigures = BlockGeometry.Blocks[name];
+                using (var path = new GraphicsPath())
+                {
+                    foreach (var figure in zeroBasedFigures)
+                        path.AddPath(figure.GetRendererPath(), false);
+                    var m = new Matrix();
+                    m.Translate(point.X, point.Y);
+                    path.Transform(m);
+                    graphics.DrawPath(pen, path);
+                }
+            }
+        }
     }
 }

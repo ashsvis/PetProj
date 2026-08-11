@@ -70,6 +70,7 @@
     <Compile Include="Controllers\BuildArcByStartCenterEndController.cs" />
     <Compile Include="Controllers\BuildArcByThreePointsController.cs" />
     <Compile Include="Controllers\BuildBlockCreateController.cs" />
+    <Compile Include="Controllers\BuildBlockInsertController.cs" />
     <Compile Include="Controllers\BuildLineController.cs" />
     <Compile Include="Controllers\BuildRectangleController.cs" />
     <Compile Include="Controllers\IBuildFigureController.cs" />

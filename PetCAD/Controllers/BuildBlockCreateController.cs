@@ -9,59 +9,6 @@ using System.Windows.Forms;
 
 namespace PetCAD.Controllers
 {
-    public class BuildBlockInsertController : IBuildFigureController
-    {
-        private readonly DrawControl drawer;
-
-        public BuildBlockInsertController(DrawControl drawer, Control zoomer)
-        {
-            this.drawer = drawer;
-            //
-            zoomer.MouseDown += Container_MouseDown;
-            zoomer.MouseMove += Container_MouseMove;
-            zoomer.Paint += Container_Paint;
-        }
-
-        public void Container_Paint(object sender, PaintEventArgs e)
-        {
-            if (drawer.EditorMode == EditorMode.BuildInsertBlock)
-            {
-                var zoom = drawer.Zoom;
-                if (drawer.IsDynamicalEnter)
-                {
-                    var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
-                    var text = $"Укажите точку вставки X:{pt.X} Y:{pt.Y}";
-                    using (var font = new Font("Arial", (float)(10f / zoom)))
-                        e.Graphics.DrawString(text, font, Brushes.Black,
-                            drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
-                }
-            }
-        }
-
-        public void Container_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (drawer.EditorMode == EditorMode.BuildInsertBlock)
-            {
-                //throw new NotImplementedException();
-            }
-        }
-
-        public void Container_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (drawer.EditorMode == EditorMode.BuildInsertBlock)
-            {
-                //throw new NotImplementedException();
-            }        
-        }
-
-        public void SetParameters(string[] strings)
-        {
-            if (drawer.EditorMode == EditorMode.BuildInsertBlock)
-            {
-                //throw new NotImplementedException();
-            }
-        }
-    }
     public class BuildBlockCreateController : IBuildFigureController
     {
         private readonly DrawControl drawer;
@@ -108,7 +55,6 @@ namespace PetCAD.Controllers
                 if (drawer.MouseClickCount == 2)
                 {
                     drawer.DrawRibbonSelectionRect(e.Graphics, drawer.SecondMouseDown, drawer.CurrentMousePosition);
-
                 }
             }
         }
@@ -153,13 +99,11 @@ namespace PetCAD.Controllers
                                     list.Remove(fig);
                             }
                         );
-
                     // создание блока здесь
                     if (list.Count > 0)
                     {
                         var block = drawer.AddBlock("Block", ptBaseInsert, list.ToArray());
                         drawer.InsertBlock(ptBaseInsert, "Block");
-
                         foreach (Figure fig in list)
                             drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
                     }

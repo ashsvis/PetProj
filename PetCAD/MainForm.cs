@@ -658,5 +658,16 @@ namespace PetCAD
             tsbArc.Tag = EditorMode.BuildArcCenterStartEnd;
             tsbArc.Checked = true;
         }
+
+        private void tsbInsertBlock_ButtonClick(object sender, EventArgs e)
+        {
+            tsbInsertBlock.ShowDropDown();
+        }
+
+        private void blockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsbInsertBlock.Tag = ((ToolStripMenuItem)sender).Text; 
+            SelectEditorMode(tsbInsertBlock);
+        }
     }
 }

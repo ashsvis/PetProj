@@ -10,7 +10,7 @@ namespace PetCAD.Geometries
     {
         private readonly Figure[] zeroBasedFigures = new Figure[] { };
 
-        private static readonly Dictionary<string, Figure[]> Blocks = new Dictionary<string, Figure[]>();
+        public static readonly Dictionary<string, Figure[]> Blocks = new Dictionary<string, Figure[]>();
 
         public PointF InsertPoint { get; set; }
 
