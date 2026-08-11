@@ -13,24 +13,27 @@ namespace PetCAD.Styles
         /// <summary>
         /// Величина прозрачности цвета заливки
         /// </summary>
-        public virtual int Opacity { get; set; }
+        public virtual int Opacity { get; set; } = 255;
 
         /// <summary>
         /// Цвет для заполнения фона (цвет заливки)
         /// </summary>
-        public virtual Color Color { get; set; }
+        public virtual Color Color { get; set; } = Color.White;
 
         /// <summary>
         /// Признак возможности заливки фигуры
         /// </summary>
-        public virtual bool IsVisible { get; set; }
+        public virtual bool IsVisible { get; set; } = false;
 
         public XElement GetXml()
         {
             var xfill = new XElement("Fill");
-            xfill.Add(new XAttribute("IsVisible", IsVisible));
-            xfill.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
-            xfill.Add(new XAttribute("Opacity", Opacity));
+            if (IsVisible)
+                xfill.Add(new XAttribute("IsVisible", IsVisible));
+            if (Color.ToArgb() != Color.White.ToArgb())
+                xfill.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
+            if (Opacity < 255)
+                xfill.Add(new XAttribute("Opacity", Opacity));
             return xfill;
         }
 

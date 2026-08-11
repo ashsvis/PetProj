@@ -83,7 +83,8 @@ namespace PetCAD.Controllers
                     ptSecondSelectCorner = drawer.FindBindingPoint(ptSecondSelectCorner);
 
                     var selMode = ptFirstSelectCorner.X > ptSecondSelectCorner.X;
-                    var rectangle = new RectangleF(Math.Min(ptFirstSelectCorner.X, ptSecondSelectCorner.X), Math.Min(ptFirstSelectCorner.Y, ptSecondSelectCorner.Y),
+                    var rectangle = new RectangleF(
+                        Math.Min(ptFirstSelectCorner.X, ptSecondSelectCorner.X), Math.Min(ptFirstSelectCorner.Y, ptSecondSelectCorner.Y),
                         Math.Abs(ptFirstSelectCorner.X - ptSecondSelectCorner.X), Math.Abs(ptFirstSelectCorner.Y - ptSecondSelectCorner.Y));
                     var list = new List<Figure>();
                     drawer.SelectionController.Selection.Clear();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PetCAD.Figures;
+using System;
 
 namespace PetCAD.Controls
 {
@@ -15,12 +16,22 @@ namespace PetCAD.Controls
         /// <summary>
         /// Object was changed
         /// </summary>
-        event EventHandler<EventArgs> Changed;
+        event EventHandler<ChangeEventArgs> Changed;
 
         /// <summary>
         /// Build editor interface for the object
         /// </summary>
         void Build(T obj);
+    }
+
+    public class ChangeEventArgs
+    {
+        public Figure[] Figures { get; set; }
+
+        public ChangeEventArgs(Figure[] figures)
+        {
+            this.Figures = figures;
+        }
     }
 
     public class ChangingEventArgs

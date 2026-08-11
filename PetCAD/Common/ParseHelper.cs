@@ -61,7 +61,8 @@ namespace PetCAD.Common
         /// <returns></returns>
         public static string ColorToString(Color color)
         {
-            return $"{color.A};{color.R};{color.G};{color.B}";
+            //return $"{color.A};{color.R};{color.G};{color.B}";
+            return $"{color.R};{color.G};{color.B}";
         }
 
         /// <summary>

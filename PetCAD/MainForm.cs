@@ -183,10 +183,10 @@ namespace PetCAD
 
         private void FigEditor_StartChanging(object sender, ChangingEventArgs e)
         {
-
+            
         }
 
-        private void FigEditor_Changed(object sender, EventArgs e)
+        private void FigEditor_Changed(object sender, ChangeEventArgs e)
         {
             drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
             drawControl.UpdateInterface();

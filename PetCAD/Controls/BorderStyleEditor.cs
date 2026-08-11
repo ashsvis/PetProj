@@ -13,7 +13,7 @@ namespace PetCAD.Controls
         private int updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
-        public event EventHandler<EventArgs> Changed = delegate { };
+        public event EventHandler<ChangeEventArgs> Changed = delegate { };
 
         public BorderStyleEditor()
         {
@@ -52,14 +52,14 @@ namespace PetCAD.Controls
             // копируем свойства объекта в GUI
             updating++;
 
-            //cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle, DashStyle.Solid);
             if (borderStyles.GetProperty(f => f.DashStyle, out DashStyle style))
                 cbPattern.SelectedIndex = (int)style;
             else
                 cbPattern.SelectedIndex = -1;
+
             nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 0);
             nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
-            //lbColor.BackColor = borderStyles.GetProperty(f => f.Color, Color.Transparent);
+
             if (borderStyles.GetProperty(f => f.Color, out Color color))
             {
                 lbColor.BackColor = color;
@@ -72,7 +72,7 @@ namespace PetCAD.Controls
                 lbColor.Tag = null;
                 lbColor.Image = Properties.Resources.transparent4;
             }
-            //cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible, true);
+
             if (borderStyles.GetProperty(f => f.IsVisible, out bool visible))
                 cbVisible.Checked = visible;
             else
@@ -105,7 +105,7 @@ namespace PetCAD.Controls
                 borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
 
             // вызывем событие
-            Changed(this, EventArgs.Empty);
+            Changed(this, new ChangeEventArgs(new Figures.Figure[] { }));
         }
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)

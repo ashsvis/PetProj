@@ -1,4 +1,5 @@
-﻿using PetCAD.Geometries;
+﻿using PetCAD.Figures;
+using PetCAD.Geometries;
 using PetCAD.Selections;
 using System;
 using System.Drawing;
@@ -9,11 +10,12 @@ namespace PetCAD.Controls
 {
     public partial class ArcGeometryEditor : UserControl, IEditor<Selection>
     {
+        private Figure figure;
         private Selection selection;
         private int updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
-        public event EventHandler<EventArgs> Changed = delegate { };
+        public event EventHandler<ChangeEventArgs> Changed = delegate { };
 
         public ArcGeometryEditor()
         {
@@ -22,6 +24,7 @@ namespace PetCAD.Controls
 
         public void Build(Selection selection)
         {
+            figure = null;
             // проверка видимости
             Visible = selection.ForAll(f => f.Geometry is ArcGeometry) && selection.Count == 1;
             // показываем редактор только если одна фигура и это отрезок
@@ -29,6 +32,8 @@ namespace PetCAD.Controls
 
             // запоминаем редактируемый объект
             this.selection = selection;
+
+            figure = selection.First();
 
             // получаем список объектов
             var lineStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
@@ -92,7 +97,7 @@ namespace PetCAD.Controls
             CalculateFields(radius, startAngle, sweepAngle);
 
             // вызывем событие
-            Changed(this, EventArgs.Empty);
+            Changed(this, new ChangeEventArgs(new Figure[] { figure }));
         }
 
         private void tbText_Validated(object sender, EventArgs e)

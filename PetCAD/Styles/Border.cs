@@ -16,48 +16,43 @@ namespace PetCAD.Styles
         /// </summary>
         public Border()
         {
-            // по умолчанию рисовка контура разрешена
-            IsVisible = true;
-            // по умолчанию полная непрозрачность
-            Opacity = 255;
-            // по умолчанию чёрный цвет контура
-            Color = Color.Black;
-            // по умолчанию 0 - всегда тонкая линия, при любом увеличении
-            Width = 0f;
-            // по умолчанию сплошная линия
-            DashStyle = DashStyle.Solid;
         }
 
         /// <summary>
         /// Величина прозрачности цвета контура
         /// </summary>
-        public int Opacity { get; set; }
+        public int Opacity { get; set; } = 255;
 
         /// <summary>
         /// Толщина линии для рисования контура
         /// </summary>
-        public float Width { get; set; }
+        public float Width { get; set; } = 0f;
 
         /// <summary>
         /// Цвет для рисования контура (цвет карандаша)
         /// </summary>
-        public Color Color { get; set; }
+        public Color Color { get; set; } = Color.Black;
 
         /// <summary>
         /// Признак возможности рисования контура
         /// </summary>
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
 
-        public DashStyle DashStyle { get; set; }
+        public DashStyle DashStyle { get; set; } = DashStyle.Solid;
 
         public XElement GetXml()
         {
             var xborder = new XElement("Border");
-            xborder.Add(new XAttribute("IsVisible", IsVisible));
-            xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
-            xborder.Add(new XAttribute("Opacity", Opacity));
-             xborder.Add(new XAttribute("Width", Width));
-           xborder.Add(new XAttribute("DashStyle", DashStyle));
+            if (!IsVisible)
+                xborder.Add(new XAttribute("IsVisible", IsVisible));
+            if (Color.ToArgb() != Color.Black.ToArgb())
+                xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
+            if (Opacity < 255)
+                xborder.Add(new XAttribute("Opacity", Opacity));
+            if (Width > 0f)
+                xborder.Add(new XAttribute("Width", Width));
+            if (DashStyle != DashStyle.Solid)
+                xborder.Add(new XAttribute("DashStyle", DashStyle));
             return xborder;
         }
 

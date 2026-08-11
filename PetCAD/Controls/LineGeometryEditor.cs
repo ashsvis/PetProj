@@ -1,4 +1,5 @@
-﻿using PetCAD.Geometries;
+﻿using PetCAD.Figures;
+using PetCAD.Geometries;
 using PetCAD.Selections;
 using System;
 using System.Drawing;
@@ -9,11 +10,12 @@ namespace PetCAD.Controls
 {
     public partial class LineGeometryEditor : UserControl, IEditor<Selection>
     {
+        private Figure figure;
         private Selection selection;
         private int updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
-        public event EventHandler<EventArgs> Changed = delegate { };
+        public event EventHandler<ChangeEventArgs> Changed = delegate { };
 
         public LineGeometryEditor()
         {
@@ -22,6 +24,7 @@ namespace PetCAD.Controls
 
         public void Build(Selection selection)
         {
+            figure = null;
             // проверка видимости
             Visible = selection.ForAll(f => f.Geometry is LineGeometry) && selection.Count == 1;
             // показываем редактор только если одна фигура и это отрезок
@@ -29,6 +32,8 @@ namespace PetCAD.Controls
 
             // запоминаем редактируемый объект
             this.selection = selection;
+
+            figure = selection.First();
 
             // получаем список объектов
             var lineStyles = selection.Select(f => f.Geometry as LineGeometry).ToList();
@@ -72,14 +77,14 @@ namespace PetCAD.Controls
 
             // посылаем значения назад из GUI в объект
             lineStyles.SetProperty(f => f.Points[0] = new PointF(float.Parse(tbStartX.Text), float.Parse(tbStartY.Text)));
-            lineStyles.SetProperty(f => f.Points[1] = /*f.EndPoint =*/ new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
+            lineStyles.SetProperty(f => f.Points[1] = new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
 
             var start = lineStyles.GetProperty(f => f.StartPoint);
             var end = lineStyles.GetProperty(f => f.EndPoint);
             CalculateFields(start, end);
 
             // вызывем событие
-            Changed(this, EventArgs.Empty);
+            Changed(this, new ChangeEventArgs(new Figure[] { figure }));
         }
 
         private void tbText_Validated(object sender, EventArgs e)

@@ -15,8 +15,8 @@ namespace PetCAD.Styles
         /// </summary>
         public DefaultFill(AllowedFillDecorators allowedDecorators = AllowedFillDecorators.All)
         {
-            // по умолчанию заливка разрешена
-            IsVisible = true;
+            // по умолчанию заливка запрещена
+            IsVisible = false;
             // по умолчанию белый цвет заливки
             Color = Color.White;
             // по умолчанию полная непрозрачность

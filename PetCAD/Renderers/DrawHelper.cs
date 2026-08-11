@@ -378,7 +378,8 @@ namespace PetCAD.Renderers
         /// <param name="graphics"></param>
         /// <param name="firstMouseDown"></param>
         /// <param name="mousePosition"></param>
-        public static void DrawRibbonArc(this DrawControl drawControl, Graphics graphics, Pen pen, PointF firstMouseDown, PointF secondMouseDown, PointF mousePosition)
+        public static void DrawRibbonArc(this DrawControl drawControl, Graphics graphics, Pen pen, 
+            PointF firstMouseDown, PointF secondMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
             var pt2 = secondMouseDown;
@@ -655,7 +656,8 @@ namespace PetCAD.Renderers
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="halfLength"></param>
-        public static void DrawSizeLine(this DrawControl drawControl, Graphics graphics, Pen pen, PointF start, PointF end, float halfLength, bool? side = null)
+        public static void DrawSizeLine(this DrawControl drawControl, Graphics graphics, Pen pen, 
+            PointF start, PointF end, float halfLength, bool? side = null)
         {
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;

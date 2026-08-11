@@ -15,7 +15,7 @@ namespace PetCAD.Controls
         private int updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
-        public event EventHandler<EventArgs> Changed = delegate { };
+        public event EventHandler<ChangeEventArgs> Changed = delegate { };
 
         public PropertyCategoriesShower()
         {
