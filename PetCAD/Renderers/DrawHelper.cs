@@ -277,13 +277,17 @@ namespace PetCAD.Renderers
             var rect = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                 Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
             var color = pt1.X > pt2.X ? Color.Green : Color.Blue;
-            using (var brush = new SolidBrush(Color.FromArgb(50, color)))
-                graphics.FillRectangle(brush, rect);
-            using (var pen = new Pen(Color.Black, 0))
+            try
             {
-                if (pt1.X > pt2.X) pen.DashStyle = DashStyle.Dash;
-                graphics.DrawRectangles(pen, new RectangleF[] { rect });
+                using (var brush = new SolidBrush(Color.FromArgb(50, color)))
+                    graphics.FillRectangle(brush, rect);
+                using (var pen = new Pen(Color.Black, 0))
+                {
+                    if (pt1.X > pt2.X) pen.DashStyle = DashStyle.Dash;
+                    graphics.DrawRectangles(pen, new RectangleF[] { rect });
+                }
             }
+            catch { }
         }
 
         /// <summary>

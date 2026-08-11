@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("PetProj")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PetCAD")]
+[assembly: AssemblyDescription("Чертилка")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PetProj")]
-[assembly: AssemblyCopyright("Copyright ©  2026")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct("PetCAD")]
+[assembly: AssemblyCopyright("Copyright © 2026 ashsvis@gmai.com")]
+[assembly: AssemblyTrademark("Моя чертилка")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми

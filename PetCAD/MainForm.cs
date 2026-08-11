@@ -259,6 +259,7 @@ namespace PetCAD
             tsbLine.Checked = false;
             tsbRect.Checked = false;
             tsbArc.Checked = false;
+            tsbCreateBlock.Checked = false;
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
         }
@@ -293,6 +294,12 @@ namespace PetCAD
                 drawControl.SetMode((EditorMode)(tsbArc.Tag ?? EditorMode.BuildArcThreePoints));
                 tsbArc.Checked = true;
             }
+            else if (sender == tsbCreateBlock)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.BuildCreateBlock);
+                tsbCreateBlock.Checked = true;
+            }
             else if (sender == tsbMove)
             {
                 SwitchOffButtons();
@@ -326,7 +333,6 @@ namespace PetCAD
             tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
-            //tsslStatus.Text = $"{drawControl.EditorMode} {drawControl.MouseClickCount}";
         }
 
         /// <summary>

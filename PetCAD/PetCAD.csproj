@@ -69,6 +69,7 @@
     <Compile Include="Controllers\BuildArcByCenterStartEndController.cs" />
     <Compile Include="Controllers\BuildArcByStartCenterEndController.cs" />
     <Compile Include="Controllers\BuildArcByThreePointsController.cs" />
+    <Compile Include="Controllers\BuildBlockController.cs" />
     <Compile Include="Controllers\BuildLineController.cs" />
     <Compile Include="Controllers\BuildRectangleController.cs" />
     <Compile Include="Controllers\IBuildFigureController.cs" />
@@ -250,6 +251,7 @@
     <None Include="Resources\arcCSE.png" />
     <None Include="Resources\transparent.png" />
     <None Include="Resources\transparent4.png" />
+    <None Include="Resources\blockcreate.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

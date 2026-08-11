@@ -123,6 +123,16 @@ namespace PetCAD.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blockcreate {
+            get {
+                object obj = ResourceManager.GetObject("blockcreate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap center {
             get {
                 object obj = ResourceManager.GetObject("center", resourceCulture);

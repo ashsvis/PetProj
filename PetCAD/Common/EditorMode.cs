@@ -8,6 +8,7 @@
         BuildArcThreePoints,
         BuildArcStartCenterEnd,
         BuildArcCenterStartEnd,
+        BuildCreateBlock,
         MoveSelected,
         MoveCopySelected,
         MoveMarkers,
