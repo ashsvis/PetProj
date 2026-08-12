@@ -36,10 +36,10 @@
             this.lbOpacity = new System.Windows.Forms.Label();
             this.nudOpacity = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbColor = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
-            this.lbColor = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +62,7 @@
             this.nudWidth.Size = new System.Drawing.Size(64, 23);
             this.nudWidth.TabIndex = 5;
             this.nudWidth.Text = "0";
-            this.nudWidth.TextChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.nudWidth.Validated += new System.EventHandler(this.nudWidth_Validated);
             // 
             // cbPattern
             // 
@@ -75,7 +75,7 @@
             this.cbPattern.Size = new System.Drawing.Size(63, 24);
             this.cbPattern.TabIndex = 7;
             this.cbPattern.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbPattern_DrawItem);
-            this.cbPattern.SelectionChangeCommitted += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.cbPattern.SelectionChangeCommitted += new System.EventHandler(this.cbPattern_SelectionChangeCommitted);
             // 
             // lbPattern
             // 
@@ -121,7 +121,7 @@
             this.nudOpacity.Size = new System.Drawing.Size(63, 23);
             this.nudOpacity.TabIndex = 3;
             this.nudOpacity.Text = "255";
-            this.nudOpacity.TextChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.nudOpacity.Validated += new System.EventHandler(this.nudOpacity_Validated);
             // 
             // tableLayoutPanel1
             // 
@@ -155,6 +155,19 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 154);
             this.tableLayoutPanel1.TabIndex = 10;
+            // 
+            // lbColor
+            // 
+            this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbColor.Image = global::PetCAD.Properties.Resources.transparent4;
+            this.lbColor.Location = new System.Drawing.Point(103, 55);
+            this.lbColor.Margin = new System.Windows.Forms.Padding(1, 3, 1, 3);
+            this.lbColor.Name = "lbColor";
+            this.lbColor.Size = new System.Drawing.Size(64, 16);
+            this.lbColor.TabIndex = 1;
+            this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
             // 
             // label1
             // 
@@ -193,20 +206,6 @@
             this.labelCaption.TabIndex = 8;
             this.labelCaption.Text = "Контур";
             this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbColor
-            // 
-            this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lbColor.Image = global::PetCAD.Properties.Resources.transparent4;
-            this.lbColor.Location = new System.Drawing.Point(103, 55);
-            this.lbColor.Margin = new System.Windows.Forms.Padding(1, 3, 1, 3);
-            this.lbColor.Name = "lbColor";
-            this.lbColor.Size = new System.Drawing.Size(64, 16);
-            this.lbColor.TabIndex = 1;
-            this.lbColor.BackColorChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
-            this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
             // 
             // BorderStyleEditor
             // 

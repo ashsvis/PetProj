@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PetCAD.Selections;
+using PetCAD.Styles;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using PetCAD.Selections;
 
 namespace PetCAD.Controls
 {
@@ -92,37 +93,74 @@ namespace PetCAD.Controls
         {
             if (updating > 0 || selection == null) return; // we are in updating mode
 
-            // вызывем событие
-            StartChanging(this, new ChangingEventArgs("Border Style"));
 
             // получаем список объектов
-            var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
+            //var borderStyles = selection.Select(f => f.Style.BorderStyle).ToList();
+            var borderStyles = selection.ToList();
 
             // посылаем значения назад из GUI в объект
-            if (cbPattern.SelectedIndex >= 0)
-                borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
+            //if (cbPattern.SelectedIndex >= 0)
+            //{
+            //    borderStyles.SetProperty(f => 
+            //    {
+            //        //f.Style.BorderStyle.DashStyle = (DashStyle)cbPattern.SelectedIndex;
+            //        Changed(this, new ChangeEventArgs("BorderStyleDashStyle", f, (DashStyle)cbPattern.SelectedIndex));
+            //    });
+            //}
 
-            if (float.TryParse(nudWidth.Text, out float width))
-                borderStyles.SetProperty(f => f.Width = width);
+            //if (float.TryParse(nudWidth.Text, out float width))
+            //{
+            //    borderStyles.SetProperty(f => 
+            //    { 
+            //        //f.Width = width;
+            //        Changed(this, new ChangeEventArgs("BorderStyleWidth", f, width));
+            //    });
+            //}
 
-            if (byte.TryParse(nudOpacity.Text, out byte opacity))
-                borderStyles.SetProperty(f => f.Opacity = opacity);
-            
-            if (lbColor.Tag != null)
-                borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
+            //if (byte.TryParse(nudOpacity.Text, out byte opacity))
+            //{
+            //    borderStyles.SetProperty(f => 
+            //    {
+            //        //f.Style.BorderStyle.Opacity = opacity;
+            //        Changed(this, new ChangeEventArgs("BorderStyleOpacity", f, opacity));
+            //    });
+            //}
 
-            if (cbVisible.CheckState != CheckState.Indeterminate)
-                borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
+            //if (lbColor.Tag != null)
+            //{
+            //    borderStyles.SetProperty(f => 
+            //    {
+            //        //f.Style.BorderStyle.Color = lbColor.BackColor;
+            //        Changed(this, new ChangeEventArgs("BorderStyleColor", f, lbColor.BackColor));
+            //    });
+            //}
 
-            // вызывем событие
-            Changed(this, new ChangeEventArgs(new Figures.Figure[] { }));
+            //if (cbVisible.CheckState != CheckState.Indeterminate)
+            //{
+            //    borderStyles.SetProperty(f => 
+            //    {
+            //        //f.Style.BorderStyle.IsVisible = cbVisible.Checked;
+            //        Changed(this, new ChangeEventArgs("BorderStyleIsVisible", f, cbVisible.Checked));
+            //    });
+            //}
         }
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
-            lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
-                lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
-            UpdateObject();
+            //lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
+            //    lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
+            //UpdateObject();
+            if (cbVisible.CheckState != CheckState.Indeterminate)
+            {
+                if (updating > 0 || selection == null) return; // we are in updating mode
+                // получаем список объектов
+                var borderStyles = selection.ToList();
+                borderStyles.SetProperty(f =>
+                {
+                    //f.Style.BorderStyle.IsVisible = cbVisible.Checked;
+                    Changed(this, new ChangeEventArgs("BorderStyleIsVisible", f, cbVisible.Checked));
+                });
+            }
         }
 
         private void lbColor_Click(object sender, EventArgs e)
@@ -133,7 +171,15 @@ namespace PetCAD.Controls
                 lbColor.BackColor = dlg.Color;
                 lbColor.Tag = dlg.Color;
                 lbColor.Image = null;
-                UpdateObject();
+                //UpdateObject();
+                if (updating > 0 || selection == null) return; // we are in updating mode
+                // получаем список объектов
+                var borderStyles = selection.ToList();
+                borderStyles.SetProperty(f =>
+                {
+                    //f.Style.BorderStyle.Color = lbColor.BackColor;
+                    Changed(this, new ChangeEventArgs("BorderStyleColor", f, lbColor.BackColor));
+                });
             }
         }
 
@@ -155,6 +201,51 @@ namespace PetCAD.Controls
                 }
             }
             e.DrawFocusRectangle();
+        }
+
+        private void nudOpacity_Validated(object sender, EventArgs e)
+        {
+            if (updating > 0 || selection == null) return; // we are in updating mode
+                                                           // получаем список объектов
+            var borderStyles = selection.ToList();
+            if (byte.TryParse(nudOpacity.Text, out byte opacity))
+            {
+                borderStyles.SetProperty(f =>
+                {
+                    //f.Style.BorderStyle.Opacity = opacity;
+                    Changed(this, new ChangeEventArgs("BorderStyleOpacity", f, opacity));
+                });
+            }
+        }
+
+        private void nudWidth_Validated(object sender, EventArgs e)
+        {
+            if (updating > 0 || selection == null) return; // we are in updating mode
+                                                           // получаем список объектов
+            var borderStyles = selection.ToList();
+            if (float.TryParse(nudWidth.Text, out float width))
+            {
+                borderStyles.SetProperty(f =>
+                {
+                    //f.Width = width;
+                    Changed(this, new ChangeEventArgs("BorderStyleWidth", f, width));
+                });
+            }
+        }
+
+        private void cbPattern_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (updating > 0 || selection == null) return; // we are in updating mode
+                                                           // получаем список объектов
+            var borderStyles = selection.ToList();
+            if (cbPattern.SelectedIndex >= 0)
+            {
+                borderStyles.SetProperty(f =>
+                {
+                    //f.Style.BorderStyle.DashStyle = (DashStyle)cbPattern.SelectedIndex;
+                    Changed(this, new ChangeEventArgs("BorderStyleDashStyle", f, (DashStyle)cbPattern.SelectedIndex));
+                });
+            }
         }
     }
 }

@@ -26,21 +26,25 @@ namespace PetCAD.Controls
 
     public class ChangeEventArgs
     {
-        public Figure[] Figures { get; set; }
+        public object[] Arguments { get; set; }
+        public string Name { get; }
 
-        public ChangeEventArgs(Figure[] figures)
+        public ChangeEventArgs(string name, params object[] args)
         {
-            this.Figures = figures;
+            Name = name;
+            Arguments = args;
         }
     }
 
     public class ChangingEventArgs
     {
-        public string ChangingName { get; set; }
+        public object[] Arguments { get; set; }
+        public string Name { get; }
 
-        public ChangingEventArgs(string changingName)
+        public ChangingEventArgs(string name, params object[] args)
         {
-            this.ChangingName = changingName;
+            Name = name;
+            Arguments = args;
         }
     }
 }

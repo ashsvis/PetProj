@@ -1,6 +1,8 @@
-﻿using PetCAD.Common;
+﻿using PetCAD.Commands;
+using PetCAD.Common;
 using PetCAD.Controls;
 using PetCAD.Dialogs;
+using PetCAD.Figures;
 using PetCAD.ObjectBindings;
 using PetCAD.Selections;
 using System;
@@ -188,6 +190,13 @@ namespace PetCAD
 
         private void FigEditor_Changed(object sender, ChangeEventArgs e)
         {
+            switch (e.Name)
+            {
+                case "BorderStyleWidth":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure figure && e.Arguments[1] is float width)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderWidthCommand(figure, width));
+                    break;
+            }
             drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
             drawControl.UpdateInterface();
         }

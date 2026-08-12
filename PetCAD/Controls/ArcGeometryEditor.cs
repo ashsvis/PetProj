@@ -80,7 +80,7 @@ namespace PetCAD.Controls
             if (updating > 0 || selection == null) return; // we are in updating mode
 
             // вызывем событие
-            StartChanging(this, new ChangingEventArgs("Arc Geometry"));
+            StartChanging(this, new ChangingEventArgs("ArcGeometry", figure.Geometry));
 
             // получаем список объектов
             var lineStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
@@ -97,7 +97,7 @@ namespace PetCAD.Controls
             CalculateFields(radius, startAngle, sweepAngle);
 
             // вызывем событие
-            Changed(this, new ChangeEventArgs(new Figure[] { figure }));
+            Changed(this, new ChangeEventArgs("ArcGeometry", figure.Geometry));
         }
 
         private void tbText_Validated(object sender, EventArgs e)
