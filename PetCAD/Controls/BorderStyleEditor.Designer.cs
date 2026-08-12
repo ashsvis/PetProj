@@ -29,19 +29,17 @@
         private void InitializeComponent()
         {
             this.cbVisible = new System.Windows.Forms.CheckBox();
-            this.nudWidth = new System.Windows.Forms.NumericUpDown();
+            this.nudWidth = new System.Windows.Forms.TextBox();
             this.cbPattern = new System.Windows.Forms.ComboBox();
             this.lbPattern = new System.Windows.Forms.Label();
             this.lbWidth = new System.Windows.Forms.Label();
             this.lbOpacity = new System.Windows.Forms.Label();
-            this.nudOpacity = new System.Windows.Forms.NumericUpDown();
+            this.nudOpacity = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
             this.lbColor = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +61,8 @@
             this.nudWidth.Name = "nudWidth";
             this.nudWidth.Size = new System.Drawing.Size(64, 23);
             this.nudWidth.TabIndex = 5;
-            this.nudWidth.ValueChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.nudWidth.Text = "0";
+            this.nudWidth.TextChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             // 
             // cbPattern
             // 
@@ -118,20 +117,11 @@
             // 
             this.nudOpacity.Location = new System.Drawing.Point(103, 76);
             this.nudOpacity.Margin = new System.Windows.Forms.Padding(1);
-            this.nudOpacity.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
             this.nudOpacity.Name = "nudOpacity";
             this.nudOpacity.Size = new System.Drawing.Size(63, 23);
             this.nudOpacity.TabIndex = 3;
-            this.nudOpacity.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudOpacity.ValueChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
+            this.nudOpacity.Text = "255";
+            this.nudOpacity.TextChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -228,8 +218,6 @@
             this.Name = "BorderStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.Size = new System.Drawing.Size(200, 154);
-            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -240,12 +228,12 @@
 
         private System.Windows.Forms.Label lbColor;
         private System.Windows.Forms.CheckBox cbVisible;
-        private System.Windows.Forms.NumericUpDown nudWidth;
+        private System.Windows.Forms.TextBox nudWidth;
         private System.Windows.Forms.ComboBox cbPattern;
         private System.Windows.Forms.Label lbWidth;
         private System.Windows.Forms.Label lbPattern;
         private System.Windows.Forms.Label lbOpacity;
-        private System.Windows.Forms.NumericUpDown nudOpacity;
+        private System.Windows.Forms.TextBox nudOpacity;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

@@ -57,8 +57,15 @@ namespace PetCAD.Controls
             else
                 cbPattern.SelectedIndex = -1;
 
-            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 0);
-            nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
+            if (borderStyles.GetProperty(f => f.Width, out float width))
+                nudWidth.Text = $"{width}";
+            else
+                nudWidth.Text = "";
+
+            if (borderStyles.GetProperty(f => f.Opacity, out int opacity) && opacity >= 0 && opacity < 256)
+                nudOpacity.Text = $"{opacity}";
+            else
+                nudOpacity.Text = "";
 
             if (borderStyles.GetProperty(f => f.Color, out Color color))
             {
@@ -95,8 +102,11 @@ namespace PetCAD.Controls
             if (cbPattern.SelectedIndex >= 0)
                 borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
 
-            borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
-            borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
+            if (float.TryParse(nudWidth.Text, out float width))
+                borderStyles.SetProperty(f => f.Width = width);
+
+            if (byte.TryParse(nudOpacity.Text, out byte opacity))
+                borderStyles.SetProperty(f => f.Opacity = opacity);
             
             if (lbColor.Tag != null)
                 borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
