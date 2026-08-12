@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cbVisible = new System.Windows.Forms.CheckBox();
             this.nudWidth = new System.Windows.Forms.TextBox();
             this.cbPattern = new System.Windows.Forms.ComboBox();
@@ -40,7 +41,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
+            this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.SuspendLayout();
             // 
             // cbVisible
@@ -207,6 +210,10 @@
             this.labelCaption.Text = "Контур";
             this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // errorProv
+            // 
+            this.errorProv.ContainerControl = this;
+            // 
             // BorderStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -219,6 +226,7 @@
             this.Size = new System.Drawing.Size(200, 154);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -237,5 +245,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelCaption;
+        private System.Windows.Forms.ErrorProvider errorProv;
     }
 }

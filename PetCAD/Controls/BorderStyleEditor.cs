@@ -147,10 +147,16 @@ namespace PetCAD.Controls
             var borderStyles = selection.ToList();
             if (byte.TryParse(nudOpacity.Text, out byte opacity))
             {
+                errorProv.Clear();
                 borderStyles.SetProperty(f =>
                 {
                     Changed(this, new ChangeEventArgs("BorderStyleOpacity", f, opacity));
                 });
+            }
+            else
+            {
+                errorProv.SetError(nudOpacity, $"{nudOpacity.Text} не допустимо здесь!");
+                nudOpacity.Focus();
             }
         }
 
@@ -161,10 +167,16 @@ namespace PetCAD.Controls
             var borderStyles = selection.ToList();
             if (float.TryParse(nudWidth.Text, out float width))
             {
+                errorProv.Clear();
                 borderStyles.SetProperty(f =>
                 {
                     Changed(this, new ChangeEventArgs("BorderStyleWidth", f, width));
                 });
+            }
+            else
+            {
+                errorProv.SetError(nudWidth, $"{nudWidth.Text} не число!");
+                nudWidth.Focus();
             }
         }
 

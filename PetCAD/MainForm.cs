@@ -195,23 +195,38 @@ namespace PetCAD
             {
                 case "BorderStyleWidth":
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig1 && e.Arguments[1] is float width)
+                    {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderWidthCommand(fig1, width));
+                        drawControl.Changed = true;
+                    }
                     break;
                 case "BorderStyleColor":
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig2 && e.Arguments[1] is Color color)
+                    {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderColorCommand(fig2, color));
+                        drawControl.Changed = true;
+                    }
                     break;
                 case "BorderStyleOpacity":
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig3 && e.Arguments[1] is int opacity)
+                    {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderOpacityCommand(fig3, opacity));
+                        drawControl.Changed = true;
+                    }
                     break;
                 case "BorderStyleDashStyle":
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig4 && e.Arguments[1] is DashStyle dashStyle)
+                    {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderDashStyleCommand(fig4, dashStyle));
+                        drawControl.Changed = true;
+                    }
                     break;
                 case "BorderStyleIsVisible":
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig5 && e.Arguments[1] is bool isVisible)
+                    {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderIsVisibleCommand(fig5, isVisible));
+                        drawControl.Changed = true;
+                    }
                     break;
             }
             drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
