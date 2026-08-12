@@ -54,6 +54,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ChangeBorderColorCommand.cs" />
+    <Compile Include="Commands\ChangeBorderDashStyleCommand.cs" />
+    <Compile Include="Commands\ChangeBorderIsVisibleCommand.cs" />
+    <Compile Include="Commands\ChangeBorderOpacityCommand.cs" />
     <Compile Include="Commands\ChangeBorderWidthCommand.cs" />
     <Compile Include="Commands\CreateFigureCommand.cs" />
     <Compile Include="Commands\CreateFiguresCommand.cs" />

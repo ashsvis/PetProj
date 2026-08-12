@@ -16,7 +16,7 @@ namespace PetCAD.Commands
             this.width = width;
         }
 
-        public string Name => "Изменить толщину границы фигуры";
+        public string Name => "Изменить толщину линий фигуры";
 
         public void Execute()
         {

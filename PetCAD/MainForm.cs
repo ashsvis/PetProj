@@ -7,6 +7,7 @@ using PetCAD.ObjectBindings;
 using PetCAD.Selections;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -193,8 +194,24 @@ namespace PetCAD
             switch (e.Name)
             {
                 case "BorderStyleWidth":
-                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure figure && e.Arguments[1] is float width)
-                        drawControl.UndoRedoManager.Execute(new ChangeBorderWidthCommand(figure, width));
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig1 && e.Arguments[1] is float width)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderWidthCommand(fig1, width));
+                    break;
+                case "BorderStyleColor":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig2 && e.Arguments[1] is Color color)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderColorCommand(fig2, color));
+                    break;
+                case "BorderStyleOpacity":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig3 && e.Arguments[1] is int opacity)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderOpacityCommand(fig3, opacity));
+                    break;
+                case "BorderStyleDashStyle":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig4 && e.Arguments[1] is DashStyle dashStyle)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderDashStyleCommand(fig4, dashStyle));
+                    break;
+                case "BorderStyleIsVisible":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig5 && e.Arguments[1] is bool isVisible)
+                        drawControl.UndoRedoManager.Execute(new ChangeBorderIsVisibleCommand(fig5, isVisible));
                     break;
             }
             drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
