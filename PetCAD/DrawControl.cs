@@ -802,6 +802,20 @@ namespace PetCAD
                 var root = new XElement("Document");
                 root.Add(new XAttribute("Name", System.IO.Path.GetFileNameWithoutExtension(filename)));
                 var doc = new XDocument(new XComment("Данные чертёжного документа"), root);
+                var xcatalog = new XElement("Catalog");
+                root.Add(xcatalog);
+                foreach (var blockName in BlockGeometry.DefinedBlocks.Keys)
+                {
+                    var xdef = new XElement("BlockDef");
+                    xdef.Add(new XAttribute("Name", blockName));
+                    xcatalog.Add(xdef);
+                    var figures = BlockGeometry.DefinedBlocks[blockName];
+                    foreach (var figure in figures)
+                    {
+                        var xfigure = figure.GetXml();
+                        xdef.Add(xfigure);
+                    }
+                }
                 var xmodel = new XElement("Model");
                 root.Add(xmodel);
                 foreach (var figure in figures)
@@ -831,31 +845,70 @@ namespace PetCAD
                 var xdoc = XDocument.Load(filename);
                 var root = xdoc.Element("Document");
                 var name = root.Attribute("Name")?.Value;
-                var model = root.Element("Model");
+                var xcatalog = root.Element("Catalog");
+                BlockGeometry.DefinedBlocks.Clear();
+                if (xcatalog != null)
+                {
+                    foreach (var xelement in xcatalog.Descendants())
+                    {
+                        switch ($"{xelement.Name}")
+                        {
+                            case "BlockDef":
+                                var blockName = xelement.Attribute("Name")?.Value;
+                                if (blockName != null && !BlockGeometry.DefinedBlocks.ContainsKey(blockName))
+                                {
+                                    var list = new List<Figure>();
+                                    foreach (var xfigure in xelement.Elements("Figure"))
+                                    {
+                                        var figure = new Figure();
+                                        figure.SetXml(xfigure, (geometryName) =>
+                                        {
+                                            switch (geometryName)
+                                            {
+                                                case "Segment":
+                                                    return new LineGeometry();
+                                                case "Arc":
+                                                    return new ArcGeometry();
+                                                default:
+                                                    return null;
+                                            }
+                                        });
+                                        list.Add(figure);
+                                    }
+                                    BlockGeometry.DefinedBlocks.Add(blockName, list.ToArray());
+                                }
+                                break;
+                        }
+                    }
+                }
                 figures.Clear();
                 selectionController.Clear();
                 zoomPad.Reset();
-                foreach (var xelement in model.Descendants())
+                var xmodel = root.Element("Model");
+                if (xmodel != null)
                 {
-                    var figureName = $"{xelement.Name}";
-                    switch (figureName)
+                    foreach (var xelement in xmodel.Descendants())
                     {
-                        case "Figure":
-                            var figure = new Figure();
-                            figure.SetXml(xelement, (geometryName) =>
-                            {
-                                switch (geometryName)
+                        var figureName = $"{xelement.Name}";
+                        switch (figureName)
+                        {
+                            case "Figure":
+                                var figure = new Figure();
+                                figure.SetXml(xelement, (geometryName) =>
                                 {
-                                    case "Segment":
-                                        return new LineGeometry();
-                                    case "Arc":
-                                        return new ArcGeometry();
-                                    default:
-                                        return null;
-                                }
-                            });
-                            figures.Add(figure);
-                            break;
+                                    switch (geometryName)
+                                    {
+                                        case "Segment":
+                                            return new LineGeometry();
+                                        case "Arc":
+                                            return new ArcGeometry();
+                                        default:
+                                            return null;
+                                    }
+                                });
+                                figures.Add(figure);
+                                break;
+                        }
                     }
                 }
                 Changed = false;
