@@ -9,7 +9,7 @@ namespace PetCAD.Geometries
     {
         private readonly Figure[] zeroBasedFigures = new Figure[] { };
 
-        public static readonly Dictionary<string, Figure[]> Blocks = new Dictionary<string, Figure[]>();
+        public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
         public PointF InsertPoint { get; set; }
 
@@ -17,9 +17,9 @@ namespace PetCAD.Geometries
         {
             Name = name;
             InsertPoint = insertPoint;
-            if (Blocks.ContainsKey(name))
+            if (DefinedBlocks.ContainsKey(name))
             {
-                this.zeroBasedFigures = Blocks[name];
+                this.zeroBasedFigures = DefinedBlocks[name];
             }
         }
 
@@ -27,9 +27,9 @@ namespace PetCAD.Geometries
         {
             Name = name;
             InsertPoint = insertPoint;
-            if (!Blocks.ContainsKey(name))
+            if (!DefinedBlocks.ContainsKey(name))
             {
-                Blocks.Add(name, zeroBasedFigures);
+                DefinedBlocks.Add(name, zeroBasedFigures);
             }
             this.zeroBasedFigures = zeroBasedFigures;
         }
@@ -37,9 +37,9 @@ namespace PetCAD.Geometries
         public Figure[] GetFigures()
         {
             var list = new List<Figure>();
-            if (Blocks.ContainsKey(Name))
+            if (DefinedBlocks.ContainsKey(Name))
             {
-                foreach (var figure in Blocks[Name])
+                foreach (var figure in DefinedBlocks[Name])
                 {
                     var fig = figure.DeepCopy();
                     if (fig.Geometry is IMoveGeometry mover)
@@ -52,7 +52,7 @@ namespace PetCAD.Geometries
             return list.ToArray();
         }
 
-        public override GraphicsPath Path 
+        public override GraphicsPath Path
         {
             get
             {
@@ -78,7 +78,7 @@ namespace PetCAD.Geometries
 
         public override Geometry DeepCopy()
         {
-            var geometry = new BlockGeometry(Name, InsertPoint);
+            var geometry = new BlockGeometry(Name, InsertPoint);           
             return geometry;
         }
 

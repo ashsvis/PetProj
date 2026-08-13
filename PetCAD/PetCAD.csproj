@@ -150,6 +150,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\AllowedRendererDecorators.cs" />
+    <Compile Include="Renderers\BlockRenderer.cs" />
     <Compile Include="Renderers\DefaultRenderer.cs" />
     <Compile Include="Renderers\DrawHelper.cs" />
     <Compile Include="Renderers\GlowRendererDecorator.cs" />

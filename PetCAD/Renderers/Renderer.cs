@@ -1,4 +1,5 @@
 ﻿using PetCAD.Figures;
+using PetCAD.Geometries;
 using System;
 using System.Drawing;
 
@@ -15,6 +16,11 @@ namespace PetCAD.Renderers
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public abstract void Render(Graphics graphics, Figure figure);
+
+        public virtual Renderer DeepCopy()
+        {
+            return new DefaultRenderer();
+        }
 
         /// <summary>
         /// Допустимые операции над геометрией

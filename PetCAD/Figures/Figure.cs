@@ -63,7 +63,8 @@ namespace PetCAD.Figures
             var fig = new Figure
             {
                 Style = Style.DeepCopy(),
-                Geometry = Geometry.DeepCopy()
+                Geometry = Geometry.DeepCopy(),
+                Renderer = Renderer.DeepCopy()
             };
             return fig;
         }

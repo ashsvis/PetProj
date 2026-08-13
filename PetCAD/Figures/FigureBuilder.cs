@@ -1,4 +1,5 @@
 ﻿using PetCAD.Geometries;
+using PetCAD.Renderers;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -76,6 +77,7 @@ namespace PetCAD.Figures
         public static void BuildBlockGeometry(string name, Figure block, PointF basePoint)
         {
             block.Geometry = new BlockGeometry(name, basePoint);
+            block.Renderer = new BlockRenderer();
         }
     }
 

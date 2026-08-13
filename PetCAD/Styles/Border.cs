@@ -44,29 +44,29 @@ namespace PetCAD.Styles
         {
             var xborder = new XElement("Border");
             var empty = true;
-            if (!IsVisible)
+            if (!this.IsVisible)
             {
-                xborder.Add(new XAttribute("IsVisible", IsVisible));
+                xborder.Add(new XAttribute("IsVisible", this.IsVisible));
                 empty = false;
             }
-            if (Color.ToArgb() != Color.Black.ToArgb())
+            if (this.Color.ToArgb() != Color.Black.ToArgb())
             {
-                xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
+                xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(this.Color)));
                 empty = false;
             }
-            if (Opacity < 255)
+            if (this.Opacity < 255)
             {
-                xborder.Add(new XAttribute("Opacity", Opacity));
+                xborder.Add(new XAttribute("Opacity", this.Opacity));
                 empty = false;
             }
-            if (Width > 0f)
+            if (this.Width > 0f)
             {
-                xborder.Add(new XAttribute("Width", Width));
+                xborder.Add(new XAttribute("Width", this.Width));
                 empty = false;
             }
-            if (DashStyle != DashStyle.Solid)
+            if (this.DashStyle != DashStyle.Solid)
             {
-                xborder.Add(new XAttribute("DashStyle", DashStyle));
+                xborder.Add(new XAttribute("DashStyle", this.DashStyle));
                 empty = false;
             }
             return empty ? null : xborder;
@@ -75,11 +75,11 @@ namespace PetCAD.Styles
         public void SetXml(XElement xborder)
         {
             if (xborder == null || xborder.Name != "Border") return;
-            IsVisible = ParseHelper.ParseBoolean(xborder.Attribute("IsVisible")?.Value, IsVisible);
-            Color = ParseHelper.ParseColor(xborder.Attribute("Color")?.Value, Color);
-            Opacity = ParseHelper.ParseInteger(xborder.Attribute("Opacity")?.Value, Opacity);
-            Width = ParseHelper.ParseSingle(xborder.Attribute("IsVisible")?.Value, Width);
-            DashStyle = ParseHelper.ParseEnumeration(xborder.Attribute("DashStyle")?.Value, DashStyle);
+            this.IsVisible = ParseHelper.ParseBoolean(xborder.Attribute("IsVisible")?.Value, this.IsVisible);
+            this.Color = ParseHelper.ParseColor(xborder.Attribute("Color")?.Value, this.Color);
+            this.Opacity = ParseHelper.ParseInteger(xborder.Attribute("Opacity")?.Value, this.Opacity);
+            this.Width = ParseHelper.ParseSingle(xborder.Attribute("IsVisible")?.Value, this.Width);
+            this.DashStyle = ParseHelper.ParseEnumeration(xborder.Attribute("DashStyle")?.Value, this.DashStyle);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace PetCAD.Styles
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
             var pen = new Pen(Color.FromArgb(Opacity, Color), Width);
-            if (DashStyle >= 0) pen.DashStyle = DashStyle;
+            if (DashStyle >= 0) pen.DashStyle = this.DashStyle;
             return pen;
         }
 
@@ -99,11 +99,11 @@ namespace PetCAD.Styles
         {
             var border = new Border
             {
-                Opacity = Opacity,
-                Width = Width,
-                Color = Color,
-                IsVisible = IsVisible,
-                DashStyle = DashStyle
+                Opacity = this.Opacity,
+                Width = this.Width,
+                Color = this.Color,
+                IsVisible = this.IsVisible,
+                DashStyle = this.DashStyle
             };
             return border;
         }

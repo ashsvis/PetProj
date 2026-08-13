@@ -713,9 +713,9 @@ namespace PetCAD.Renderers
         public static void DrawRibbonBlock(this DrawControl drawControl, Graphics graphics, Pen pen, string name, PointF point)
         {
             float zoom = drawControl.Zoom;
-            if (BlockGeometry.Blocks.ContainsKey(name))
+            if (BlockGeometry.DefinedBlocks.ContainsKey(name))
             {
-                Figure[] zeroBasedFigures = BlockGeometry.Blocks[name];
+                Figure[] zeroBasedFigures = BlockGeometry.DefinedBlocks[name];
                 using (var path = new GraphicsPath())
                 {
                     foreach (var figure in zeroBasedFigures)
