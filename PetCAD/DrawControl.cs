@@ -368,6 +368,24 @@ namespace PetCAD
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
                         break;
+                    case EditorMode.ScaleSelected:
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        //поиск ортогональной точки, если включен режим ортогонального построения
+                        pt2 = this.FindOrthoPoint(pt2);
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt2 = this.FindBindingPoint(pt2);
+                        selectionController.Selection.Scale(pt2.X - pt1.X, pt2.Y - pt1.Y,
+                            (movedoffsets) =>
+                            {
+                                undoRedoManager.Execute(new ScaleFiguresCommand(movedoffsets));
+                            });
+                        // предыдущий выбор стирается, т.к. масштабирование - однократная операция
+                        selectionController.Selection.Clear();
+                        timerClearMouseCount.Enabled = true;
+                        SetMode(EditorMode.Selection);
+                        Changed = true;
+                        break;
                 }
             }
             zoomPad.Invalidate();
@@ -778,6 +796,7 @@ namespace PetCAD
                     break;
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
+                case EditorMode.ScaleSelected:
                     selectionController.ClearMarkers();
                     OnChangeMode?.Invoke(this, selection);
                     break;
@@ -1164,6 +1183,11 @@ namespace PetCAD
             {
                 mouseClickCount = 0;
             }
+        }
+
+        public void ScaleSelected()
+        {
+            editorMode = EditorMode.ScaleSelected;
         }
     }
 }

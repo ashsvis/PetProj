@@ -176,5 +176,30 @@ namespace PetCAD.Selections
             if (added.Count > 0)
                 addCopyAction(added);
         }
+
+        /// <summary>
+        /// Перемещение выделенных(ой) фигур(ы)
+        /// </summary>
+        /// <param name="offsetX">Смещение по горизонтали</param>
+        /// <param name="offsetY">Смещение по вертикали</param>
+        /// <param name="scaleAction">Ссылка на метод фактического масштабирования</param>
+        public void Scale(float offsetX, float offsetY, Action<List<(Figure, PointF)>> scaleAction)
+        {
+            // список фигур и смещений
+            List<(Figure, PointF)> offsets = new List<(Figure, PointF)>();
+            // для всех выделенных фигур
+            foreach (var figure in selected)
+            {
+                // если перемещение поддерживается
+                if (figure.Geometry is IScaleGeometry _)
+                {
+                    // добавляем в список
+                    offsets.Add((figure, new PointF(offsetX, offsetY)));
+                }
+            }
+            // если список не пуст, выполняем метод перемещения
+            if (offsets.Count > 0)
+                scaleAction(offsets);
+        }
     }
 }

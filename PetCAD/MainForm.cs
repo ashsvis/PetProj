@@ -306,6 +306,7 @@ namespace PetCAD
             tsbInsertBlock.Checked = false;
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
+            tsmiScale.Checked = false;
         }
 
         /// <summary>
@@ -362,6 +363,12 @@ namespace PetCAD
                 drawControl.SetMode(EditorMode.MoveCopySelected);
                 tsbMoveCopy.Checked = true;
             }
+            else if (sender == tsbScale)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.ScaleSelected);
+                tsbScale.Checked = true;
+            }
         }
 
         /// <summary>
@@ -381,6 +388,7 @@ namespace PetCAD
             }
             tsmiMove.Enabled = tsbMove.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
+            tsmiScale.Enabled = tsbScale.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
             tsmiSaveDocumentAs.Enabled = !string.IsNullOrEmpty(workedFileName);
@@ -770,6 +778,12 @@ namespace PetCAD
                 var item = new ToolStripMenuItem() { Text = "Нет определений блоков" };
                 tsbInsertBlock.DropDownItems.Add(item);
             }
+        }
+
+        private void tsmiScale_Click(object sender, EventArgs e)
+        {
+            SelectEditorMode(sender);
+            drawControl.ScaleSelected();
         }
     }
 }

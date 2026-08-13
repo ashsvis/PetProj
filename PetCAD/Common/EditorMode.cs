@@ -13,5 +13,6 @@
         MoveSelected,
         MoveCopySelected,
         MoveMarkers,
+        ScaleSelected,
     }
 }
