@@ -1,13 +1,15 @@
-﻿using PetCAD.Figures;
+﻿using PetCAD.Common;
+using PetCAD.Figures;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
     public sealed class BlockGeometry : Geometry, IMoveGeometry, IMoveMarker
     {
-        private readonly Figure[] zeroBasedFigures = new Figure[] { };
+        private Figure[] zeroBasedFigures = new Figure[] { };
 
         public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
@@ -22,6 +24,8 @@ namespace PetCAD.Geometries
                 this.zeroBasedFigures = DefinedBlocks[name];
             }
         }
+
+        public BlockGeometry() { }
 
         public BlockGeometry(string name, PointF insertPoint, Figure[] zeroBasedFigures)
         {
@@ -80,6 +84,27 @@ namespace PetCAD.Geometries
         {
             var geometry = new BlockGeometry(Name, InsertPoint);           
             return geometry;
+        }
+
+        public override XElement GetXml()
+        {
+            var xgeometry = new XElement("Geometry");
+            xgeometry.Add(new XAttribute("Name", Name));
+            xgeometry.Add(new XAttribute("Insert", InsertPoint.ToString()));
+            return xgeometry;
+        }
+
+        public override void SetXml(XElement xgeometry)
+        {
+            if (xgeometry == null || xgeometry.Name != "Geometry") return;
+            var name = xgeometry.Attribute("Name")?.Value;
+            if (string.IsNullOrWhiteSpace(name)) return;
+            Name = name;
+            if (DefinedBlocks.ContainsKey(name))
+                this.zeroBasedFigures = DefinedBlocks[name];
+            var sinsert = xgeometry.Attribute("Insert")?.Value;
+            if (!string.IsNullOrWhiteSpace(sinsert))
+                InsertPoint = ParseHelper.ParsePointF(sinsert, PointF.Empty);
         }
 
         public void Move(float offsetX, float offsetY)

@@ -3,6 +3,7 @@ using PetCAD.Common;
 using PetCAD.Controls;
 using PetCAD.Dialogs;
 using PetCAD.Figures;
+using PetCAD.Geometries;
 using PetCAD.ObjectBindings;
 using PetCAD.Selections;
 using System;
@@ -16,6 +17,7 @@ namespace PetCAD
     public partial class MainForm : Form
     {
         private readonly DrawControl drawControl;
+        private string workedFileName = string.Empty;
 
         public MainForm()
         {
@@ -381,6 +383,8 @@ namespace PetCAD
             tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
+            tsmiSaveDocumentAs.Enabled = !string.IsNullOrEmpty(workedFileName);
+            tsbInsertBlock.Enabled = BlockGeometry.DefinedBlocks.Count > 0;
         }
 
         /// <summary>
@@ -390,18 +394,55 @@ namespace PetCAD
         /// <param name="e"></param>
         private void tsmiSaveDocument_Click(object sender, EventArgs e)
         {
-            var dlg = new SaveFileDialog() 
+            if (string.IsNullOrEmpty(workedFileName))
             {
-                Title = "Сохранение чертежа",
-                FileName = "Чертёж.gxml",
+                var dlg = new SaveFileDialog()
+                {
+                    Title = "Сохранение чертежа",
+                    FileName = "",
+                    DefaultExt = "gxml",
+                    Filter = "Файл графического документа (*.gxml)|*.gxml"
+                };
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        drawControl.SaveDocument(dlg.FileName);
+                        workedFileName = dlg.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Сохранение чертежа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+                try
+                {
+                    drawControl.SaveDocument(workedFileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Сохранение чертежа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+        }
+
+        private void tsmiSaveDocumentAs_Click(object sender, EventArgs e)
+        {
+            var dlg = new SaveFileDialog()
+            {
+                Title = "Сохранение чертежа под другим именем",
+                InitialDirectory = System.IO.Path.GetDirectoryName(workedFileName),
+                FileName = System.IO.Path.GetFileNameWithoutExtension(workedFileName),
                 DefaultExt = "gxml",
-                Filter = "Файл графического документа (*.gxml)|*.gxml" 
+                Filter = "Файл графического документа (*.gxml)|*.gxml"
             };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
                     drawControl.SaveDocument(dlg.FileName);
+                    workedFileName = dlg.FileName;
                 }
                 catch (Exception ex)
                 {
@@ -430,6 +471,7 @@ namespace PetCAD
                 try
                 {
                     drawControl.LoadDocument(dlg.FileName);
+                    workedFileName = dlg.FileName;
                 }
                 catch (Exception ex)
                 {
@@ -446,6 +488,7 @@ namespace PetCAD
         private void tsmiCreateDocument_Click(object sender, EventArgs e)
         {
             drawControl.CreateNewDocument();
+            workedFileName = string.Empty;
         }
 
         /// <summary>
@@ -705,10 +748,28 @@ namespace PetCAD
             tsbInsertBlock.ShowDropDown();
         }
 
-        private void blockToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsbInsertBlock_DropDownOpening(object sender, EventArgs e)
         {
-            tsbInsertBlock.Tag = ((ToolStripMenuItem)sender).Text; 
-            SelectEditorMode(tsbInsertBlock);
+            tsbInsertBlock.DropDownItems.Clear();
+            var defblocks = BlockGeometry.DefinedBlocks.Keys;
+            if (defblocks.Count > 0)
+            {
+                foreach (var key in BlockGeometry.DefinedBlocks.Keys.OrderBy(x => x))
+                {
+                    var item = new ToolStripMenuItem() { Text = key };
+                    tsbInsertBlock.DropDownItems.Add(item);
+                    item.Click += (o, a) => 
+                    {
+                        tsbInsertBlock.Tag = ((ToolStripMenuItem)o).Text;
+                        SelectEditorMode(tsbInsertBlock);
+                    };
+                }
+            }
+            else
+            {
+                var item = new ToolStripMenuItem() { Text = "Нет определений блоков" };
+                tsbInsertBlock.DropDownItems.Add(item);
+            }
         }
     }
 }

@@ -45,14 +45,15 @@ namespace PetCAD.Figures
             return xfigure;
         }
 
-        public void SetXml(XElement xfigure, Func<string, Geometry> func)
+        public void SetXml(XElement xfigure, Func<string, Geometry> geometry, Func<string, Renderer> renderer)
         {
             if (xfigure == null || xfigure.Name != "Figure") return;
             var xgeometry = xfigure.Element("Geometry");
             if (xgeometry == null) return;
             var name = xgeometry.Attribute("Name")?.Value;
-            Geometry = func(name);
+            Geometry = geometry(name);
             Geometry?.SetXml(xgeometry);
+            Renderer = renderer(name);
             var xstyle = xfigure.Element("Style");
             if (xstyle == null) return;
             Style.SetXml(xstyle);

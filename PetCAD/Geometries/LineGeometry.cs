@@ -64,13 +64,13 @@ namespace PetCAD.Geometries
 
         public override XElement GetXml()
         {
-            var xfill = new XElement("Geometry");
-            xfill.Add(new XAttribute("Name", Name));
-            var xpath = new XElement("Line");
-            xpath.Add(new XAttribute("Start", StartPoint.ToString()));
-            xpath.Add(new XAttribute("End", EndPoint.ToString()));
-            xfill.Add(xpath);
-            return xfill;
+            var xgeometry = new XElement("Geometry");
+            xgeometry.Add(new XAttribute("Name", Name));
+            var xline = new XElement("Line");
+            xline.Add(new XAttribute("Start", StartPoint.ToString()));
+            xline.Add(new XAttribute("End", EndPoint.ToString()));
+            xgeometry.Add(xline);
+            return xgeometry;
         }
 
         public override void SetXml(XElement xgeometry)

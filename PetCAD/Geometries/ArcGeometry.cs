@@ -106,15 +106,15 @@ namespace PetCAD.Geometries
 
         public override XElement GetXml()
         {
-            var xfill = new XElement("Geometry");
-            xfill.Add(new XAttribute("Name", Name));
-            var xpath = new XElement("Arc");
-            xpath.Add(new XAttribute("Center", CenterPoint.ToString()));
-            xpath.Add(new XAttribute("Radius", Radius.ToString()));
-            xpath.Add(new XAttribute("Angle", StartAngle.ToString()));
-            xpath.Add(new XAttribute("Sweep", SweepAngle.ToString()));
-            xfill.Add(xpath);
-            return xfill;
+            var xgeometry = new XElement("Geometry");
+            xgeometry.Add(new XAttribute("Name", Name));
+            var xarc = new XElement("Arc");
+            xarc.Add(new XAttribute("Center", CenterPoint.ToString()));
+            xarc.Add(new XAttribute("Radius", Radius.ToString()));
+            xarc.Add(new XAttribute("Angle", StartAngle.ToString()));
+            xarc.Add(new XAttribute("Sweep", SweepAngle.ToString()));
+            xgeometry.Add(xarc);
+            return xgeometry;
         }
 
         public override void SetXml(XElement xgeometry)

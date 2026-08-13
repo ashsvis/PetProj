@@ -46,6 +46,9 @@ namespace PetCAD.Controllers
                 pt = drawer.FindBindingPoint(pt);
                 pt = drawer.FindOrthoPoint(pt);
                 drawer.InsertBlock(pt, "Block");
+                drawer.SelectionController.Selection.Clear();
+                drawer.ClearMouseCount();
+                drawer.Changed = true;
             }
         }
 

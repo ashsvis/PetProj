@@ -872,8 +872,17 @@ namespace PetCAD
                                                 default:
                                                     return null;
                                             }
+                                        },
+                                        (rendererName) =>
+                                        {
+                                            switch (rendererName)
+                                            {
+                                                default:
+                                                    return new DefaultRenderer();
+                                            }
                                         });
-                                        list.Add(figure);
+                                        if (figure.Geometry != null)
+                                            list.Add(figure);
                                     }
                                     BlockGeometry.DefinedBlocks.Add(blockName, list.ToArray());
                                 }
@@ -894,19 +903,33 @@ namespace PetCAD
                         {
                             case "Figure":
                                 var figure = new Figure();
-                                figure.SetXml(xelement, (geometryName) =>
-                                {
-                                    switch (geometryName)
+                                figure.SetXml(xelement,
+                                    (geometryName) =>
                                     {
-                                        case "Segment":
-                                            return new LineGeometry();
-                                        case "Arc":
-                                            return new ArcGeometry();
-                                        default:
-                                            return null;
-                                    }
-                                });
-                                figures.Add(figure);
+                                        switch (geometryName)
+                                        {
+                                            case "Segment":
+                                                return new LineGeometry();
+                                            case "Arc":
+                                                return new ArcGeometry();
+                                            case "Block":
+                                                return new BlockGeometry();
+                                            default:
+                                                return null;
+                                        }
+                                    },
+                                    (rendererName) =>
+                                    {
+                                        switch (rendererName)
+                                        {
+                                            case "Block":
+                                                return new BlockRenderer();
+                                            default:
+                                                return new DefaultRenderer();
+                                        }
+                                    });
+                                if (figure.Geometry != null)
+                                    figures.Add(figure);
                                 break;
                         }
                     }
