@@ -1,4 +1,5 @@
 ﻿using PetCAD.Common;
+using PetCAD.Controllers;
 using PetCAD.Figures;
 using PetCAD.Geometries;
 using System;
@@ -121,6 +122,35 @@ namespace PetCAD.Renderers
                 graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 graphics.DrawLine(pen, pt1, pt2);
                 graphics.Restore(state);
+            }
+        }
+
+        public static void DrawRibbonScaled(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
+        {
+            float zoom = drawControl.Zoom;
+            var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+                
+                var kf = 1.83f;
+
+                var state = graphics.Save();
+                var transform = graphics.Transform;
+                var matrixOrder = MatrixOrder.Append;
+                transform.Multiply(new Matrix(1, 0, 0, 1, -pt1.X, -pt1.Y), matrixOrder);
+                transform.Multiply(new Matrix(kf, 0, 0, kf, 0, 0), matrixOrder);
+                transform.Multiply(new Matrix(1, 0, 0, 1, pt1.X, pt1.Y), matrixOrder);
+                graphics.Transform = transform;
+                // отрисовка выделения
+                drawControl.SelectionController.Selection.Render(graphics, Color.LightPink, (float)zoom * kf);
+                graphics.Restore(state);
+
+                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphics.DrawLine(pen, pt1, pt2);
             }
         }
 

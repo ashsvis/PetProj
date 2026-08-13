@@ -8,32 +8,32 @@ namespace PetCAD.Commands
 {
     public class ScaleFiguresCommand : ICommand
     {
-        private readonly List<(Figure, PointF)> movedOffsets;
+        private readonly List<(Figure, PointF, float)> scaleOffsets;
 
-        public ScaleFiguresCommand(List<(Figure, PointF)> movedOffsets)
+        public ScaleFiguresCommand(List<(Figure, PointF, float)> scaleOffsets)
         {
-            this.movedOffsets = movedOffsets;
+            this.scaleOffsets = scaleOffsets;
         }
 
         public string Name => "Изменить масштаб нескольким фигурам";
 
         public void Execute()
         {
-            if (movedOffsets == null) return;
-            foreach (var (figure, offset) in movedOffsets)
+            if (scaleOffsets == null) return;
+            foreach (var (figure, point, zoom) in scaleOffsets)
             {
                 if (figure.Geometry is IScaleGeometry geometry)
-                    geometry.Scale(offset.X, offset.Y);
+                    geometry.Scale(point, zoom);
             }
         }
 
         public void UnExecute()
         {
-            if (movedOffsets == null) return;
-            foreach (var (figure, offset) in movedOffsets)
+            if (scaleOffsets == null) return;
+            foreach (var (figure, point, zoom) in scaleOffsets)
             {
                 if (figure.Geometry is IScaleGeometry geometry)
-                    geometry.Scale(-offset.X, -offset.Y);
+                    geometry.Scale(point, 1 / zoom);
             }
         }
     }

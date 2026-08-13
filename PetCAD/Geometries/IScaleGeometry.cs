@@ -1,7 +1,9 @@
-﻿namespace PetCAD.Geometries
+﻿using System.Drawing;
+
+namespace PetCAD.Geometries
 {
     public interface IScaleGeometry
     {
-        void Scale(float offsetX, float offsetY);
+        void Scale(PointF basePoint, float zoom);
     }
 }

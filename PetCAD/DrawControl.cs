@@ -188,6 +188,18 @@ namespace PetCAD
                     if (mouseClickCount == 1)
                         this.DrawRibbonMoved(graphics, firstMouseDown, mousePosition);
                     break;
+                case EditorMode.ScaleSelected:
+                    if (IsDynamicalEnter)
+                    {
+                        pt = PrepareMousePosition(mousePosition);
+                        text = (mouseClickCount == 0 ? $"Базовая точка " : $"Величина масштаба ") + $" X:{pt.X} Y:{pt.Y}";
+                        using (var pen = new Pen(Color.Black, kf))
+                        using (var font = new Font("Arial", (float)(10f * kf)))
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    }
+                    if (mouseClickCount == 1)
+                        this.DrawRibbonScaled(graphics, firstMouseDown, mousePosition);
+                    break;
                 case EditorMode.MoveMarkers:
                     if (mouseClickCount == 1)
                     {
@@ -375,10 +387,24 @@ namespace PetCAD
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-                        selectionController.Selection.Scale(pt2.X - pt1.X, pt2.Y - pt1.Y,
-                            (movedoffsets) =>
+                        var sizes = new List<float>();
+                        selectionController.Selection.ToList().ForEach(x => 
+                        {
+                            using (var path = x.GetRendererPath())
                             {
-                                undoRedoManager.Execute(new ScaleFiguresCommand(movedoffsets));
+                                foreach (var p in path.PathPoints)
+                                {
+                                    var size = (p.X - pt2.X) * (p.X - pt2.X) + (p.Y - pt2.Y) * (p.Y - pt2.Y);
+                                    sizes.Add(size);
+                                }
+                            }
+                        });
+                        var max = sizes.Max();
+                        var delta = (pt1.X - pt2.X) * (pt1.X - pt2.X) + (pt1.Y - pt2.Y) * (pt1.Y - pt2.Y);
+                        selectionController.Selection.Scale(pt1, delta / max,
+                            (scaleoffsets) =>
+                            {
+                                undoRedoManager.Execute(new ScaleFiguresCommand(scaleoffsets));
                             });
                         // предыдущий выбор стирается, т.к. масштабирование - однократная операция
                         selectionController.Selection.Clear();

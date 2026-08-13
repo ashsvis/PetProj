@@ -306,7 +306,7 @@ namespace PetCAD
             tsbInsertBlock.Checked = false;
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
-            tsmiScale.Checked = false;
+            tsbScale.Checked = false;
         }
 
         /// <summary>
