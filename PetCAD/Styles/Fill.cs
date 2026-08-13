@@ -28,13 +28,23 @@ namespace PetCAD.Styles
         public XElement GetXml()
         {
             var xfill = new XElement("Fill");
+            var empty = true;
             if (IsVisible)
+            {
                 xfill.Add(new XAttribute("IsVisible", IsVisible));
+                empty = false;
+            }
             if (Color.ToArgb() != Color.White.ToArgb())
+            {
                 xfill.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
+                empty = false;
+            }
             if (Opacity < 255)
+            {
                 xfill.Add(new XAttribute("Opacity", Opacity));
-            return xfill;
+                empty = false;
+            }
+            return empty ? null : xfill;
         }
 
         public void SetXml(XElement xfill)

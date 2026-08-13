@@ -39,7 +39,9 @@ namespace PetCAD.Figures
         {
             var xfigure = new XElement("Figure");
             xfigure.Add(Geometry.GetXml());
-            xfigure.Add(Style.GetXml());
+            var xStyle = Style.GetXml();
+            if (xStyle != null)
+                xfigure.Add(xStyle);
             return xfigure;
         }
 

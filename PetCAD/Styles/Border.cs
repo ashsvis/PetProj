@@ -43,17 +43,33 @@ namespace PetCAD.Styles
         public XElement GetXml()
         {
             var xborder = new XElement("Border");
+            var empty = true;
             if (!IsVisible)
+            {
                 xborder.Add(new XAttribute("IsVisible", IsVisible));
+                empty = false;
+            }
             if (Color.ToArgb() != Color.Black.ToArgb())
+            {
                 xborder.Add(new XAttribute("Color", ParseHelper.ColorToString(Color)));
+                empty = false;
+            }
             if (Opacity < 255)
+            {
                 xborder.Add(new XAttribute("Opacity", Opacity));
+                empty = false;
+            }
             if (Width > 0f)
+            {
                 xborder.Add(new XAttribute("Width", Width));
+                empty = false;
+            }
             if (DashStyle != DashStyle.Solid)
+            {
                 xborder.Add(new XAttribute("DashStyle", DashStyle));
-            return xborder;
+                empty = false;
+            }
+            return empty ? null : xborder;
         }
 
         public void SetXml(XElement xborder)

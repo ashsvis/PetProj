@@ -20,9 +20,13 @@ namespace PetCAD.Styles
         public XElement GetXml()
         {
             var xstyle = new XElement("Style");
-            xstyle.Add(BorderStyle.GetXml());
-            xstyle.Add(FillStyle.GetXml());
-            return xstyle;
+            var xBorderStyle = BorderStyle.GetXml();
+            if (xBorderStyle != null)
+                xstyle.Add(xBorderStyle);
+            var xFillStyle = FillStyle.GetXml(); 
+            if (xFillStyle != null)
+                xstyle.Add(xFillStyle);
+            return xBorderStyle == null && xFillStyle == null ? null : xstyle;
         }
 
         public void SetXml(XElement xstyle)
