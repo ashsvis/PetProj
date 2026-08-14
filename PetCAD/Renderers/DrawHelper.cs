@@ -130,30 +130,43 @@ namespace PetCAD.Renderers
             float zoom = drawControl.Zoom;
             var pt1 = firstMouseDown;
             var pt2 = drawControl.PrepareMousePosition(mousePosition);
-            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+            var dx = pt1.X - pt2.X;
+            var dy = pt1.Y - pt2.Y;
+            var d = dx * dx + dy * dy;
+            if (d > 0.01) 
             {
-                pen.StartCap = LineCap.Round;
-                pen.EndCap = LineCap.Round;
-                
-                var kf = 1.83f;
-                foreach (var figure in drawControl.SelectionController.Selection)
+                using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
                 {
-                    var fig = figure.DeepCopy();
-                    using (var path = fig.GetRendererPath())
-                    using (var penA = new Pen(Color.Silver, 2.6f / zoom))
-                        graphics.DrawPath(penA, path);
-                    if (fig.Geometry is IScaleGeometry scaleGeometry)
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    var max = drawControl.SelectionController.Selection.Select(x => Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                    var kf = d / max;
+                    using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+                    using (var penB = new Pen(Color.Silver, 2.6f / zoom))
                     {
-                        scaleGeometry.Scale(pt1, kf);
-                        using (var path = fig.GetRendererPath())
-                        using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
-                            graphics.DrawPath(penA, path);
+                        foreach (var figure in drawControl.SelectionController.Selection)
+                        {
+                            var fig = figure.DeepCopy();
+                            using (var path = fig.GetRendererPath())
+                                graphics.DrawPath(penB, path);
+                            if (fig.Geometry is IScaleGeometry scaleGeometry)
+                            {
+                                scaleGeometry.Scale(pt1, kf);
+                                using (var path = fig.GetRendererPath())
+                                {
+                                    try
+                                    {
+                                        graphics.DrawPath(penA, path);
+                                    }
+                                    catch { }
+                                }
+                            }
+                        }
                     }
+                    graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    graphics.DrawLine(pen, pt1, pt2);
                 }
-
-                graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                graphics.DrawLine(pen, pt1, pt2);
             }
         }
 

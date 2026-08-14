@@ -106,8 +106,9 @@ namespace PetCAD.Selections
         /// Метод отрисовки фигуры на канве
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
-        /// <param name="figure">Фигура со свойствами для рисования</param>
-        public void Render(Graphics graphics, Color color, float kf = 1f)
+        /// <param name="color">Цвет линий</param>
+        /// <param name="penWidthFactor">Фактор толщины карандаша</param>
+        public void Render(Graphics graphics, Color color, float penWidthFactor = 1f)
         {
             foreach (var figure in selected)
             {
@@ -115,7 +116,7 @@ namespace PetCAD.Selections
                 using (var path = figure.Geometry.Path)
                 {
                     // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = new Pen(color, 2.6f / kf))
+                    using (var pen = new Pen(color, 2.6f / penWidthFactor))
                     { 
                         graphics.DrawPath(pen, path); 
                     }

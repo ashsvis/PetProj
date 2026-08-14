@@ -28,7 +28,11 @@ namespace PetCAD.Renderers
                 // если разрешено рисование контура
                 if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
                 {
-                    graphics.DrawPath(pen, path); 
+                    try
+                    {
+                        graphics.DrawPath(pen, path);
+                    }
+                    catch { }
                 }
             }
         }

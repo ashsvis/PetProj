@@ -399,18 +399,24 @@ namespace PetCAD
                                 }
                             }
                         });
-                        var max = sizes.Max();
-                        var delta = (pt1.X - pt2.X) * (pt1.X - pt2.X) + (pt1.Y - pt2.Y) * (pt1.Y - pt2.Y);
-                        selectionController.Selection.Scale(pt1, delta / max,
-                            (scaleoffsets) =>
-                            {
-                                undoRedoManager.Execute(new ScaleFiguresCommand(scaleoffsets));
-                            });
-                        // предыдущий выбор стирается, т.к. масштабирование - однократная операция
-                        selectionController.Selection.Clear();
-                        timerClearMouseCount.Enabled = true;
-                        SetMode(EditorMode.Selection);
-                        Changed = true;
+                        var dx = pt1.X - pt2.X;
+                        var dy = pt1.Y - pt2.Y;
+                        var d = dx * dx + dy * dy;
+                        if (d > 0.01)
+                        {
+                            var max = SelectionController.Selection.Select(x => Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                            var kf = d / max;
+                            selectionController.Selection.Scale(pt1, kf,
+                                (scaleoffsets) =>
+                                {
+                                    undoRedoManager.Execute(new ScaleFiguresCommand(scaleoffsets));
+                                });
+                            // предыдущий выбор стирается, т.к. масштабирование - однократная операция
+                            selectionController.Selection.Clear();
+                            timerClearMouseCount.Enabled = true;
+                            SetMode(EditorMode.Selection);
+                            Changed = true;
+                        }
                         break;
                 }
             }

@@ -1,6 +1,4 @@
 ﻿using PetCAD.Figures;
-using PetCAD.Geometries;
-using System;
 using System.Drawing;
 
 namespace PetCAD.Renderers
