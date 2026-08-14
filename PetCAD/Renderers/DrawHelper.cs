@@ -136,17 +136,20 @@ namespace PetCAD.Renderers
                 pen.EndCap = LineCap.Round;
                 
                 var kf = 1.83f;
-
-                var state = graphics.Save();
-                var transform = graphics.Transform;
-                var matrixOrder = MatrixOrder.Append;
-                transform.Multiply(new Matrix(1, 0, 0, 1, -pt1.X, -pt1.Y), matrixOrder);
-                transform.Multiply(new Matrix(kf, 0, 0, kf, 0, 0), matrixOrder);
-                transform.Multiply(new Matrix(1, 0, 0, 1, pt1.X, pt1.Y), matrixOrder);
-                graphics.Transform = transform;
-                // отрисовка выделения
-                drawControl.SelectionController.Selection.Render(graphics, Color.LightPink, (float)zoom * kf);
-                graphics.Restore(state);
+                foreach (var figure in drawControl.SelectionController.Selection)
+                {
+                    var fig = figure.DeepCopy();
+                    using (var path = fig.GetRendererPath())
+                    using (var penA = new Pen(Color.Silver, 2.6f / zoom))
+                        graphics.DrawPath(penA, path);
+                    if (fig.Geometry is IScaleGeometry scaleGeometry)
+                    {
+                        scaleGeometry.Scale(pt1, kf);
+                        using (var path = fig.GetRendererPath())
+                        using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+                            graphics.DrawPath(penA, path);
+                    }
+                }
 
                 graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;

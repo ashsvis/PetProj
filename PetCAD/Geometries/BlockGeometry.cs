@@ -3,17 +3,20 @@ using PetCAD.Figures;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class BlockGeometry : Geometry, IMoveGeometry, IMoveMarker
+    public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IMoveMarker
     {
         private Figure[] zeroBasedFigures = new Figure[] { };
 
         public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
         public PointF InsertPoint { get; set; }
+        public float ScaleFactor { get; set; } = 1f;
+        public float Angle { get; set; }
 
         public BlockGeometry(string name, PointF insertPoint)
         {
@@ -46,11 +49,11 @@ namespace PetCAD.Geometries
                 foreach (var figure in DefinedBlocks[Name])
                 {
                     var fig = figure.DeepCopy();
-                    if (fig.Geometry is IMoveGeometry mover)
-                    {
-                        mover.Move(InsertPoint.X, InsertPoint.Y);
-                        list.Add(fig);
-                    }
+                    if (fig.Geometry is IScaleGeometry scaleGeometry)
+                        scaleGeometry.Scale(PointF.Empty, ScaleFactor);
+                    if (fig.Geometry is IMoveGeometry moveGeometry)
+                        moveGeometry.Move(InsertPoint.X, InsertPoint.Y);
+                    list.Add(fig);
                 }
             }
             return list.ToArray();
@@ -64,7 +67,8 @@ namespace PetCAD.Geometries
                 foreach (var figure in zeroBasedFigures)
                     path.AddPath(figure.GetRendererPath(), false);
                 var m = new Matrix();
-                m.Translate(InsertPoint.X, InsertPoint.Y);
+                m.Scale(ScaleFactor, ScaleFactor, MatrixOrder.Append);
+                m.Translate(InsertPoint.X, InsertPoint.Y, MatrixOrder.Append);
                 path.Transform(m);
                 return path;
             }
@@ -91,6 +95,10 @@ namespace PetCAD.Geometries
             var xgeometry = new XElement("Geometry");
             xgeometry.Add(new XAttribute("Name", Name));
             xgeometry.Add(new XAttribute("Insert", InsertPoint.ToString()));
+            if (ScaleFactor != 1)
+                xgeometry.Add(new XAttribute("Scale", ScaleFactor.ToString()));
+            if (Angle != 0)
+                xgeometry.Add(new XAttribute("Angle", Angle.ToString()));
             return xgeometry;
         }
 
@@ -105,6 +113,12 @@ namespace PetCAD.Geometries
             var sinsert = xgeometry.Attribute("Insert")?.Value;
             if (!string.IsNullOrWhiteSpace(sinsert))
                 InsertPoint = ParseHelper.ParsePointF(sinsert, PointF.Empty);
+            var sscale = xgeometry.Attribute("Scale")?.Value;
+            if (!string.IsNullOrWhiteSpace(sscale))
+                ScaleFactor = ParseHelper.ParseSingle(sscale, 1f);
+            var sangle = xgeometry.Attribute("Angle")?.Value;
+            if (!string.IsNullOrWhiteSpace(sangle))
+                Angle = ParseHelper.ParseSingle(sangle, 0f);
         }
 
         public void Move(float offsetX, float offsetY)
@@ -116,6 +130,18 @@ namespace PetCAD.Geometries
         {
             if (index == 0)
                 InsertPoint = PointF.Add(InsertPoint, new SizeF(offsetX, offsetY));
+        }
+
+        public void Scale(PointF basePoint, float zoom)
+        {
+            var points = new PointF[] { InsertPoint };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Scale(zoom, zoom, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            InsertPoint = points[0];
+            ScaleFactor = zoom;
         }
     }
 }

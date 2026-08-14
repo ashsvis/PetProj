@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class ArcGeometry : Geometry, IMoveGeometry, IMoveMarker
+    public sealed class ArcGeometry : Geometry, IMoveGeometry, IScaleGeometry, IMoveMarker
     {
         public PointF CenterPoint { get; set; }
         public float Radius { get; set; }
@@ -184,6 +184,72 @@ namespace PetCAD.Geometries
                     }
                     break;
             }
+        }
+
+        public void Scale(PointF basePoint, float zoom)
+        {
+            var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Scale(zoom, zoom, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+
+            var pt1 = points[0];
+            var pt2 = points[1];
+            var pt3 = points[2];
+
+            float mx1 = (pt1.X + pt2.X) / 2f;
+            float my1 = (pt1.Y + pt2.Y) / 2f;
+            PointF mid1 = new PointF(mx1, my1);
+            float dx1 = pt2.X - pt1.X;
+            float dy1 = pt2.Y - pt1.Y;
+            float px1 = dy1;
+            float py1 = -dx1;
+            float length1 = (float)Math.Sqrt(px1 * px1 + py1 * py1);
+            if (length1 == 0) return; // отрезок вырожден в точку
+            px1 /= length1;
+            py1 /= length1;
+
+            float mx2 = (pt3.X + pt2.X) / 2f;
+            float my2 = (pt3.Y + pt2.Y) / 2f;
+            PointF mid2 = new PointF(mx2, my2);
+            float dx2 = pt3.X - pt2.X;
+            float dy2 = pt3.Y - pt2.Y;
+            float px2 = dy2;
+            float py2 = -dx2;
+            float length2 = (float)Math.Sqrt(px2 * px2 + py2 * py2);
+            if (length2 == 0) return; // отрезок вырожден в точку
+            px2 /= length2;
+            py2 /= length2;
+
+            // перпендикуляр в середине 1 отрезка
+            float halfLength = Math.Max(length1, length2); //50f / zoom;
+            PointF df1 = new PointF(mid1.X + px1 * halfLength, mid1.Y + py1 * halfLength);
+            PointF ef1 = new PointF(mid1.X - px1 * halfLength, mid1.Y - py1 * halfLength);
+            // перпендикуляр в середине 2 отрезка
+            PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
+            PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
+            // точка пересечения двух перпендикуляров
+            PointF center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            var radius = center.Vector(pt1).Length();
+
+            #region блок коррекции углов дуги
+
+            var angle1 = pt1.Vector(center).AngleDegree(); if (angle1 < 0) angle1 = 360f + angle1;
+            var angle2 = pt2.Vector(center).AngleDegree(); if (angle2 < 0) angle2 = 360f + angle2;
+            var angle3 = pt3.Vector(center).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
+            if (angle2 < angle1) angle2 += 360f;
+            if (angle3 < angle1) angle3 += 360f;
+            var sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            if (angle2 > angle3) sweepAngle = -360f + sweepAngle;
+
+            #endregion блок коррекции углов дуги
+
+            CenterPoint = center;
+            Radius = radius;
+            StartAngle = angle1;
+            SweepAngle = sweepAngle;
         }
     }
 }
