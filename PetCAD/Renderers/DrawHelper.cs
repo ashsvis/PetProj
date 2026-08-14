@@ -139,18 +139,40 @@ namespace PetCAD.Renderers
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;
-                    var max = drawControl.SelectionController.Selection.Select(x => Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                    var max = drawControl.SelectionController.Selection.Select(x => 
+                        Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
                     var kf = d / max;
                     using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
                     using (var penB = new Pen(Color.Silver, 2.6f / zoom))
                     {
                         foreach (var figure in drawControl.SelectionController.Selection)
                         {
+                            // рисуем текущее представление цветом Silver
+                            if (figure.Geometry is IScaleGeometry prevGeometry &&
+                                figure.Geometry is BlockGeometry blockGeometry)
+                            {
+                                prevGeometry.Scale(blockGeometry.InsertPoint, blockGeometry.ScaleFactor);
+                                using (var path = figure.GetRendererPath())
+                                {
+                                    try
+                                    {
+                                        graphics.DrawPath(penB, path);
+                                    }
+                                    catch { }
+                                }
+                            }
+                            // рисуем масштабируемое представление цветом LightPink
                             var fig = figure.DeepCopy();
-                            using (var path = fig.GetRendererPath())
-                                graphics.DrawPath(penB, path);
                             if (fig.Geometry is IScaleGeometry scaleGeometry)
                             {
+                                if (figure.Geometry is BlockGeometry blockG)
+                                {
+                                    if (blockG.ScaleFactor != 1)
+                                    {
+                                        kf *= blockG.ScaleFactor;
+                                        pt1 = blockG.InsertPoint;
+                                    }
+                                }
                                 scaleGeometry.Scale(pt1, kf);
                                 using (var path = fig.GetRendererPath())
                                 {
