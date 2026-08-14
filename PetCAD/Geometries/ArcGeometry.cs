@@ -194,10 +194,23 @@ namespace PetCAD.Geometries
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
+            if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
+                out PointF center, out float radius, out float startAngle, out float sweepAngle))
+            {
+                CenterPoint = center;
+                Radius = radius;
+                StartAngle = startAngle;
+                SweepAngle = sweepAngle;
+            }
+        }
 
-            var pt1 = points[0];
-            var pt2 = points[1];
-            var pt3 = points[2];
+        public static bool ConvertThreePointsToCenterRadiusAndAngles(PointF pt1, PointF pt2, PointF pt3,
+            out PointF center, out float radius, out float startAngle, out float sweepAngle)
+        {
+            center = PointF.Empty;
+            radius = 0;
+            startAngle = 0;
+            sweepAngle = 0;
 
             float mx1 = (pt1.X + pt2.X) / 2f;
             float my1 = (pt1.Y + pt2.Y) / 2f;
@@ -207,7 +220,7 @@ namespace PetCAD.Geometries
             float px1 = dy1;
             float py1 = -dx1;
             float length1 = (float)Math.Sqrt(px1 * px1 + py1 * py1);
-            if (length1 == 0) return; // отрезок вырожден в точку
+            if (length1 == 0) return false; // отрезок вырожден в точку
             px1 /= length1;
             py1 /= length1;
 
@@ -219,7 +232,7 @@ namespace PetCAD.Geometries
             float px2 = dy2;
             float py2 = -dx2;
             float length2 = (float)Math.Sqrt(px2 * px2 + py2 * py2);
-            if (length2 == 0) return; // отрезок вырожден в точку
+            if (length2 == 0) return false; // отрезок вырожден в точку
             px2 /= length2;
             py2 /= length2;
 
@@ -231,8 +244,8 @@ namespace PetCAD.Geometries
             PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
             PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
             // точка пересечения двух перпендикуляров
-            PointF center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
-            var radius = center.Vector(pt1).Length();
+            center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            radius = center.Vector(pt1).Length();
 
             #region блок коррекции углов дуги
 
@@ -241,15 +254,12 @@ namespace PetCAD.Geometries
             var angle3 = pt3.Vector(center).AngleDegree(); if (angle3 < 0) angle3 = 360f + angle3;
             if (angle2 < angle1) angle2 += 360f;
             if (angle3 < angle1) angle3 += 360f;
-            var sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
+            sweepAngle = angle3 - angle1; if (sweepAngle < 0) sweepAngle = 360f + sweepAngle;
             if (angle2 > angle3) sweepAngle = -360f + sweepAngle;
 
             #endregion блок коррекции углов дуги
-
-            CenterPoint = center;
-            Radius = radius;
-            StartAngle = angle1;
-            SweepAngle = sweepAngle;
+            startAngle = angle1;
+            return true;
         }
     }
 }

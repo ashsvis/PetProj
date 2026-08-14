@@ -3,7 +3,6 @@ using PetCAD.Figures;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Net;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
