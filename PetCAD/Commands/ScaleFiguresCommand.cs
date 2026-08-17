@@ -3,7 +3,6 @@ using PetCAD.Figures;
 using PetCAD.Geometries;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace PetCAD.Commands
 {

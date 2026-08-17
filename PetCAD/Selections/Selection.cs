@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PetCAD.Selections
 {
@@ -184,23 +185,39 @@ namespace PetCAD.Selections
         /// <param name="point">Базовая точка</param>
         /// <param name="kf">Масштабный коэффициент</param>
         /// <param name="scaleAction">метод собственно скалирования</param>
-        public void Scale(PointF point, float kf, Action<List<(Figure, PointF, float)>> scaleAction)
+        public void Scale(PointF point, float kf, Action<List<(Figure, PointF, float)>> scaleAction, Action<List<(Figure, PointF)>> moveAction)
         {
             // список фигур и смещений
-            List<(Figure, PointF, float)> offsets = new List<(Figure, PointF, float)>();
+            List<(Figure, PointF, float)> scales = new List<(Figure, PointF, float)>();
+            List<(Figure, PointF)> offsets = new List<(Figure, PointF)>();
             // для всех выделенных фигур
             foreach (var figure in selected)
             {
                 // если перемещение поддерживается
                 if (figure.Geometry is IScaleGeometry _)
                 {
+                    if (figure.Geometry is BlockGeometry blkGeometry)
+                    {
+                        var arr = new PointF[] { point };
+                        var m = new Matrix();
+                        var mx = blkGeometry.InsertPoint.X;
+                        var my = blkGeometry.InsertPoint.Y;
+                        m.Translate(-mx, -my, MatrixOrder.Append);
+                        m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                        m.Translate(mx, my, MatrixOrder.Append);
+                        m.TransformPoints(arr);
+                        offsets.Add((figure, new PointF(point.X - arr[0].X, point.Y - arr[0].Y)));
+                        point = arr[0];
+                    }
                     // добавляем в список
-                    offsets.Add((figure, point, kf));
+                    scales.Add((figure, point, kf));
                 }
             }
             // если список не пуст, выполняем метод перемещения
+            if (scales.Count > 0)
+                scaleAction(scales);
             if (offsets.Count > 0)
-                scaleAction(offsets);
+                moveAction(offsets);
         }
     }
 }

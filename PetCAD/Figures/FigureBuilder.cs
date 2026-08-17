@@ -65,7 +65,7 @@ namespace PetCAD.Figures
                     zeroBasedFigures.Add(zbf);
                 }
             }
-            block.Geometry = new BlockGeometry(name, basePoint, zeroBasedFigures.ToArray());
+            block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f, zeroBasedFigures.ToArray());
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace PetCAD.Figures
         /// <param name="basePoint"></param>
         public static void BuildBlockGeometry(string name, Figure block, PointF basePoint)
         {
-            block.Geometry = new BlockGeometry(name, basePoint);
+            block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f);
             block.Renderer = new BlockRenderer();
         }
     }

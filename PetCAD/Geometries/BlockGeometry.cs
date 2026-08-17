@@ -17,10 +17,12 @@ namespace PetCAD.Geometries
         public float ScaleFactor { get; set; } = 1f;
         public float Angle { get; set; }
 
-        public BlockGeometry(string name, PointF insertPoint)
+        public BlockGeometry(string name, PointF insertPoint, float scaleFactor, float angle)
         {
             Name = name;
             InsertPoint = insertPoint;
+            ScaleFactor = scaleFactor;
+            Angle = angle;
             if (DefinedBlocks.ContainsKey(name))
             {
                 this.zeroBasedFigures = DefinedBlocks[name];
@@ -29,10 +31,12 @@ namespace PetCAD.Geometries
 
         public BlockGeometry() { }
 
-        public BlockGeometry(string name, PointF insertPoint, Figure[] zeroBasedFigures)
+        public BlockGeometry(string name, PointF insertPoint, float scaleFactor, float angle, Figure[] zeroBasedFigures)
         {
             Name = name;
             InsertPoint = insertPoint;
+            ScaleFactor = scaleFactor;
+            Angle = angle;
             if (!DefinedBlocks.ContainsKey(name))
             {
                 DefinedBlocks.Add(name, zeroBasedFigures);
@@ -85,7 +89,7 @@ namespace PetCAD.Geometries
 
         public override Geometry DeepCopy()
         {
-            var geometry = new BlockGeometry(Name, InsertPoint);           
+            var geometry = new BlockGeometry(Name, InsertPoint, ScaleFactor, Angle);           
             return geometry;
         }
 

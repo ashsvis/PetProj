@@ -411,6 +411,10 @@ namespace PetCAD
                                 (scaleoffsets) =>
                                 {
                                     undoRedoManager.Execute(new ScaleFiguresCommand(scaleoffsets));
+                                },
+                                (movedoffsets) =>
+                                {
+                                    undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
                                 });
                             // предыдущий выбор стирается, т.к. масштабирование - однократная операция
                             selectionController.Selection.Clear();
