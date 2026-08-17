@@ -3,6 +3,7 @@ using PetCAD.Figures;
 using PetCAD.Geometries;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PetCAD.Commands
 {
@@ -23,7 +24,9 @@ namespace PetCAD.Commands
             foreach (var (figure, point, zoom) in scaleOffsets)
             {
                 if (figure.Geometry is IScaleGeometry geometry)
-                    geometry.Scale(point, zoom);
+                {
+                    geometry.Scale(point, zoom); 
+                }
             }
         }
 
@@ -33,7 +36,9 @@ namespace PetCAD.Commands
             foreach (var (figure, point, zoom) in scaleOffsets)
             {
                 if (figure.Geometry is IScaleGeometry geometry)
-                    geometry.Scale(point, 1 / zoom);
+                { 
+                    geometry.Scale(point, 1 / zoom); 
+                }
             }
         }
     }

@@ -404,7 +404,8 @@ namespace PetCAD
                         var d = dx * dx + dy * dy;
                         if (d > 0.01)
                         {
-                            var max = SelectionController.Selection.Select(x => Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                            var max = SelectionController.Selection.Select(x => 
+                                Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
                             var kf = d / max;
                             selectionController.Selection.Scale(pt1, kf,
                                 (scaleoffsets) =>

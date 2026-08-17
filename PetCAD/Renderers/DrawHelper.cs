@@ -147,6 +147,7 @@ namespace PetCAD.Renderers
                     {
                         foreach (var figure in drawControl.SelectionController.Selection)
                         {
+                            var fig = figure.DeepCopy();
                             // рисуем текущее представление цветом Silver
                             if (figure.Geometry is IScaleGeometry prevGeometry &&
                                 figure.Geometry is BlockGeometry blockGeometry)
@@ -162,18 +163,26 @@ namespace PetCAD.Renderers
                                 }
                             }
                             // рисуем масштабируемое представление цветом LightPink
-                            var fig = figure.DeepCopy();
                             if (fig.Geometry is IScaleGeometry scaleGeometry)
                             {
-                                if (figure.Geometry is BlockGeometry blockG)
+                                if (figure.Geometry is BlockGeometry blkGeometry)
                                 {
-                                    if (blockG.ScaleFactor != 1)
-                                    {
-                                        kf *= blockG.ScaleFactor;
-                                        pt1 = blockG.InsertPoint;
-                                    }
+                                    var arr = new PointF[] { pt1 };
+                                    var m = new Matrix();
+                                    var mx = blkGeometry.InsertPoint.X;
+                                    var my = blkGeometry.InsertPoint.Y;
+                                    m.Translate(-mx, -my, MatrixOrder.Append);
+                                    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                                    m.Translate(mx, my, MatrixOrder.Append);
+                                    m.TransformPoints(arr);
+                                    pt1 = arr[0];
                                 }
+
                                 scaleGeometry.Scale(pt1, kf);
+
+                                if (figure.Geometry is BlockGeometry _ && fig.Geometry is IMoveGeometry moveGeometry)
+                                    moveGeometry.Move(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y);
+
                                 using (var path = fig.GetRendererPath())
                                 {
                                     try
@@ -187,7 +196,7 @@ namespace PetCAD.Renderers
                     }
                     graphics.SmoothingMode = SmoothingMode.HighSpeed;
                     graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    graphics.DrawLine(pen, pt1, pt2);
+                    graphics.DrawLine(pen, firstMouseDown, pt2);
                 }
             }
         }
