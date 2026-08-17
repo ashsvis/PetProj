@@ -215,5 +215,25 @@ namespace PetCAD.Selections
             if (scales.Count > 0)
                 scaleAction(scales);
         }
+
+        public void Rotate(PointF point, float angle, Action<List<(Figure, PointF, float)>> rotateAction)
+        {
+            // список фигур и смещений
+            List<(Figure, PointF, float)> rotates = new List<(Figure, PointF, float)>();
+            // для всех выделенных фигур
+            foreach (var figure in selected)
+            {
+                // если перемещение поддерживается
+                if (figure.Geometry is IRotateGeometry _)
+                {
+
+                    // добавляем в список
+                    rotates.Add((figure, point, angle));
+                }
+            }
+            // если список не пуст, выполняем метод перемещения
+            if (rotates.Count > 0)
+                rotateAction(rotates);
+        }
     }
 }

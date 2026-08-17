@@ -64,6 +64,7 @@
     <Compile Include="Commands\MoveFiguresCommand.cs" />
     <Compile Include="Commands\MoveMarkersCommand.cs" />
     <Compile Include="Commands\RemoveFigureCommand.cs" />
+    <Compile Include="Commands\RotateFiguresCommand.cs" />
     <Compile Include="Commands\ScaleFiguresCommand.cs" />
     <Compile Include="Common\ICommand.cs" />
     <Compile Include="Common\ImageWrapper.cs" />

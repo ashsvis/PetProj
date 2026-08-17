@@ -178,7 +178,7 @@ namespace PetCAD.Renderers
                                 //    pt1 = arr[0];
                                 //}
 
-                                rotateGeometry.Rotate(pt1, 0f);
+                                rotateGeometry.Rotate(pt1, (float)(pt2.Angle(pt1) * 180 / Math.PI));
 
                                 //if (figure.Geometry is BlockGeometry blkGeom)
                                 //    blkGeom.InsertPoint = PointF.Add(blkGeom.InsertPoint,

@@ -392,6 +392,24 @@ namespace PetCAD
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
                         break;
+                    case EditorMode.RotateSelected:
+                        pt1 = firstMouseDown;
+                        pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
+                        //поиск ортогональной точки, если включен режим ортогонального построения
+                        pt2 = this.FindOrthoPoint(pt2);
+                        //поиск ближайшей точки привязки, если включен режим объектной привязки
+                        pt2 = this.FindBindingPoint(pt2);
+                        selectionController.Selection.Rotate(pt1, (float)(pt1.Angle(pt2) * 180 / Math.PI),
+                            (rotateOffsets) =>
+                            {
+                                undoRedoManager.Execute(new RotateFiguresCommand(rotateOffsets));
+                            });
+                        // предыдущий выбор стирается, т.к. масштабирование - однократная операция
+                        selectionController.Selection.Clear();
+                        timerClearMouseCount.Enabled = true;
+                        SetMode(EditorMode.Selection);
+                        Changed = true;
+                        break;
                     case EditorMode.ScaleSelected:
                         pt1 = firstMouseDown;
                         pt2 = calledByCode ? mousePosition : PrepareMousePosition(mousePosition);
@@ -799,6 +817,7 @@ namespace PetCAD
                 case EditorMode.MoveSelected:
                 case EditorMode.MoveCopySelected:
                 case EditorMode.ScaleSelected:
+                case EditorMode.RotateSelected:
                     selectionController.ClearMarkers();
                     OnChangeMode?.Invoke(this, selection);
                     break;

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class ArcGeometry : Geometry, IMoveGeometry, IScaleGeometry, IMoveMarker
+    public sealed class ArcGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
     {
         public PointF CenterPoint { get; set; }
         public float Radius { get; set; }
@@ -193,6 +193,22 @@ namespace PetCAD.Geometries
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
+                out PointF center, out float radius, out float startAngle, out float sweepAngle))
+            {
+                CenterPoint = center;
+                Radius = radius;
+                StartAngle = startAngle;
+                SweepAngle = sweepAngle;
+            }
+        }
+
+        public void Rotate(PointF basePoint, float angel)
+        {
+            var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
+            var m = new Matrix();
+            m.Rotate(angel);
             m.TransformPoints(points);
             if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
                 out PointF center, out float radius, out float startAngle, out float sweepAngle))

@@ -393,6 +393,7 @@ namespace PetCAD
                 tsbRedo.Enabled = tsmiRedo.Enabled = support.CanRedo();
             }
             tsmiMove.Enabled = tsbMove.Enabled = drawControl.SelectionController.Selection.Count > 0;
+            tsmiRotate.Enabled = tsbRotate.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiMoveCopy.Enabled = tsbMoveCopy.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiScale.Enabled = tsbScale.Enabled = drawControl.SelectionController.Selection.Count > 0;
             tsmiDelete.Enabled = tsbCopy.Enabled = tsmiCopy.Enabled = tsbCut.Enabled = tsmiCut.Enabled = 

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class LineGeometry : Geometry, IMoveGeometry, IScaleGeometry, IMoveMarker
+    public sealed class LineGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
     {
         public readonly List<PointF> Points = new List<PointF>();
 
@@ -116,6 +116,18 @@ namespace PetCAD.Geometries
             var m = new Matrix();
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            Points[0] = points[0];
+            Points[1] = points[1];
+        }
+
+        public void Rotate(PointF basePoint, float angel)
+        {
+            var points = new PointF[] { Points[0], Points[1] };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angel, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
             Points[0] = points[0];
