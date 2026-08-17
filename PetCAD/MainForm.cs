@@ -357,6 +357,12 @@ namespace PetCAD
                 drawControl.SetMode(EditorMode.MoveSelected);
                 tsbMove.Checked = true;
             }
+            else if (sender == tsbRotate)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode(EditorMode.RotateSelected);
+                tsbMove.Checked = true;
+            }
             else if (sender == tsbMoveCopy)
             {
                 SwitchOffButtons();
@@ -784,6 +790,12 @@ namespace PetCAD
         {
             SelectEditorMode(sender);
             drawControl.ScaleSelected();
+        }
+
+        private void tsmiRotate_Click(object sender, EventArgs e)
+        {
+            SelectEditorMode(sender);
+            drawControl.RotateSelected();
         }
     }
 }

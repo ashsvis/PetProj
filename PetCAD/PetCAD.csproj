@@ -121,6 +121,7 @@
     <Compile Include="Common\EditorMode.cs" />
     <Compile Include="Figures\AllowedMarkerOperations.cs" />
     <Compile Include="Geometries\BlockGeometry.cs" />
+    <Compile Include="Geometries\IRotateGeometry.cs" />
     <Compile Include="Geometries\IScaleGeometry.cs" />
     <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
     <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
@@ -264,6 +265,7 @@
     <None Include="Resources\blockcreate.png" />
     <None Include="Resources\blockinsert.png" />
     <None Include="Resources\scale.png" />
+    <None Include="Resources\rotate.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

@@ -14,5 +14,6 @@
         MoveCopySelected,
         MoveMarkers,
         ScaleSelected,
+        RotateSelected,
     }
 }

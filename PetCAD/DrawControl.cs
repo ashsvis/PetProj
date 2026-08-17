@@ -211,6 +211,18 @@ namespace PetCAD
                             mousePosition);
                     }
                     break;
+                case EditorMode.RotateSelected:
+                    if (IsDynamicalEnter)
+                    {
+                        pt = PrepareMousePosition(mousePosition);
+                        text = (mouseClickCount == 0 ? $"Базовая точка " : $"Величина угла поворота ") + $" X:{pt.X} Y:{pt.Y}";
+                        using (var pen = new Pen(Color.Black, kf))
+                        using (var font = new Font("Arial", (float)(10f * kf)))
+                            graphics.DrawString(text, font, Brushes.Black, PrepareMousePosition(PointF.Add(mousePosition, new SizeF(1f, 1f))));
+                    }
+                    if (mouseClickCount == 1)
+                        this.DrawRibbonRotated(graphics, firstMouseDown, mousePosition);
+                    break;
             }
         }
 
@@ -387,34 +399,32 @@ namespace PetCAD
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-                        var sizes = new List<float>();
-                        selectionController.Selection.ToList().ForEach(x => 
-                        {
-                            using (var path = x.GetRendererPath())
-                            {
-                                foreach (var p in path.PathPoints)
-                                {
-                                    var size = (p.X - pt2.X) * (p.X - pt2.X) + (p.Y - pt2.Y) * (p.Y - pt2.Y);
-                                    sizes.Add(size);
-                                }
-                            }
-                        });
-                        var dx = pt1.X - pt2.X;
-                        var dy = pt1.Y - pt2.Y;
-                        var d = dx * dx + dy * dy;
-                        if (d > 0.01)
-                        {
-                            var max = SelectionController.Selection.Select(x => 
-                                Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
-                            var kf = d / max;
-                            selectionController.Selection.Scale(pt1, kf,
+                        //var sizes = new List<float>();
+                        //selectionController.Selection.ToList().ForEach(x => 
+                        //{
+                        //    using (var path = x.GetRendererPath())
+                        //    {
+                        //        foreach (var p in path.PathPoints)
+                        //        {
+                        //            var size = (p.X - pt2.X) * (p.X - pt2.X) + (p.Y - pt2.Y) * (p.Y - pt2.Y);
+                        //            sizes.Add(size);
+                        //        }
+                        //    }
+                        //});
+                        //var dx = pt1.X - pt2.X;
+                        //var dy = pt1.Y - pt2.Y;
+                        //var d = dx * dx + dy * dy;
+                        //if (d > 0.01)
+                        //{
+                        //    var max = SelectionController.Selection.Select(x => 
+                        //        Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                        //    var kf = d / max;
+                        if (this.CalcRibbonScaled(pt1, pt2, out PointF baseScalePoint, out float kf))
+                        { 
+                            selectionController.Selection.Scale(baseScalePoint, kf,
                                 (scaleoffsets) =>
                                 {
                                     undoRedoManager.Execute(new ScaleFiguresCommand(scaleoffsets));
-                                },
-                                (movedoffsets) =>
-                                {
-                                    undoRedoManager.Execute(new MoveFiguresCommand(movedoffsets));
                                 });
                             // предыдущий выбор стирается, т.к. масштабирование - однократная операция
                             selectionController.Selection.Clear();
@@ -1180,6 +1190,11 @@ namespace PetCAD
         public void ScaleSelected()
         {
             editorMode = EditorMode.ScaleSelected;
+        }
+
+        public void RotateSelected()
+        {
+            editorMode = EditorMode.RotateSelected;
         }
     }
 }

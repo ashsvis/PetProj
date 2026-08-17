@@ -125,6 +125,83 @@ namespace PetCAD.Renderers
             }
         }
 
+        public static void DrawRibbonRotated(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
+        {
+            float zoom = drawControl.Zoom;
+            var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            var dx = pt1.X - pt2.X;
+            var dy = pt1.Y - pt2.Y;
+            var d = dx * dx + dy * dy;
+            if (d > 0.01)
+            {
+                using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+                {
+                    pen.StartCap = LineCap.Round;
+                    pen.EndCap = LineCap.Round;
+                    //var max = drawControl.SelectionController.Selection.Select(x =>
+                    //    Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                    //var kf = d / max;
+                    using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+                    using (var penB = new Pen(Color.Silver, 2.6f / zoom))
+                    {
+                        foreach (var figure in drawControl.SelectionController.Selection)
+                        {
+                            var fig = figure.DeepCopy();
+                            // рисуем текущее представление цветом Silver
+                            if (figure.Geometry is IRotateGeometry prevGeometry &&
+                                figure.Geometry is BlockGeometry blockGeometry)
+                            {
+                                prevGeometry.Rotate(blockGeometry.InsertPoint, blockGeometry.Angle);
+                                using (var path = figure.GetRendererPath())
+                                {
+                                    try
+                                    {
+                                        graphics.DrawPath(penB, path);
+                                    }
+                                    catch { }
+                                }
+                            }
+                            // рисуем масштабируемое представление цветом LightPink
+                            if (fig.Geometry is IRotateGeometry rotateGeometry)
+                            {
+                                //if (figure.Geometry is BlockGeometry blkGeometry)
+                                //{
+                                //    var arr = new PointF[] { pt1 };
+                                //    var m = new Matrix();
+                                //    var mx = blkGeometry.InsertPoint.X;
+                                //    var my = blkGeometry.InsertPoint.Y;
+                                //    m.Translate(-mx, -my, MatrixOrder.Append);
+                                //    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                                //    m.Translate(mx, my, MatrixOrder.Append);
+                                //    m.TransformPoints(arr);
+                                //    pt1 = arr[0];
+                                //}
+
+                                rotateGeometry.Rotate(pt1, 0f);
+
+                                //if (figure.Geometry is BlockGeometry blkGeom)
+                                //    blkGeom.InsertPoint = PointF.Add(blkGeom.InsertPoint,
+                                //        new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
+
+                                using (var path = fig.GetRendererPath())
+                                {
+                                    try
+                                    {
+                                        graphics.DrawPath(penA, path);
+                                    }
+                                    catch { }
+                                }
+                            }
+                        }
+                    }
+                    graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    graphics.DrawLine(pen, firstMouseDown, pt2);
+                }
+            }
+        }
+
         public static void DrawRibbonScaled(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
@@ -180,8 +257,9 @@ namespace PetCAD.Renderers
 
                                 scaleGeometry.Scale(pt1, kf);
 
-                                if (figure.Geometry is BlockGeometry _ && fig.Geometry is IMoveGeometry moveGeometry)
-                                    moveGeometry.Move(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y);
+                                if (figure.Geometry is BlockGeometry blkGeom)
+                                    blkGeom.InsertPoint = PointF.Add(blkGeom.InsertPoint, 
+                                        new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
 
                                 using (var path = fig.GetRendererPath())
                                 {
@@ -199,6 +277,49 @@ namespace PetCAD.Renderers
                     graphics.DrawLine(pen, firstMouseDown, pt2);
                 }
             }
+        }
+
+        public static bool CalcRibbonScaled(this DrawControl drawControl, PointF firstMouseDown, PointF mousePosition,
+            out PointF baseScalePoint, out float scaleFactor)
+        {
+            var pt1 = firstMouseDown;
+            baseScalePoint = pt1;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            var dx = pt1.X - pt2.X;
+            var dy = pt1.Y - pt2.Y;
+            var d = dx * dx + dy * dy;
+            if (d > 0.01)
+            {
+                var max = drawControl.SelectionController.Selection.Select(x =>
+                    Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
+                var kf = d / max;
+                scaleFactor = kf;
+                foreach (var figure in drawControl.SelectionController.Selection)
+                {
+                    var fig = figure.DeepCopy();
+                    if (fig.Geometry is IScaleGeometry scaleGeometry)
+                    {
+                        if (figure.Geometry is BlockGeometry blkGeometry)
+                        {
+                            var arr = new PointF[] { pt1 };
+                            var m = new Matrix();
+                            var mx = blkGeometry.InsertPoint.X;
+                            var my = blkGeometry.InsertPoint.Y;
+                            m.Translate(-mx, -my, MatrixOrder.Append);
+                            m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                            m.Translate(mx, my, MatrixOrder.Append);
+                            m.TransformPoints(arr);
+                            pt1 = arr[0];
+                            //baseScalePoint = pt1;
+                            baseScalePoint = PointF.Add(blkGeometry.InsertPoint, new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
+                        }
+                        return true;
+                    }
+                }
+            }
+            baseScalePoint = firstMouseDown;
+            scaleFactor = 1f;
+            return false;
         }
 
         /// <summary>
