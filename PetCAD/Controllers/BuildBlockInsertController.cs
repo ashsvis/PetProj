@@ -64,7 +64,7 @@ namespace PetCAD.Controllers
         {
             if (drawer.EditorMode == EditorMode.BuildInsertBlock)
             {
-                //throw new NotImplementedException();
+                
             }
         }
     }

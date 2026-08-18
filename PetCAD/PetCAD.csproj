@@ -143,7 +143,6 @@
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\IMoveGeometry.cs" />
     <Compile Include="Geometries\IMoveMarker.cs" />
-    <Compile Include="Geometries\PrimitiveGeometry.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

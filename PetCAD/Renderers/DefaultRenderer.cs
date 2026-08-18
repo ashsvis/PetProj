@@ -22,9 +22,7 @@ namespace PetCAD.Renderers
             {
                 // если разрешено использование заливки
                 if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)         
-                { 
                     graphics.FillPath(brush, path); 
-                }
                 // если разрешено рисование контура
                 if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
                 {

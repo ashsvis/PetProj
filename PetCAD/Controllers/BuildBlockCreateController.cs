@@ -88,7 +88,8 @@ namespace PetCAD.Controllers
                         Math.Abs(ptFirstSelectCorner.X - ptSecondSelectCorner.X), Math.Abs(ptFirstSelectCorner.Y - ptSecondSelectCorner.Y));
                     var list = new List<Figure>();
                     drawer.SelectionController.Selection.Clear();
-                    drawer.SelectionController.SelectUnselectByFrame(drawer.Width, drawer.Height, drawer.Figures, drawer.ShiftPressed, selMode, rectangle,
+                    drawer.SelectionController.SelectUnselectByFrame(drawer.Width, drawer.Height, 
+                        drawer.Figures, drawer.ShiftPressed, selMode, rectangle,
                             (manager, fig) =>
                             {
                                 if (!list.Contains(fig))

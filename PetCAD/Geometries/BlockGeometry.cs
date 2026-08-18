@@ -66,31 +66,11 @@ namespace PetCAD.Geometries
         {
             get
             {
-                //var path = new GraphicsPath();
-                //foreach (var figure in zeroBasedFigures)
-                //    path.AddPath(figure.GetRendererPath(), false);
-                //var m = new Matrix();
-                //m.Translate(-InsertPoint.X, -InsertPoint.Y, MatrixOrder.Append);
-                //m.Rotate(Angle, MatrixOrder.Append);
-                //m.Scale(ScaleFactor, ScaleFactor, MatrixOrder.Append);
-                //m.Translate(InsertPoint.X, InsertPoint.Y, MatrixOrder.Append);
-                //path.Transform(m);
-                var path = new GraphicsPath(); // (GraphicsPath)this.Path.Clone();
-                //foreach (var figure in zeroBasedFigures)
-                //    path.AddPath(figure.GetRendererPath(), false);
-                //var m = new Matrix();
-                //var basePoint = this.InsertPoint;
-                //var kf = this.ScaleFactor;
-                //var angle = this.Angle;
-                //m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-                //m.Rotate(angle, MatrixOrder.Append);
-                //m.Scale(kf, kf, MatrixOrder.Append);
-                //m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-                //path.Transform(m);
-                return path ?? new GraphicsPath();
+                var path = new GraphicsPath();
+                foreach (var figure in zeroBasedFigures)
+                    path.AddPath(figure.GetRendererPath(), false);
+                return path;
             }
-            //set { }
-
         }
 
         /// <summary>
@@ -101,7 +81,7 @@ namespace PetCAD.Geometries
             get { return AllowedGeometryOperations.All ^ AllowedGeometryOperations.Vertex; } 
         }
 
-        public override RectangleF Bounds => RectangleF.Empty;
+        public override RectangleF Bounds => Path.GetBounds();
 
         public override Geometry DeepCopy()
         {

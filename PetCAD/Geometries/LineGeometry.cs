@@ -36,7 +36,6 @@ namespace PetCAD.Geometries
                 }
                 return path;
             }
-            //set { }
         }
 
         public LineGeometry()

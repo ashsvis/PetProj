@@ -1,6 +1,5 @@
 ﻿using PetCAD.Figures;
 using PetCAD.Geometries;
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -28,7 +27,6 @@ namespace PetCAD.Renderers
                     var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
                     if (bounds.Width != 0 || bounds.Height != 0)
                     {
-                        //fig.Renderer.Render(graphics, fig);
                         using (var path = fig.GetRendererPath())
                         {
                             var m = new Matrix();

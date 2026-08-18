@@ -1,5 +1,4 @@
 ﻿using PetCAD.Common;
-using PetCAD.Controllers;
 using PetCAD.Figures;
 using PetCAD.Geometries;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace PetCAD.Renderers
 {
@@ -276,7 +274,6 @@ namespace PetCAD.Renderers
                             m.Translate(mx, my, MatrixOrder.Append);
                             m.TransformPoints(arr);
                             pt1 = arr[0];
-                            //baseScalePoint = pt1;
                             baseScalePoint = PointF.Add(blkGeometry.InsertPoint, new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
                         }
                         return true;

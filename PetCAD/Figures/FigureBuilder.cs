@@ -39,12 +39,6 @@ namespace PetCAD.Figures
             };
         }
 
-        public static void BuildLayerGeomentry(Figure layer)
-        {
-            var path = new GraphicsPath();
-            //layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Layer" };
-        }
-
         /// <summary>
         /// Создание геометрии блока из набора фигур и базовой точки вставки
         /// </summary>

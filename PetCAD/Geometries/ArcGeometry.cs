@@ -69,7 +69,6 @@ namespace PetCAD.Geometries
                 }
                 return path;
             }
-            //set { }
         }
 
         public override RectangleF Bounds

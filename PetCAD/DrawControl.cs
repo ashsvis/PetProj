@@ -80,7 +80,6 @@ namespace PetCAD
         {
             InitializeComponent();
             Layer = new Figure();
-            FigureBuilder.BuildLayerGeomentry(Layer);
             undoRedoManager = new UndoRedoManager();
             undoRedoManager.OnStateChaned += (o, e) => zoomPad.Invalidate();
             selectionController = new SelectionController();
@@ -640,6 +639,7 @@ namespace PetCAD
         public Figure AddBlock(string name, PointF basePoint, Figure[] figures)
         {
             Figure block = new BlockReference();
+            block.Geometry.Name = name;
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
             FigureBuilder.BuildBlockGeometry(name, block, basePoint, figures);
@@ -652,6 +652,8 @@ namespace PetCAD
             Figure block = new BlockReference();
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
+            if (BlockGeometry.DefinedBlocks.ContainsKey(blockName))
+                FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint, BlockGeometry.DefinedBlocks[blockName]);
             if (block.Geometry is BlockGeometry blockGeometry)
             {
                 blockGeometry.InsertPoint = insertPoint;
