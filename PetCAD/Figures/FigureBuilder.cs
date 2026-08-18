@@ -74,11 +74,11 @@ namespace PetCAD.Figures
         /// <param name="name"></param>
         /// <param name="block"></param>
         /// <param name="basePoint"></param>
-        public static void BuildBlockGeometry(string name, Figure block, PointF basePoint)
-        {
-            block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f);
-            block.Renderer = new BlockRenderer();
-        }
+        //public static void BuildBlockGeometry(string name, Figure block, PointF basePoint)
+        //{
+        //    block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f);
+        //    block.Renderer = new BlockRenderer();
+        //}
     }
 
 }

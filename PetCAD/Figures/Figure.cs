@@ -18,7 +18,7 @@ namespace PetCAD.Figures
         /// <summary>
         /// Свойство стиля рисования фигуры
         /// </summary>
-        public Style Style { get; private set; }
+        public Style Style { get; protected set; }
 
         /// <summary>
         /// Свойство источника геометрии фигуры
@@ -45,21 +45,24 @@ namespace PetCAD.Figures
             return xfigure;
         }
 
-        public void SetXml(XElement xfigure, Func<string, Geometry> geometry, Func<string, Renderer> renderer)
+        public static void SetXml(XElement xfigure, 
+            Func<string, Figure> figureFunc, Func<string, Geometry> geometryFunc, Func<string, Renderer> rendererFunc)
         {
             if (xfigure == null || xfigure.Name != "Figure") return;
             var xgeometry = xfigure.Element("Geometry");
             if (xgeometry == null) return;
             var name = xgeometry.Attribute("Name")?.Value;
-            Geometry = geometry(name);
-            Geometry?.SetXml(xgeometry);
-            Renderer = renderer(name);
+            var figure = figureFunc(name);
+            if (figure == null) return;
+            figure.Geometry = geometryFunc(name);
+            figure.Geometry?.SetXml(xgeometry);
+            figure.Renderer = rendererFunc(name);
             var xstyle = xfigure.Element("Style");
             if (xstyle == null) return;
-            Style.SetXml(xstyle);
+            figure.Style.SetXml(xstyle);
         }
 
-        public Figure DeepCopy()
+        public virtual Figure DeepCopy()
         {
             var fig = new Figure
             {
@@ -105,4 +108,5 @@ namespace PetCAD.Figures
             return path ?? new GraphicsPath();
         }
     }
+
 }

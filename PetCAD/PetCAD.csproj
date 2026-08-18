@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Common\EditorMode.cs" />
     <Compile Include="Figures\AllowedMarkerOperations.cs" />
+    <Compile Include="Figures\BlockReference.cs" />
     <Compile Include="Geometries\BlockGeometry.cs" />
     <Compile Include="Geometries\IRotateGeometry.cs" />
     <Compile Include="Geometries\IScaleGeometry.cs" />

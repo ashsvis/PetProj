@@ -204,11 +204,13 @@ namespace PetCAD.Geometries
             }
         }
 
-        public void Rotate(PointF basePoint, float angel)
+        public void Rotate(PointF basePoint, float angle)
         {
             var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
             var m = new Matrix();
-            m.Rotate(angel);
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
             if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
                 out PointF center, out float radius, out float startAngle, out float sweepAngle))

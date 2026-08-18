@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace PetCAD.Renderers
 {
@@ -128,87 +129,66 @@ namespace PetCAD.Renderers
         public static void DrawRibbonRotated(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
-            var pt1 = firstMouseDown;
+            var center = firstMouseDown;
             var pt2 = drawControl.PrepareMousePosition(mousePosition);
-            var dx = pt1.X - pt2.X;
-            var dy = pt1.Y - pt2.Y;
-            var d = dx * dx + dy * dy;
-            if (d > 0.01)
+            var angle = pt2.Vector(center).AngleDegree();
+            using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
             {
-                using (var pen = new Pen(Color.Gray, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+                using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
+                using (var penB = new Pen(Color.Silver, 2.6f / zoom))
                 {
-                    pen.StartCap = LineCap.Round;
-                    pen.EndCap = LineCap.Round;
-                    //var max = drawControl.SelectionController.Selection.Select(x =>
-                    //    Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
-                    //var kf = d / max;
-                    using (var penA = new Pen(Color.LightPink, 2.6f / zoom))
-                    using (var penB = new Pen(Color.Silver, 2.6f / zoom))
+                    foreach (var figure in drawControl.SelectionController.Selection)
                     {
-                        foreach (var figure in drawControl.SelectionController.Selection)
+                        // рисуем текущее представление цветом Silver
+                        if (figure.Geometry is IRotateGeometry prevGeometry &&
+                            figure.Geometry is BlockGeometry blockGeometry)
                         {
-                            var fig = figure.DeepCopy();
-                            // рисуем текущее представление цветом Silver
-                            if (figure.Geometry is IRotateGeometry prevGeometry &&
-                                figure.Geometry is BlockGeometry blockGeometry)
+                            prevGeometry.Rotate(blockGeometry.InsertPoint, blockGeometry.Angle);
+                        }
+                        using (var path = figure.GetRendererPath())
+                        {
+                            try
                             {
-                                prevGeometry.Rotate(blockGeometry.InsertPoint, blockGeometry.Angle);
-                                using (var path = figure.GetRendererPath())
-                                {
-                                    try
-                                    {
-                                        graphics.DrawPath(penB, path);
-                                    }
-                                    catch { }
-                                }
+                                graphics.DrawPath(penB, path);
                             }
-                            // рисуем масштабируемое представление цветом LightPink
-                            if (fig.Geometry is IRotateGeometry rotateGeometry)
+                            catch { }
+                        }
+
+                        var fig = figure.DeepCopy();
+                        // рисуем повёрнутое представление цветом LightPink
+                        if (fig.Geometry is IRotateGeometry rotateGeometry)
+                        {
+                            using (var path = fig.GetRendererPath())
                             {
-                                //if (figure.Geometry is BlockGeometry blkGeometry)
-                                //{
-                                //    var arr = new PointF[] { pt1 };
-                                //    var m = new Matrix();
-                                //    var mx = blkGeometry.InsertPoint.X;
-                                //    var my = blkGeometry.InsertPoint.Y;
-                                //    m.Translate(-mx, -my, MatrixOrder.Append);
-                                //    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                                //    m.Translate(mx, my, MatrixOrder.Append);
-                                //    m.TransformPoints(arr);
-                                //    pt1 = arr[0];
-                                //}
-
-                                rotateGeometry.Rotate(pt1, (float)(pt2.Angle(pt1) * 180 / Math.PI));
-
-                                //if (figure.Geometry is BlockGeometry blkGeom)
-                                //    blkGeom.InsertPoint = PointF.Add(blkGeom.InsertPoint,
-                                //        new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
-
-                                using (var path = fig.GetRendererPath())
+                                try
                                 {
-                                    try
-                                    {
-                                        graphics.DrawPath(penA, path);
-                                    }
-                                    catch { }
+                                    var m = new Matrix();
+                                    m.Translate(-center.X, -center.Y, MatrixOrder.Append);
+                                    m.Rotate(angle, MatrixOrder.Append);
+                                    m.Translate(center.X, center.Y, MatrixOrder.Append);
+                                    path.Transform(m);
+                                    graphics.DrawPath(penA, path);
                                 }
+                                catch { }
                             }
                         }
                     }
-                    graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    graphics.DrawLine(pen, firstMouseDown, pt2);
                 }
+                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphics.DrawLine(pen, firstMouseDown, pt2);
             }
         }
 
         public static void DrawRibbonScaled(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             float zoom = drawControl.Zoom;
-            var pt1 = firstMouseDown;
+            var basePoint = firstMouseDown;
             var pt2 = drawControl.PrepareMousePosition(mousePosition);
-            var dx = pt1.X - pt2.X;
-            var dy = pt1.Y - pt2.Y;
+            var dx = basePoint.X - pt2.X;
+            var dy = basePoint.Y - pt2.Y;
             var d = dx * dx + dy * dy;
             if (d > 0.01) 
             {
@@ -224,7 +204,6 @@ namespace PetCAD.Renderers
                     {
                         foreach (var figure in drawControl.SelectionController.Selection)
                         {
-                            var fig = figure.DeepCopy();
                             // рисуем текущее представление цветом Silver
                             if (figure.Geometry is IScaleGeometry prevGeometry &&
                                 figure.Geometry is BlockGeometry blockGeometry)
@@ -239,32 +218,19 @@ namespace PetCAD.Renderers
                                     catch { }
                                 }
                             }
+                            var fig = figure.DeepCopy();
                             // рисуем масштабируемое представление цветом LightPink
-                            if (fig.Geometry is IScaleGeometry scaleGeometry)
+                            if (fig.Geometry is IRotateGeometry rotateGeometry)
                             {
-                                if (figure.Geometry is BlockGeometry blkGeometry)
-                                {
-                                    var arr = new PointF[] { pt1 };
-                                    var m = new Matrix();
-                                    var mx = blkGeometry.InsertPoint.X;
-                                    var my = blkGeometry.InsertPoint.Y;
-                                    m.Translate(-mx, -my, MatrixOrder.Append);
-                                    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                                    m.Translate(mx, my, MatrixOrder.Append);
-                                    m.TransformPoints(arr);
-                                    pt1 = arr[0];
-                                }
-
-                                scaleGeometry.Scale(pt1, kf);
-
-                                if (figure.Geometry is BlockGeometry blkGeom)
-                                    blkGeom.InsertPoint = PointF.Add(blkGeom.InsertPoint, 
-                                        new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
-
                                 using (var path = fig.GetRendererPath())
                                 {
                                     try
                                     {
+                                        var m = new Matrix();
+                                        m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+                                        m.Scale(kf, kf, MatrixOrder.Append);
+                                        m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+                                        path.Transform(m);
                                         graphics.DrawPath(penA, path);
                                     }
                                     catch { }

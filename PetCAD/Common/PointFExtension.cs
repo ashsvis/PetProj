@@ -85,7 +85,7 @@ namespace PetCAD.Common
         /// <summary>
         /// Angle (-PI ; PI]
         /// </summary>
-        public static float Angle(this PointF c)
+        private static float Angle(this PointF c)
         {
             return (float)Math.Atan2(c.Y, c.X);
         }

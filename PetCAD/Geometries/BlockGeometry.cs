@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IMoveMarker
+    public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
     {
         private Figure[] zeroBasedFigures = new Figure[] { };
 
@@ -145,6 +145,17 @@ namespace PetCAD.Geometries
             m.TransformPoints(points);
             InsertPoint = points[0];
             ScaleFactor = zoom;
+        }
+
+        public void Rotate(PointF basePoint, float angle)
+        {
+            var points = new PointF[] { InsertPoint };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            InsertPoint = points[0];
         }
     }
 }

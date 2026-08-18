@@ -638,7 +638,7 @@ namespace PetCAD
 
         public Figure AddBlock(string name, PointF basePoint, Figure[] figures)
         {
-            Figure block = new Figure();
+            Figure block = new BlockReference();
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
             FigureBuilder.BuildBlockGeometry(name, block, basePoint, figures);
@@ -648,10 +648,9 @@ namespace PetCAD
 
         public void InsertBlock(PointF insertPoint, string blockName)
         {
-            Figure block = new Figure();
+            Figure block = new BlockReference();
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
-            FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint);
             if (block.Geometry is BlockGeometry blockGeometry)
             {
                 blockGeometry.InsertPoint = insertPoint;
@@ -900,28 +899,43 @@ namespace PetCAD
                                     var list = new List<Figure>();
                                     foreach (var xfigure in xelement.Elements("Figure"))
                                     {
-                                        var figure = new Figure();
-                                        figure.SetXml(xfigure, (geometryName) =>
-                                        {
-                                            switch (geometryName)
+                                        Figure figure = null;
+                                        Figure.SetXml(xfigure,
+                                            (geometryName) =>
                                             {
-                                                case "Segment":
-                                                    return new LineGeometry();
-                                                case "Arc":
-                                                    return new ArcGeometry();
-                                                default:
-                                                    return null;
-                                            }
-                                        },
-                                        (rendererName) =>
-                                        {
-                                            switch (rendererName)
+                                                switch (geometryName)
+                                                {
+                                                    case "Block":
+                                                        figure = new BlockReference();
+                                                        return figure;
+                                                    default:
+                                                        figure = new Figure();
+                                                        return figure;
+                                                }
+                                            },
+                                            (geometryName) =>
                                             {
-                                                default:
-                                                    return new DefaultRenderer();
-                                            }
-                                        });
-                                        if (figure.Geometry != null)
+                                                switch (geometryName)
+                                                {
+                                                    case "Segment":
+                                                        return new LineGeometry();
+                                                    case "Arc":
+                                                        return new ArcGeometry();
+                                                    case "Block":
+                                                        return new BlockGeometry();
+                                                    default:
+                                                        return null;
+                                                }
+                                            },
+                                            (rendererName) =>
+                                            {
+                                                switch (rendererName)
+                                                {
+                                                    default:
+                                                        return new DefaultRenderer();
+                                                }
+                                            });
+                                        if (figure != null && figure.Geometry != null)
                                             list.Add(figure);
                                     }
                                     BlockGeometry.DefinedBlocks.Add(blockName, list.ToArray());
@@ -942,8 +956,20 @@ namespace PetCAD
                         switch (figureName)
                         {
                             case "Figure":
-                                var figure = new Figure();
-                                figure.SetXml(xelement,
+                                Figure figure = null;
+                                Figure.SetXml(xelement,
+                                    (geometryName) =>
+                                    {
+                                        switch (geometryName)
+                                        {
+                                            case "Block":
+                                                figure = new BlockReference();
+                                                return figure;
+                                            default:
+                                                figure = new Figure();
+                                                return figure;
+                                        }
+                                    },
                                     (geometryName) =>
                                     {
                                         switch (geometryName)
@@ -968,7 +994,7 @@ namespace PetCAD
                                                 return new DefaultRenderer();
                                         }
                                     });
-                                if (figure.Geometry != null)
+                                if (figure != null && figure.Geometry != null)
                                     figures.Add(figure);
                                 break;
                         }
