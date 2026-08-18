@@ -32,7 +32,7 @@ namespace PetCAD.Figures
         public override GraphicsPath GetRendererPath()
         {
             // создаём копию геометрии фигуры
-            var path = new GraphicsPath();
+            var path = (GraphicsPath)Geometry.Path?.Clone() ?? new GraphicsPath();
             var m = new Matrix();
             var basePoint = ((BlockGeometry)Geometry).InsertPoint;
             var kf = ((BlockGeometry)Geometry).ScaleFactor;
@@ -41,6 +41,9 @@ namespace PetCAD.Figures
             m.Rotate(angle, MatrixOrder.Append);
             m.Scale(kf, kf, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+
             path.Transform(m);
             return path;
         }

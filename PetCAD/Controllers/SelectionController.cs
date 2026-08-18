@@ -138,8 +138,8 @@ namespace PetCAD.Controllers
             {
                 foreach (var fig in figures)
                 {
-                    using (GraphicsPath path = fig.GetRendererPath())
-                    {
+                    //using (GraphicsPath path = fig.GetRendererPath())
+                    //{
                         if (selMode)
                         {
                             // захватываем рамкой объекты даже частично
@@ -164,7 +164,7 @@ namespace PetCAD.Controllers
                                 this.BuildMarkers(this.Selection);
                             }
                         }
-                    }
+                    //}
                 }
             }
         }

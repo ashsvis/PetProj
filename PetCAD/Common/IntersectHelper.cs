@@ -55,11 +55,11 @@ namespace PetCAD.Common
         public static bool Contains(this Figure figure, RectangleF captured)
         {
             if (captured.IsEmpty) return false;
-            var rect = figure.Geometry.Bounds;
+            var rect = figure.GetRendererPath().GetBounds(); //figure.Geometry.Bounds;
             if (rect.Width == 0 && rect.Height == 0)
                 return captured.Contains(rect.Location);
             rect.Intersect(captured);
-            return rect.Equals(figure.Geometry.Bounds);
+            return rect.Equals(figure.GetRendererPath().GetBounds()/*figure.Geometry.Bounds*/);
         }
 
         /// <summary>
@@ -77,11 +77,11 @@ namespace PetCAD.Common
                 {
                     if (path.PointCount == 0)
                         return false;
-                    var rect = figure.Geometry.Bounds;
+                    var rect = path.GetBounds(); //figure.Geometry.Bounds;
                     if (rect.Width == 0 && rect.Height == 0)
                         return captured.Contains(rect.Location);
                     rect.Intersect(captured);
-                    if (rect.Equals(figure.Geometry.Bounds))
+                    if (rect.Equals(path.GetBounds()/*figure.Geometry.Bounds*/))
                         return true; // содержится целиком
                     if (path.PathPoints.Any(p => captured.Contains(p)))
                         return true; // любая точка пути фигуры содержится в рамке

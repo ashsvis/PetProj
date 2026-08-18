@@ -491,9 +491,8 @@ namespace PetCAD
             {
                 if (marker is VertexMarker vertex)
                 {
-                    //if (marker.Owner.Geometry is LineGeometry segment)
-                        // добавляем в список
-                        offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex.Index));
+                    // добавляем в список
+                    offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex.Index));
                 }
             }
             // если список не пуст, выполняем метод перемещения
