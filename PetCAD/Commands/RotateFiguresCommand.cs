@@ -36,7 +36,7 @@ namespace PetCAD.Commands
             {
                 if (figure.Geometry is IRotateGeometry geometry)
                 {
-                    geometry.Rotate(point, angle);
+                    geometry.Rotate(point, -angle);
                 }
             }
         }

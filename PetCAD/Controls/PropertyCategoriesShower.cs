@@ -38,7 +38,7 @@ namespace PetCAD.Controls
                 else
                     labelCaption.Text = $"Несколько фигур ({selection.Count})";
             }
-            else if (selection.First().Geometry.Name == "Слой")
+            else if (selection.First().Geometry == null || selection.First().Geometry.Name == "Слой")
             {
                 labelCaption.Text = "Ничего не выбрано";
             }

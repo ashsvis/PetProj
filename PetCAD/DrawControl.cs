@@ -399,7 +399,8 @@ namespace PetCAD
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-                        selectionController.Selection.Rotate(pt1, (float)(pt1.Angle(pt2) * 180 / Math.PI),
+                        var angle = pt2.Vector(pt1).AngleDegree();
+                        selectionController.Selection.Rotate(pt1, angle,
                             (rotateOffsets) =>
                             {
                                 undoRedoManager.Execute(new RotateFiguresCommand(rotateOffsets));

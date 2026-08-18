@@ -69,7 +69,7 @@ namespace PetCAD.Geometries
                 }
                 return path;
             }
-            set { }
+            //set { }
         }
 
         public override RectangleF Bounds
@@ -278,6 +278,25 @@ namespace PetCAD.Geometries
             #endregion блок коррекции углов дуги
             startAngle = angle1;
             return true;
+        }
+
+        public override void Transform(PointF basePoint, float zoom, float angle)
+        {
+            var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Scale(zoom, zoom, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
+                out PointF center, out float radius, out float startAngle, out float sweepAngle))
+            {
+                CenterPoint = center;
+                Radius = radius;
+                StartAngle = startAngle;
+                SweepAngle = sweepAngle;
+            }
         }
     }
 }

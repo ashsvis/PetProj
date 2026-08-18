@@ -1,5 +1,4 @@
 ﻿using PetCAD.Geometries;
-using PetCAD.Renderers;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -43,7 +42,7 @@ namespace PetCAD.Figures
         public static void BuildLayerGeomentry(Figure layer)
         {
             var path = new GraphicsPath();
-            layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Layer" };
+            //layer.Geometry = new PrimitiveGeometry(path, AllowedGeometryOperations.None) { Name = "Layer" };
         }
 
         /// <summary>

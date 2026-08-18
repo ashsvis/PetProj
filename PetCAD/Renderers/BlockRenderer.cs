@@ -1,6 +1,8 @@
 ﻿using PetCAD.Figures;
 using PetCAD.Geometries;
+using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PetCAD.Renderers
 {
@@ -18,13 +20,30 @@ namespace PetCAD.Renderers
         {
             if (block.Geometry is BlockGeometry geometry)
             {
+                var basePoint = geometry.InsertPoint;
+                var kf = geometry.ScaleFactor;
+                var angle = geometry.Angle;
                 foreach (var fig in geometry.GetFigures())
                 {
                     var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
                     if (bounds.Width != 0 || bounds.Height != 0)
-                        fig.Renderer.Render(graphics, fig);
+                    {
+                        //fig.Renderer.Render(graphics, fig);
+                        using (var path = fig.GetRendererPath())
+                        {
+                            var m = new Matrix();
+                            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+                            m.Rotate(angle, MatrixOrder.Append);
+                            m.Scale(kf, kf, MatrixOrder.Append);
+                            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+                            path.Transform(m);
+                            using (var pen = fig.Style.BorderStyle.GetPen(fig))
+                                graphics.DrawPath(pen, path);
+                        }
+                    }
                 }
             }
+
         }
 
         public override Renderer DeepCopy()

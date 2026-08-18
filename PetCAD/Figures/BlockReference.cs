@@ -32,9 +32,17 @@ namespace PetCAD.Figures
         public override GraphicsPath GetRendererPath()
         {
             // создаём копию геометрии фигуры
-            var path = (GraphicsPath)Geometry?.Path.Clone();
-
-            return path ?? new GraphicsPath();
+            var path = new GraphicsPath(); //(GraphicsPath)Geometry?.Path.Clone();
+            var m = new Matrix();
+            var basePoint = ((BlockGeometry)Geometry).InsertPoint;
+            var kf = ((BlockGeometry)Geometry).ScaleFactor;
+            var angle = ((BlockGeometry)Geometry).Angle;
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Scale(kf, kf, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            path.Transform(m);
+            return path;
         }
 
     }

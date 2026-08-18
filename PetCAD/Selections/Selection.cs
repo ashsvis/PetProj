@@ -114,7 +114,7 @@ namespace PetCAD.Selections
             foreach (var figure in selected)
             {
                 // получаем путь для рисования методом фигуры
-                using (var path = figure.Geometry.Path)
+                using (var path = figure.GetRendererPath())
                 {
                     // то получаем карандаш из стиля рисования фигуры
                     using (var pen = new Pen(color, 2.6f / penWidthFactor))

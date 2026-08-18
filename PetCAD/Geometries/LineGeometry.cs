@@ -36,7 +36,7 @@ namespace PetCAD.Geometries
                 }
                 return path;
             }
-            set { }
+            //set { }
         }
 
         public LineGeometry()
@@ -128,6 +128,19 @@ namespace PetCAD.Geometries
             var m = new Matrix();
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Rotate(angle, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            Points[0] = points[0];
+            Points[1] = points[1];
+        }
+
+        public override void Transform(PointF basePoint, float zoom, float angle)
+        {
+            var points = new PointF[] { Points[0], Points[1] };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
             Points[0] = points[0];

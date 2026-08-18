@@ -73,7 +73,7 @@ namespace PetCAD.Selections
             {
                 var blowedColor = color;
                 // получаем путь для рисования методом фигуры
-                using (var path = figure.Geometry.Path)
+                using (var path = figure.GetRendererPath())
                 {
                     using (var pen = new Pen(blowedColor, (figure.Style.BorderStyle.Width + 2f) / zoomScale))
                     {

@@ -397,10 +397,15 @@ namespace PetCAD.Controllers
                 }
                 else if (fig.Geometry is BlockGeometry block)
                 {
+                    var pbase = block.InsertPoint;
+                    var kf = block.ScaleFactor;
+                    var angle = block.Angle;
                     foreach (var f in block.GetFigures())
                     {
-                        if (f.Geometry is LineGeometry seg)
+                        if (f.Geometry is LineGeometry segGeometry)
                         {
+                            var seg = (LineGeometry)segGeometry.DeepCopy();
+                            seg.Transform(pbase, kf, angle);
                             var pt1 = seg.StartPoint;
                             var pt2 = seg.EndPoint;
                             if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
@@ -414,8 +419,10 @@ namespace PetCAD.Controllers
                                 BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
                             }
                         }
-                        else if (f.Geometry is ArcGeometry ar)
+                        else if (f.Geometry is ArcGeometry arcGeometry)
                         {
+                            var ar = (ArcGeometry)arcGeometry.DeepCopy();
+                            ar.Transform(pbase, kf, angle);
                             // поиск центра дуги
                             if (allowed.HasFlag(AllowedObjectBindings.Center))
                             {
