@@ -29,7 +29,7 @@ namespace PetCAD.Common
                     {
                         pen.StartCap = LineCap.Round;
                         pen.EndCap = LineCap.Round;
-                        if (/*path.IsVisible(point) || */path.IsOutlineVisible(point, pen))
+                        if (path.IsOutlineVisible(point, pen))
                             return true;
                     }
                 }
@@ -56,11 +56,11 @@ namespace PetCAD.Common
         public static bool Contains(this Figure figure, RectangleF captured)
         {
             if (captured.IsEmpty) return false;
-            var rect = figure.GetRendererPath().GetBounds(); //figure.Geometry.Bounds;
+            var rect = figure.GetRendererPath().GetBounds();
             if (rect.Width == 0 && rect.Height == 0)
                 return captured.Contains(rect.Location);
             rect.Intersect(captured);
-            return rect.Equals(figure.GetRendererPath().GetBounds()/*figure.Geometry.Bounds*/);
+            return rect.Equals(figure.GetRendererPath().GetBounds());
         }
 
         /// <summary>

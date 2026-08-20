@@ -128,41 +128,34 @@ namespace PetCAD.Controllers
 
         }
 
-        public void SelectUnselectByFrame(int width, int height, List<Figure> figures, bool shiftPressed, bool selMode, RectangleF rectangle,
+        public void SelectUnselectByFrame(List<Figure> figures, bool shiftPressed, bool selMode, RectangleF rectangle,
             Action<IListManage, Figure> onSelect, Action<IListManage, Figure> onUnselect)
         {
-            using (var image = new Bitmap(width, height))
-            using (var g = Graphics.FromImage(image))
+            foreach (var fig in figures)
             {
-                foreach (var fig in figures)
+                if (selMode)
                 {
-                    //using (GraphicsPath path = fig.GetRendererPath())
-                    //{
-                        if (selMode)
-                        {
-                            // захватываем рамкой объекты даже частично
-                            if (fig.Intersects(rectangle))
-                            {
-                                if (shiftPressed)
-                                    onUnselect(this.Selection, fig);
-                                else
-                                    onSelect(this.Selection, fig);
-                                this.BuildMarkers(this.Selection);
-                            }
-                        }
+                    // захватываем рамкой объекты даже частично
+                    if (fig.Intersects(rectangle))
+                    {
+                        if (shiftPressed)
+                            onUnselect(this.Selection, fig);
                         else
-                        {
-                            // захватываем рамкой объекты целиком
-                            if (fig.Contains(rectangle))
-                            {
-                                if (shiftPressed)
-                                    onUnselect(this.Selection, fig);
-                                else
-                                    onSelect(this.Selection, fig);
-                                this.BuildMarkers(this.Selection);
-                            }
-                        }
-                    //}
+                            onSelect(this.Selection, fig);
+                        this.BuildMarkers(this.Selection);
+                    }
+                }
+                else
+                {
+                    // захватываем рамкой объекты целиком
+                    if (fig.Contains(rectangle))
+                    {
+                        if (shiftPressed)
+                            onUnselect(this.Selection, fig);
+                        else
+                            onSelect(this.Selection, fig);
+                        this.BuildMarkers(this.Selection);
+                    }
                 }
             }
         }

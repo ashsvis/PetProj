@@ -10,7 +10,6 @@ namespace PetCAD.Figures
         public BlockReference()
         {
             Style = new Style();
-            Geometry = new BlockGeometry(this);
             Renderer = new BlockRenderer();
         }
 
@@ -32,19 +31,12 @@ namespace PetCAD.Figures
         public override GraphicsPath GetRendererPath()
         {
             // создаём копию геометрии фигуры
-            var path = (GraphicsPath)Geometry.Path?.Clone() ?? new GraphicsPath();
-            var m = new Matrix();
-            var basePoint = ((BlockGeometry)Geometry).InsertPoint;
-            var kf = ((BlockGeometry)Geometry).ScaleFactor;
-            var angle = ((BlockGeometry)Geometry).Angle;
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
-            m.Scale(kf, kf, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-
-            path.Transform(m);
+            var path = new GraphicsPath();
+            var blockGeometry = (BlockGeometry)Geometry;
+            foreach (var f in blockGeometry.GetPreparedFigures())
+            {
+                path.AddPath(f.GetRendererPath(), false);
+            }
             return path;
         }
 

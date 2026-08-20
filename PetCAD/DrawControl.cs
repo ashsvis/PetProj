@@ -318,8 +318,7 @@ namespace PetCAD
                         var selMode = pt1.X > pt2.X;
                         var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                             Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
-                        selectionController.SelectUnselectByFrame(Width, Height, figures, ShiftPressed, selMode, rectangle,
-                                (manager, fig) =>
+                        selectionController.SelectUnselectByFrame(figures, ShiftPressed, selMode, rectangle, (manager, fig) =>
                                 {
                                     if (!selectionController.Selection.Contains(fig))
                                     {
@@ -327,8 +326,7 @@ namespace PetCAD
                                         selectionController.Selection.Add(fig);
                                         OnSelected?.Invoke(this, selectionController.Selection);
                                     }
-                                },
-                                (manager, fig) =>
+                                }, (manager, fig) =>
                                 {
                                     if (selectionController.Selection.Contains(fig))
                                     {
@@ -417,26 +415,6 @@ namespace PetCAD
                         pt2 = this.FindOrthoPoint(pt2);
                         //поиск ближайшей точки привязки, если включен режим объектной привязки
                         pt2 = this.FindBindingPoint(pt2);
-                        //var sizes = new List<float>();
-                        //selectionController.Selection.ToList().ForEach(x => 
-                        //{
-                        //    using (var path = x.GetRendererPath())
-                        //    {
-                        //        foreach (var p in path.PathPoints)
-                        //        {
-                        //            var size = (p.X - pt2.X) * (p.X - pt2.X) + (p.Y - pt2.Y) * (p.Y - pt2.Y);
-                        //            sizes.Add(size);
-                        //        }
-                        //    }
-                        //});
-                        //var dx = pt1.X - pt2.X;
-                        //var dy = pt1.Y - pt2.Y;
-                        //var d = dx * dx + dy * dy;
-                        //if (d > 0.01)
-                        //{
-                        //    var max = SelectionController.Selection.Select(x => 
-                        //        Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
-                        //    var kf = d / max;
                         if (this.CalcRibbonScaled(pt1, pt2, out PointF baseScalePoint, out float kf))
                         { 
                             selectionController.Selection.Scale(baseScalePoint, kf,
@@ -573,13 +551,11 @@ namespace PetCAD
                 var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                     Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
                 underCursor.Clear();
-                selectionController.SelectUnselectByFrame(Width, Height, figures, ShiftPressed, selMode, rectangle,
-                        (manager, fig) =>
+                selectionController.SelectUnselectByFrame(figures, ShiftPressed, selMode, rectangle, (manager, fig) =>
                         {
                             if (!underCursor.Contains(fig))
                                 underCursor.Add(fig);
-                        },
-                        (manager, fig) =>
+                        }, (manager, fig) =>
                         {
                             if (underCursor.Contains(fig))
                                 underCursor.Remove(fig);
@@ -638,10 +614,10 @@ namespace PetCAD
         public Figure AddBlock(string name, PointF basePoint, Figure[] figures)
         {
             Figure block = new BlockReference();
-            block.Geometry.Name = name;
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
             FigureBuilder.BuildBlockGeometry(name, block, basePoint, figures);
+            block.Geometry.Name = name;
             blocks.Add(block);
             return block;
         }

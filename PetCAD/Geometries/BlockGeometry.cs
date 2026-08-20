@@ -49,7 +49,7 @@ namespace PetCAD.Geometries
             this.zeroBasedFigures = zeroBasedFigures;
         }
 
-        public Figure[] GetFigures()
+        public Figure[] GetPreparedFigures()
         {
             var list = new List<Figure>();
             if (DefinedBlocks.ContainsKey(Name))
@@ -57,6 +57,8 @@ namespace PetCAD.Geometries
                 foreach (var figure in DefinedBlocks[Name])
                 {
                     var fig = figure.DeepCopy();
+                    if (fig.Geometry is IRotateGeometry rotateGeometry)
+                        rotateGeometry.Rotate(PointF.Empty, Angle);
                     if (fig.Geometry is IScaleGeometry scaleGeometry)
                         scaleGeometry.Scale(PointF.Empty, ScaleFactor);
                     if (fig.Geometry is IMoveGeometry moveGeometry)
@@ -177,7 +179,7 @@ namespace PetCAD.Geometries
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
         {
             var markers = new List<Marker>();
-            foreach (var f in this.GetFigures())
+            foreach (var f in this.GetPreparedFigures())
             {
                 markers.AddRange(f.Geometry.GetBindingMarkers(allowed, basePoint));
             }

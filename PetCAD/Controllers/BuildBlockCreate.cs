@@ -86,27 +86,26 @@ namespace PetCAD.Controllers
                     var rectangle = new RectangleF(
                         Math.Min(ptFirstSelectCorner.X, ptSecondSelectCorner.X), Math.Min(ptFirstSelectCorner.Y, ptSecondSelectCorner.Y),
                         Math.Abs(ptFirstSelectCorner.X - ptSecondSelectCorner.X), Math.Abs(ptFirstSelectCorner.Y - ptSecondSelectCorner.Y));
-                    var list = new List<Figure>();
+                    var figures = new List<Figure>();
                     drawer.SelectionController.Selection.Clear();
-                    drawer.SelectionController.SelectUnselectByFrame(drawer.Width, drawer.Height, 
-                        drawer.Figures, drawer.ShiftPressed, selMode, rectangle,
-                            (manager, fig) =>
+                    drawer.SelectionController.SelectUnselectByFrame(drawer.Figures, drawer.ShiftPressed,
+                        selMode, rectangle, (manager, fig) =>
                             {
-                                if (!list.Contains(fig))
-                                    list.Add(fig);
-                            },
-                            (manager, fig) =>
+                                if (!figures.Contains(fig))
+                                    figures.Add(fig);
+                            }, (manager, fig) =>
                             {
-                                if (list.Contains(fig))
-                                    list.Remove(fig);
+                                if (figures.Contains(fig))
+                                    figures.Remove(fig);
                             }
                         );
                     // создание блока здесь
-                    if (list.Count > 0)
+                    if (figures.Count > 0)
                     {
-                        var block = drawer.AddBlock("Block", ptBaseInsert, list.ToArray());
+                        var block = drawer.AddBlock("Block", ptBaseInsert, figures.ToArray());
                         drawer.InsertBlock(ptBaseInsert, "Block");
-                        foreach (Figure fig in list)
+                        // удаляем фигуры, которые теперь вошли в блок
+                        foreach (Figure fig in figures)
                             drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
                     }
                     drawer.ClearMouseCount();
