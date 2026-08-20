@@ -25,8 +25,11 @@ namespace PetCAD.Renderers
                     if (bounds.Width != 0 || bounds.Height != 0)
                     {
                         using (var path = fig.GetRendererPath())
-                        using (var pen = fig.Style.BorderStyle.GetPen(fig))
-                            graphics.DrawPath(pen, path);
+                        {
+                            path.Transform(((BlockReference)block).Transformation);
+                            using (var pen = fig.Style.BorderStyle.GetPen(fig))
+                                graphics.DrawPath(pen, path);
+                        }
                     }
                 }
             }

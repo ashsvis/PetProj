@@ -7,8 +7,17 @@ namespace PetCAD.Figures
 {
     public class BlockReference : Figure
     {
+        private Matrix transformation;
+
+        public Matrix Transformation 
+        { 
+            get => transformation;
+            private set => transformation = value;
+        }
+
         public BlockReference()
         {
+            transformation = new Matrix();
             Style = new Style();
             Renderer = new BlockRenderer();
         }
@@ -17,6 +26,7 @@ namespace PetCAD.Figures
         {
             var fig = new BlockReference
             {
+                Transformation = transformation.Clone(),
                 Style = Style.DeepCopy(),
                 Renderer = Renderer.DeepCopy()
             };
@@ -37,6 +47,7 @@ namespace PetCAD.Figures
             {
                 path.AddPath(f.GetRendererPath(), false);
             }
+            path.Transform(transformation);
             return path;
         }
 

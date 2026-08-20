@@ -1,6 +1,7 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
 using PetCAD.Makers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -131,12 +132,18 @@ namespace PetCAD.Geometries
         public void Move(float offsetX, float offsetY)
         {
             InsertPoint = PointF.Add(InsertPoint, new SizeF(offsetX, offsetY));
+            var m = ((BlockReference)Owner).Transformation;
+            m.Translate(offsetX, offsetY);
         }
 
         public void Move(int index, float offsetX, float offsetY)
         {
             if (index == 0)
+            {
                 InsertPoint = PointF.Add(InsertPoint, new SizeF(offsetX, offsetY));
+                var m = ((BlockReference)Owner).Transformation;
+                m.Translate(offsetX, offsetY);
+            }
         }
 
         public void Scale(PointF basePoint, float zoom)
@@ -153,14 +160,10 @@ namespace PetCAD.Geometries
 
         public void Rotate(PointF baseRotatePoint, float angle)
         {
-            var points = new PointF[] { InsertPoint };
-            var m = new Matrix();
+            var m = ((BlockReference)Owner).Transformation;
             m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
+            m.Rotate(-angle, MatrixOrder.Append);
             m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
-            InsertPoint = points[0];
-            Angle = angle;
         }
 
         public override Marker[] GetGeometryMarkers()

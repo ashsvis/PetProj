@@ -3,6 +3,7 @@ using PetCAD.Figures;
 using PetCAD.Geometries;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PetCAD.Commands
 {
@@ -25,7 +26,9 @@ namespace PetCAD.Commands
                 if (figure.Geometry is IRotateGeometry geometry)
                 {
                     if (figure.Geometry is BlockGeometry block)
-                        block.Rotate(point, block.Angle + angle);
+                    {
+                        block.Rotate(point, block.Angle - angle);
+                    }
                     else
                         geometry.Rotate(point, angle);
                 }
@@ -40,7 +43,9 @@ namespace PetCAD.Commands
                 if (figure.Geometry is IRotateGeometry geometry)
                 {
                     if (figure.Geometry is BlockGeometry block)
-                        block.Rotate(point, block.Angle - angle);
+                    {
+                        block.Rotate(point, block.Angle + angle);
+                    }
                     else
                         geometry.Rotate(point, -angle);
                 }
