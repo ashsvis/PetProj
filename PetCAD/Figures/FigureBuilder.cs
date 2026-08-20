@@ -1,7 +1,6 @@
 ﻿using PetCAD.Geometries;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace PetCAD.Figures
 {
@@ -17,7 +16,7 @@ namespace PetCAD.Figures
         /// <param name="startPoint">Начальная точка</param>
         public static void BuildLineGeometry(Figure figure, PointF startPoint)
         {
-            figure.Geometry = new LineGeometry(startPoint)
+            figure.Geometry = new LineGeometry(figure, startPoint)
             {
                 Name = "Segment",
             };
@@ -33,7 +32,7 @@ namespace PetCAD.Figures
         /// <param name="sweepAngle">Прибавочный угол</param>
         public static void BuildArcGeometry(Figure figure, PointF center, float radius, float startAngle, float sweepAngle)
         {
-            figure.Geometry = new ArcGeometry(center, radius, startAngle, sweepAngle)
+            figure.Geometry = new ArcGeometry(figure, center, radius, startAngle, sweepAngle)
             {
                 Name = "Arc",
             };
@@ -58,20 +57,8 @@ namespace PetCAD.Figures
                     zeroBasedFigures.Add(zbf);
                 }
             }
-            block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f, zeroBasedFigures.ToArray());
+            block.Geometry = new BlockGeometry(block, name, basePoint, 1f, 0f, zeroBasedFigures.ToArray());
         }
-
-        /// <summary>
-        /// Создание геометрии блока по имени ранее созданного блока
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="block"></param>
-        /// <param name="basePoint"></param>
-        //public static void BuildBlockGeometry(string name, Figure block, PointF basePoint)
-        //{
-        //    block.Geometry = new BlockGeometry(name, basePoint, 1f, 0f);
-        //    block.Renderer = new BlockRenderer();
-        //}
     }
 
 }

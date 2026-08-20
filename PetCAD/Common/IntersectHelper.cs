@@ -1,5 +1,6 @@
 ﻿using PetCAD.Figures;
 using PetCAD.Geometries;
+using PetCAD.Makers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

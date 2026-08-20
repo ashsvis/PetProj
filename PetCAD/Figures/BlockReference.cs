@@ -10,7 +10,7 @@ namespace PetCAD.Figures
         public BlockReference()
         {
             Style = new Style();
-            Geometry = new BlockGeometry();
+            Geometry = new BlockGeometry(this);
             Renderer = new BlockRenderer();
         }
 

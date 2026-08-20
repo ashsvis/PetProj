@@ -120,23 +120,23 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\EditorMode.cs" />
-    <Compile Include="Figures\AllowedMarkerOperations.cs" />
+    <Compile Include="Markers\AllowedMarkerOperations.cs" />
     <Compile Include="Figures\BlockReference.cs" />
     <Compile Include="Geometries\BlockGeometry.cs" />
     <Compile Include="Geometries\IRotateGeometry.cs" />
     <Compile Include="Geometries\IScaleGeometry.cs" />
-    <Compile Include="ObjectBindings\BindingCenterMarker.cs" />
-    <Compile Include="ObjectBindings\BindingNormalMarker.cs" />
-    <Compile Include="ObjectBindings\BindingQudrantMarker.cs" />
-    <Compile Include="Figures\CenterMarker.cs" />
+    <Compile Include="Markers\BindingCenterMarker.cs" />
+    <Compile Include="Markers\BindingNormalMarker.cs" />
+    <Compile Include="Markers\BindingQuadrantMarker.cs" />
+    <Compile Include="Markers\CenterMarker.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
-    <Compile Include="Figures\Marker.cs" />
+    <Compile Include="Markers\Marker.cs" />
     <Compile Include="Common\MarkerType.cs" />
-    <Compile Include="ObjectBindings\BindingMiddleMarker.cs" />
-    <Compile Include="ObjectBindings\BindingTangentMarker.cs" />
-    <Compile Include="ObjectBindings\BindingVertexMarker.cs" />
-    <Compile Include="Figures\MiddleMarker.cs" />
-    <Compile Include="Figures\VertexMarker.cs" />
+    <Compile Include="Markers\BindingMiddleMarker.cs" />
+    <Compile Include="Markers\BindingTangentMarker.cs" />
+    <Compile Include="Markers\BindingVertexMarker.cs" />
+    <Compile Include="Markers\MiddleMarker.cs" />
+    <Compile Include="Markers\VertexMarker.cs" />
     <Compile Include="Geometries\ArcGeometry.cs" />
     <Compile Include="Geometries\LineGeometry.cs" />
     <Compile Include="Geometries\AllowedGeometryOperations.cs" />
@@ -150,7 +150,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Figures\Figure.cs" />
-    <Compile Include="ObjectBindings\AllowedObjectBindings.cs" />
+    <Compile Include="Markers\AllowedObjectBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\AllowedRendererDecorators.cs" />

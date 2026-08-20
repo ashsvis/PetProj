@@ -1,9 +1,12 @@
 ﻿using PetCAD.Common;
+using PetCAD.Figures;
+using PetCAD.Makers;
 using PetCAD.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -47,10 +50,14 @@ namespace PetCAD.Geometries
             }
         }
 
-        public ArcGeometry() { }    
+        public ArcGeometry(Figure figure) 
+        { 
+            Owner = figure;
+        }    
 
-        internal ArcGeometry(PointF center, float radius, float startAngle, float sweepAngle)
+        internal ArcGeometry(Figure figure, PointF center, float radius, float startAngle, float sweepAngle)
         {
+            Owner = figure;
             CenterPoint = center;
             Radius = radius;
             StartAngle = startAngle;
@@ -96,7 +103,7 @@ namespace PetCAD.Geometries
 
         public override Geometry DeepCopy()
         {
-            var geometry = new ArcGeometry(CenterPoint, Radius, StartAngle, SweepAngle)
+            var geometry = new ArcGeometry(this.Owner, CenterPoint, Radius, StartAngle, SweepAngle)
             {
                 Name = Name,
             };
@@ -279,23 +286,147 @@ namespace PetCAD.Geometries
             return true;
         }
 
-        public override void Transform(PointF basePoint, float zoom, float angle)
+        public override Marker[] GetGeometryMarkers()
         {
-            var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
-            var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
-            m.Scale(zoom, zoom, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
-            if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
-                out PointF center, out float radius, out float startAngle, out float sweepAngle))
+            return new Marker[]
             {
-                CenterPoint = center;
-                Radius = radius;
-                StartAngle = startAngle;
-                SweepAngle = sweepAngle;
-            }
+                new CenterMarker
+                    {
+                        MarkerType =  MarkerType.Center,
+                        Position = CenterPoint,
+                        Owner = Owner,
+                    },
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = StartPoint,
+                        Index = 1,
+                        Owner = Owner,
+                    },
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = MiddlePoint,
+                        Index = 2,
+                        Owner = Owner,
+                    },
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = EndPoint,
+                        Index = 3,
+                        Owner = Owner,
+                    },
+            };
         }
+
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        {
+            var markers = new List<Marker>();
+            // поиск центра дуги
+            if (allowed.HasFlag(AllowedObjectBindings.Center))
+            {
+                markers.Add(new BindingCenterMarker
+                {
+                    MarkerType = MarkerType.BindingCenter,
+                    Position = CenterPoint,
+                    Owner = Owner,
+                });
+            }
+            // поиск конечных точек
+            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+            {
+                markers.Add(new BindingVertexMarker
+                {
+                    MarkerType = MarkerType.BindingVertex,
+                    Position = StartPoint,
+                    Index = 0,
+                    Owner = Owner,
+                });
+                markers.Add(new BindingVertexMarker
+                {
+                    MarkerType = MarkerType.BindingVertex,
+                    Position = EndPoint,
+                    Index = 1,
+                    Owner = Owner,
+                });
+            }
+            // поиск средней точки на дуге
+            if (allowed.HasFlag(AllowedObjectBindings.Middle))
+            {
+                markers.Add(new BindingMiddleMarker
+                {
+                    MarkerType = MarkerType.BindingMiddle,
+                    Position = MiddlePoint,
+                    Owner = Owner,
+                });
+            }
+            // поиск доступных квадрантов
+            if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
+            {
+                foreach (var quadrantPoint in this.QuadrantPoints)
+                {
+                    markers.Add(new BindingQuadrantMarker
+                    {
+                        MarkerType = MarkerType.BindingQuadrant,
+                        Position = quadrantPoint,
+                        Owner = Owner,
+                    });
+                }
+            }
+            // поиск проекций базовой точки на дугу
+            if (allowed.HasFlag(AllowedObjectBindings.Normal))
+            {
+                // проекция точки проходит также через центр дуги
+                if (PointFExtension.NormalPointOnArc(this, basePoint, out PointF[] normals))
+                {
+                    foreach (var point in normals)
+                    {
+                        markers.Add(new BindingNormalMarker
+                        {
+                            MarkerType = MarkerType.BindingNormal,
+                            Position = point,
+                            Owner = Owner,
+                        });
+                    }
+                }
+            }
+            // поиск точек касания от базовой точки к дуге 
+            if (allowed.HasFlag(AllowedObjectBindings.Tangent))
+            {
+                if (PointFExtension.TangentPointOnArc(this, basePoint, out PointF[] tangents))
+                {
+                    foreach (var point in tangents)
+                    {
+                        markers.Add(new BindingTangentMarker
+                        {
+                            MarkerType = MarkerType.BindingTangent,
+                            Position = point,
+                            Owner = Owner,
+                        });
+                    }
+                }
+            }
+            return markers.ToArray();
+        }
+
+        //public override void Transform(PointF basePoint, float zoom, float angle)
+        //{
+        //    var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
+        //    var m = new Matrix();
+        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+        //    m.Rotate(angle, MatrixOrder.Append);
+        //    m.Scale(zoom, zoom, MatrixOrder.Append);
+        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+        //    m.TransformPoints(points);
+        //    if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
+        //        out PointF center, out float radius, out float startAngle, out float sweepAngle))
+        //    {
+        //        CenterPoint = center;
+        //        Radius = radius;
+        //        StartAngle = startAngle;
+        //        SweepAngle = sweepAngle;
+        //    }
+        //}
     }
 }

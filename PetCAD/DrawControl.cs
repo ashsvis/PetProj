@@ -3,7 +3,7 @@ using PetCAD.Common;
 using PetCAD.Controllers;
 using PetCAD.Figures;
 using PetCAD.Geometries;
-using PetCAD.ObjectBindings;
+using PetCAD.Makers;
 using PetCAD.Renderers;
 using PetCAD.Selections;
 using System;
@@ -920,11 +920,11 @@ namespace PetCAD
                                                 switch (geometryName)
                                                 {
                                                     case "Segment":
-                                                        return new LineGeometry();
+                                                        return new LineGeometry(figure);
                                                     case "Arc":
-                                                        return new ArcGeometry();
+                                                        return new ArcGeometry(figure);
                                                     case "Block":
-                                                        return new BlockGeometry();
+                                                        return new BlockGeometry(figure);
                                                     default:
                                                         return null;
                                                 }
@@ -977,11 +977,11 @@ namespace PetCAD
                                         switch (geometryName)
                                         {
                                             case "Segment":
-                                                return new LineGeometry();
+                                                return new LineGeometry(figure);
                                             case "Arc":
-                                                return new ArcGeometry();
+                                                return new ArcGeometry(figure);
                                             case "Block":
-                                                return new BlockGeometry();
+                                                return new BlockGeometry(figure);
                                             default:
                                                 return null;
                                         }

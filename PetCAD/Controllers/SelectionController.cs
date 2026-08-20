@@ -1,12 +1,11 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
 using PetCAD.Geometries;
-using PetCAD.ObjectBindings;
+using PetCAD.Makers;
 using PetCAD.Selections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -230,7 +229,7 @@ namespace PetCAD.Controllers
                         Owner = owner
                     };
                 case MarkerType.BindingQuadrant:
-                    return new BindingQudrantMarker
+                    return new BindingQuadrantMarker
                     {
                         MarkerType = markerType,
                         Position = point,
@@ -283,31 +282,7 @@ namespace PetCAD.Controllers
             // если ничего не выбрано, выходим
             if (selection.Count() == 0) return;
             foreach (var fig in selection)
-            {
-                using (var path = fig.GetRendererPath())
-                {
-                    if (fig.Geometry is LineGeometry segment)
-                    {
-                        var pt1 = segment.StartPoint;
-                        var pt2 = segment.EndPoint;
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt1, 0));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, pt2, 1));
-                        var pt = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                        Markers.Add(CreateMarker(fig, MarkerType.Middle, pt));
-                    }
-                    else if (fig.Geometry is ArcGeometry arc)
-                    {
-                        Markers.Add(CreateMarker(fig, MarkerType.Center, arc.CenterPoint, 0));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.StartPoint, 1));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.MiddlePoint, 2));
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, arc.EndPoint, 3));
-                    }
-                    else if (fig.Geometry is BlockGeometry block)
-                    {
-                        Markers.Add(CreateMarker(fig, MarkerType.Vertex, block.InsertPoint, 0));
-                    }
-                }
-            }
+                Markers.AddRange(fig.Geometry.GetGeometryMarkers());
         }
 
         /// <summary>
@@ -324,153 +299,7 @@ namespace PetCAD.Controllers
             if (selection.Count() == 0) return;
             foreach (var fig in selection)
             {
-                if (fig.Geometry is LineGeometry segment)
-                {
-                    var pt1 = segment.StartPoint;
-                    var pt2 = segment.EndPoint;
-                    // поиск конечных точек
-                    if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
-                    {
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
-                    }
-                    // поиск средней точки на отрезке
-                    if (allowed.HasFlag(AllowedObjectBindings.Middle))
-                    {
-                        var mid = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
-                    }
-                    // поиск проекции базовой точки на отрезок 
-                    if (allowed.HasFlag(AllowedObjectBindings.Normal))
-                    {
-                        if (PointFExtension.ProjectPointOnSegment(pt1, pt2, basePoint, out PointF norm))
-                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, norm));
-                    }
-                }
-                else if (fig.Geometry is ArcGeometry arc)
-                {
-                    // поиск центра дуги
-                    if (allowed.HasFlag(AllowedObjectBindings.Center))
-                    {
-                        var center = arc.CenterPoint;
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingCenter, center));
-                    }
-                    var pt1 = arc.StartPoint;
-                    var pt2 = arc.EndPoint;
-                    // поиск конечных точек
-                    if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
-                    {
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
-                    }
-                    // поиск средней точки на дуге
-                    if (allowed.HasFlag(AllowedObjectBindings.Middle))
-                    {
-                        var mid = arc.MiddlePoint;
-                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
-                    }
-                    // поиск доступных квадрантов
-                    if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
-                    {
-                        foreach (var quadrantPoint in arc.QuadrantPoints)
-                            BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingQuadrant, quadrantPoint));
-                    }
-                    // поиск проекций базовой точки на дугу
-                    if (allowed.HasFlag(AllowedObjectBindings.Normal))
-                    {
-                        // проекция точки проходит также через центр дуги
-                        if (PointFExtension.NormalPointOnArc(arc, basePoint, out PointF[] normals))
-                        {
-                            foreach (var point in normals)
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));
-                        }
-                    }
-                    // поиск точек касания от базовой точки к дуге 
-                    if (allowed.HasFlag(AllowedObjectBindings.Tangent))
-                    {
-                        if (PointFExtension.TangentPointOnArc(arc, basePoint, out PointF[] tangents))
-                        {
-                            foreach (var point in tangents)
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingTangent, point));
-                        }
-                    }
-                }
-                else if (fig.Geometry is BlockGeometry block)
-                {
-                    var pbase = block.InsertPoint;
-                    var kf = block.ScaleFactor;
-                    var angle = block.Angle;
-                    foreach (var f in block.GetFigures())
-                    {
-                        if (f.Geometry is LineGeometry segGeometry)
-                        {
-                            var seg = (LineGeometry)segGeometry.DeepCopy();
-                            seg.Transform(pbase, kf, angle);
-                            var pt1 = seg.StartPoint;
-                            var pt2 = seg.EndPoint;
-                            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
-                            {
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
-                            }
-                            if (allowed.HasFlag(AllowedObjectBindings.Middle))
-                            {
-                                var mid = new PointF((pt1.X + pt2.X) / 2f, (pt1.Y + pt2.Y) / 2f);
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
-                            }
-                        }
-                        else if (f.Geometry is ArcGeometry arcGeometry)
-                        {
-                            var ar = (ArcGeometry)arcGeometry.DeepCopy();
-                            ar.Transform(pbase, kf, angle);
-                            // поиск центра дуги
-                            if (allowed.HasFlag(AllowedObjectBindings.Center))
-                            {
-                                var center = ar.CenterPoint;
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingCenter, center));
-                            }
-                            var pt1 = ar.StartPoint;
-                            var pt2 = ar.EndPoint;
-                            // поиск конечных точек
-                            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
-                            {
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt1, 0));
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingVertex, pt2, 1));
-                            }
-                            // поиск средней точки на дуге
-                            if (allowed.HasFlag(AllowedObjectBindings.Middle))
-                            {
-                                var mid = ar.MiddlePoint;
-                                BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingMiddle, mid));
-                            }
-                            // поиск доступных квадрантов
-                            if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
-                            {
-                                foreach (var quadrantPoint in ar.QuadrantPoints)
-                                    BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingQuadrant, quadrantPoint));
-                            }
-                            // поиск проекций базовой точки на дугу
-                            if (allowed.HasFlag(AllowedObjectBindings.Normal))
-                            {
-                                // проекция точки проходит также через центр дуги
-                                if (PointFExtension.NormalPointOnArc(ar, basePoint, out PointF[] normals))
-                                {
-                                    foreach (var point in normals)
-                                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingNormal, point));
-                                }
-                            }
-                            // поиск точек касания от базовой точки к дуге 
-                            if (allowed.HasFlag(AllowedObjectBindings.Tangent))
-                            {
-                                if (PointFExtension.TangentPointOnArc(ar, basePoint, out PointF[] tangents))
-                                {
-                                    foreach (var point in tangents)
-                                        BindingMarkers.Add(CreateMarker(fig, MarkerType.BindingTangent, point));
-                                }
-                            }
-                        }
-                    }
-                }
+                BindingMarkers.AddRange(fig.Geometry.GetBindingMarkers(allowed, basePoint));
             }
         }
     }

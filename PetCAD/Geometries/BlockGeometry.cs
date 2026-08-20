@@ -1,8 +1,10 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
+using PetCAD.Makers;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -29,10 +31,14 @@ namespace PetCAD.Geometries
             }
         }
 
-        public BlockGeometry() { }
+        public BlockGeometry(Figure figure) 
+        { 
+            Owner = figure;
+        }
 
-        public BlockGeometry(string name, PointF insertPoint, float scaleFactor, float angle, Figure[] zeroBasedFigures)
+        public BlockGeometry(Figure figure, string name, PointF insertPoint, float scaleFactor, float angle, Figure[] zeroBasedFigures)
         {
+            Owner = figure;
             Name = name;
             InsertPoint = insertPoint;
             ScaleFactor = scaleFactor;
@@ -155,17 +161,41 @@ namespace PetCAD.Geometries
             Angle = angle;
         }
 
-        public override void Transform(PointF basePoint, float zoom, float angle)
+        public override Marker[] GetGeometryMarkers()
         {
-            var points = new PointF[] { InsertPoint };
-            var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
-            m.Scale(zoom, zoom, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
-            InsertPoint = points[0];
-            Angle = angle;
+            return new Marker[]
+            {
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = InsertPoint,
+                        Index = 0,
+                        Owner = Owner,
+                    },
+            };
         }
+
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        {
+            var markers = new List<Marker>();
+            foreach (var f in this.GetFigures())
+            {
+                markers.AddRange(f.Geometry.GetBindingMarkers(allowed, basePoint));
+            }
+            return markers.ToArray();
+        }
+
+        //public override void Transform(PointF basePoint, float zoom, float angle)
+        //{
+        //    var points = new PointF[] { InsertPoint };
+        //    var m = new Matrix();
+        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+        //    m.Rotate(angle, MatrixOrder.Append);
+        //    m.Scale(zoom, zoom, MatrixOrder.Append);
+        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+        //    m.TransformPoints(points);
+        //    InsertPoint = points[0];
+        //    Angle = angle;
+        //}
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PetCAD.ObjectBindings
+namespace PetCAD.Makers
 {
     /// <summary>
     /// Допустимые операции объектных привязок

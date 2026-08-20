@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace PetCAD.Figures
+namespace PetCAD.Makers
 {
     public class VertexMarker : Marker
     {

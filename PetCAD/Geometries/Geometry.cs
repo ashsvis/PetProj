@@ -1,9 +1,7 @@
-﻿using PetCAD.Common;
-using System.Collections.Generic;
+﻿using PetCAD.Figures;
+using PetCAD.Makers;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -14,6 +12,7 @@ namespace PetCAD.Geometries
     public abstract class Geometry
     {
         public string Name { get; set; }
+        public Figure Owner { get; set; }
 
         /// <summary>
         /// Предоставление пути для рисования фигуры
@@ -67,13 +66,16 @@ namespace PetCAD.Geometries
         //    }
         //}
 
-        public abstract void Transform(PointF point, float scale, float rotation);
+        //public abstract void Transform(PointF point, float scale, float rotation);
         public abstract Geometry DeepCopy();
 
         /// <summary>
         /// Допустимые операции над геометрией
         /// </summary>
         public abstract AllowedGeometryOperations AllowedOperations { get; }
+
+        public abstract Marker[] GetGeometryMarkers();
+        public abstract Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint);
 
     }
 }

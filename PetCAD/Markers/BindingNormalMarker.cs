@@ -1,7 +1,6 @@
-﻿using PetCAD.Figures;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace PetCAD.ObjectBindings
+namespace PetCAD.Makers
 {
     public class BindingNormalMarker : Marker
     {

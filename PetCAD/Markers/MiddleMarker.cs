@@ -1,8 +1,8 @@
 ﻿using System.Windows.Forms;
 
-namespace PetCAD.Figures
+namespace PetCAD.Makers
 {
-    public class CenterMarker : Marker
+    public class MiddleMarker : Marker
     {
         public override Cursor Cursor { get; set; } = Cursors.SizeAll;
         public override AllowedMarkerOperations AllowedOperations { get { return AllowedMarkerOperations.None ^ AllowedMarkerOperations.MoveOwner; } }

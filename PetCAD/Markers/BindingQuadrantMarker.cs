@@ -1,9 +1,8 @@
-﻿using PetCAD.Figures;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace PetCAD.ObjectBindings
+namespace PetCAD.Makers
 {
-    public class BindingQudrantMarker : Marker
+    public class BindingQuadrantMarker : Marker
     {
         public override void Render(Graphics graphics, Color color, float zoomScale)
         {

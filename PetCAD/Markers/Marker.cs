@@ -1,8 +1,9 @@
 ﻿using PetCAD.Common;
+using PetCAD.Figures;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PetCAD.Figures
+namespace PetCAD.Makers
 {
     public class Marker
     {

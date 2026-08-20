@@ -1,9 +1,12 @@
 ﻿using PetCAD.Common;
+using PetCAD.Figures;
+using PetCAD.Makers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -38,22 +41,24 @@ namespace PetCAD.Geometries
             }
         }
 
-        public LineGeometry()
+        public LineGeometry(Figure figure)
         {
+            Owner = figure;
         }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel
         /// (только для внутреннего использования)
         /// </summary>
-        internal LineGeometry(PointF point)
+        internal LineGeometry(Figure figure, PointF point)
         {
+            Owner = figure;
             Points.Add(point);
         }
 
         public override Geometry DeepCopy()
         {
-            var geometry = new LineGeometry(StartPoint)
+            var geometry = new LineGeometry(this.Owner, StartPoint)
             {
                 Name = Name,
             };
@@ -109,41 +114,118 @@ namespace PetCAD.Geometries
                 Points[1] = PointF.Add(Points[1], new SizeF(offsetX, offsetY));
         }
 
-        public void Scale(PointF basePoint, float zoom)
+        public void Scale(PointF baseScalePoint, float zoom)
         {
             var points = new PointF[] { Points[0], Points[1] };
-            var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Scale(zoom, zoom, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
+            using (var m = new Matrix())
+            {
+                m.Translate(-baseScalePoint.X, -baseScalePoint.Y, MatrixOrder.Append);
+                m.Scale(zoom, zoom, MatrixOrder.Append);
+                m.Translate(baseScalePoint.X, baseScalePoint.Y, MatrixOrder.Append);
+                m.TransformPoints(points);
+            }
             Points[0] = points[0];
             Points[1] = points[1];
         }
 
-        public void Rotate(PointF basePoint, float angle)
+        public void Rotate(PointF baseRotatePoint, float angle)
         {
             var points = new PointF[] { Points[0], Points[1] };
-            var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
+            using (var m = new Matrix())
+            {
+                m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
+                m.Rotate(angle, MatrixOrder.Append);
+                m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
+                m.TransformPoints(points);
+            }
             Points[0] = points[0];
             Points[1] = points[1];
         }
 
-        public override void Transform(PointF basePoint, float zoom, float angle)
+        public override Marker[] GetGeometryMarkers()
         {
-            var points = new PointF[] { Points[0], Points[1] };
-            var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            m.Rotate(angle, MatrixOrder.Append);
-            m.Scale(zoom, zoom, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
-            Points[0] = points[0];
-            Points[1] = points[1];
+            return new Marker[] 
+            {
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = StartPoint,
+                        Index = 0,
+                        Owner = Owner,
+                    },
+                new VertexMarker
+                    {
+                        MarkerType =  MarkerType.Vertex,
+                        Position = EndPoint,
+                        Index = 1,
+                        Owner = Owner,
+                    },
+                new MiddleMarker
+                    {
+                        MarkerType =  MarkerType.Middle,
+                        Position = new PointF((StartPoint.X + EndPoint.X) / 2f, (StartPoint.Y + EndPoint.Y) / 2f),
+                        Owner = Owner,
+                    },
+            };
         }
+
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        {
+            var markers = new List<Marker>();
+            // поиск конечных точек
+            if (allowed.HasFlag(AllowedObjectBindings.EndPoint))
+            {
+                markers.Add(new BindingVertexMarker
+                {
+                    MarkerType = MarkerType.BindingVertex,
+                    Position = StartPoint,
+                    Index = 0,
+                    Owner = Owner,
+                });
+                markers.Add(new BindingVertexMarker
+                {
+                    MarkerType = MarkerType.BindingVertex,
+                    Position = EndPoint,
+                    Index = 1,
+                    Owner = Owner,
+                });
+            }
+            // поиск средней точки на отрезке
+            if (allowed.HasFlag(AllowedObjectBindings.Middle))
+            {
+                var mid = new PointF((StartPoint.X + EndPoint.X) / 2f, (StartPoint.Y + EndPoint.Y) / 2f);
+                markers.Add(new BindingMiddleMarker
+                {
+                    MarkerType = MarkerType.BindingMiddle,
+                    Position = mid,
+                    Owner = Owner,
+                });
+            }
+            // поиск проекции базовой точки на отрезок 
+            if (allowed.HasFlag(AllowedObjectBindings.Normal) &&
+                PointFExtension.ProjectPointOnSegment(StartPoint, EndPoint, basePoint, out PointF norm))
+            {
+                markers.Add(new BindingNormalMarker
+                {
+                    MarkerType = MarkerType.BindingNormal,
+                    Position = norm,
+                    Owner = Owner,
+                });
+            }
+            return markers.ToArray();
+        }
+
+        //public override void Transform(PointF basePoint, float zoom, float angle)
+        //{
+        //    var points = new PointF[] { Points[0], Points[1] };
+        //    var m = new Matrix();
+        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+        //    m.Rotate(angle, MatrixOrder.Append);
+        //    m.Scale(zoom, zoom, MatrixOrder.Append);
+        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+        //    m.TransformPoints(points);
+        //    Points[0] = points[0];
+        //    Points[1] = points[1];
+        //}
     }
 }

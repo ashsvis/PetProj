@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PetCAD.Figures
+namespace PetCAD.Makers
 {
     /// <summary>
     /// Допустимые операции над геометрией
