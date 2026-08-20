@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace PetCAD.Controllers
 {
-    public class BuildArcByThreePointsController : IBuildFigureController
+    public class BuildArcByThreePoints : IBuildFigure
     {
         private readonly DrawControl drawer;
         private readonly Control zoomer;
 
-        public BuildArcByThreePointsController(DrawControl drawer, Control zoomer)
+        public BuildArcByThreePoints(DrawControl drawer, Control zoomer)
         {
             this.drawer = drawer;
             this.zoomer = zoomer;

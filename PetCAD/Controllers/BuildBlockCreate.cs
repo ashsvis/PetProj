@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace PetCAD.Controllers
 {
-    public class BuildBlockCreateController : IBuildFigureController
+    public class BuildBlockCreate : IBuildFigure
     {
         private readonly DrawControl drawer;
 
-        public BuildBlockCreateController(DrawControl drawer, Control zoomer)
+        public BuildBlockCreate(DrawControl drawer, Control zoomer)
         {
             this.drawer = drawer;
             //

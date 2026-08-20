@@ -1,6 +1,5 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
-using PetCAD.Geometries;
 using PetCAD.Makers;
 using PetCAD.Selections;
 using System;
@@ -178,85 +177,6 @@ namespace PetCAD.Controllers
         public Cursor GetCursor(Point location, Keys modifierKeys, MouseButtons button)
         {
             return Cursors.Default;
-        }
-
-        private Marker CreateMarker(Figure owner, MarkerType markerType, PointF point, int index = 0)
-        {
-            switch (markerType)
-            {
-                case MarkerType.Vertex:
-                    return new VertexMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Index = index,
-                        Owner = owner
-                    };
-                case MarkerType.Middle:
-                    return new MiddleMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.Center:
-                    return new CenterMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.BindingVertex:
-                    return new BindingVertexMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Index = index,
-                        Owner = owner
-                    };
-                case MarkerType.BindingMiddle:
-                    return new BindingMiddleMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.BindingCenter:
-                    return new BindingCenterMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.BindingQuadrant:
-                    return new BindingQuadrantMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.BindingNormal:
-                    return new BindingNormalMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                case MarkerType.BindingTangent:
-                    return new BindingTangentMarker
-                    {
-                        MarkerType = markerType,
-                        Position = point,
-                        Owner = owner
-                    };
-                default:
-                    return new Marker
-                    {
-                        MarkerType = markerType,
-                        Cursor = Cursors.UpArrow,
-                        Position = point,
-                    };
-            }
         }
 
         public void ClearMarkers()

@@ -2,7 +2,7 @@
 
 namespace PetCAD.Controllers
 {
-    public interface IBuildFigureController
+    public interface IBuildFigure
     {
         void Container_Paint(object sender, PaintEventArgs e);
         void Container_MouseDown(object sender, MouseEventArgs e);

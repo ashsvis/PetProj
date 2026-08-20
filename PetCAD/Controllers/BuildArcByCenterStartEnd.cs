@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace PetCAD.Controllers
 {
-    public class BuildArcByStartCenterEndController : IBuildFigureController
+    public class BuildArcByCenterStartEnd : IBuildFigure
     {
         private readonly DrawControl drawer;
         private readonly Control zoomer;
 
-        public BuildArcByStartCenterEndController(DrawControl drawer, Control zoomer)
+        public BuildArcByCenterStartEnd(DrawControl drawer, Control zoomer)
         {
             this.drawer = drawer;
             this.zoomer = zoomer;
@@ -23,15 +23,15 @@ namespace PetCAD.Controllers
 
         public void Container_Paint(object sender, PaintEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
+            if (drawer.EditorMode == EditorMode.BuildArcCenterStartEnd)
             {
                 var zoom = drawer.Zoom;
                 if (drawer.IsDynamicalEnter)
                 {
                     var pt = drawer.PrepareMousePosition(drawer.CurrentMousePosition);
                     var text = (drawer.MouseClickCount == 0
-                        ? $"Начальная точка дуги " : drawer.MouseClickCount == 1 
-                              ? $"Центральная точка дуги " : "Конечная точка дуги (удерживайте CTRL для изменения направления)") + $" X:{pt.X} Y:{pt.Y}";
+                        ? $"Центральная точка дуги " : drawer.MouseClickCount == 1
+                              ? $"Начальная точка дуги " : "Конечная точка дуги (удерживайте CTRL для изменения направления)") + $" X:{pt.X} Y:{pt.Y}";
                     using (var pen = new Pen(Color.Black, zoom))
                     using (var font = new Font("Arial", (float)(10f / zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black, drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
@@ -44,7 +44,7 @@ namespace PetCAD.Controllers
                 else if (drawer.MouseClickCount == 2)
                 {
                     using (var pen = new Pen(Color.Orange, (float)(2.6f / zoom)) { DashStyle = DashStyle.Dash })
-                        drawer.DrawRibbonLine(e.Graphics, pen, drawer.SecondMouseDown, drawer.CurrentMousePosition, false);
+                        drawer.DrawRibbonLine(e.Graphics, pen, drawer.FirstMouseDown, drawer.CurrentMousePosition, false);
                     using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
                         drawer.DrawRibbonArc(e.Graphics, pen, drawer.FirstMouseDown, drawer.SecondMouseDown, drawer.CurrentMousePosition);
                 }
@@ -53,7 +53,7 @@ namespace PetCAD.Controllers
 
         public void Container_MouseDown(object sender, MouseEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
+            if (drawer.EditorMode == EditorMode.BuildArcCenterStartEnd)
             {
                 var mousePosition = e.Location;
                 if (drawer.MouseClickCount == 1)
@@ -74,7 +74,7 @@ namespace PetCAD.Controllers
                     // поиск ближайшей точки привязки, если включен режим объектной привязки
                     pt3 = drawer.FindBindingPoint(pt3);
 
-                    drawer.AddArcByStartCenterEnd(pt1, pt2, pt3);
+                    drawer.AddArcByCenterStartEnd(pt1, pt2, pt3);
 
                     drawer.SelectionController.Selection.Clear();
                     drawer.ClearMouseCount();
@@ -85,7 +85,7 @@ namespace PetCAD.Controllers
 
         public void Container_MouseMove(object sender, MouseEventArgs e)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
+            if (drawer.EditorMode == EditorMode.BuildArcCenterStartEnd)
             {
                 if (e.Button == MouseButtons.None)
                 {
@@ -109,7 +109,7 @@ namespace PetCAD.Controllers
 
         public void SetParameters(string[] strings)
         {
-            if (drawer.EditorMode == EditorMode.BuildArcStartCenterEnd)
+            if (drawer.EditorMode == EditorMode.BuildArcCenterStartEnd)
             {
                 //if (strings.Length == 2)
                 //{

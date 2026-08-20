@@ -68,13 +68,13 @@ namespace PetCAD
         /// </summary>
         public  AllowedObjectBindings AllowedObjectBindings { get; set; }
 
-        private readonly BuildLineController buildLineController;
-        private readonly BuildRectangleController buildRectangleController;
-        private readonly BuildArcByThreePointsController buildArcByThreePointsController;
-        private readonly BuildArcByStartCenterEndController buildArcByStartCenterEndController;
-        private readonly BuildArcByCenterStartEndController buildArcByCenterStartrEndController;
-        private readonly BuildBlockCreateController buildBlockCreateController;
-        private readonly BuildBlockInsertController buildBlockInsertController;
+        private readonly BuildLine buildLineController;
+        private readonly BuildRectangle buildRectangleController;
+        private readonly BuildArcByThreePoints buildArcByThreePointsController;
+        private readonly BuildArcByStartCenterEnd buildArcByStartCenterEndController;
+        private readonly BuildArcByCenterStartEnd buildArcByCenterStartrEndController;
+        private readonly BuildBlockCreate buildBlockCreateController;
+        private readonly BuildBlockInsert buildBlockInsertController;
 
         public DrawControl()
         {
@@ -85,13 +85,13 @@ namespace PetCAD
             selectionController = new SelectionController();
             // подключение обработчиков событий для контроллера выбора
             selectionController.SelectedFigureChanged += BuildInterface;
-            buildLineController = new BuildLineController(this, zoomPad);
-            buildRectangleController = new BuildRectangleController(this, zoomPad);
-            buildArcByThreePointsController = new BuildArcByThreePointsController(this, zoomPad);
-            buildArcByStartCenterEndController = new BuildArcByStartCenterEndController(this, zoomPad);
-            buildArcByCenterStartrEndController = new BuildArcByCenterStartEndController(this, zoomPad);
-            buildBlockCreateController = new BuildBlockCreateController(this, zoomPad);
-            buildBlockInsertController = new BuildBlockInsertController(this, zoomPad);
+            buildLineController = new BuildLine(this, zoomPad);
+            buildRectangleController = new BuildRectangle(this, zoomPad);
+            buildArcByThreePointsController = new BuildArcByThreePoints(this, zoomPad);
+            buildArcByStartCenterEndController = new BuildArcByStartCenterEnd(this, zoomPad);
+            buildArcByCenterStartrEndController = new BuildArcByCenterStartEnd(this, zoomPad);
+            buildBlockCreateController = new BuildBlockCreate(this, zoomPad);
+            buildBlockInsertController = new BuildBlockInsert(this, zoomPad);
         }
 
         private void BuildInterface()

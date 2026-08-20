@@ -73,14 +73,14 @@
     <Compile Include="Common\ParseHelper.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
-    <Compile Include="Controllers\BuildArcByCenterStartEndController.cs" />
-    <Compile Include="Controllers\BuildArcByStartCenterEndController.cs" />
-    <Compile Include="Controllers\BuildArcByThreePointsController.cs" />
-    <Compile Include="Controllers\BuildBlockCreateController.cs" />
-    <Compile Include="Controllers\BuildBlockInsertController.cs" />
-    <Compile Include="Controllers\BuildLineController.cs" />
-    <Compile Include="Controllers\BuildRectangleController.cs" />
-    <Compile Include="Controllers\IBuildFigureController.cs" />
+    <Compile Include="Controllers\BuildArcByCenterStartEnd.cs" />
+    <Compile Include="Controllers\BuildArcByStartCenterEnd.cs" />
+    <Compile Include="Controllers\BuildArcByThreePoints.cs" />
+    <Compile Include="Controllers\BuildBlockCreate.cs" />
+    <Compile Include="Controllers\BuildBlockInsert.cs" />
+    <Compile Include="Controllers\BuildLine.cs" />
+    <Compile Include="Controllers\BuildRectangle.cs" />
+    <Compile Include="Controllers\IBuildFigure.cs" />
     <Compile Include="Controls\ArcGeometryEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
