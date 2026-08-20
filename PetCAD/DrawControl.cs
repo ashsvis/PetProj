@@ -994,6 +994,7 @@ namespace PetCAD
         /// </summary>
         public void CreateNewDocument()
         {
+            BlockGeometry.DefinedBlocks.Clear();
             figures.Clear();
             selectionController.Clear();
             undoRedoManager.Clear();

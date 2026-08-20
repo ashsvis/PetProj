@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Security.Cryptography;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -101,9 +100,9 @@ namespace PetCAD.Geometries
         /// </summary>
         public override AllowedGeometryOperations AllowedOperations { get { return AllowedGeometryOperations.None; } }
 
-        public override Geometry DeepCopy()
+        public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new ArcGeometry(this.Owner, CenterPoint, Radius, StartAngle, SweepAngle)
+            var geometry = new ArcGeometry(figure, CenterPoint, Radius, StartAngle, SweepAngle)
             {
                 Name = Name,
             };
@@ -210,13 +209,13 @@ namespace PetCAD.Geometries
             }
         }
 
-        public void Rotate(PointF basePoint, float angle)
+        public void Rotate(PointF baseRotatePoint, float angle)
         {
             var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
             var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
             m.Rotate(angle, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
             if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
                 out PointF center, out float radius, out float startAngle, out float sweepAngle))
@@ -409,24 +408,5 @@ namespace PetCAD.Geometries
             }
             return markers.ToArray();
         }
-
-        //public override void Transform(PointF basePoint, float zoom, float angle)
-        //{
-        //    var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
-        //    var m = new Matrix();
-        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-        //    m.Rotate(angle, MatrixOrder.Append);
-        //    m.Scale(zoom, zoom, MatrixOrder.Append);
-        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-        //    m.TransformPoints(points);
-        //    if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
-        //        out PointF center, out float radius, out float startAngle, out float sweepAngle))
-        //    {
-        //        CenterPoint = center;
-        //        Radius = radius;
-        //        StartAngle = startAngle;
-        //        SweepAngle = sweepAngle;
-        //    }
-        //}
     }
 }

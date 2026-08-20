@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -56,9 +55,9 @@ namespace PetCAD.Geometries
             Points.Add(point);
         }
 
-        public override Geometry DeepCopy()
+        public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new LineGeometry(this.Owner, StartPoint)
+            var geometry = new LineGeometry(figure, StartPoint)
             {
                 Name = Name,
             };
@@ -214,18 +213,5 @@ namespace PetCAD.Geometries
             }
             return markers.ToArray();
         }
-
-        //public override void Transform(PointF basePoint, float zoom, float angle)
-        //{
-        //    var points = new PointF[] { Points[0], Points[1] };
-        //    var m = new Matrix();
-        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-        //    m.Rotate(angle, MatrixOrder.Append);
-        //    m.Scale(zoom, zoom, MatrixOrder.Append);
-        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-        //    m.TransformPoints(points);
-        //    Points[0] = points[0];
-        //    Points[1] = points[1];
-        //}
     }
 }

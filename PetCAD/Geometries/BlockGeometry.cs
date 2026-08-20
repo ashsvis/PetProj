@@ -18,8 +18,9 @@ namespace PetCAD.Geometries
         public float ScaleFactor { get; set; } = 1f;
         public float Angle { get; set; }
 
-        public BlockGeometry(string name, PointF insertPoint, float scaleFactor, float angle)
+        public BlockGeometry(Figure figure, string name, PointF insertPoint, float scaleFactor, float angle)
         {
+            Owner = figure;
             Name = name;
             InsertPoint = insertPoint;
             ScaleFactor = scaleFactor;
@@ -90,9 +91,9 @@ namespace PetCAD.Geometries
 
         public override RectangleF Bounds => Path.GetBounds();
 
-        public override Geometry DeepCopy()
+        public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new BlockGeometry(Name, InsertPoint, ScaleFactor, Angle);           
+            var geometry = new BlockGeometry(figure, Name, InsertPoint, ScaleFactor, Angle);           
             return geometry;
         }
 
@@ -150,13 +151,13 @@ namespace PetCAD.Geometries
             ScaleFactor = zoom;
         }
 
-        public void Rotate(PointF basePoint, float angle)
+        public void Rotate(PointF baseRotatePoint, float angle)
         {
             var points = new PointF[] { InsertPoint };
             var m = new Matrix();
-            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
             m.Rotate(angle, MatrixOrder.Append);
-            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
             InsertPoint = points[0];
             Angle = angle;
@@ -185,18 +186,5 @@ namespace PetCAD.Geometries
             }
             return markers.ToArray();
         }
-
-        //public override void Transform(PointF basePoint, float zoom, float angle)
-        //{
-        //    var points = new PointF[] { InsertPoint };
-        //    var m = new Matrix();
-        //    m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-        //    m.Rotate(angle, MatrixOrder.Append);
-        //    m.Scale(zoom, zoom, MatrixOrder.Append);
-        //    m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-        //    m.TransformPoints(points);
-        //    InsertPoint = points[0];
-        //    Angle = angle;
-        //}
     }
 }

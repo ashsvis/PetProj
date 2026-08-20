@@ -307,6 +307,7 @@ namespace PetCAD
             tsbMove.Checked = false;
             tsbMoveCopy.Checked = false;
             tsbScale.Checked = false;
+            tsbRotate.Checked = false;
         }
 
         /// <summary>
@@ -361,7 +362,7 @@ namespace PetCAD
             {
                 SwitchOffButtons();
                 drawControl.SetMode(EditorMode.RotateSelected);
-                tsbMove.Checked = true;
+                tsbRotate.Checked = true;
             }
             else if (sender == tsbMoveCopy)
             {

@@ -4,6 +4,6 @@ namespace PetCAD.Geometries
 {
     public interface IRotateGeometry
     {
-        void Rotate(PointF basePoint, float angel);
+        void Rotate(PointF centerRotatePoint, float angel);
     }
 }

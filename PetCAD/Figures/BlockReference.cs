@@ -18,9 +18,9 @@ namespace PetCAD.Figures
             var fig = new BlockReference
             {
                 Style = Style.DeepCopy(),
-                Geometry = Geometry.DeepCopy(),
                 Renderer = Renderer.DeepCopy()
             };
+            fig.Geometry = Geometry.DeepCopy(fig);
             return fig;
         }
 
