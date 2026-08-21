@@ -631,7 +631,8 @@ namespace PetCAD
                 FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint, BlockGeometry.DefinedBlocks[blockName]);
             if (block.Geometry is BlockGeometry blockGeometry)
             {
-                blockGeometry.InsertPoint = insertPoint;
+                //blockGeometry.InsertPoint = insertPoint;
+                //blockGeometry.Move(insertPoint.X, insertPoint.Y);
                 undoRedoManager.Execute(new CreateFigureCommand(figures, block));
             }
         }

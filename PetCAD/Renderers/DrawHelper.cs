@@ -264,19 +264,19 @@ namespace PetCAD.Renderers
                     var fig = figure.DeepCopy();
                     if (fig.Geometry is IScaleGeometry scaleGeometry)
                     {
-                        if (figure.Geometry is BlockGeometry blkGeometry)
-                        {
-                            var arr = new PointF[] { pt1 };
-                            var m = new Matrix();
-                            var mx = blkGeometry.InsertPoint.X;
-                            var my = blkGeometry.InsertPoint.Y;
-                            m.Translate(-mx, -my, MatrixOrder.Append);
-                            m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                            m.Translate(mx, my, MatrixOrder.Append);
-                            m.TransformPoints(arr);
-                            pt1 = arr[0];
-                            baseScalePoint = PointF.Add(blkGeometry.InsertPoint, new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
-                        }
+                //        if (figure.Geometry is BlockGeometry blkGeometry)
+                //        {
+                //            var arr = new PointF[] { pt1 };
+                //            var m = new Matrix();
+                //            var mx = blkGeometry.InsertPoint.X;
+                //            var my = blkGeometry.InsertPoint.Y;
+                //            m.Translate(-mx, -my, MatrixOrder.Append);
+                //            m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                //            m.Translate(mx, my, MatrixOrder.Append);
+                //            m.TransformPoints(arr);
+                //            pt1 = arr[0];
+                //            baseScalePoint = PointF.Add(blkGeometry.InsertPoint, new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
+                //        }
                         return true;
                     }
                 }
@@ -874,14 +874,13 @@ namespace PetCAD.Renderers
 
         public static void DrawRibbonBlock(this DrawControl drawControl, Graphics graphics, Pen pen, string name, PointF point)
         {
-            float zoom = drawControl.Zoom;
+            Figure block = new BlockReference();
+            block.Style.FillStyle.IsVisible = false;
             if (BlockGeometry.DefinedBlocks.ContainsKey(name))
             {
-                Figure[] zeroBasedFigures = BlockGeometry.DefinedBlocks[name];
-                using (var path = new GraphicsPath())
+                FigureBuilder.BuildBlockGeometry(name, block, point, BlockGeometry.DefinedBlocks[name]);
+                using (var path = block.GetRendererPath())
                 {
-                    foreach (var figure in zeroBasedFigures)
-                        path.AddPath(figure.GetRendererPath(), false);
                     var m = new Matrix();
                     m.Translate(point.X, point.Y);
                     path.Transform(m);

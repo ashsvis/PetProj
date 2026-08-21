@@ -1,10 +1,10 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
 using PetCAD.Makers;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -59,12 +59,6 @@ namespace PetCAD.Geometries
                 foreach (var figure in DefinedBlocks[Name])
                 {
                     var fig = figure.DeepCopy();
-                    if (fig.Geometry is IRotateGeometry rotateGeometry)
-                        rotateGeometry.Rotate(PointF.Empty, Angle);
-                    if (fig.Geometry is IScaleGeometry scaleGeometry)
-                        scaleGeometry.Scale(PointF.Empty, ScaleFactor);
-                    if (fig.Geometry is IMoveGeometry moveGeometry)
-                        moveGeometry.Move(InsertPoint.X, InsertPoint.Y);
                     list.Add(fig);
                 }
             }
@@ -131,7 +125,6 @@ namespace PetCAD.Geometries
 
         public void Move(float offsetX, float offsetY)
         {
-            InsertPoint = PointF.Add(InsertPoint, new SizeF(offsetX, offsetY));
             var m = ((BlockReference)Owner).Transformation;
             m.Translate(offsetX, offsetY);
         }
@@ -140,7 +133,6 @@ namespace PetCAD.Geometries
         {
             if (index == 0)
             {
-                InsertPoint = PointF.Add(InsertPoint, new SizeF(offsetX, offsetY));
                 var m = ((BlockReference)Owner).Transformation;
                 m.Translate(offsetX, offsetY);
             }
@@ -149,31 +141,32 @@ namespace PetCAD.Geometries
         public void Scale(PointF basePoint, float zoom)
         {
             var points = new PointF[] { InsertPoint };
-            var m = new Matrix();
+            var m = ((BlockReference)Owner).Transformation;
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
             m.TransformPoints(points);
-            InsertPoint = points[0];
-            ScaleFactor = zoom;
         }
 
         public void Rotate(PointF baseRotatePoint, float angle)
         {
             var m = ((BlockReference)Owner).Transformation;
             m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
-            m.Rotate(-angle, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
             m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
         }
 
         public override Marker[] GetGeometryMarkers()
         {
+            var pts = new PointF[] { PointF.Empty };
+            var m = ((BlockReference)Owner).Transformation;
+            m.TransformPoints(pts);
             return new Marker[]
-            {
+            {                
                 new VertexMarker
                     {
                         MarkerType =  MarkerType.Vertex,
-                        Position = InsertPoint,
+                        Position = pts[0],
                         Index = 0,
                         Owner = Owner,
                     },
