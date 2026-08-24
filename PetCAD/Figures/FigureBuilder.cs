@@ -45,19 +45,10 @@ namespace PetCAD.Figures
         /// <param name="block"></param>
         /// <param name="basePoint"></param>
         /// <param name="figures"></param>
-        public static void BuildBlockGeometry(string name, Figure block, PointF basePoint, Figure[] figures)
+        public static void BuildBlockGeometry(string name, Figure block, PointF basePoint, Figure[] zeroBasedFigures)
         {
-            var zeroBasedFigures = new List<Figure>();
-            foreach (var figure in figures)
-            {
-                var zbf = figure.DeepCopy();
-                if (zbf.Geometry is IMoveGeometry mover)
-                {
-                    mover.Move(-basePoint.X, -basePoint.Y);
-                    zeroBasedFigures.Add(zbf);
-                }
-            }
-            block.Geometry = new BlockGeometry(block, name, basePoint, 1f, 0f, zeroBasedFigures.ToArray());
+            block.Geometry = new BlockGeometry(block, name, zeroBasedFigures);
+            ((BlockGeometry)block.Geometry).Move(basePoint.X, basePoint.Y);
         }
     }
 

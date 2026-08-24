@@ -195,18 +195,18 @@ namespace PetCAD.Selections
                 // если перемещение поддерживается
                 if (figure.Geometry is IScaleGeometry _)
                 {
-                    if (figure.Geometry is BlockGeometry blkGeometry)
-                    {
-                        var arr = new PointF[] { point };
-                        var m = new Matrix();
-                        var mx = blkGeometry.InsertPoint.X;
-                        var my = blkGeometry.InsertPoint.Y;
-                        m.Translate(-mx, -my, MatrixOrder.Append);
-                        m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                        m.Translate(mx, my, MatrixOrder.Append);
-                        m.TransformPoints(arr);
-                        point = arr[0];
-                    }
+                    //if (figure.Geometry is BlockGeometry blkGeometry)
+                    //{
+                    //    var arr = new PointF[] { point };
+                    //    var m = new Matrix();
+                    //    var mx = blkGeometry.InsertPoint.X;
+                    //    var my = blkGeometry.InsertPoint.Y;
+                    //    m.Translate(-mx, -my, MatrixOrder.Append);
+                    //    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
+                    //    m.Translate(mx, my, MatrixOrder.Append);
+                    //    m.TransformPoints(arr);
+                    //    point = arr[0];
+                    //}
                     // добавляем в список
                     scales.Add((figure, point, kf));
                 }

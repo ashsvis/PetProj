@@ -141,11 +141,6 @@ namespace PetCAD.Renderers
                     foreach (var figure in drawControl.SelectionController.Selection)
                     {
                         // рисуем текущее представление цветом Silver
-                        if (figure.Geometry is IRotateGeometry prevGeometry &&
-                            figure.Geometry is BlockGeometry blockGeometry)
-                        {
-                            prevGeometry.Rotate(blockGeometry.InsertPoint, blockGeometry.Angle);
-                        }
                         using (var path = figure.GetRendererPath())
                         {
                             try
@@ -204,18 +199,13 @@ namespace PetCAD.Renderers
                         foreach (var figure in drawControl.SelectionController.Selection)
                         {
                             // рисуем текущее представление цветом Silver
-                            if (figure.Geometry is IScaleGeometry prevGeometry &&
-                                figure.Geometry is BlockGeometry blockGeometry)
+                            using (var path = figure.GetRendererPath())
                             {
-                                prevGeometry.Scale(blockGeometry.InsertPoint, blockGeometry.ScaleFactor);
-                                using (var path = figure.GetRendererPath())
+                                try
                                 {
-                                    try
-                                    {
-                                        graphics.DrawPath(penB, path);
-                                    }
-                                    catch { }
+                                    graphics.DrawPath(penB, path);
                                 }
+                                catch { }
                             }
                             var fig = figure.DeepCopy();
                             // рисуем масштабируемое представление цветом LightPink
@@ -380,9 +370,9 @@ namespace PetCAD.Renderers
                                 using (var path = marker.Owner.GetRendererPath())
                                 {
                                     graphics.DrawPath(pen, path);
-                                    var m = new Matrix();
-                                    m.Translate(pt.X - block.InsertPoint.X, pt.Y - block.InsertPoint.Y);
-                                    path.Transform(m);
+                                    //var m = new Matrix();
+                                    //m.Translate(pt.X - block.InsertPoint.X, pt.Y - block.InsertPoint.Y);
+                                    //path.Transform(m);
                                     graphics.DrawPath(penA, path);
                                 }
                                 break;
@@ -881,9 +871,6 @@ namespace PetCAD.Renderers
                 FigureBuilder.BuildBlockGeometry(name, block, point, BlockGeometry.DefinedBlocks[name]);
                 using (var path = block.GetRendererPath())
                 {
-                    var m = new Matrix();
-                    m.Translate(point.X, point.Y);
-                    path.Transform(m);
                     graphics.DrawPath(pen, path);
                 }
             }

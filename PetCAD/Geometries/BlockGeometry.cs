@@ -4,7 +4,6 @@ using PetCAD.Makers;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -15,17 +14,17 @@ namespace PetCAD.Geometries
 
         public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
-        public PointF InsertPoint { get; set; }
-        public float ScaleFactor { get; set; } = 1f;
-        public float Angle { get; set; }
+        //public PointF InsertPoint { get; set; }
+        //public float ScaleFactor { get; set; } = 1f;
+        //public float Angle { get; set; }
 
-        public BlockGeometry(Figure figure, string name, PointF insertPoint, float scaleFactor, float angle)
+        public BlockGeometry(Figure figure, string name/*, PointF insertPoint, float scaleFactor, float angle*/)
         {
             Owner = figure;
             Name = name;
-            InsertPoint = insertPoint;
-            ScaleFactor = scaleFactor;
-            Angle = angle;
+            //InsertPoint = insertPoint;
+            //ScaleFactor = scaleFactor;
+            //Angle = angle;
             if (DefinedBlocks.ContainsKey(name))
             {
                 this.zeroBasedFigures = DefinedBlocks[name];
@@ -37,17 +36,13 @@ namespace PetCAD.Geometries
             Owner = figure;
         }
 
-        public BlockGeometry(Figure figure, string name, PointF insertPoint, float scaleFactor, float angle, Figure[] zeroBasedFigures)
+        public BlockGeometry(Figure figure, string name, /*PointF insertPoint, float scaleFactor, float angle, */Figure[] zeroBasedFigures)
         {
             Owner = figure;
             Name = name;
-            InsertPoint = insertPoint;
-            ScaleFactor = scaleFactor;
-            Angle = angle;
-            if (!DefinedBlocks.ContainsKey(name))
-            {
-                DefinedBlocks.Add(name, zeroBasedFigures);
-            }
+            //InsertPoint = insertPoint;
+            //ScaleFactor = scaleFactor;
+            //Angle = angle;
             this.zeroBasedFigures = zeroBasedFigures;
         }
 
@@ -88,7 +83,7 @@ namespace PetCAD.Geometries
 
         public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new BlockGeometry(figure, Name, InsertPoint, ScaleFactor, Angle);           
+            var geometry = new BlockGeometry(figure, Name/*, InsertPoint, ScaleFactor, Angle*/);           
             return geometry;
         }
 
@@ -96,11 +91,11 @@ namespace PetCAD.Geometries
         {
             var xgeometry = new XElement("Geometry");
             xgeometry.Add(new XAttribute("Name", Name));
-            xgeometry.Add(new XAttribute("Insert", InsertPoint.ToString()));
-            if (ScaleFactor != 1)
-                xgeometry.Add(new XAttribute("Scale", ScaleFactor.ToString()));
-            if (Angle != 0)
-                xgeometry.Add(new XAttribute("Angle", Angle.ToString()));
+            //xgeometry.Add(new XAttribute("Insert", InsertPoint.ToString()));
+            //if (ScaleFactor != 1)
+            //    xgeometry.Add(new XAttribute("Scale", ScaleFactor.ToString()));
+            //if (Angle != 0)
+            //    xgeometry.Add(new XAttribute("Angle", Angle.ToString()));
             return xgeometry;
         }
 
@@ -112,15 +107,15 @@ namespace PetCAD.Geometries
             Name = name;
             if (DefinedBlocks.ContainsKey(name))
                 this.zeroBasedFigures = DefinedBlocks[name];
-            var sinsert = xgeometry.Attribute("Insert")?.Value;
-            if (!string.IsNullOrWhiteSpace(sinsert))
-                InsertPoint = ParseHelper.ParsePointF(sinsert, PointF.Empty);
-            var sscale = xgeometry.Attribute("Scale")?.Value;
-            if (!string.IsNullOrWhiteSpace(sscale))
-                ScaleFactor = ParseHelper.ParseSingle(sscale, 1f);
-            var sangle = xgeometry.Attribute("Angle")?.Value;
-            if (!string.IsNullOrWhiteSpace(sangle))
-                Angle = ParseHelper.ParseSingle(sangle, 0f);
+            //var sinsert = xgeometry.Attribute("Insert")?.Value;
+            //if (!string.IsNullOrWhiteSpace(sinsert))
+            //    InsertPoint = ParseHelper.ParsePointF(sinsert, PointF.Empty);
+            //var sscale = xgeometry.Attribute("Scale")?.Value;
+            //if (!string.IsNullOrWhiteSpace(sscale))
+            //    ScaleFactor = ParseHelper.ParseSingle(sscale, 1f);
+            //var sangle = xgeometry.Attribute("Angle")?.Value;
+            //if (!string.IsNullOrWhiteSpace(sangle))
+            //    Angle = ParseHelper.ParseSingle(sangle, 0f);
         }
 
         public void Move(float offsetX, float offsetY)
@@ -140,12 +135,12 @@ namespace PetCAD.Geometries
 
         public void Scale(PointF basePoint, float zoom)
         {
-            var points = new PointF[] { InsertPoint };
+            //var points = new PointF[] { InsertPoint };
             var m = ((BlockReference)Owner).Transformation;
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            m.TransformPoints(points);
+            //m.TransformPoints(points);
         }
 
         public void Rotate(PointF baseRotatePoint, float angle)

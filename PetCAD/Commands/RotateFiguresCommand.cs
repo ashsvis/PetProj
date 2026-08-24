@@ -25,12 +25,7 @@ namespace PetCAD.Commands
             {
                 if (figure.Geometry is IRotateGeometry geometry)
                 {
-                    //if (figure.Geometry is BlockGeometry block)
-                    //{
-                    //    block.Rotate(point, block.Angle - angle);
-                    //}
-                    //else
-                        geometry.Rotate(point, angle);
+                    geometry.Rotate(point, angle);
                 }
             }
         }
@@ -42,12 +37,7 @@ namespace PetCAD.Commands
             {
                 if (figure.Geometry is IRotateGeometry geometry)
                 {
-                    //if (figure.Geometry is BlockGeometry block)
-                    //{
-                    //    block.Rotate(point, block.Angle + angle);
-                    //}
-                    //else
-                        geometry.Rotate(point, -angle);
+                    geometry.Rotate(point, -angle);
                 }
             }
         }

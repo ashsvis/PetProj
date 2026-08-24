@@ -114,6 +114,15 @@ namespace PetCAD
             this.DrawZeroOrigin(graphics, Color.LightGray);
             var zoom = (float)zoomPad.ZoomScale;
             // отрисовка созданных фигур
+
+            ////using (var brush = new SolidBrush(Color.FromArgb(10, Color.Black)))
+            ////{
+            ////    foreach (var fig in figures)
+            ////    {
+            ////        var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
+            ////        graphics.FillRectangle(brush, bounds);
+            ////    }
+            ////}
             foreach (var fig in figures)
             {
                 var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
@@ -127,8 +136,10 @@ namespace PetCAD
                         graphics.FillRectangle(brush, bounds);
                 }
                 else
+                {
                     // рисуем стандартно
                     fig.Renderer.Render(graphics, fig);
+                }
             }
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
@@ -355,6 +366,7 @@ namespace PetCAD
                         selectionController.Selection.Clear();
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
+                        firstMouseDown = PrepareMousePosition(mousePosition);
                         Changed = true;
                         break;
                     case EditorMode.MoveCopySelected:
@@ -388,6 +400,7 @@ namespace PetCAD
                         }
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
+                        firstMouseDown = PrepareMousePosition(mousePosition);
                         break;
                     case EditorMode.RotateSelected:
                         pt1 = firstMouseDown;
@@ -406,6 +419,7 @@ namespace PetCAD
                         selectionController.Selection.Clear();
                         timerClearMouseCount.Enabled = true;
                         SetMode(EditorMode.Selection);
+                        firstMouseDown = PrepareMousePosition(mousePosition);
                         Changed = true;
                         break;
                     case EditorMode.ScaleSelected:
@@ -426,6 +440,7 @@ namespace PetCAD
                             selectionController.Selection.Clear();
                             timerClearMouseCount.Enabled = true;
                             SetMode(EditorMode.Selection);
+                            firstMouseDown = PrepareMousePosition(mousePosition);
                             Changed = true;
                         }
                         break;
@@ -611,15 +626,24 @@ namespace PetCAD
             zoomPad.Invalidate();
         }
 
-        public Figure AddBlock(string name, PointF basePoint, Figure[] figures)
+        public bool AddBlock(string name, PointF basePoint, List<Figure> figures)
         {
-            Figure block = new BlockReference();
-            block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
-            block.Style.FillStyle.IsVisible = false;
-            FigureBuilder.BuildBlockGeometry(name, block, basePoint, figures);
-            block.Geometry.Name = name;
-            blocks.Add(block);
-            return block;
+            if (!BlockGeometry.DefinedBlocks.ContainsKey(name))
+            {
+                var zeroBasedFigures = new List<Figure>();
+                foreach (var figure in figures)
+                {
+                    var zbf = figure.DeepCopy();
+                    if (zbf.Geometry is IMoveGeometry mover)
+                    {
+                        mover.Move(-basePoint.X, -basePoint.Y);
+                        zeroBasedFigures.Add(zbf);
+                    }
+                }
+                BlockGeometry.DefinedBlocks.Add(name, zeroBasedFigures.ToArray());
+                return true;
+            }
+            return false;
         }
 
         public void InsertBlock(PointF insertPoint, string blockName)
@@ -628,11 +652,8 @@ namespace PetCAD
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
             block.Style.FillStyle.IsVisible = false;
             if (BlockGeometry.DefinedBlocks.ContainsKey(blockName))
-                FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint, BlockGeometry.DefinedBlocks[blockName]);
-            if (block.Geometry is BlockGeometry blockGeometry)
             {
-                //blockGeometry.InsertPoint = insertPoint;
-                //blockGeometry.Move(insertPoint.X, insertPoint.Y);
+                FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint, BlockGeometry.DefinedBlocks[blockName]);
                 undoRedoManager.Execute(new CreateFigureCommand(figures, block));
             }
         }
