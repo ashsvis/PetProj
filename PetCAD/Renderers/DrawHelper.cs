@@ -249,27 +249,7 @@ namespace PetCAD.Renderers
                     Math.Max(x.Geometry.Bounds.Width, x.Geometry.Bounds.Height)).Max();
                 var kf = d / max;
                 scaleFactor = kf;
-                foreach (var figure in drawControl.SelectionController.Selection)
-                {
-                    var fig = figure.DeepCopy();
-                    if (fig.Geometry is IScaleGeometry scaleGeometry)
-                    {
-                //        if (figure.Geometry is BlockGeometry blkGeometry)
-                //        {
-                //            var arr = new PointF[] { pt1 };
-                //            var m = new Matrix();
-                //            var mx = blkGeometry.InsertPoint.X;
-                //            var my = blkGeometry.InsertPoint.Y;
-                //            m.Translate(-mx, -my, MatrixOrder.Append);
-                //            m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                //            m.Translate(mx, my, MatrixOrder.Append);
-                //            m.TransformPoints(arr);
-                //            pt1 = arr[0];
-                //            baseScalePoint = PointF.Add(blkGeometry.InsertPoint, new SizeF(firstMouseDown.X - pt1.X, firstMouseDown.Y - pt1.Y));
-                //        }
-                        return true;
-                    }
-                }
+                return true;
             }
             baseScalePoint = firstMouseDown;
             scaleFactor = 1f;
@@ -370,9 +350,9 @@ namespace PetCAD.Renderers
                                 using (var path = marker.Owner.GetRendererPath())
                                 {
                                     graphics.DrawPath(pen, path);
-                                    //var m = new Matrix();
-                                    //m.Translate(pt.X - block.InsertPoint.X, pt.Y - block.InsertPoint.Y);
-                                    //path.Transform(m);
+                                    var m = new Matrix();
+                                    m.Translate(pt.X - drawControl.FirstMouseDown.X, pt.Y - drawControl.FirstMouseDown.Y);
+                                    path.Transform(m);
                                     graphics.DrawPath(penA, path);
                                 }
                                 break;

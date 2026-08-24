@@ -1,7 +1,6 @@
 ﻿using PetCAD.Figures;
 using PetCAD.Geometries;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace PetCAD.Renderers
 {
@@ -19,7 +18,7 @@ namespace PetCAD.Renderers
         {
             if (block.Geometry is BlockGeometry geometry)
             {
-                foreach (var fig in geometry.GetPreparedFigures())
+                foreach (var fig in geometry.GetZeroBasedFigures())
                 {
                     var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
                     if (bounds.Width != 0 || bounds.Height != 0)

@@ -14,17 +14,10 @@ namespace PetCAD.Geometries
 
         public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
-        //public PointF InsertPoint { get; set; }
-        //public float ScaleFactor { get; set; } = 1f;
-        //public float Angle { get; set; }
-
-        public BlockGeometry(Figure figure, string name/*, PointF insertPoint, float scaleFactor, float angle*/)
+        public BlockGeometry(Figure figure, string name)
         {
             Owner = figure;
             Name = name;
-            //InsertPoint = insertPoint;
-            //ScaleFactor = scaleFactor;
-            //Angle = angle;
             if (DefinedBlocks.ContainsKey(name))
             {
                 this.zeroBasedFigures = DefinedBlocks[name];
@@ -36,17 +29,14 @@ namespace PetCAD.Geometries
             Owner = figure;
         }
 
-        public BlockGeometry(Figure figure, string name, /*PointF insertPoint, float scaleFactor, float angle, */Figure[] zeroBasedFigures)
+        public BlockGeometry(Figure figure, string name, Figure[] zeroBasedFigures)
         {
             Owner = figure;
             Name = name;
-            //InsertPoint = insertPoint;
-            //ScaleFactor = scaleFactor;
-            //Angle = angle;
             this.zeroBasedFigures = zeroBasedFigures;
         }
 
-        public Figure[] GetPreparedFigures()
+        public Figure[] GetZeroBasedFigures()
         {
             var list = new List<Figure>();
             if (DefinedBlocks.ContainsKey(Name))
@@ -83,7 +73,7 @@ namespace PetCAD.Geometries
 
         public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new BlockGeometry(figure, Name/*, InsertPoint, ScaleFactor, Angle*/);           
+            var geometry = new BlockGeometry(figure, Name);           
             return geometry;
         }
 
@@ -135,12 +125,10 @@ namespace PetCAD.Geometries
 
         public void Scale(PointF basePoint, float zoom)
         {
-            //var points = new PointF[] { InsertPoint };
             var m = ((BlockReference)Owner).Transformation;
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            //m.TransformPoints(points);
         }
 
         public void Rotate(PointF baseRotatePoint, float angle)
@@ -171,9 +159,16 @@ namespace PetCAD.Geometries
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
         {
             var markers = new List<Marker>();
-            foreach (var f in this.GetPreparedFigures())
+            var m = ((BlockReference)Owner).Transformation;
+            foreach (var f in this.GetZeroBasedFigures())
             {
-                markers.AddRange(f.Geometry.GetBindingMarkers(allowed, basePoint));
+                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint))
+                {
+                    var pts = new PointF[] { marker.Position };
+                    m.TransformPoints(pts);
+                    marker.Position = pts[0];
+                    markers.Add(marker);
+                }
             }
             return markers.ToArray();
         }

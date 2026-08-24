@@ -43,7 +43,7 @@ namespace PetCAD.Figures
             // создаём копию геометрии фигуры
             var path = new GraphicsPath();
             var blockGeometry = (BlockGeometry)Geometry;
-            foreach (var f in blockGeometry.GetPreparedFigures())
+            foreach (var f in blockGeometry.GetZeroBasedFigures())
             {
                 path.AddPath(f.GetRendererPath(), false);
             }

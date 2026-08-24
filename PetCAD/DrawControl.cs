@@ -566,15 +566,17 @@ namespace PetCAD
                 var rectangle = new RectangleF(Math.Min(pt1.X, pt2.X), Math.Min(pt1.Y, pt2.Y),
                     Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
                 underCursor.Clear();
-                selectionController.SelectUnselectByFrame(figures, ShiftPressed, selMode, rectangle, (manager, fig) =>
-                        {
-                            if (!underCursor.Contains(fig))
-                                underCursor.Add(fig);
-                        }, (manager, fig) =>
-                        {
-                            if (underCursor.Contains(fig))
-                                underCursor.Remove(fig);
-                        }
+                selectionController.SelectUnselectByFrame(figures, ShiftPressed, selMode, rectangle,
+                    (manager, fig) =>
+                    {
+                        if (!underCursor.Contains(fig))
+                            underCursor.Add(fig);
+                    },
+                    (manager, fig) =>
+                    {
+                        if (underCursor.Contains(fig))
+                            underCursor.Remove(fig);
+                    }
                     );
                 OnSelected?.Invoke(this, selectionController.Selection);
             }
