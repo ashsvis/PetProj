@@ -19,9 +19,7 @@ namespace PetCAD.Geometries
             Owner = figure;
             Name = name;
             if (DefinedBlocks.ContainsKey(name))
-            {
-                this.zeroBasedFigures = DefinedBlocks[name];
-            }
+                zeroBasedFigures = DefinedBlocks[name];
         }
 
         public BlockGeometry(Figure figure) 
@@ -81,11 +79,6 @@ namespace PetCAD.Geometries
         {
             var xgeometry = new XElement("Geometry");
             xgeometry.Add(new XAttribute("Name", Name));
-            //xgeometry.Add(new XAttribute("Insert", InsertPoint.ToString()));
-            //if (ScaleFactor != 1)
-            //    xgeometry.Add(new XAttribute("Scale", ScaleFactor.ToString()));
-            //if (Angle != 0)
-            //    xgeometry.Add(new XAttribute("Angle", Angle.ToString()));
             return xgeometry;
         }
 
@@ -96,16 +89,7 @@ namespace PetCAD.Geometries
             if (string.IsNullOrWhiteSpace(name)) return;
             Name = name;
             if (DefinedBlocks.ContainsKey(name))
-                this.zeroBasedFigures = DefinedBlocks[name];
-            //var sinsert = xgeometry.Attribute("Insert")?.Value;
-            //if (!string.IsNullOrWhiteSpace(sinsert))
-            //    InsertPoint = ParseHelper.ParsePointF(sinsert, PointF.Empty);
-            //var sscale = xgeometry.Attribute("Scale")?.Value;
-            //if (!string.IsNullOrWhiteSpace(sscale))
-            //    ScaleFactor = ParseHelper.ParseSingle(sscale, 1f);
-            //var sangle = xgeometry.Attribute("Angle")?.Value;
-            //if (!string.IsNullOrWhiteSpace(sangle))
-            //    Angle = ParseHelper.ParseSingle(sangle, 0f);
+                zeroBasedFigures = DefinedBlocks[name];
         }
 
         /// <summary>
@@ -115,7 +99,7 @@ namespace PetCAD.Geometries
         /// <param name="offsetY"></param>
         public void Move(float offsetX, float offsetY)
         {
-            var m = ((BlockReference)Owner).Transformation;
+            var m = Owner.Transformation;
             var scaled = m.GetSize();
             var rotated = m.GetAngle();
             // компенсация масштаба
@@ -145,7 +129,7 @@ namespace PetCAD.Geometries
 
         public void Scale(PointF basePoint, float zoom)
         {
-            var m = ((BlockReference)Owner).Transformation;
+            var m = Owner.Transformation;
             m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
             m.Scale(zoom, zoom, MatrixOrder.Append);
             m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
@@ -153,7 +137,7 @@ namespace PetCAD.Geometries
 
         public void Rotate(PointF baseRotatePoint, float angle)
         {
-            var m = ((BlockReference)Owner).Transformation;
+            var m = Owner.Transformation;
             m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
             m.Rotate(angle, MatrixOrder.Append);
             m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
@@ -179,7 +163,7 @@ namespace PetCAD.Geometries
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
         {
             var markers = new List<Marker>();
-            var m = ((BlockReference)Owner).Transformation;
+            var m = Owner.Transformation;
             foreach (var f in this.GetZeroBasedFigures())
             {
                 foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint))

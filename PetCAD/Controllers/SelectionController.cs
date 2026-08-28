@@ -211,9 +211,7 @@ namespace PetCAD.Controllers
             // если ничего не выбрано, выходим
             if (selection.Count() == 0) return;
             foreach (var fig in selection)
-            {
                 BindingMarkers.AddRange(fig.Geometry.GetBindingMarkers(allowed, basePoint));
-            }
         }
     }
 }
