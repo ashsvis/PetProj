@@ -108,19 +108,39 @@ namespace PetCAD.Geometries
             //    Angle = ParseHelper.ParseSingle(sangle, 0f);
         }
 
+        /// <summary>
+        /// Перемещение блока безотносительно к маркерам
+        /// </summary>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         public void Move(float offsetX, float offsetY)
         {
             var m = ((BlockReference)Owner).Transformation;
+            var scaled = m.GetSize();
+            var rotated = m.GetAngle();
+            // компенсация масштаба
+            m.Scale(1f / scaled.Width, 1f / scaled.Height);
+            // компенсация поворота
+            m.Rotate(-rotated);
+            // собственно перемещение
             m.Translate(offsetX, offsetY);
+            // возврат компенсации поворота
+            m.Rotate(rotated);
+            // возврат компенсации масштаба
+            m.Scale(scaled.Width, scaled.Height);
         }
 
+        /// <summary>
+        /// Перемещение блока за маркер
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         public void Move(int index, float offsetX, float offsetY)
         {
+            // нулевой маркер - это ORIGIN
             if (index == 0)
-            {
-                var m = ((BlockReference)Owner).Transformation;
-                m.Translate(offsetX, offsetY);
-            }
+                Move(offsetX, offsetY);
         }
 
         public void Scale(PointF basePoint, float zoom)
