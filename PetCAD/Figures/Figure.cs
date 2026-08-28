@@ -1,4 +1,5 @@
-﻿using PetCAD.Geometries;
+﻿using PetCAD.Common;
+using PetCAD.Geometries;
 using PetCAD.Renderers;
 using PetCAD.Styles;
 using System;
@@ -12,6 +13,7 @@ namespace PetCAD.Figures
         public Figure() 
         {
             Style = new Style();
+            Transformation = new Matrix();
             Renderer = new DefaultRenderer();
         }
 
@@ -24,6 +26,11 @@ namespace PetCAD.Figures
         /// Свойство источника геометрии фигуры
         /// </summary>
         public Geometry Geometry { get; set; }
+
+        /// <summary>
+        /// Трансформация (масштаб, поворот, смещение)
+        /// </summary>
+        public Matrix Transformation { get; set; }
 
         /// <summary>
         /// Свойство рисовальщика фигуры
@@ -42,6 +49,11 @@ namespace PetCAD.Figures
             var xStyle = Style.GetXml();
             if (xStyle != null)
                 xfigure.Add(xStyle);
+            if (!Transformation.IsIdentity)
+            {
+                var elements = string.Join(", ", Transformation.Elements);
+                xfigure.Add(new XAttribute("Matrix", elements));
+            }
             return xfigure;
         }
 
@@ -56,6 +68,18 @@ namespace PetCAD.Figures
             if (figure == null) return;
             figure.Geometry = geometryFunc(name);
             figure.Geometry?.SetXml(xgeometry);
+            var xtransform = xfigure.Attribute("Matrix")?.Value;
+            if (xtransform != null)
+            {
+                var xelements = xtransform.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                if (xelements.Length == 6)
+                {
+                    float[] m = new float[6];
+                    for (var i = 0; i < xelements.Length; i++ )
+                        m[i] = ParseHelper.ParseSingle(xelements[i], 0f);
+                    figure.Transformation = new Matrix(m[0], m[1], m[2], m[3], m[4], m[5]);
+                }
+            }
             figure.Renderer = rendererFunc(name);
             var xstyle = xfigure.Element("Style");
             if (xstyle == null) return;
@@ -67,6 +91,7 @@ namespace PetCAD.Figures
             var fig = new Figure
             {
                 Style = Style.DeepCopy(),
+                Transformation = Transformation.Clone(),
                 Renderer = Renderer.DeepCopy()
             };
             fig.Geometry = Geometry.DeepCopy(fig);
