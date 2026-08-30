@@ -167,16 +167,20 @@ namespace PetCAD.Geometries
             var pts = new PointF[] { PointF.Empty };
             var m = ((BlockReference)Owner).Transformation;
             m.TransformPoints(pts);
-            return new Marker[]
-            {                
+            var markers = new List<Marker>
+            {
                 new VertexMarker
-                    {
-                        MarkerType =  MarkerType.Vertex,
-                        Position = pts[0],
-                        Index = 0,
-                        Owner = Owner,
-                    },
+                {
+                    MarkerType = MarkerType.Vertex,
+                    Position = pts[0],
+                    Index = 0,
+                    Owner = Owner,
+                }
             };
+
+            markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty));
+
+            return markers.ToArray();
         }
 
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)

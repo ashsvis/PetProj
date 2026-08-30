@@ -32,23 +32,6 @@ namespace PetCAD.Geometries
                          CenterPoint.Y + (float)(Radius * Math.Sin((StartAngle + SweepAngle) * (Math.PI / 180))))
             : PointF.Empty;
 
-        public PointF[] QuadrantPoints
-        {
-            get 
-            {
-                var list = new List<PointF>();
-                foreach(var angle in new float[] { -360f, -270f, -180f, -90, 0f, 90f, 180f, 270f, 360f })
-                {
-                    if (angle >= StartAngle && angle <= StartAngle + SweepAngle)
-                    {
-                        list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos(angle * (Math.PI / 180))),
-                                            CenterPoint.Y + (float)(Radius * Math.Sin(angle * (Math.PI / 180)))));
-                    }
-                }
-                return list.ToArray();
-            }
-        }
-
         public ArcGeometry(Figure figure) 
         { 
             Owner = figure;
@@ -279,7 +262,7 @@ namespace PetCAD.Geometries
 
         public override Marker[] GetGeometryMarkers()
         {
-            return new Marker[]
+            var markers = new List<Marker>
             {
                 new CenterMarker
                     {
@@ -309,6 +292,19 @@ namespace PetCAD.Geometries
                         Owner = Owner,
                     },
             };
+
+            //markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty));
+
+            return markers.ToArray();
+        }
+
+        private PointF[] QuadrantPoints()
+        {
+            var list = new List<PointF>();
+            foreach (var angle in new float[] { -270f, -180f, -90, 0f, 90f, 180f, 270f })
+                list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos(angle * (Math.PI / 180.0))),
+                                    CenterPoint.Y + (float)(Radius * Math.Sin(angle * (Math.PI / 180.0)))));
+            return list.ToArray();
         }
 
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
@@ -352,49 +348,61 @@ namespace PetCAD.Geometries
                     Owner = Owner,
                 });
             }
-            // поиск доступных квадрантов
-            if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
+            using (var path = Path)
             {
-                foreach (var quadrantPoint in this.QuadrantPoints)
+                // поиск доступных квадрантов
+                if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
                 {
-                    markers.Add(new BindingQuadrantMarker
+                    foreach (var quadrantPoint in QuadrantPoints())
                     {
-                        MarkerType = MarkerType.BindingQuadrant,
-                        Position = quadrantPoint,
-                        Owner = Owner,
-                    });
-                }
-            }
-            // поиск проекций базовой точки на дугу
-            if (allowed.HasFlag(AllowedObjectBindings.Normal))
-            {
-                // проекция точки проходит также через центр дуги
-                if (PointFExtension.NormalPointOnArc(this, basePoint, out PointF[] normals))
-                {
-                    foreach (var point in normals)
-                    {
-                        markers.Add(new BindingNormalMarker
+                        if (path.IsOutlineVisible(quadrantPoint, Pens.Black))
                         {
-                            MarkerType = MarkerType.BindingNormal,
-                            Position = point,
-                            Owner = Owner,
-                        });
+                            markers.Add(new BindingQuadrantMarker
+                            {
+                                MarkerType = MarkerType.BindingQuadrant,
+                                Position = quadrantPoint,
+                                Owner = Owner,
+                            });
+                        }
                     }
                 }
-            }
-            // поиск точек касания от базовой точки к дуге 
-            if (allowed.HasFlag(AllowedObjectBindings.Tangent))
-            {
-                if (PointFExtension.TangentPointOnArc(this, basePoint, out PointF[] tangents))
+                // поиск проекций базовой точки на дугу
+                if (allowed.HasFlag(AllowedObjectBindings.Normal))
                 {
-                    foreach (var point in tangents)
+                    // проекция точки проходит также через центр дуги
+                    if (PointFExtension.NormalPointOnArc(this, basePoint, out PointF[] normals))
                     {
-                        markers.Add(new BindingTangentMarker
+                        foreach (var point in normals)
                         {
-                            MarkerType = MarkerType.BindingTangent,
-                            Position = point,
-                            Owner = Owner,
-                        });
+                            if (path.IsOutlineVisible(point, Pens.Black))
+                            {
+                                markers.Add(new BindingNormalMarker
+                                {
+                                    MarkerType = MarkerType.BindingNormal,
+                                    Position = point,
+                                    Owner = Owner,
+                                });
+                            }
+                        }
+                    }
+                }
+                // поиск точек касания от базовой точки к дуге 
+                if (allowed.HasFlag(AllowedObjectBindings.Tangent))
+                {
+                    if (PointFExtension.TangentPointOnArc(this, basePoint, out PointF[] tangents))
+                    {
+                        foreach (var point in tangents)
+                        {
+                            if (path.IsOutlineVisible(point, Pens.Black))
+                            {
+                                markers.Add(new BindingTangentMarker
+                                {
+                                    MarkerType = MarkerType.BindingTangent,
+                                    Position = point,
+                                    Owner = Owner,
+                                });
+                            }
+                        }
                     }
                 }
             }
