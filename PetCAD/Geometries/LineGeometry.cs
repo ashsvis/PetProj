@@ -16,10 +16,6 @@ namespace PetCAD.Geometries
 
         public PointF StartPoint => Points.Count > 0 ? Points.First() : PointF.Empty;
         public PointF EndPoint => Points.Count > 0 ? Points.Last() : PointF.Empty;
-        public override RectangleF Bounds => 
-            Points.Count == 2 
-               ? new RectangleF(Math.Min(Points[0].X, Points[1].X), Math.Min(Points[0].Y, Points[1].Y), 
-                   Math.Abs(Points[0].X - Points[1].X), Math.Abs(Points[0].Y - Points[1].Y)) : RectangleF.Empty;
 
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
@@ -35,8 +31,23 @@ namespace PetCAD.Geometries
                 {
                     var points = Points.ToArray();
                     path.AddLines(points);
+                    path.Flatten();
                 }
                 return path;
+            }
+        }
+
+        public override RectangleF Bounds
+        {
+            get
+            {
+                using (var path = Path)
+                {
+                    var rect = path.GetBounds();
+                    if (rect.Width == 0) rect.Inflate(0.1f, 0f);
+                    if (rect.Height == 0) rect.Inflate(0f, 0.1f);
+                    return rect;
+                }
             }
         }
 

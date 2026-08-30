@@ -115,14 +115,16 @@ namespace PetCAD
             var zoom = (float)zoomPad.ZoomScale;
             // отрисовка созданных фигур
 
-            ////using (var brush = new SolidBrush(Color.FromArgb(10, Color.Black)))
-            ////{
-            ////    foreach (var fig in figures)
-            ////    {
-            ////        var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
-            ////        graphics.FillRectangle(brush, bounds);
-            ////    }
-            ////}
+            using (var pen = new Pen(Color.Maroon, 0f))
+            {
+                pen.DashPattern = new float[] { 15f, 5f };
+                foreach (var fig in figures)
+                {
+                    var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
+                    graphics.DrawRectangles(pen, new RectangleF[] { bounds });
+                }
+            }
+
             foreach (var fig in figures)
             {
                 var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;

@@ -59,6 +59,27 @@ namespace PetCAD.Geometries
             }
         }
 
+        public override RectangleF Bounds
+        {
+            get
+            {
+                var m = Owner.Transformation;
+                var rect = RectangleF.Empty;
+                foreach (var figure in zeroBasedFigures)
+                {
+                    using (var path = figure.GetRendererPath())
+                    {
+                        path.Transform(m);
+                        if (rect.IsEmpty)
+                            rect = path.GetBounds();
+                        else
+                            rect = RectangleF.Union(rect, path.GetBounds());
+                    }
+                }
+                return rect;
+            }
+        }
+
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
         /// </summary>
@@ -66,8 +87,6 @@ namespace PetCAD.Geometries
         { 
             get { return AllowedGeometryOperations.All ^ AllowedGeometryOperations.Vertex; } 
         }
-
-        public override RectangleF Bounds => Path.GetBounds();
 
         public override Geometry DeepCopy(Figure figure)
         {

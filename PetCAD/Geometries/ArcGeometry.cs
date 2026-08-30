@@ -72,6 +72,7 @@ namespace PetCAD.Geometries
                 {
                     var rect = new RectangleF(CenterPoint.X - Radius, CenterPoint.Y - Radius, Radius * 2f, Radius * 2f);
                     path.AddArc(rect, StartAngle, SweepAngle);
+                    path.Flatten();
                 }
                 return path;
             }
@@ -81,17 +82,8 @@ namespace PetCAD.Geometries
         {
             get
             {
-                // Переводим угол из градусов в радианы
-                double angle1 =StartAngle * Math.PI / 180.0;
-                double angle2 = (StartAngle + SweepAngle) * Math.PI / 180.0;
-
-                // Вычисляем координаты
-                float x1 = (float)(CenterPoint.X + Radius * Math.Cos(angle1));
-                float y1 = (float)(CenterPoint.Y + Radius * Math.Sin(angle1));
-                float x2 = (float)(CenterPoint.X + Radius * Math.Cos(angle2));
-                float y2 = (float)(CenterPoint.Y + Radius * Math.Sin(angle2));
-                
-                return new RectangleF(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(x2 - x1), Math.Abs(y2 - y1));
+                using (var path = Path)
+                    return path.GetBounds();
             }
         }
 
