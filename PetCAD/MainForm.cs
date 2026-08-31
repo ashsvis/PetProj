@@ -343,9 +343,14 @@ namespace PetCAD
             }
             else if (sender == tsbCreateBlock)
             {
-                SwitchOffButtons();
-                drawControl.SetMode(EditorMode.BuildCreateBlock);
-                tsbCreateBlock.Checked = true;
+                var frm = new BlockDefinitionForm();
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    SwitchOffButtons();
+                    drawControl.DefineBlockName(frm.EnteredBlockName);
+                    drawControl.SetMode(EditorMode.BuildCreateBlock);
+                    tsbCreateBlock.Checked = true;
+                }
             }
             else if (sender == tsbInsertBlock)
             {

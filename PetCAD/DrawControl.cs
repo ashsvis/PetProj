@@ -23,6 +23,7 @@ namespace PetCAD
         private PointF secondMouseDown;
         private PointF mousePosition;
         private EditorMode editorMode;
+        public string EnteredBlockName { get; set; }
 
         public bool IsDynamicalEnter { get; set; } = true;
         public bool IsDrawOrthoMode { get; set; } = false;
@@ -1274,6 +1275,11 @@ namespace PetCAD
             selectionController.Clear();
             underCursor.Clear();
             Changed = true;
+        }
+
+        public void DefineBlockName(string enteredBlockName)
+        {
+            EnteredBlockName = enteredBlockName;
         }
     }
 }

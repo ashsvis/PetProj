@@ -114,6 +114,12 @@
     </Compile>
     <Compile Include="Controls\ControlsHelper.cs" />
     <Compile Include="Controls\IEditor.cs" />
+    <Compile Include="Dialogs\BlockDefinitionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BlockDefinitionForm.Designer.cs">
+      <DependentUpon>BlockDefinitionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DrawingModesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
       <DependentUpon>BorderStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BlockDefinitionForm.resx">
+      <DependentUpon>BlockDefinitionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\DrawingModesForm.resx">
       <DependentUpon>DrawingModesForm.cs</DependentUpon>

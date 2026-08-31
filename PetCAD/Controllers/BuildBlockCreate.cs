@@ -102,12 +102,18 @@ namespace PetCAD.Controllers
                     // создание блока здесь
                     if (figures.Count > 0)
                     {
-                        if (drawer.AddBlock("Block", ptBaseInsert, figures))
+                        if (drawer.AddBlock(drawer.EnteredBlockName, ptBaseInsert, figures))
                         {
-                            drawer.InsertBlock(ptBaseInsert, "Block");
+                            drawer.InsertBlock(ptBaseInsert, drawer.EnteredBlockName);
                             // удаляем фигуры, которые теперь вошли в блок
                             foreach (Figure fig in figures)
                                 drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Существующий блок " + drawer.EnteredBlockName + " не изменён.\n" +
+                                "Для продолжения измените существующий блок или укажите другое имя блока.",
+                                "Блок - изменения не внесены", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                     drawer.ClearMouseCount();
