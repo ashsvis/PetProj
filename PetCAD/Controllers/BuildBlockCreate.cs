@@ -109,12 +109,6 @@ namespace PetCAD.Controllers
                             foreach (Figure fig in figures)
                                 drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
                         }
-                        else
-                        {
-                            MessageBox.Show("Существующий блок " + drawer.EnteredBlockName + " не изменён.\n" +
-                                "Для продолжения измените существующий блок или укажите другое имя блока.",
-                                "Блок - изменения не внесены", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
                     }
                     drawer.ClearMouseCount();
                     drawer.SetMode(EditorMode.Selection);

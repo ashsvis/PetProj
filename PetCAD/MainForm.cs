@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace PetCAD
 {
@@ -346,10 +347,19 @@ namespace PetCAD
                 var frm = new BlockDefinitionForm();
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    SwitchOffButtons();
-                    drawControl.DefineBlockName(frm.EnteredBlockName);
-                    drawControl.SetMode(EditorMode.BuildCreateBlock);
-                    tsbCreateBlock.Checked = true;
+                    if (!BlockGeometry.DefinedBlocks.ContainsKey(frm.EnteredBlockName))
+                    {
+                        SwitchOffButtons();
+                        drawControl.DefineBlockName(frm.EnteredBlockName);
+                        drawControl.SetMode(EditorMode.BuildCreateBlock);
+                        tsbCreateBlock.Checked = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Существующий блок " + frm.EnteredBlockName + " не изменён.\n" +
+                            "Для продолжения измените существующий блок или укажите другое имя блока.",
+                            "Блок - изменения не внесены", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
             else if (sender == tsbInsertBlock)
