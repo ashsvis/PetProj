@@ -127,6 +127,7 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\EditorMode.cs" />
+    <Compile Include="Geometries\IExplodeGeometry.cs" />
     <Compile Include="Markers\AllowedMarkerOperations.cs" />
     <Compile Include="Figures\BlockReference.cs" />
     <Compile Include="Geometries\BlockGeometry.cs" />
@@ -277,6 +278,7 @@
     <None Include="Resources\blockinsert.png" />
     <None Include="Resources\scale.png" />
     <None Include="Resources\rotate.png" />
+    <None Include="Resources\explode.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

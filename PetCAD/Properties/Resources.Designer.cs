@@ -193,6 +193,16 @@ namespace PetCAD.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap explode {
+            get {
+                object obj = ResourceManager.GetObject("explode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap line {
             get {
                 object obj = ResourceManager.GetObject("line", resourceCulture);

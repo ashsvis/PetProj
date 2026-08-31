@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
+    public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker, IExplodeGeometry
     {
         private Figure[] zeroBasedFigures = new Figure[] { };
 
@@ -196,6 +196,11 @@ namespace PetCAD.Geometries
                 }
             }
             return markers.ToArray();
+        }
+
+        public void Explode()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

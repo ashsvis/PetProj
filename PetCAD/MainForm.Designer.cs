@@ -32,35 +32,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFileMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCreateDocument = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiOpenDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiSaveDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSaveDocumentAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiPrintDocument = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiPreviewDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEditMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiUndo = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiRotate = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiScale = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiObjectBinding = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServiceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTuningApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAppParameters = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,37 +54,12 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAboutApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbOpenDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbSaveDocument = new System.Windows.Forms.ToolStripButton();
-            this.tsbPrintDocument = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
-            this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbMove = new System.Windows.Forms.ToolStripButton();
-            this.tsbRotate = new System.Windows.Forms.ToolStripButton();
-            this.tsbMoveCopy = new System.Windows.Forms.ToolStripButton();
-            this.tsbScale = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbCut = new System.Windows.Forms.ToolStripButton();
-            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
-            this.tsbPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbArrow = new System.Windows.Forms.ToolStripButton();
-            this.tsbLine = new System.Windows.Forms.ToolStripButton();
-            this.tsbRect = new PetCAD.ToolStripSplitButtonCheckable();
-            this.tsmiRectangle = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiPolygone = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbArc = new PetCAD.ToolStripSplitButtonCheckable();
-            this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiBuildArcByBeginCenterEnd = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiBuildArcByCenterBeginEnd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbCreateBlock = new System.Windows.Forms.ToolStripButton();
-            this.tsbInsertBlock = new PetCAD.ToolStripSplitButtonCheckable();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.placeHolder = new System.Windows.Forms.Panel();
@@ -114,6 +72,47 @@
             this.splitterHolders = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.tslParamName1 = new System.Windows.Forms.ToolStripLabel();
+            this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
+            this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
+            this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
+            this.tsbOrto = new System.Windows.Forms.ToolStripButton();
+            this.tsbDynamicalEnter = new System.Windows.Forms.ToolStripButton();
+            this.tsbCreateDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbOpenDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbSaveDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbPrintDocument = new System.Windows.Forms.ToolStripButton();
+            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
+            this.tsbRedo = new System.Windows.Forms.ToolStripButton();
+            this.tsbMove = new System.Windows.Forms.ToolStripButton();
+            this.tsbRotate = new System.Windows.Forms.ToolStripButton();
+            this.tsbMoveCopy = new System.Windows.Forms.ToolStripButton();
+            this.tsbScale = new System.Windows.Forms.ToolStripButton();
+            this.tsbCut = new System.Windows.Forms.ToolStripButton();
+            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
+            this.tsbPaste = new System.Windows.Forms.ToolStripButton();
+            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
+            this.tsbArrow = new System.Windows.Forms.ToolStripButton();
+            this.tsbLine = new System.Windows.Forms.ToolStripButton();
+            this.tsbCreateBlock = new System.Windows.Forms.ToolStripButton();
+            this.tsbExplode = new System.Windows.Forms.ToolStripButton();
+            this.tsmiCreateDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpenDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSaveDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPrintDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPreviewDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRotate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMoveCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiScale = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiObjectBinding = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOrto = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDynamicalEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbObjectBinding = new PetCAD.ToolStripSplitButtonCheckable();
             this.tsmiBindToEndPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBindToMiddle = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,12 +122,14 @@
             this.tsmiBindToTangent = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiBindParameters = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbOrto = new System.Windows.Forms.ToolStripButton();
-            this.tslParamName1 = new System.Windows.Forms.ToolStripLabel();
-            this.tstbTextParam1 = new System.Windows.Forms.ToolStripTextBox();
-            this.tslParamName2 = new System.Windows.Forms.ToolStripLabel();
-            this.tstbTextParam2 = new System.Windows.Forms.ToolStripTextBox();
-            this.tsbDynamicalEnter = new System.Windows.Forms.ToolStripButton();
+            this.tsbRect = new PetCAD.ToolStripSplitButtonCheckable();
+            this.tsmiRectangle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPolygone = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbArc = new PetCAD.ToolStripSplitButtonCheckable();
+            this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildArcByBeginCenterEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildArcByCenterBeginEnd = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbInsertBlock = new PetCAD.ToolStripSplitButtonCheckable();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -170,41 +171,10 @@
             this.tsmiFileMenu.Size = new System.Drawing.Size(48, 20);
             this.tsmiFileMenu.Text = "&Файл";
             // 
-            // tsmiCreateDocument
-            // 
-            this.tsmiCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCreateDocument.Image")));
-            this.tsmiCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiCreateDocument.Name = "tsmiCreateDocument";
-            this.tsmiCreateDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmiCreateDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiCreateDocument.Text = "&Создать";
-            this.tsmiCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
-            // 
-            // tsmiOpenDocument
-            // 
-            this.tsmiOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiOpenDocument.Image")));
-            this.tsmiOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiOpenDocument.Name = "tsmiOpenDocument";
-            this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmiOpenDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiOpenDocument.Text = "&Открыть";
-            this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
-            // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
             this.toolStripSeparator.Size = new System.Drawing.Size(230, 6);
-            // 
-            // tsmiSaveDocument
-            // 
-            this.tsmiSaveDocument.Enabled = false;
-            this.tsmiSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSaveDocument.Image")));
-            this.tsmiSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiSaveDocument.Name = "tsmiSaveDocument";
-            this.tsmiSaveDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmiSaveDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiSaveDocument.Text = "&Сохранить";
-            this.tsmiSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
             // 
             // tsmiSaveDocumentAs
             // 
@@ -218,25 +188,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
-            // 
-            // tsmiPrintDocument
-            // 
-            this.tsmiPrintDocument.Enabled = false;
-            this.tsmiPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPrintDocument.Image")));
-            this.tsmiPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiPrintDocument.Name = "tsmiPrintDocument";
-            this.tsmiPrintDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.tsmiPrintDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiPrintDocument.Text = "&Печать";
-            // 
-            // tsmiPreviewDocument
-            // 
-            this.tsmiPreviewDocument.Enabled = false;
-            this.tsmiPreviewDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPreviewDocument.Image")));
-            this.tsmiPreviewDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiPreviewDocument.Name = "tsmiPreviewDocument";
-            this.tsmiPreviewDocument.Size = new System.Drawing.Size(233, 22);
-            this.tsmiPreviewDocument.Text = "Предварительный про&смотр";
             // 
             // toolStripSeparator2
             // 
@@ -265,60 +216,10 @@
             this.tsmiEditMenu.Size = new System.Drawing.Size(59, 20);
             this.tsmiEditMenu.Text = "&Правка";
             // 
-            // tsmiUndo
-            // 
-            this.tsmiUndo.Enabled = false;
-            this.tsmiUndo.Image = global::PetCAD.Properties.Resources.undo;
-            this.tsmiUndo.Name = "tsmiUndo";
-            this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
-            this.tsmiUndo.Text = "&Отмена действия";
-            this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
-            // 
-            // tsmiRedo
-            // 
-            this.tsmiRedo.Enabled = false;
-            this.tsmiRedo.Image = global::PetCAD.Properties.Resources.redo;
-            this.tsmiRedo.Name = "tsmiRedo";
-            this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
-            this.tsmiRedo.Text = "&Отмена действия";
-            this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
-            // 
-            // tsmiCut
-            // 
-            this.tsmiCut.Enabled = false;
-            this.tsmiCut.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCut.Image")));
-            this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiCut.Name = "tsmiCut";
-            this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
-            this.tsmiCut.Text = "Вырезат&ь";
-            // 
-            // tsmiCopy
-            // 
-            this.tsmiCopy.Enabled = false;
-            this.tsmiCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCopy.Image")));
-            this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiCopy.Name = "tsmiCopy";
-            this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
-            this.tsmiCopy.Text = "&Копировать";
-            // 
-            // tsmiPaste
-            // 
-            this.tsmiPaste.Enabled = false;
-            this.tsmiPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPaste.Image")));
-            this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsmiPaste.Name = "tsmiPaste";
-            this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
-            this.tsmiPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
@@ -357,73 +258,10 @@
             this.tsmiCommands.Size = new System.Drawing.Size(70, 20);
             this.tsmiCommands.Text = "Команды";
             // 
-            // tsmiMove
-            // 
-            this.tsmiMove.Enabled = false;
-            this.tsmiMove.Image = global::PetCAD.Properties.Resources.move;
-            this.tsmiMove.Name = "tsmiMove";
-            this.tsmiMove.Size = new System.Drawing.Size(301, 22);
-            this.tsmiMove.Text = "Переместить";
-            this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
-            // 
-            // tsmiRotate
-            // 
-            this.tsmiRotate.Enabled = false;
-            this.tsmiRotate.Image = global::PetCAD.Properties.Resources.rotate;
-            this.tsmiRotate.Name = "tsmiRotate";
-            this.tsmiRotate.Size = new System.Drawing.Size(301, 22);
-            this.tsmiRotate.Text = "Повернуть";
-            this.tsmiRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
-            // 
-            // tsmiMoveCopy
-            // 
-            this.tsmiMoveCopy.Enabled = false;
-            this.tsmiMoveCopy.Image = global::PetCAD.Properties.Resources.movecopy;
-            this.tsmiMoveCopy.Name = "tsmiMoveCopy";
-            this.tsmiMoveCopy.Size = new System.Drawing.Size(301, 22);
-            this.tsmiMoveCopy.Text = "Копировать";
-            this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
-            // 
-            // tsmiScale
-            // 
-            this.tsmiScale.Enabled = false;
-            this.tsmiScale.Image = global::PetCAD.Properties.Resources.scale;
-            this.tsmiScale.Name = "tsmiScale";
-            this.tsmiScale.Size = new System.Drawing.Size(301, 22);
-            this.tsmiScale.Text = "Масштаб";
-            this.tsmiScale.Click += new System.EventHandler(this.tsmiScale_Click);
-            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(298, 6);
-            // 
-            // tsmiObjectBinding
-            // 
-            this.tsmiObjectBinding.Image = global::PetCAD.Properties.Resources.binding;
-            this.tsmiObjectBinding.Name = "tsmiObjectBinding";
-            this.tsmiObjectBinding.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.tsmiObjectBinding.Size = new System.Drawing.Size(301, 22);
-            this.tsmiObjectBinding.Text = "Привязка курсора к опорным точкам";
-            this.tsmiObjectBinding.Click += new System.EventHandler(this.tsmiObjectBinding_Click);
-            // 
-            // tsmiOrto
-            // 
-            this.tsmiOrto.Image = global::PetCAD.Properties.Resources.ortho;
-            this.tsmiOrto.Name = "tsmiOrto";
-            this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.tsmiOrto.Size = new System.Drawing.Size(301, 22);
-            this.tsmiOrto.Text = "Ортогональность";
-            this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
-            // 
-            // tsmiDynamicalEnter
-            // 
-            this.tsmiDynamicalEnter.Image = global::PetCAD.Properties.Resources.dyninput;
-            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
-            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(301, 22);
-            this.tsmiDynamicalEnter.Text = "Динамический ввод";
-            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
             // 
             // tsmiServiceMenu
             // 
@@ -517,300 +355,43 @@
             this.tsbArc,
             this.toolStripSeparator12,
             this.tsbCreateBlock,
-            this.tsbInsertBlock});
+            this.tsbInsertBlock,
+            this.tsbExplode});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(916, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // tsbCreateDocument
-            // 
-            this.tsbCreateDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbCreateDocument.Image")));
-            this.tsbCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCreateDocument.Name = "tsbCreateDocument";
-            this.tsbCreateDocument.Size = new System.Drawing.Size(23, 22);
-            this.tsbCreateDocument.Text = "&Создать";
-            this.tsbCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
-            // 
-            // tsbOpenDocument
-            // 
-            this.tsbOpenDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpenDocument.Image")));
-            this.tsbOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOpenDocument.Name = "tsbOpenDocument";
-            this.tsbOpenDocument.Size = new System.Drawing.Size(23, 22);
-            this.tsbOpenDocument.Text = "&Открыть";
-            this.tsbOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
-            // 
-            // tsbSaveDocument
-            // 
-            this.tsbSaveDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSaveDocument.Enabled = false;
-            this.tsbSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveDocument.Image")));
-            this.tsbSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSaveDocument.Name = "tsbSaveDocument";
-            this.tsbSaveDocument.Size = new System.Drawing.Size(23, 22);
-            this.tsbSaveDocument.Text = "&Сохранить";
-            this.tsbSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
-            // 
-            // tsbPrintDocument
-            // 
-            this.tsbPrintDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbPrintDocument.Enabled = false;
-            this.tsbPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbPrintDocument.Image")));
-            this.tsbPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbPrintDocument.Name = "tsbPrintDocument";
-            this.tsbPrintDocument.Size = new System.Drawing.Size(23, 22);
-            this.tsbPrintDocument.Text = "&Печать";
-            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbUndo
-            // 
-            this.tsbUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbUndo.Enabled = false;
-            this.tsbUndo.Image = global::PetCAD.Properties.Resources.undo;
-            this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbUndo.Name = "tsbUndo";
-            this.tsbUndo.Size = new System.Drawing.Size(23, 22);
-            this.tsbUndo.Text = "Отменить";
-            this.tsbUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
-            // 
-            // tsbRedo
-            // 
-            this.tsbRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRedo.Enabled = false;
-            this.tsbRedo.Image = global::PetCAD.Properties.Resources.redo;
-            this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRedo.Name = "tsbRedo";
-            this.tsbRedo.Size = new System.Drawing.Size(23, 22);
-            this.tsbRedo.Text = "Вернуть";
-            this.tsbRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbMove
-            // 
-            this.tsbMove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbMove.Enabled = false;
-            this.tsbMove.Image = global::PetCAD.Properties.Resources.move;
-            this.tsbMove.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbMove.Name = "tsbMove";
-            this.tsbMove.Size = new System.Drawing.Size(23, 22);
-            this.tsbMove.Text = "Перенести";
-            this.tsbMove.Click += new System.EventHandler(this.tsmiMove_Click);
-            // 
-            // tsbRotate
-            // 
-            this.tsbRotate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRotate.Enabled = false;
-            this.tsbRotate.Image = global::PetCAD.Properties.Resources.rotate;
-            this.tsbRotate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRotate.Name = "tsbRotate";
-            this.tsbRotate.Size = new System.Drawing.Size(23, 22);
-            this.tsbRotate.Text = "Повернуть";
-            this.tsbRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
-            // 
-            // tsbMoveCopy
-            // 
-            this.tsbMoveCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbMoveCopy.Enabled = false;
-            this.tsbMoveCopy.Image = global::PetCAD.Properties.Resources.movecopy;
-            this.tsbMoveCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbMoveCopy.Name = "tsbMoveCopy";
-            this.tsbMoveCopy.Size = new System.Drawing.Size(23, 22);
-            this.tsbMoveCopy.Text = "Копировать";
-            this.tsbMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
-            // 
-            // tsbScale
-            // 
-            this.tsbScale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbScale.Enabled = false;
-            this.tsbScale.Image = global::PetCAD.Properties.Resources.scale;
-            this.tsbScale.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbScale.Name = "tsbScale";
-            this.tsbScale.Size = new System.Drawing.Size(23, 22);
-            this.tsbScale.Text = "Масштаб";
-            this.tsbScale.Click += new System.EventHandler(this.tsmiScale_Click);
-            // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbCut
-            // 
-            this.tsbCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCut.Enabled = false;
-            this.tsbCut.Image = ((System.Drawing.Image)(resources.GetObject("tsbCut.Image")));
-            this.tsbCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCut.Name = "tsbCut";
-            this.tsbCut.Size = new System.Drawing.Size(23, 22);
-            this.tsbCut.Text = "В&ырезать";
-            // 
-            // tsbCopy
-            // 
-            this.tsbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCopy.Enabled = false;
-            this.tsbCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopy.Image")));
-            this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCopy.Name = "tsbCopy";
-            this.tsbCopy.Size = new System.Drawing.Size(23, 22);
-            this.tsbCopy.Text = "&Копировать";
-            // 
-            // tsbPaste
-            // 
-            this.tsbPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbPaste.Enabled = false;
-            this.tsbPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsbPaste.Image")));
-            this.tsbPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbPaste.Name = "tsbPaste";
-            this.tsbPaste.Size = new System.Drawing.Size(23, 22);
-            this.tsbPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbHelp
-            // 
-            this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbHelp.Enabled = false;
-            this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
-            this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbHelp.Name = "tsbHelp";
-            this.tsbHelp.Size = new System.Drawing.Size(23, 22);
-            this.tsbHelp.Text = "Спр&авка";
-            // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbArrow
-            // 
-            this.tsbArrow.Checked = true;
-            this.tsbArrow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsbArrow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbArrow.Image = global::PetCAD.Properties.Resources.arrow;
-            this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbArrow.Name = "tsbArrow";
-            this.tsbArrow.Size = new System.Drawing.Size(23, 22);
-            this.tsbArrow.Text = "Режим выбора";
-            this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsbLine
-            // 
-            this.tsbLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbLine.Image = global::PetCAD.Properties.Resources.line;
-            this.tsbLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbLine.Name = "tsbLine";
-            this.tsbLine.Size = new System.Drawing.Size(23, 22);
-            this.tsbLine.Text = "Построение отрезков";
-            this.tsbLine.Click += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsbRect
-            // 
-            this.tsbRect.Checked = false;
-            this.tsbRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRectangle,
-            this.tsmiPolygone});
-            this.tsbRect.Image = global::PetCAD.Properties.Resources.rect;
-            this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(32, 22);
-            this.tsbRect.Text = "Построение прямоугольника";
-            this.tsbRect.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsmiRectangle
-            // 
-            this.tsmiRectangle.Image = global::PetCAD.Properties.Resources.rect;
-            this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(163, 22);
-            this.tsmiRectangle.Text = "Прямоугольник";
-            // 
-            // tsmiPolygone
-            // 
-            this.tsmiPolygone.Image = global::PetCAD.Properties.Resources.poligone;
-            this.tsmiPolygone.Name = "tsmiPolygone";
-            this.tsmiPolygone.Size = new System.Drawing.Size(163, 22);
-            this.tsmiPolygone.Text = "Полигон";
-            // 
-            // tsbArc
-            // 
-            this.tsbArc.Checked = false;
-            this.tsbArc.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbArc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiBuildArcByThreePoints,
-            this.tsmiBuildArcByBeginCenterEnd,
-            this.tsmiBuildArcByCenterBeginEnd});
-            this.tsbArc.Image = global::PetCAD.Properties.Resources.arc;
-            this.tsbArc.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbArc.Name = "tsbArc";
-            this.tsbArc.Size = new System.Drawing.Size(32, 22);
-            this.tsbArc.Text = "Построение дуги";
-            this.tsbArc.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsmiBuildArcByThreePoints
-            // 
-            this.tsmiBuildArcByThreePoints.Image = global::PetCAD.Properties.Resources.arc;
-            this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
-            this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByThreePoints.Text = "Три точки";
-            this.tsmiBuildArcByThreePoints.Click += new System.EventHandler(this.tsmiBuildArcByThreePoints_Click);
-            // 
-            // tsmiBuildArcByBeginCenterEnd
-            // 
-            this.tsmiBuildArcByBeginCenterEnd.Image = global::PetCAD.Properties.Resources.arcSCE;
-            this.tsmiBuildArcByBeginCenterEnd.Name = "tsmiBuildArcByBeginCenterEnd";
-            this.tsmiBuildArcByBeginCenterEnd.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByBeginCenterEnd.Text = "Начало, центр, конец";
-            this.tsmiBuildArcByBeginCenterEnd.Click += new System.EventHandler(this.tsmiBuildArcByBeginCenterEnd_Click);
-            // 
-            // tsmiBuildArcByCenterBeginEnd
-            // 
-            this.tsmiBuildArcByCenterBeginEnd.Image = global::PetCAD.Properties.Resources.arcCSE;
-            this.tsmiBuildArcByCenterBeginEnd.Name = "tsmiBuildArcByCenterBeginEnd";
-            this.tsmiBuildArcByCenterBeginEnd.Size = new System.Drawing.Size(193, 22);
-            this.tsmiBuildArcByCenterBeginEnd.Text = "Центр, начало, конец";
-            this.tsmiBuildArcByCenterBeginEnd.Click += new System.EventHandler(this.tsmiBuildArcByCenterBeginEnd_Click);
-            // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
             this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbCreateBlock
-            // 
-            this.tsbCreateBlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCreateBlock.Image = global::PetCAD.Properties.Resources.blockcreate;
-            this.tsbCreateBlock.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCreateBlock.Name = "tsbCreateBlock";
-            this.tsbCreateBlock.Size = new System.Drawing.Size(23, 22);
-            this.tsbCreateBlock.Text = "Создать определение блока";
-            this.tsbCreateBlock.Click += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsbInsertBlock
-            // 
-            this.tsbInsertBlock.Checked = false;
-            this.tsbInsertBlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbInsertBlock.Image = global::PetCAD.Properties.Resources.blockinsert;
-            this.tsbInsertBlock.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbInsertBlock.Name = "tsbInsertBlock";
-            this.tsbInsertBlock.Size = new System.Drawing.Size(32, 22);
-            this.tsbInsertBlock.Text = "Вставить блок";
-            this.tsbInsertBlock.ButtonClick += new System.EventHandler(this.tsbInsertBlock_ButtonClick);
-            this.tsbInsertBlock.DropDownOpening += new System.EventHandler(this.tsbInsertBlock_DropDownOpening);
             // 
             // statusStrip1
             // 
@@ -938,6 +519,411 @@
             this.toolStrip2.TabIndex = 6;
             this.toolStrip2.Text = "toolStrip2";
             // 
+            // tslParamName1
+            // 
+            this.tslParamName1.Name = "tslParamName1";
+            this.tslParamName1.Size = new System.Drawing.Size(17, 22);
+            this.tslParamName1.Text = "X:";
+            this.tslParamName1.Visible = false;
+            // 
+            // tstbTextParam1
+            // 
+            this.tstbTextParam1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstbTextParam1.Name = "tstbTextParam1";
+            this.tstbTextParam1.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam1.Text = "0";
+            this.tstbTextParam1.Visible = false;
+            // 
+            // tslParamName2
+            // 
+            this.tslParamName2.Name = "tslParamName2";
+            this.tslParamName2.Size = new System.Drawing.Size(17, 22);
+            this.tslParamName2.Text = "Y:";
+            this.tslParamName2.Visible = false;
+            // 
+            // tstbTextParam2
+            // 
+            this.tstbTextParam2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstbTextParam2.Name = "tstbTextParam2";
+            this.tstbTextParam2.Size = new System.Drawing.Size(100, 25);
+            this.tstbTextParam2.Text = "0";
+            this.tstbTextParam2.Visible = false;
+            // 
+            // tsbOrto
+            // 
+            this.tsbOrto.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbOrto.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOrto.Image = global::PetCAD.Properties.Resources.ortho;
+            this.tsbOrto.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOrto.Name = "tsbOrto";
+            this.tsbOrto.Size = new System.Drawing.Size(23, 22);
+            this.tsbOrto.Text = " Ортогональное ограничение перемещений курсора";
+            this.tsbOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
+            // 
+            // tsbDynamicalEnter
+            // 
+            this.tsbDynamicalEnter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbDynamicalEnter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDynamicalEnter.Image = global::PetCAD.Properties.Resources.dyninput;
+            this.tsbDynamicalEnter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDynamicalEnter.Name = "tsbDynamicalEnter";
+            this.tsbDynamicalEnter.Size = new System.Drawing.Size(23, 22);
+            this.tsbDynamicalEnter.Text = "Динамический ввод";
+            this.tsbDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            // 
+            // tsbCreateDocument
+            // 
+            this.tsbCreateDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbCreateDocument.Image")));
+            this.tsbCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCreateDocument.Name = "tsbCreateDocument";
+            this.tsbCreateDocument.Size = new System.Drawing.Size(23, 22);
+            this.tsbCreateDocument.Text = "&Создать";
+            this.tsbCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
+            // 
+            // tsbOpenDocument
+            // 
+            this.tsbOpenDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpenDocument.Image")));
+            this.tsbOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOpenDocument.Name = "tsbOpenDocument";
+            this.tsbOpenDocument.Size = new System.Drawing.Size(23, 22);
+            this.tsbOpenDocument.Text = "&Открыть";
+            this.tsbOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
+            // 
+            // tsbSaveDocument
+            // 
+            this.tsbSaveDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSaveDocument.Enabled = false;
+            this.tsbSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveDocument.Image")));
+            this.tsbSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveDocument.Name = "tsbSaveDocument";
+            this.tsbSaveDocument.Size = new System.Drawing.Size(23, 22);
+            this.tsbSaveDocument.Text = "&Сохранить";
+            this.tsbSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
+            // 
+            // tsbPrintDocument
+            // 
+            this.tsbPrintDocument.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPrintDocument.Enabled = false;
+            this.tsbPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsbPrintDocument.Image")));
+            this.tsbPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPrintDocument.Name = "tsbPrintDocument";
+            this.tsbPrintDocument.Size = new System.Drawing.Size(23, 22);
+            this.tsbPrintDocument.Text = "&Печать";
+            // 
+            // tsbUndo
+            // 
+            this.tsbUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbUndo.Enabled = false;
+            this.tsbUndo.Image = global::PetCAD.Properties.Resources.undo;
+            this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbUndo.Name = "tsbUndo";
+            this.tsbUndo.Size = new System.Drawing.Size(23, 22);
+            this.tsbUndo.Text = "Отменить";
+            this.tsbUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
+            // 
+            // tsbRedo
+            // 
+            this.tsbRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRedo.Enabled = false;
+            this.tsbRedo.Image = global::PetCAD.Properties.Resources.redo;
+            this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRedo.Name = "tsbRedo";
+            this.tsbRedo.Size = new System.Drawing.Size(23, 22);
+            this.tsbRedo.Text = "Вернуть";
+            this.tsbRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
+            // 
+            // tsbMove
+            // 
+            this.tsbMove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbMove.Enabled = false;
+            this.tsbMove.Image = global::PetCAD.Properties.Resources.move;
+            this.tsbMove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMove.Name = "tsbMove";
+            this.tsbMove.Size = new System.Drawing.Size(23, 22);
+            this.tsbMove.Text = "Перенести";
+            this.tsbMove.Click += new System.EventHandler(this.tsmiMove_Click);
+            // 
+            // tsbRotate
+            // 
+            this.tsbRotate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRotate.Enabled = false;
+            this.tsbRotate.Image = global::PetCAD.Properties.Resources.rotate;
+            this.tsbRotate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRotate.Name = "tsbRotate";
+            this.tsbRotate.Size = new System.Drawing.Size(23, 22);
+            this.tsbRotate.Text = "Повернуть";
+            this.tsbRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
+            // 
+            // tsbMoveCopy
+            // 
+            this.tsbMoveCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbMoveCopy.Enabled = false;
+            this.tsbMoveCopy.Image = global::PetCAD.Properties.Resources.movecopy;
+            this.tsbMoveCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMoveCopy.Name = "tsbMoveCopy";
+            this.tsbMoveCopy.Size = new System.Drawing.Size(23, 22);
+            this.tsbMoveCopy.Text = "Копировать";
+            this.tsbMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
+            // 
+            // tsbScale
+            // 
+            this.tsbScale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbScale.Enabled = false;
+            this.tsbScale.Image = global::PetCAD.Properties.Resources.scale;
+            this.tsbScale.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbScale.Name = "tsbScale";
+            this.tsbScale.Size = new System.Drawing.Size(23, 22);
+            this.tsbScale.Text = "Масштаб";
+            this.tsbScale.Click += new System.EventHandler(this.tsmiScale_Click);
+            // 
+            // tsbCut
+            // 
+            this.tsbCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCut.Enabled = false;
+            this.tsbCut.Image = ((System.Drawing.Image)(resources.GetObject("tsbCut.Image")));
+            this.tsbCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCut.Name = "tsbCut";
+            this.tsbCut.Size = new System.Drawing.Size(23, 22);
+            this.tsbCut.Text = "В&ырезать";
+            // 
+            // tsbCopy
+            // 
+            this.tsbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCopy.Enabled = false;
+            this.tsbCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopy.Image")));
+            this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCopy.Name = "tsbCopy";
+            this.tsbCopy.Size = new System.Drawing.Size(23, 22);
+            this.tsbCopy.Text = "&Копировать";
+            // 
+            // tsbPaste
+            // 
+            this.tsbPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPaste.Enabled = false;
+            this.tsbPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsbPaste.Image")));
+            this.tsbPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPaste.Name = "tsbPaste";
+            this.tsbPaste.Size = new System.Drawing.Size(23, 22);
+            this.tsbPaste.Text = "Вст&авка";
+            // 
+            // tsbHelp
+            // 
+            this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbHelp.Enabled = false;
+            this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
+            this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHelp.Name = "tsbHelp";
+            this.tsbHelp.Size = new System.Drawing.Size(23, 22);
+            this.tsbHelp.Text = "Спр&авка";
+            // 
+            // tsbArrow
+            // 
+            this.tsbArrow.Checked = true;
+            this.tsbArrow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbArrow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbArrow.Image = global::PetCAD.Properties.Resources.arrow;
+            this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbArrow.Name = "tsbArrow";
+            this.tsbArrow.Size = new System.Drawing.Size(23, 22);
+            this.tsbArrow.Text = "Режим выбора";
+            this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tsbLine
+            // 
+            this.tsbLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbLine.Image = global::PetCAD.Properties.Resources.line;
+            this.tsbLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbLine.Name = "tsbLine";
+            this.tsbLine.Size = new System.Drawing.Size(23, 22);
+            this.tsbLine.Text = "Построение отрезков";
+            this.tsbLine.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tsbCreateBlock
+            // 
+            this.tsbCreateBlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCreateBlock.Image = global::PetCAD.Properties.Resources.blockcreate;
+            this.tsbCreateBlock.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCreateBlock.Name = "tsbCreateBlock";
+            this.tsbCreateBlock.Size = new System.Drawing.Size(23, 22);
+            this.tsbCreateBlock.Text = "Создать определение блока";
+            this.tsbCreateBlock.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tsbExplode
+            // 
+            this.tsbExplode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbExplode.Enabled = false;
+            this.tsbExplode.Image = global::PetCAD.Properties.Resources.explode;
+            this.tsbExplode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbExplode.Name = "tsbExplode";
+            this.tsbExplode.Size = new System.Drawing.Size(23, 22);
+            this.tsbExplode.Text = "Расчленить";
+            this.tsbExplode.Click += new System.EventHandler(this.tsbExplode_Click);
+            // 
+            // tsmiCreateDocument
+            // 
+            this.tsmiCreateDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCreateDocument.Image")));
+            this.tsmiCreateDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCreateDocument.Name = "tsmiCreateDocument";
+            this.tsmiCreateDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiCreateDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiCreateDocument.Text = "&Создать";
+            this.tsmiCreateDocument.Click += new System.EventHandler(this.tsmiCreateDocument_Click);
+            // 
+            // tsmiOpenDocument
+            // 
+            this.tsmiOpenDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiOpenDocument.Image")));
+            this.tsmiOpenDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiOpenDocument.Name = "tsmiOpenDocument";
+            this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.tsmiOpenDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiOpenDocument.Text = "&Открыть";
+            this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
+            // 
+            // tsmiSaveDocument
+            // 
+            this.tsmiSaveDocument.Enabled = false;
+            this.tsmiSaveDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSaveDocument.Image")));
+            this.tsmiSaveDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiSaveDocument.Name = "tsmiSaveDocument";
+            this.tsmiSaveDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.tsmiSaveDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiSaveDocument.Text = "&Сохранить";
+            this.tsmiSaveDocument.Click += new System.EventHandler(this.tsmiSaveDocument_Click);
+            // 
+            // tsmiPrintDocument
+            // 
+            this.tsmiPrintDocument.Enabled = false;
+            this.tsmiPrintDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPrintDocument.Image")));
+            this.tsmiPrintDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPrintDocument.Name = "tsmiPrintDocument";
+            this.tsmiPrintDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.tsmiPrintDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiPrintDocument.Text = "&Печать";
+            // 
+            // tsmiPreviewDocument
+            // 
+            this.tsmiPreviewDocument.Enabled = false;
+            this.tsmiPreviewDocument.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPreviewDocument.Image")));
+            this.tsmiPreviewDocument.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPreviewDocument.Name = "tsmiPreviewDocument";
+            this.tsmiPreviewDocument.Size = new System.Drawing.Size(233, 22);
+            this.tsmiPreviewDocument.Text = "Предварительный про&смотр";
+            // 
+            // tsmiUndo
+            // 
+            this.tsmiUndo.Enabled = false;
+            this.tsmiUndo.Image = global::PetCAD.Properties.Resources.undo;
+            this.tsmiUndo.Name = "tsmiUndo";
+            this.tsmiUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.tsmiUndo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiUndo.Text = "&Отмена действия";
+            this.tsmiUndo.Click += new System.EventHandler(this.tsmiUndo_Click);
+            // 
+            // tsmiRedo
+            // 
+            this.tsmiRedo.Enabled = false;
+            this.tsmiRedo.Image = global::PetCAD.Properties.Resources.redo;
+            this.tsmiRedo.Name = "tsmiRedo";
+            this.tsmiRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.tsmiRedo.Size = new System.Drawing.Size(217, 22);
+            this.tsmiRedo.Text = "&Отмена действия";
+            this.tsmiRedo.Click += new System.EventHandler(this.tsmiRedo_Click);
+            // 
+            // tsmiCut
+            // 
+            this.tsmiCut.Enabled = false;
+            this.tsmiCut.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCut.Image")));
+            this.tsmiCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCut.Name = "tsmiCut";
+            this.tsmiCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.tsmiCut.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCut.Text = "Вырезат&ь";
+            // 
+            // tsmiCopy
+            // 
+            this.tsmiCopy.Enabled = false;
+            this.tsmiCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCopy.Image")));
+            this.tsmiCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiCopy.Name = "tsmiCopy";
+            this.tsmiCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.tsmiCopy.Size = new System.Drawing.Size(217, 22);
+            this.tsmiCopy.Text = "&Копировать";
+            // 
+            // tsmiPaste
+            // 
+            this.tsmiPaste.Enabled = false;
+            this.tsmiPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsmiPaste.Image")));
+            this.tsmiPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsmiPaste.Name = "tsmiPaste";
+            this.tsmiPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.tsmiPaste.Size = new System.Drawing.Size(217, 22);
+            this.tsmiPaste.Text = "Вст&авка";
+            // 
+            // tsmiMove
+            // 
+            this.tsmiMove.Enabled = false;
+            this.tsmiMove.Image = global::PetCAD.Properties.Resources.move;
+            this.tsmiMove.Name = "tsmiMove";
+            this.tsmiMove.Size = new System.Drawing.Size(301, 22);
+            this.tsmiMove.Text = "Переместить";
+            this.tsmiMove.Click += new System.EventHandler(this.tsmiMove_Click);
+            // 
+            // tsmiRotate
+            // 
+            this.tsmiRotate.Enabled = false;
+            this.tsmiRotate.Image = global::PetCAD.Properties.Resources.rotate;
+            this.tsmiRotate.Name = "tsmiRotate";
+            this.tsmiRotate.Size = new System.Drawing.Size(301, 22);
+            this.tsmiRotate.Text = "Повернуть";
+            this.tsmiRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
+            // 
+            // tsmiMoveCopy
+            // 
+            this.tsmiMoveCopy.Enabled = false;
+            this.tsmiMoveCopy.Image = global::PetCAD.Properties.Resources.movecopy;
+            this.tsmiMoveCopy.Name = "tsmiMoveCopy";
+            this.tsmiMoveCopy.Size = new System.Drawing.Size(301, 22);
+            this.tsmiMoveCopy.Text = "Копировать";
+            this.tsmiMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
+            // 
+            // tsmiScale
+            // 
+            this.tsmiScale.Enabled = false;
+            this.tsmiScale.Image = global::PetCAD.Properties.Resources.scale;
+            this.tsmiScale.Name = "tsmiScale";
+            this.tsmiScale.Size = new System.Drawing.Size(301, 22);
+            this.tsmiScale.Text = "Масштаб";
+            this.tsmiScale.Click += new System.EventHandler(this.tsmiScale_Click);
+            // 
+            // tsmiObjectBinding
+            // 
+            this.tsmiObjectBinding.Image = global::PetCAD.Properties.Resources.binding;
+            this.tsmiObjectBinding.Name = "tsmiObjectBinding";
+            this.tsmiObjectBinding.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.tsmiObjectBinding.Size = new System.Drawing.Size(301, 22);
+            this.tsmiObjectBinding.Text = "Привязка курсора к опорным точкам";
+            this.tsmiObjectBinding.Click += new System.EventHandler(this.tsmiObjectBinding_Click);
+            // 
+            // tsmiOrto
+            // 
+            this.tsmiOrto.Image = global::PetCAD.Properties.Resources.ortho;
+            this.tsmiOrto.Name = "tsmiOrto";
+            this.tsmiOrto.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.tsmiOrto.Size = new System.Drawing.Size(301, 22);
+            this.tsmiOrto.Text = "Ортогональность";
+            this.tsmiOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
+            // 
+            // tsmiDynamicalEnter
+            // 
+            this.tsmiDynamicalEnter.Image = global::PetCAD.Properties.Resources.dyninput;
+            this.tsmiDynamicalEnter.Name = "tsmiDynamicalEnter";
+            this.tsmiDynamicalEnter.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.tsmiDynamicalEnter.Size = new System.Drawing.Size(301, 22);
+            this.tsmiDynamicalEnter.Text = "Динамический ввод";
+            this.tsmiDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            // 
             // tsbObjectBinding
             // 
             this.tsbObjectBinding.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -1014,57 +1000,84 @@
             this.tsmiBindParameters.Size = new System.Drawing.Size(263, 22);
             this.tsmiBindParameters.Text = "Параметры объектной привязки...";
             // 
-            // tsbOrto
+            // tsbRect
             // 
-            this.tsbOrto.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbOrto.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOrto.Image = global::PetCAD.Properties.Resources.ortho;
-            this.tsbOrto.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOrto.Name = "tsbOrto";
-            this.tsbOrto.Size = new System.Drawing.Size(23, 22);
-            this.tsbOrto.Text = " Ортогональное ограничение перемещений курсора";
-            this.tsbOrto.Click += new System.EventHandler(this.tsmiOrto_Click);
+            this.tsbRect.Checked = false;
+            this.tsbRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRectangle,
+            this.tsmiPolygone});
+            this.tsbRect.Image = global::PetCAD.Properties.Resources.rect;
+            this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRect.Name = "tsbRect";
+            this.tsbRect.Size = new System.Drawing.Size(32, 22);
+            this.tsbRect.Text = "Построение прямоугольника";
+            this.tsbRect.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
             // 
-            // tslParamName1
+            // tsmiRectangle
             // 
-            this.tslParamName1.Name = "tslParamName1";
-            this.tslParamName1.Size = new System.Drawing.Size(17, 22);
-            this.tslParamName1.Text = "X:";
-            this.tslParamName1.Visible = false;
+            this.tsmiRectangle.Image = global::PetCAD.Properties.Resources.rect;
+            this.tsmiRectangle.Name = "tsmiRectangle";
+            this.tsmiRectangle.Size = new System.Drawing.Size(163, 22);
+            this.tsmiRectangle.Text = "Прямоугольник";
             // 
-            // tstbTextParam1
+            // tsmiPolygone
             // 
-            this.tstbTextParam1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tstbTextParam1.Name = "tstbTextParam1";
-            this.tstbTextParam1.Size = new System.Drawing.Size(100, 25);
-            this.tstbTextParam1.Text = "0";
-            this.tstbTextParam1.Visible = false;
+            this.tsmiPolygone.Image = global::PetCAD.Properties.Resources.poligone;
+            this.tsmiPolygone.Name = "tsmiPolygone";
+            this.tsmiPolygone.Size = new System.Drawing.Size(163, 22);
+            this.tsmiPolygone.Text = "Полигон";
             // 
-            // tslParamName2
+            // tsbArc
             // 
-            this.tslParamName2.Name = "tslParamName2";
-            this.tslParamName2.Size = new System.Drawing.Size(17, 22);
-            this.tslParamName2.Text = "Y:";
-            this.tslParamName2.Visible = false;
+            this.tsbArc.Checked = false;
+            this.tsbArc.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbArc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiBuildArcByThreePoints,
+            this.tsmiBuildArcByBeginCenterEnd,
+            this.tsmiBuildArcByCenterBeginEnd});
+            this.tsbArc.Image = global::PetCAD.Properties.Resources.arc;
+            this.tsbArc.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbArc.Name = "tsbArc";
+            this.tsbArc.Size = new System.Drawing.Size(32, 22);
+            this.tsbArc.Text = "Построение дуги";
+            this.tsbArc.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
             // 
-            // tstbTextParam2
+            // tsmiBuildArcByThreePoints
             // 
-            this.tstbTextParam2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tstbTextParam2.Name = "tstbTextParam2";
-            this.tstbTextParam2.Size = new System.Drawing.Size(100, 25);
-            this.tstbTextParam2.Text = "0";
-            this.tstbTextParam2.Visible = false;
+            this.tsmiBuildArcByThreePoints.Image = global::PetCAD.Properties.Resources.arc;
+            this.tsmiBuildArcByThreePoints.Name = "tsmiBuildArcByThreePoints";
+            this.tsmiBuildArcByThreePoints.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByThreePoints.Text = "Три точки";
+            this.tsmiBuildArcByThreePoints.Click += new System.EventHandler(this.tsmiBuildArcByThreePoints_Click);
             // 
-            // tsbDynamicalEnter
+            // tsmiBuildArcByBeginCenterEnd
             // 
-            this.tsbDynamicalEnter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbDynamicalEnter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbDynamicalEnter.Image = global::PetCAD.Properties.Resources.dyninput;
-            this.tsbDynamicalEnter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDynamicalEnter.Name = "tsbDynamicalEnter";
-            this.tsbDynamicalEnter.Size = new System.Drawing.Size(23, 22);
-            this.tsbDynamicalEnter.Text = "Динамический ввод";
-            this.tsbDynamicalEnter.Click += new System.EventHandler(this.tsmiDynamicalEnter_Click);
+            this.tsmiBuildArcByBeginCenterEnd.Image = global::PetCAD.Properties.Resources.arcSCE;
+            this.tsmiBuildArcByBeginCenterEnd.Name = "tsmiBuildArcByBeginCenterEnd";
+            this.tsmiBuildArcByBeginCenterEnd.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByBeginCenterEnd.Text = "Начало, центр, конец";
+            this.tsmiBuildArcByBeginCenterEnd.Click += new System.EventHandler(this.tsmiBuildArcByBeginCenterEnd_Click);
+            // 
+            // tsmiBuildArcByCenterBeginEnd
+            // 
+            this.tsmiBuildArcByCenterBeginEnd.Image = global::PetCAD.Properties.Resources.arcCSE;
+            this.tsmiBuildArcByCenterBeginEnd.Name = "tsmiBuildArcByCenterBeginEnd";
+            this.tsmiBuildArcByCenterBeginEnd.Size = new System.Drawing.Size(193, 22);
+            this.tsmiBuildArcByCenterBeginEnd.Text = "Центр, начало, конец";
+            this.tsmiBuildArcByCenterBeginEnd.Click += new System.EventHandler(this.tsmiBuildArcByCenterBeginEnd_Click);
+            // 
+            // tsbInsertBlock
+            // 
+            this.tsbInsertBlock.Checked = false;
+            this.tsbInsertBlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbInsertBlock.Image = global::PetCAD.Properties.Resources.blockinsert;
+            this.tsbInsertBlock.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbInsertBlock.Name = "tsbInsertBlock";
+            this.tsbInsertBlock.Size = new System.Drawing.Size(32, 22);
+            this.tsbInsertBlock.Text = "Вставить блок";
+            this.tsbInsertBlock.ButtonClick += new System.EventHandler(this.tsbInsertBlock_ButtonClick);
+            this.tsbInsertBlock.DropDownOpening += new System.EventHandler(this.tsbInsertBlock_DropDownOpening);
             // 
             // MainForm
             // 
@@ -1207,6 +1220,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiScale;
         private System.Windows.Forms.ToolStripButton tsbRotate;
         private System.Windows.Forms.ToolStripMenuItem tsmiRotate;
+        private System.Windows.Forms.ToolStripButton tsbExplode;
     }
 }
 

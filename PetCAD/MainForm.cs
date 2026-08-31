@@ -402,6 +402,8 @@ namespace PetCAD
                 drawControl.EditorMode == EditorMode.Selection && drawControl.SelectionController.Selection.Count > 0;
             tsmiSaveDocumentAs.Enabled = !string.IsNullOrEmpty(workedFileName);
             tsbInsertBlock.Enabled = BlockGeometry.DefinedBlocks.Count > 0;
+            tsbExplode.Enabled = drawControl.SelectionController.Selection.Count > 0 &&
+                drawControl.SelectionController.Selection.All(x => x.Geometry is IExplodeGeometry);
         }
 
         /// <summary>
@@ -799,6 +801,19 @@ namespace PetCAD
         {
             SelectEditorMode(sender);
             drawControl.RotateSelected();
+        }
+
+        private void tsbExplode_Click(object sender, EventArgs e)
+        {
+            if (drawControl.EditorMode == EditorMode.Selection &&
+                drawControl.SelectionController.Selection.All(x => x.Geometry is IExplodeGeometry))
+            {
+                foreach (var figure in drawControl.SelectionController.Selection)
+                {
+                    if (figure.Geometry is IExplodeGeometry explodeGeometry)
+                        explodeGeometry.Explode();
+                }
+            }
         }
     }
 }
