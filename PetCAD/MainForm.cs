@@ -808,11 +808,7 @@ namespace PetCAD
             if (drawControl.EditorMode == EditorMode.Selection &&
                 drawControl.SelectionController.Selection.All(x => x.Geometry is IExplodeGeometry))
             {
-                foreach (var figure in drawControl.SelectionController.Selection)
-                {
-                    if (figure.Geometry is IExplodeGeometry explodeGeometry)
-                        explodeGeometry.Explode();
-                }
+                drawControl.ExplodeSelected();
             }
         }
     }

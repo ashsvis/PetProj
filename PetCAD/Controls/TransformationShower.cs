@@ -37,7 +37,7 @@ namespace PetCAD.Controls
             // копируем свойства объекта в GUI
             updating++;
 
-            var scale = figTrans.GetProperty(f => f.Owner.Transformation.GetSize());
+            var scale = figTrans.GetProperty(f => f.Owner.Transformation.GetScale());
             var angle = figTrans.GetProperty(f => f.Owner.Transformation.GetAngle());
 
             tbScaleX.Text = $"{scale.Width:0.####}";

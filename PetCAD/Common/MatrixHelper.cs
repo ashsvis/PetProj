@@ -21,7 +21,7 @@ namespace PetCAD.Common
             return (float)angleBetween;
         }
 
-        public static SizeF GetSize(this Matrix matrix)
+        public static SizeF GetScale(this Matrix matrix)
         {
             var x = new Vector(1, 0);
             var y = new Vector(0, 1);
@@ -40,6 +40,13 @@ namespace PetCAD.Common
             var skewY = Vector.Multiply(y, winMatrix);
             var angleBetween = Vector.AngleBetween(skewX, skewY);
             return (float)angleBetween;
+        }
+
+        public static PointF GetOffset(this Matrix matrix)
+        {
+            var winMatrix = CreateWindowsMatrix(matrix);
+
+            return new PointF((float)winMatrix.OffsetX, (float)winMatrix.OffsetY);
         }
 
     }

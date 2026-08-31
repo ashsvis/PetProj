@@ -9,7 +9,6 @@ namespace PetCAD.Figures
     {
         public BlockReference()
         {
-            //transformation = new Matrix();
             Style = new Style();
             Renderer = new BlockRenderer();
         }

@@ -1252,5 +1252,28 @@ namespace PetCAD
         {
             editorMode = EditorMode.RotateSelected;
         }
+
+        public void ExplodeSelected()
+        {
+            var list = new List<(Figure, Figure[])>();
+            foreach (var figure in SelectionController.Selection.ToList())
+            {
+                if (figure.Geometry is IExplodeGeometry explodeGeometry)
+                {
+                    var addedfigs = explodeGeometry.Explode();
+                    list.Add((figure, addedfigs));
+                }
+            }
+
+            foreach (var item in list)
+            {
+                undoRedoManager.Execute(new CreateFiguresCommand(figures, item.Item2.ToList()));
+                undoRedoManager.Execute(new RemoveFigureCommand(figures, item.Item1));
+            }
+
+            selectionController.Clear();
+            underCursor.Clear();
+            Changed = true;
+        }
     }
 }

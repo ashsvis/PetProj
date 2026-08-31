@@ -180,7 +180,7 @@ namespace PetCAD.Selections
         }
 
         /// <summary>
-        /// Перемещение выделенных(ой) фигур(ы)
+        /// масштабирование выделенных(ой) фигур(ы)
         /// </summary>
         /// <param name="point">Базовая точка</param>
         /// <param name="kf">Масштабный коэффициент</param>
@@ -192,26 +192,14 @@ namespace PetCAD.Selections
             // для всех выделенных фигур
             foreach (var figure in selected)
             {
-                // если перемещение поддерживается
+                // если масштабирование поддерживается
                 if (figure.Geometry is IScaleGeometry _)
                 {
-                    //if (figure.Geometry is BlockGeometry blkGeometry)
-                    //{
-                    //    var arr = new PointF[] { point };
-                    //    var m = new Matrix();
-                    //    var mx = blkGeometry.InsertPoint.X;
-                    //    var my = blkGeometry.InsertPoint.Y;
-                    //    m.Translate(-mx, -my, MatrixOrder.Append);
-                    //    m.Scale(1f / blkGeometry.ScaleFactor, 1f / blkGeometry.ScaleFactor, MatrixOrder.Append);
-                    //    m.Translate(mx, my, MatrixOrder.Append);
-                    //    m.TransformPoints(arr);
-                    //    point = arr[0];
-                    //}
                     // добавляем в список
                     scales.Add((figure, point, kf));
                 }
             }
-            // если список не пуст, выполняем метод перемещения
+            // если список не пуст, выполняем метод масштабирования
             if (scales.Count > 0)
                 scaleAction(scales);
         }

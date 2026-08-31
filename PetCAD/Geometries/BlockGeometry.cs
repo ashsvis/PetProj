@@ -120,7 +120,7 @@ namespace PetCAD.Geometries
         public void Move(float offsetX, float offsetY)
         {
             var m = Owner.Transformation;
-            var scaled = m.GetSize();
+            var scaled = m.GetScale();
             var rotated = m.GetAngle();
             // компенсация масштаба
             m.Scale(1f / scaled.Width, 1f / scaled.Height);
@@ -184,13 +184,13 @@ namespace PetCAD.Geometries
         public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform)
         {
             var markers = new List<Marker>();
-            var m = Owner.Transformation;
-            foreach (var f in this.GetZeroBasedFigures())
+            var matrix = Owner.Transformation;
+            foreach (var figure in this.GetZeroBasedFigures())
             {
-                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint, transform))
+                foreach (var marker in figure.Geometry.GetBindingMarkers(allowed, basePoint, transform))
                 {
                     var pts = new PointF[] { marker.Position };
-                    m.TransformPoints(pts);
+                    matrix.TransformPoints(pts);
                     marker.Position = pts[0];
                     markers.Add(marker);
                 }
@@ -198,9 +198,41 @@ namespace PetCAD.Geometries
             return markers.ToArray();
         }
 
-        public void Explode()
+        public Figure[] Explode()
         {
-            throw new System.NotImplementedException();
+            var matrix = Owner.Transformation;
+            //var origin = matrix.GetOffset();
+            //var angle = matrix.GetAngle();
+            //var scale = matrix.GetScale();
+            var figures = new List<Figure>();
+            Figure fig;
+            PointF[] pts;
+            foreach (var figure in this.GetZeroBasedFigures())
+            {
+                if (figure.Geometry is LineGeometry line)
+                {
+                    pts = new PointF[] { line.StartPoint, line.EndPoint };
+                    matrix.TransformPoints(pts);
+                    fig = new Figure();
+                    FigureBuilder.BuildLineGeometry(fig, pts[0]);
+                    (fig.Geometry as LineGeometry).AddPoint(pts[1]);
+                    figures.Add(fig);
+                }
+                else if (figure.Geometry is ArcGeometry arc)
+                {
+                    pts = new PointF[] { arc.StartPoint, arc.MiddlePoint, arc.EndPoint };
+                    matrix.TransformPoints(pts);
+                    fig = new Figure();
+                    if (ArcGeometry.ConvertThreePointsToCenterRadiusAndAngles(pts[0], pts[1], pts[2],
+                        out PointF center, out float radius, out float startAngle, out float sweepAngle))
+                    {
+                        FigureBuilder.BuildArcGeometry(fig, center, radius, startAngle, sweepAngle);
+                        figures.Add(fig);
+                    }
+                }
+
+            }
+            return figures.ToArray();
         }
     }
 }

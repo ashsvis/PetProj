@@ -1,7 +1,9 @@
-﻿namespace PetCAD.Geometries
+﻿using PetCAD.Figures;
+
+namespace PetCAD.Geometries
 {
     public interface IExplodeGeometry
     {
-        void Explode();
+        Figure[] Explode();
     }
 }
