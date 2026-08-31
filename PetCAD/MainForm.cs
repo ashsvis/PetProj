@@ -355,6 +355,7 @@ namespace PetCAD
             else if (sender == tsbInsertBlock)
             {
                 SwitchOffButtons();
+                drawControl.DefineBlockName($"{tsbInsertBlock.Tag}");
                 drawControl.SetMode(EditorMode.BuildInsertBlock);
                 tsbInsertBlock.Checked = true;
             }

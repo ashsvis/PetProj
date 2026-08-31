@@ -32,7 +32,7 @@ namespace PetCAD.Controllers
                             drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
                 }
                 using (var pen = new Pen(Color.LightPink, (float)(2.6f / zoom)))
-                    drawer.DrawRibbonBlock(e.Graphics, pen, "Block", drawer.PrepareMousePosition(drawer.CurrentMousePosition));
+                    drawer.DrawRibbonBlock(e.Graphics, pen, drawer.EnteredBlockName, drawer.PrepareMousePosition(drawer.CurrentMousePosition));
             }
         }
 
@@ -45,7 +45,7 @@ namespace PetCAD.Controllers
                 // поиск ближайшей точки привязки, если включен режим объектной привязки
                 pt = drawer.FindBindingPoint(pt);
                 pt = drawer.FindOrthoPoint(pt);
-                drawer.InsertBlock(pt, "Block");
+                drawer.InsertBlock(pt, drawer.EnteredBlockName);
                 drawer.SelectionController.Selection.Clear();
                 drawer.ClearMouseCount();
                 drawer.Changed = true;

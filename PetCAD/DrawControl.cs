@@ -523,6 +523,8 @@ namespace PetCAD
             }
             else if (editorMode != EditorMode.Selection)
                 SetMode(EditorMode.Selection);
+            firstMouseDown = PrepareMousePosition(mousePosition);
+            zoomPad.Invalidate();
         }
 
         public void SendParamsOnChange(params object[] args)
