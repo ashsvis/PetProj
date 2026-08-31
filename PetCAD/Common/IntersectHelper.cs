@@ -79,16 +79,17 @@ namespace PetCAD.Common
                 {
                     if (path.PointCount == 0)
                         return false;
-                    var rect = path.GetBounds(); //figure.Geometry.Bounds;
+                    path.Flatten();
+                    var rect = figure.Geometry.Bounds;
                     if (rect.Width == 0 && rect.Height == 0)
                         return captured.Contains(rect.Location);
                     rect.Intersect(captured);
-                    if (rect.Equals(path.GetBounds()/*figure.Geometry.Bounds*/))
+                    if (rect.Equals(figure.Geometry.Bounds))
                         return true; // содержится целиком
                     if (path.PathPoints.Any(p => captured.Contains(p)))
                         return true; // любая точка пути фигуры содержится в рамке
                                      // проверка частичного попадания, контур фигуры должен пересекаться с контуром рамки выбора
-                    rect = path.GetBounds();
+                    rect = figure.Geometry.Bounds;
                     // если фигура не имеет ширины или длины, то задаём отсутсвующее измерение
                     if (rect.Width > 0 && rect.Height == 0) rect.Height = 1;
                     else if (rect.Width == 0 && rect.Height > 0) rect.Width = 1;
