@@ -179,7 +179,7 @@ namespace PetCAD.Geometries
             };
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle)
         {
             var markers = new List<Marker>();
             // поиск конечных точек

@@ -56,7 +56,7 @@ namespace PetCAD.Common
         public static bool Contains(this Figure figure, RectangleF captured)
         {
             if (captured.IsEmpty) return false;
-            var bounds = figure.GetRendererPath().GetBounds();
+            var bounds = figure.Geometry.Bounds;
             var rect = bounds;
             if (rect.Width == 0 && rect.Height == 0)
                 return captured.Contains(rect.Location);

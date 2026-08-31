@@ -33,6 +33,10 @@
             this.lbCenterX = new System.Windows.Forms.Label();
             this.lbStartY = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbSegmentSquare = new System.Windows.Forms.Label();
+            this.lbArcLength = new System.Windows.Forms.Label();
+            this.lbSweepAngle = new System.Windows.Forms.Label();
+            this.lbEndAngle = new System.Windows.Forms.Label();
             this.lbStartX = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbEndX = new System.Windows.Forms.Label();
@@ -47,15 +51,11 @@
             this.tbEndY = new System.Windows.Forms.TextBox();
             this.tbRadius = new System.Windows.Forms.TextBox();
             this.tbStartAngle = new System.Windows.Forms.TextBox();
-            this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lbEndAngle = new System.Windows.Forms.Label();
             this.tbEndAngle = new System.Windows.Forms.TextBox();
-            this.lbSweepAngle = new System.Windows.Forms.Label();
             this.tbSweepAngle = new System.Windows.Forms.TextBox();
-            this.lbArcLength = new System.Windows.Forms.Label();
             this.tbArcLength = new System.Windows.Forms.TextBox();
-            this.lbSegmentSquare = new System.Windows.Forms.Label();
             this.tbSegmentSquare = new System.Windows.Forms.TextBox();
+            this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.SuspendLayout();
@@ -150,13 +150,62 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 339);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
+            // lbSegmentSquare
+            // 
+            this.lbSegmentSquare.AutoSize = true;
+            this.lbSegmentSquare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSegmentSquare.Location = new System.Drawing.Point(1, 315);
+            this.lbSegmentSquare.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbSegmentSquare.Name = "lbSegmentSquare";
+            this.lbSegmentSquare.Size = new System.Drawing.Size(99, 23);
+            this.lbSegmentSquare.TabIndex = 14;
+            this.lbSegmentSquare.Text = "Площадь";
+            this.lbSegmentSquare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbArcLength
+            // 
+            this.lbArcLength.AutoSize = true;
+            this.lbArcLength.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbArcLength.Location = new System.Drawing.Point(1, 289);
+            this.lbArcLength.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbArcLength.Name = "lbArcLength";
+            this.lbArcLength.Size = new System.Drawing.Size(99, 23);
+            this.lbArcLength.TabIndex = 13;
+            this.lbArcLength.Text = "Длина дуги";
+            this.lbArcLength.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbSweepAngle
+            // 
+            this.lbSweepAngle.AutoSize = true;
+            this.lbSweepAngle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSweepAngle.Location = new System.Drawing.Point(1, 263);
+            this.lbSweepAngle.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbSweepAngle.Name = "lbSweepAngle";
+            this.lbSweepAngle.Size = new System.Drawing.Size(99, 23);
+            this.lbSweepAngle.TabIndex = 12;
+            this.lbSweepAngle.Text = "Полный угол";
+            this.lbSweepAngle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbEndAngle
+            // 
+            this.lbEndAngle.AutoSize = true;
+            this.lbEndAngle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbEndAngle.Location = new System.Drawing.Point(1, 237);
+            this.lbEndAngle.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbEndAngle.Name = "lbEndAngle";
+            this.lbEndAngle.Size = new System.Drawing.Size(99, 23);
+            this.lbEndAngle.TabIndex = 11;
+            this.lbEndAngle.Text = "Конечный угол";
+            this.lbEndAngle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // lbStartX
             // 
             this.lbStartX.AutoSize = true;
+            this.lbStartX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbStartX.Location = new System.Drawing.Point(1, 29);
             this.lbStartX.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbStartX.Name = "lbStartX";
-            this.lbStartX.Size = new System.Drawing.Size(59, 15);
+            this.lbStartX.Size = new System.Drawing.Size(99, 23);
             this.lbStartX.TabIndex = 2;
             this.lbStartX.Text = "Начало X";
             this.lbStartX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -297,22 +346,6 @@
             this.tbStartAngle.TabIndex = 10;
             this.tbStartAngle.Validated += new System.EventHandler(this.tbText_Validated);
             // 
-            // errorProv
-            // 
-            this.errorProv.ContainerControl = this;
-            // 
-            // lbEndAngle
-            // 
-            this.lbEndAngle.AutoSize = true;
-            this.lbEndAngle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbEndAngle.Location = new System.Drawing.Point(1, 237);
-            this.lbEndAngle.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lbEndAngle.Name = "lbEndAngle";
-            this.lbEndAngle.Size = new System.Drawing.Size(99, 23);
-            this.lbEndAngle.TabIndex = 11;
-            this.lbEndAngle.Text = "Конечный угол";
-            this.lbEndAngle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbEndAngle
             // 
             this.tbEndAngle.Enabled = false;
@@ -321,18 +354,6 @@
             this.tbEndAngle.Name = "tbEndAngle";
             this.tbEndAngle.Size = new System.Drawing.Size(95, 23);
             this.tbEndAngle.TabIndex = 10;
-            // 
-            // lbSweepAngle
-            // 
-            this.lbSweepAngle.AutoSize = true;
-            this.lbSweepAngle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbSweepAngle.Location = new System.Drawing.Point(1, 263);
-            this.lbSweepAngle.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lbSweepAngle.Name = "lbSweepAngle";
-            this.lbSweepAngle.Size = new System.Drawing.Size(99, 23);
-            this.lbSweepAngle.TabIndex = 12;
-            this.lbSweepAngle.Text = "Полный угол";
-            this.lbSweepAngle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbSweepAngle
             // 
@@ -343,18 +364,6 @@
             this.tbSweepAngle.TabIndex = 10;
             this.tbSweepAngle.Validated += new System.EventHandler(this.tbText_Validated);
             // 
-            // lbArcLength
-            // 
-            this.lbArcLength.AutoSize = true;
-            this.lbArcLength.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbArcLength.Location = new System.Drawing.Point(1, 289);
-            this.lbArcLength.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lbArcLength.Name = "lbArcLength";
-            this.lbArcLength.Size = new System.Drawing.Size(99, 23);
-            this.lbArcLength.TabIndex = 13;
-            this.lbArcLength.Text = "Длина дуги";
-            this.lbArcLength.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbArcLength
             // 
             this.tbArcLength.Enabled = false;
@@ -364,18 +373,6 @@
             this.tbArcLength.Size = new System.Drawing.Size(95, 23);
             this.tbArcLength.TabIndex = 10;
             // 
-            // lbSegmentSquare
-            // 
-            this.lbSegmentSquare.AutoSize = true;
-            this.lbSegmentSquare.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbSegmentSquare.Location = new System.Drawing.Point(1, 315);
-            this.lbSegmentSquare.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lbSegmentSquare.Name = "lbSegmentSquare";
-            this.lbSegmentSquare.Size = new System.Drawing.Size(99, 23);
-            this.lbSegmentSquare.TabIndex = 14;
-            this.lbSegmentSquare.Text = "Площадь";
-            this.lbSegmentSquare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbSegmentSquare
             // 
             this.tbSegmentSquare.Enabled = false;
@@ -384,6 +381,10 @@
             this.tbSegmentSquare.Name = "tbSegmentSquare";
             this.tbSegmentSquare.Size = new System.Drawing.Size(95, 23);
             this.tbSegmentSquare.TabIndex = 10;
+            // 
+            // errorProv
+            // 
+            this.errorProv.ContainerControl = this;
             // 
             // ArcGeometryEditor
             // 

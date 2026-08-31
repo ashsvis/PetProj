@@ -82,6 +82,12 @@
     <Compile Include="Controllers\BuildLine.cs" />
     <Compile Include="Controllers\BuildRectangle.cs" />
     <Compile Include="Controllers\IBuildFigure.cs" />
+    <Compile Include="Controls\TransformationShower.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TransformationShower.Designer.cs">
+      <DependentUpon>TransformationShower.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ArcGeometryEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     <Compile Include="ZoomControl.Designer.cs">
       <DependentUpon>ZoomControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Controls\TransformationShower.resx">
+      <DependentUpon>TransformationShower.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ArcGeometryEditor.resx">
       <DependentUpon>ArcGeometryEditor.cs</DependentUpon>
     </EmbeddedResource>

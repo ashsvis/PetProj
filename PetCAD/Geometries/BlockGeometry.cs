@@ -70,6 +70,7 @@ namespace PetCAD.Geometries
                     using (var path = figure.GetRendererPath())
                     {
                         path.Transform(m);
+                        path.Flatten();
                         if (rect.IsEmpty)
                             rect = path.GetBounds();
                         else
@@ -166,7 +167,6 @@ namespace PetCAD.Geometries
         {
             var pts = new PointF[] { PointF.Empty };
             var m = ((BlockReference)Owner).Transformation;
-            m.TransformPoints(pts);
             var markers = new List<Marker>
             {
                 new VertexMarker
@@ -178,18 +178,21 @@ namespace PetCAD.Geometries
                 }
             };
 
-            markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty));
+            // для тестирования
+            var baseAngle = m.GetAngle();
+            markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty, baseAngle));
 
             return markers.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle)
         {
             var markers = new List<Marker>();
             var m = Owner.Transformation;
             foreach (var f in this.GetZeroBasedFigures())
             {
-                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint))
+                var angle = f.Transformation.GetAngle();
+                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint, baseAngle + angle))
                 {
                     var pts = new PointF[] { marker.Position };
                     m.TransformPoints(pts);

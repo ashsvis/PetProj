@@ -170,6 +170,7 @@ namespace PetCAD
                 typeof(BorderStyleEditor),
                 typeof(LineGeometryEditor),
                 typeof(ArcGeometryEditor),
+                typeof(TransformationShower),
             };
             foreach (var typeName in editors)
             {

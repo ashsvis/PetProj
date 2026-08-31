@@ -113,18 +113,19 @@ namespace PetCAD
             // рисуем начало координат и направление осей
             this.DrawZeroOrigin(graphics, Color.LightGray);
             var zoom = (float)zoomPad.ZoomScale;
+
+            // отрисовка охватывающих прямоугольников для созданных фигур
+            //using (var pen = new Pen(Color.Maroon, 0f))
+            //{
+            //    pen.DashPattern = new float[] { 15f, 5f };
+            //    foreach (var fig in figures)
+            //    {
+            //        var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
+            //        graphics.DrawRectangles(pen, new RectangleF[] { bounds });
+            //    }
+            //}
+
             // отрисовка созданных фигур
-
-            using (var pen = new Pen(Color.Maroon, 0f))
-            {
-                pen.DashPattern = new float[] { 15f, 5f };
-                foreach (var fig in figures)
-                {
-                    var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
-                    graphics.DrawRectangles(pen, new RectangleF[] { bounds });
-                }
-            }
-
             foreach (var fig in figures)
             {
                 var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
@@ -152,15 +153,19 @@ namespace PetCAD
             // отрисовка маркеров привязки на фигурах под курсором, при построении линий
             if (IsObjectBinding && (editorMode != EditorMode.Selection))
             {
-                var location = PrepareMousePosition(PointToClient(MousePosition));
-                var query = selectionController.BindingMarkers.Select(marker => (marker,
-                             $"{Math.Abs(marker.Position.X - location.X):00000}{Math.Abs(marker.Position.Y - location.Y):00000}")).OrderBy(x => x.Item2);
+                var loc = PrepareMousePosition(PointToClient(MousePosition));
+                var query = selectionController.BindingMarkers.Select(mrk => (mrk,
+                   $"{Math.Sqrt((mrk.Position.X - loc.X) * (mrk.Position.X - loc.X) + (mrk.Position.Y - loc.Y) * (mrk.Position.Y - loc.Y)):00000}")).OrderBy(x => x.Item2);
                 // рисуем ближайший маркер привязки к текущему курсору
-                using (var pen = new Pen(Color.Black, 1f / zoom))
+                using (var pen = new Pen(Color.White, 1f / zoom))
+                {
+                    foreach (var item in query.Skip(1))
+                        item.mrk.Render(graphics, Color.White, zoom);
+
                     foreach (var item in query.Take(1))
                     {
                         // рисование перекрестья в центре дуги
-                        if (item.marker.Owner is Figure fig && fig.Geometry is ArcGeometry arc)
+                        if (item.mrk.Owner is Figure fig && fig.Geometry is ArcGeometry arc)
                         {
                             graphics.DrawLine(pen,
                                 new PointF(arc.CenterPoint.X - 4f / zoom, arc.CenterPoint.Y),
@@ -169,8 +174,9 @@ namespace PetCAD
                                 new PointF(arc.CenterPoint.X, arc.CenterPoint.Y - 4f / zoom),
                                 new PointF(arc.CenterPoint.X, arc.CenterPoint.Y + 4f / zoom));
                         }
-                        item.marker.Render(graphics, Color.White, zoom);
+                        item.mrk.Render(graphics, Color.Yellow, zoom);
                     }
+                }
             }
             else
             { 

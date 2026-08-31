@@ -55,7 +55,6 @@ namespace PetCAD.Geometries
                 {
                     var rect = new RectangleF(CenterPoint.X - Radius, CenterPoint.Y - Radius, Radius * 2f, Radius * 2f);
                     path.AddArc(rect, StartAngle, SweepAngle);
-                    path.Flatten();
                 }
                 return path;
             }
@@ -65,8 +64,11 @@ namespace PetCAD.Geometries
         {
             get
             {
-                using (var path = Path)
+                using (var path = (GraphicsPath)Path.Clone())
+                {
+                    path.Flatten();
                     return path.GetBounds();
+                }
             }
         }
 
@@ -298,16 +300,16 @@ namespace PetCAD.Geometries
             return markers.ToArray();
         }
 
-        private PointF[] QuadrantPoints()
+        private PointF[] QuadrantPoints(float baseAngle)
         {
             var list = new List<PointF>();
             foreach (var angle in new float[] { -270f, -180f, -90, 0f, 90f, 180f, 270f })
-                list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos(angle * (Math.PI / 180.0))),
-                                    CenterPoint.Y + (float)(Radius * Math.Sin(angle * (Math.PI / 180.0)))));
+                list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos((angle - baseAngle) * (Math.PI / 180.0))),
+                                    CenterPoint.Y + (float)(Radius * Math.Sin((angle - baseAngle) * (Math.PI / 180.0)))));
             return list.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle)
         {
             var markers = new List<Marker>();
             // поиск центра дуги
@@ -353,7 +355,7 @@ namespace PetCAD.Geometries
                 // поиск доступных квадрантов
                 if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
                 {
-                    foreach (var quadrantPoint in QuadrantPoints())
+                    foreach (var quadrantPoint in QuadrantPoints(baseAngle))
                     {
                         if (path.IsOutlineVisible(quadrantPoint, Pens.Black))
                         {
