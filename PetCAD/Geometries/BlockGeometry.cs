@@ -4,6 +4,7 @@ using PetCAD.Makers;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -181,29 +182,18 @@ namespace PetCAD.Geometries
             return markers.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
         {
             var markers = new List<Marker>();
             var matrix = Owner.Transformation;
-            foreach (var figure in this.GetZeroBasedFigures())
-            {
-                foreach (var marker in figure.Geometry.GetBindingMarkers(allowed, basePoint, transform))
-                {
-                    var pts = new PointF[] { marker.Position };
-                    matrix.TransformPoints(pts);
-                    marker.Position = pts[0];
-                    markers.Add(marker);
-                }
-            }
+            foreach (var figure in Explode())
+                figure.Geometry.GetBindingMarkers(allowed, basePoint).ToList().ForEach(marker => markers.Add(marker));
             return markers.ToArray();
         }
 
         public Figure[] Explode()
         {
             var matrix = Owner.Transformation;
-            //var origin = matrix.GetOffset();
-            //var angle = matrix.GetAngle();
-            //var scale = matrix.GetScale();
             var figures = new List<Figure>();
             Figure fig;
             PointF[] pts;
@@ -230,7 +220,6 @@ namespace PetCAD.Geometries
                         figures.Add(fig);
                     }
                 }
-
             }
             return figures.ToArray();
         }

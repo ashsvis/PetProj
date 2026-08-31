@@ -300,16 +300,16 @@ namespace PetCAD.Geometries
             return markers.ToArray();
         }
 
-        private PointF[] QuadrantPoints(float baseAngle)
+        private PointF[] QuadrantPoints()
         {
             var list = new List<PointF>();
             foreach (var angle in new float[] { -270f, -180f, -90, 0f, 90f, 180f, 270f })
-                list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos((angle - baseAngle) * (Math.PI / 180.0))),
-                                    CenterPoint.Y + (float)(Radius * Math.Sin((angle - baseAngle) * (Math.PI / 180.0)))));
+                list.Add(new PointF(CenterPoint.X + (float)(Radius * Math.Cos(angle * (Math.PI / 180.0))),
+                                    CenterPoint.Y + (float)(Radius * Math.Sin(angle * (Math.PI / 180.0)))));
             return list.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint)
         {
             var markers = new List<Marker>();
             // поиск центра дуги
@@ -355,7 +355,7 @@ namespace PetCAD.Geometries
                 // поиск доступных квадрантов
                 if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
                 {
-                    foreach (var quadrantPoint in QuadrantPoints(transform.GetAngle()))
+                    foreach (var quadrantPoint in QuadrantPoints())
                     {
                         if (path.IsOutlineVisible(quadrantPoint, Pens.Black))
                         {
