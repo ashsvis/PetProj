@@ -212,8 +212,7 @@ namespace PetCAD.Controllers
             if (selection.Count() == 0) return;
             foreach (var fig in selection)
             {
-                var baseAngle = fig.Transformation.GetAngle();
-                BindingMarkers.AddRange(fig.Geometry.GetBindingMarkers(allowed, basePoint, baseAngle));
+                BindingMarkers.AddRange(fig.Geometry.GetBindingMarkers(allowed, basePoint, fig.Transformation));
             }
         }
     }

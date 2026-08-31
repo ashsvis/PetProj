@@ -177,22 +177,16 @@ namespace PetCAD.Geometries
                     Owner = Owner,
                 }
             };
-
-            // для тестирования
-            var baseAngle = m.GetAngle();
-            markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty, baseAngle));
-
             return markers.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform)
         {
             var markers = new List<Marker>();
             var m = Owner.Transformation;
             foreach (var f in this.GetZeroBasedFigures())
             {
-                var angle = f.Transformation.GetAngle();
-                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint, baseAngle + angle))
+                foreach (var marker in f.Geometry.GetBindingMarkers(allowed, basePoint, transform))
                 {
                     var pts = new PointF[] { marker.Position };
                     m.TransformPoints(pts);

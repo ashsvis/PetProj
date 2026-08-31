@@ -309,7 +309,7 @@ namespace PetCAD.Geometries
             return list.ToArray();
         }
 
-        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle)
+        public override Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform)
         {
             var markers = new List<Marker>();
             // поиск центра дуги
@@ -355,7 +355,7 @@ namespace PetCAD.Geometries
                 // поиск доступных квадрантов
                 if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
                 {
-                    foreach (var quadrantPoint in QuadrantPoints(baseAngle))
+                    foreach (var quadrantPoint in QuadrantPoints(transform.GetAngle()))
                     {
                         if (path.IsOutlineVisible(quadrantPoint, Pens.Black))
                         {

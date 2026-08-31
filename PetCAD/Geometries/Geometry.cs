@@ -32,7 +32,7 @@ namespace PetCAD.Geometries
         public abstract AllowedGeometryOperations AllowedOperations { get; }
 
         public abstract Marker[] GetGeometryMarkers();
-        public abstract Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, float baseAngle);
+        public abstract Marker[] GetBindingMarkers(AllowedObjectBindings allowed, PointF basePoint, Matrix transform);
 
     }
 }
