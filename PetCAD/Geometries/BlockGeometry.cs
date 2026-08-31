@@ -167,6 +167,7 @@ namespace PetCAD.Geometries
         {
             var pts = new PointF[] { PointF.Empty };
             var m = ((BlockReference)Owner).Transformation;
+            m.TransformPoints(pts);
             var markers = new List<Marker>
             {
                 new VertexMarker
