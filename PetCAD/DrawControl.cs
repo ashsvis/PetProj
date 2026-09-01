@@ -160,8 +160,8 @@ namespace PetCAD
                 // рисуем ближайший маркер привязки к текущему курсору
                 using (var pen = new Pen(Color.White, 1f / zoom))
                 {
-                    //foreach (var item in query.Skip(1))
-                    //    item.mrk.Render(graphics, Color.White, zoom);
+                    foreach (var item in query.Skip(1))
+                        item.mrk.Render(graphics, Color.White, zoom);
 
                     foreach (var item in query.Take(1))
                     {

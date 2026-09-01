@@ -38,6 +38,10 @@
             this.tbScaleY = new System.Windows.Forms.TextBox();
             this.tbAngle = new System.Windows.Forms.TextBox();
             this.errorProv = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lbPositionX = new System.Windows.Forms.Label();
+            this.lbPositionY = new System.Windows.Forms.Label();
+            this.tbOffsetX = new System.Windows.Forms.TextBox();
+            this.tbOffsetY = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).BeginInit();
             this.SuspendLayout();
@@ -46,24 +50,24 @@
             // 
             this.lbAngle.AutoSize = true;
             this.lbAngle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbAngle.Location = new System.Drawing.Point(1, 81);
+            this.lbAngle.Location = new System.Drawing.Point(1, 134);
             this.lbAngle.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbAngle.Name = "lbAngle";
-            this.lbAngle.Size = new System.Drawing.Size(99, 24);
+            this.lbAngle.Size = new System.Drawing.Size(99, 22);
             this.lbAngle.TabIndex = 4;
-            this.lbAngle.Text = "Угол поворота";
+            this.lbAngle.Text = "Поворот";
             this.lbAngle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbScaleY
             // 
             this.lbScaleY.AutoSize = true;
             this.lbScaleY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbScaleY.Location = new System.Drawing.Point(1, 55);
+            this.lbScaleY.Location = new System.Drawing.Point(1, 107);
             this.lbScaleY.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbScaleY.Name = "lbScaleY";
-            this.lbScaleY.Size = new System.Drawing.Size(99, 23);
+            this.lbScaleY.Size = new System.Drawing.Size(99, 24);
             this.lbScaleY.TabIndex = 2;
-            this.lbScaleY.Text = "Масштаб по Y";
+            this.lbScaleY.Text = "Масштаб Y";
             this.lbScaleY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel1
@@ -74,44 +78,40 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.lbScaleY, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lbAngle, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lbScaleX, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbScaleY, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.lbAngle, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.lbScaleX, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tbScaleX, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tbScaleY, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.tbAngle, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tbScaleX, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tbScaleY, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.tbAngle, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.lbPositionX, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbPositionY, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.tbOffsetX, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tbOffsetY, 1, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 7;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 106);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 159);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
             // lbScaleX
             // 
             this.lbScaleX.AutoSize = true;
-            this.lbScaleX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbScaleX.Location = new System.Drawing.Point(1, 29);
+            this.lbScaleX.Location = new System.Drawing.Point(1, 81);
             this.lbScaleX.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbScaleX.Name = "lbScaleX";
-            this.lbScaleX.Size = new System.Drawing.Size(99, 23);
+            this.lbScaleX.Size = new System.Drawing.Size(69, 15);
             this.lbScaleX.TabIndex = 2;
-            this.lbScaleX.Text = "Масштаб по X";
+            this.lbScaleX.Text = "Масштаб X";
             this.lbScaleX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
@@ -127,13 +127,13 @@
             this.label3.Padding = new System.Windows.Forms.Padding(1);
             this.label3.Size = new System.Drawing.Size(198, 25);
             this.label3.TabIndex = 8;
-            this.label3.Text = "Трансформация";
+            this.label3.Text = "Геометрия";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbScaleX
             // 
             this.tbScaleX.Enabled = false;
-            this.tbScaleX.Location = new System.Drawing.Point(102, 28);
+            this.tbScaleX.Location = new System.Drawing.Point(102, 80);
             this.tbScaleX.Margin = new System.Windows.Forms.Padding(1);
             this.tbScaleX.Name = "tbScaleX";
             this.tbScaleX.Size = new System.Drawing.Size(96, 23);
@@ -142,7 +142,7 @@
             // tbScaleY
             // 
             this.tbScaleY.Enabled = false;
-            this.tbScaleY.Location = new System.Drawing.Point(102, 54);
+            this.tbScaleY.Location = new System.Drawing.Point(102, 106);
             this.tbScaleY.Margin = new System.Windows.Forms.Padding(1);
             this.tbScaleY.Name = "tbScaleY";
             this.tbScaleY.Size = new System.Drawing.Size(95, 23);
@@ -151,7 +151,7 @@
             // tbAngle
             // 
             this.tbAngle.Enabled = false;
-            this.tbAngle.Location = new System.Drawing.Point(102, 80);
+            this.tbAngle.Location = new System.Drawing.Point(102, 133);
             this.tbAngle.Margin = new System.Windows.Forms.Padding(1);
             this.tbAngle.Name = "tbAngle";
             this.tbAngle.Size = new System.Drawing.Size(95, 23);
@@ -160,6 +160,46 @@
             // errorProv
             // 
             this.errorProv.ContainerControl = this;
+            // 
+            // lbPositionX
+            // 
+            this.lbPositionX.AutoSize = true;
+            this.lbPositionX.Location = new System.Drawing.Point(1, 29);
+            this.lbPositionX.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbPositionX.Name = "lbPositionX";
+            this.lbPositionX.Size = new System.Drawing.Size(82, 15);
+            this.lbPositionX.TabIndex = 2;
+            this.lbPositionX.Text = "Положение X";
+            this.lbPositionX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbPositionY
+            // 
+            this.lbPositionY.AutoSize = true;
+            this.lbPositionY.Location = new System.Drawing.Point(1, 55);
+            this.lbPositionY.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.lbPositionY.Name = "lbPositionY";
+            this.lbPositionY.Size = new System.Drawing.Size(82, 15);
+            this.lbPositionY.TabIndex = 2;
+            this.lbPositionY.Text = "Положение Y";
+            this.lbPositionY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tbOffsetX
+            // 
+            this.tbOffsetX.Enabled = false;
+            this.tbOffsetX.Location = new System.Drawing.Point(102, 28);
+            this.tbOffsetX.Margin = new System.Windows.Forms.Padding(1);
+            this.tbOffsetX.Name = "tbOffsetX";
+            this.tbOffsetX.Size = new System.Drawing.Size(96, 23);
+            this.tbOffsetX.TabIndex = 10;
+            // 
+            // tbOffsetY
+            // 
+            this.tbOffsetY.Enabled = false;
+            this.tbOffsetY.Location = new System.Drawing.Point(102, 54);
+            this.tbOffsetY.Margin = new System.Windows.Forms.Padding(1);
+            this.tbOffsetY.Name = "tbOffsetY";
+            this.tbOffsetY.Size = new System.Drawing.Size(96, 23);
+            this.tbOffsetY.TabIndex = 10;
             // 
             // TransformationShower
             // 
@@ -170,7 +210,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TransformationShower";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(200, 108);
+            this.Size = new System.Drawing.Size(200, 161);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProv)).EndInit();
@@ -188,5 +228,9 @@
         private System.Windows.Forms.TextBox tbScaleY;
         private System.Windows.Forms.TextBox tbAngle;
         private System.Windows.Forms.ErrorProvider errorProv;
+        private System.Windows.Forms.Label lbPositionX;
+        private System.Windows.Forms.Label lbPositionY;
+        private System.Windows.Forms.TextBox tbOffsetX;
+        private System.Windows.Forms.TextBox tbOffsetY;
     }
 }

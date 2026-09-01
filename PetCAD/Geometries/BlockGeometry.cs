@@ -199,7 +199,7 @@ namespace PetCAD.Geometries
 
         public Figure[] Explode()
         {
-            var matrix = Owner.Transformation;
+            var matrix = Owner.Transformation.Clone();
             var figures = new List<Figure>();
             Figure fig;
             PointF[] pts;
@@ -225,6 +225,15 @@ namespace PetCAD.Geometries
                         FigureBuilder.BuildArcGeometry(fig, center, radius, startAngle, sweepAngle);
                         figures.Add(fig);
                     }
+                }
+                else if (figure.Geometry is BlockGeometry block)
+                {
+                    fig = new BlockReference();
+                    fig.Transformation = figure.Transformation.Clone();
+                    var offset = matrix.GetOffset();
+                    FigureBuilder.BuildBlockGeometry(block.Name, fig, PointF.Empty, block.Explode());
+                    fig.Transformation.Multiply(matrix);
+                    figures.Add(fig);
                 }
             }
             return figures.ToArray();

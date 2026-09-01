@@ -37,9 +37,12 @@ namespace PetCAD.Controls
             // копируем свойства объекта в GUI
             updating++;
 
+            var offset = figTrans.GetProperty(f => f.Owner.Transformation.GetOffset());
             var scale = figTrans.GetProperty(f => f.Owner.Transformation.GetScale());
             var angle = figTrans.GetProperty(f => f.Owner.Transformation.GetAngle());
 
+            tbOffsetX.Text = $"{offset.X:0.####}";
+            tbOffsetY.Text = $"{offset.Y:0.####}";
             tbScaleX.Text = $"{scale.Width:0.####}";
             tbScaleY.Text = $"{scale.Height:0.####}";
             tbAngle.Text = angle.ToString();

@@ -25,7 +25,7 @@ namespace PetCAD.Common
                 using (var path = new GraphicsPath())
                 {
                     path.AddRectangle(rect);
-                    using (var pen = new Pen(Color.Black, 0))
+                    using (var pen = new Pen(Color.Black, 2 * kf))
                     {
                         pen.StartCap = LineCap.Round;
                         pen.EndCap = LineCap.Round;
@@ -36,7 +36,7 @@ namespace PetCAD.Common
             }
             using (var path = figure.GetRendererPath())
             {
-                using (var pen = new Pen(Color.Black, 0))
+                using (var pen = new Pen(Color.Black, 2 * kf))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;

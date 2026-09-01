@@ -7,7 +7,7 @@ namespace PetCAD.Makers
 {
     public class Marker
     {
-        protected const int MARKER_SIZE = 8;
+        protected const int MARKER_SIZE = 10;
 
         public virtual Cursor Cursor { get; set; }
         public PointF Position { get; set; }

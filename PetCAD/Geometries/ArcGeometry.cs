@@ -299,9 +299,6 @@ namespace PetCAD.Geometries
                         Owner = Owner,
                     },
             };
-
-            //markers.AddRange(GetBindingMarkers(AllowedObjectBindings.All, PointF.Empty));
-
             return markers.ToArray();
         }
 
@@ -356,13 +353,14 @@ namespace PetCAD.Geometries
                 });
             }
             using (var path = Path)
+            using (var pen = new Pen(Color.Blue, 3f))
             {
                 // поиск доступных квадрантов
                 if (allowed.HasFlag(AllowedObjectBindings.Quadrant))
                 {
                     foreach (var quadrantPoint in QuadrantPoints())
                     {
-                        if (path.IsOutlineVisible(quadrantPoint, Pens.Black))
+                        if (path.IsOutlineVisible(quadrantPoint, pen))
                         {
                             markers.Add(new BindingQuadrantMarker
                             {
@@ -381,7 +379,7 @@ namespace PetCAD.Geometries
                     {
                         foreach (var point in normals)
                         {
-                            if (path.IsOutlineVisible(point, Pens.Black))
+                            if (path.IsOutlineVisible(point, pen))
                             {
                                 markers.Add(new BindingNormalMarker
                                 {
@@ -400,7 +398,7 @@ namespace PetCAD.Geometries
                     {
                         foreach (var point in tangents)
                         {
-                            if (path.IsOutlineVisible(point, Pens.Black))
+                            if (path.IsOutlineVisible(point, pen))
                             {
                                 markers.Add(new BindingTangentMarker
                                 {
