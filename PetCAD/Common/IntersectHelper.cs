@@ -57,11 +57,13 @@ namespace PetCAD.Common
         {
             if (captured.IsEmpty) return false;
             var bounds = figure.Geometry.Bounds;
-            var rect = bounds;
-            if (rect.Width == 0 && rect.Height == 0)
-                return captured.Contains(rect.Location);
-            rect.Intersect(captured);
-            return rect.Equals(bounds);
+            var x = bounds.X;
+            var y = bounds.Y;
+            var width = bounds.Width;
+            var height = bounds.Height;
+            return captured.X <= x && captured.Y <= y &&
+                captured.X + captured.Width >= x + width &&
+                captured.Y + captured.Height >= y + height;
         }
 
         /// <summary>
