@@ -4,6 +4,6 @@ namespace PetCAD.Geometries
 {
     public interface IExplodeGeometry
     {
-        Figure[] Explode();
+        Figure[] Explode(bool forMarkers = false);
     }
 }

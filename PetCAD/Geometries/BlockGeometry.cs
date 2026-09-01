@@ -197,46 +197,50 @@ namespace PetCAD.Geometries
             return markers.ToArray();
         }
 
-        public Figure[] Explode()
+        public Figure[] Explode(bool forMarkers = false)
         {
             var matrix = Owner.Transformation.Clone();
             var figures = new List<Figure>();
-            Figure fig;
-            PointF[] pts;
             foreach (var figure in this.GetZeroBasedFigures())
             {
-                if (figure.Geometry is LineGeometry line)
+                ExtractFigures(matrix, figures, figure, forMarkers);
+                if (figure.Geometry is BlockGeometry block)
                 {
-                    pts = new PointF[] { line.StartPoint, line.EndPoint };
-                    matrix.TransformPoints(pts);
-                    fig = new Figure();
-                    FigureBuilder.BuildLineGeometry(fig, pts[0]);
-                    (fig.Geometry as LineGeometry).AddPoint(pts[1]);
-                    figures.Add(fig);
-                }
-                else if (figure.Geometry is ArcGeometry arc)
-                {
-                    pts = new PointF[] { arc.StartPoint, arc.MiddlePoint, arc.EndPoint };
-                    matrix.TransformPoints(pts);
-                    fig = new Figure();
-                    if (ArcGeometry.ConvertThreePointsToCenterRadiusAndAngles(pts[0], pts[1], pts[2],
-                        out PointF center, out float radius, out float startAngle, out float sweepAngle))
-                    {
-                        FigureBuilder.BuildArcGeometry(fig, center, radius, startAngle, sweepAngle);
-                        figures.Add(fig);
-                    }
-                }
-                else if (figure.Geometry is BlockGeometry block)
-                {
-                    fig = new BlockReference();
-                    fig.Transformation = figure.Transformation.Clone();
-                    var offset = matrix.GetOffset();
-                    FigureBuilder.BuildBlockGeometry(block.Name, fig, PointF.Empty, block.Explode());
-                    fig.Transformation.Multiply(matrix);
-                    figures.Add(fig);
+                    foreach (var child in block.Explode())
+                        ExtractFigures(matrix, figures, child, forMarkers);
                 }
             }
             return figures.ToArray();
+        }
+
+        private static void ExtractFigures(Matrix matrix, List<Figure> figures, Figure figure, bool forMarkers)
+        {
+            if (figure.Geometry is LineGeometry line)
+            {
+                var pts = new PointF[] { line.StartPoint, line.EndPoint };
+                matrix.TransformPoints(pts);
+                var fig = new Figure();
+                FigureBuilder.BuildLineGeometry(fig, pts[0]);
+                (fig.Geometry as LineGeometry).AddPoint(pts[1]);
+                figures.Add(fig);
+            }
+            if (figure.Geometry is ArcGeometry arc)
+            {
+                var pts = new PointF[] { arc.StartPoint, arc.MiddlePoint, arc.EndPoint };
+                matrix.TransformPoints(pts);
+                var fig = new Figure();
+                if (ArcGeometry.ConvertThreePointsToCenterRadiusAndAngles(pts[0], pts[1], pts[2],
+                    out PointF center, out float radius, out float startAngle, out float sweepAngle))
+                {
+                    FigureBuilder.BuildArcGeometry(fig, center, radius, startAngle, sweepAngle);
+                    figures.Add(fig);
+                }
+            }
+            if (figure.Geometry is BlockGeometry block && forMarkers )
+            {
+                foreach (var child in block.Explode())
+                    ExtractFigures(matrix, figures, child, forMarkers);
+            }
         }
     }
 }

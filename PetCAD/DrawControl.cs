@@ -116,15 +116,15 @@ namespace PetCAD
             var zoom = (float)zoomPad.ZoomScale;
 
             // отрисовка охватывающих прямоугольников для созданных фигур
-            //using (var pen = new Pen(Color.Maroon, 0f))
-            //{
-            //    pen.DashPattern = new float[] { 15f, 5f };
-            //    foreach (var fig in figures)
-            //    {
-            //        var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
-            //        graphics.DrawRectangles(pen, new RectangleF[] { bounds });
-            //    }
-            //}
+            ////using (var pen = new Pen(Color.Maroon, 0f))
+            ////{
+            ////    pen.DashPattern = new float[] { 15f, 5f };
+            ////    foreach (var fig in figures)
+            ////    {
+            ////        var bounds = fig.Geometry?.Bounds ?? RectangleF.Empty;
+            ////        graphics.DrawRectangles(pen, new RectangleF[] { bounds });
+            ////    }
+            ////}
 
             // отрисовка созданных фигур
             foreach (var fig in figures)
@@ -160,8 +160,8 @@ namespace PetCAD
                 // рисуем ближайший маркер привязки к текущему курсору
                 using (var pen = new Pen(Color.White, 1f / zoom))
                 {
-                    foreach (var item in query.Skip(1))
-                        item.mrk.Render(graphics, Color.White, zoom);
+                    ////foreach (var item in query.Skip(1))
+                    ////    item.mrk.Render(graphics, Color.White, zoom);
 
                     foreach (var item in query.Take(1))
                     {
