@@ -532,6 +532,11 @@ namespace PetCAD
             OnChangeParams?.Invoke(this, args);
         }
 
+        /// <summary>
+        /// Перемещение указателя над объектами
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void zoomPad_MouseMove(object sender, MouseEventArgs e)
         {
             mousePosition = e.Location;
@@ -604,19 +609,12 @@ namespace PetCAD
                     {
                         if (allowed.HasFlag(AllowedObjectBindings.Tangent))
                         {
-                            if (fig.Geometry is ArcGeometry arc)
-                            {
-                                foreach (var marker in markers)
-                                {
-                                    if (marker.Owner.Geometry is LineGeometry segment)
-                                    {
-                                        selectionController.BuildBindingMarkers(underCursor, allowed, 
-                                            marker.Position == segment.EndPoint ? segment.StartPoint : segment.EndPoint);
-                                    }
-                                }
-                                zoomPad.Invalidate();
-                                return;
-                            }
+                            foreach (var marker in markers)
+                                if (marker.Owner.Geometry is LineGeometry segment)
+                                    selectionController.BuildBindingMarkers(underCursor, allowed,
+                                        marker.Position == segment.EndPoint ? segment.StartPoint : segment.EndPoint);
+                            zoomPad.Invalidate();
+                            return;
                         }
                     }
                     selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);

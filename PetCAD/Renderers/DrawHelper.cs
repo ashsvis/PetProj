@@ -397,7 +397,7 @@ namespace PetCAD.Renderers
             if (drawControl.IsObjectBinding)
             {
                 var query = drawControl.SelectionController.BindingMarkers.Select(marker => (marker,
-                             $"{Math.Abs(marker.Position.X - point.X):00000}{Math.Abs(marker.Position.Y - point.Y):00000}")).OrderBy(x => x.Item2);
+                  $"{Math.Sqrt((marker.Position.X - point.X) * (marker.Position.X - point.X) + (marker.Position.Y - point.Y) * (marker.Position.Y - point.Y)):00000}")).OrderBy(x => x.Item2);
                 if (query.Count() > 0)
                     // принимаем позицию ближайшего маркера привязки к текущему курсору
                     point = query.First().marker.Position;
