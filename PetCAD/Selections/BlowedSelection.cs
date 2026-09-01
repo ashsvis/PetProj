@@ -76,9 +76,7 @@ namespace PetCAD.Selections
                 using (var path = figure.GetRendererPath())
                 {
                     using (var pen = new Pen(blowedColor, (figure.Style.BorderStyle.Width + 2f) / zoomScale))
-                    {
                         graphics.DrawPath(pen, path);
-                    }
                 }
             }
         }

@@ -160,8 +160,8 @@ namespace PetCAD
                 // рисуем ближайший маркер привязки к текущему курсору
                 using (var pen = new Pen(Color.White, 1f / zoom))
                 {
-                    foreach (var item in query.Skip(1))
-                        item.mrk.Render(graphics, Color.White, zoom);
+                    //foreach (var item in query.Skip(1))
+                    //    item.mrk.Render(graphics, Color.White, zoom);
 
                     foreach (var item in query.Take(1))
                     {
@@ -918,7 +918,7 @@ namespace PetCAD
                                             {
                                                 switch (geometryName)
                                                 {
-                                                    case "Block":
+                                                    case "BlockRef":
                                                         figure = new BlockReference();
                                                         return figure;
                                                     default:
@@ -934,7 +934,7 @@ namespace PetCAD
                                                         return new LineGeometry(figure);
                                                     case "Arc":
                                                         return new ArcGeometry(figure);
-                                                    case "Block":
+                                                    case "BlockRef":
                                                         return new BlockGeometry(figure);
                                                     default:
                                                         return null;
@@ -975,7 +975,7 @@ namespace PetCAD
                                     {
                                         switch (geometryName)
                                         {
-                                            case "Block":
+                                            case "BlockRef":
                                                 figure = new BlockReference();
                                                 return figure;
                                             default:
@@ -991,7 +991,7 @@ namespace PetCAD
                                                 return new LineGeometry(figure);
                                             case "Arc":
                                                 return new ArcGeometry(figure);
-                                            case "Block":
+                                            case "BlockRef":
                                                 return new BlockGeometry(figure);
                                             default:
                                                 return null;
@@ -1001,7 +1001,7 @@ namespace PetCAD
                                     {
                                         switch (rendererName)
                                         {
-                                            case "Block":
+                                            case "BlockRef":
                                                 return new BlockRenderer();
                                             default:
                                                 return new DefaultRenderer();

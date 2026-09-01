@@ -25,7 +25,7 @@ namespace PetCAD.Renderers
                     {
                         using (var path = fig.GetRendererPath())
                         {
-                            path.Transform(((BlockReference)block).Transformation);
+                            path.Transform(block.Transformation);
                             using (var pen = fig.Style.BorderStyle.GetPen(fig))
                                 graphics.DrawPath(pen, path);
                         }

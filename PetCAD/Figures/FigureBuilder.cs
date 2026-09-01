@@ -18,7 +18,8 @@ namespace PetCAD.Figures
         {
             figure.Geometry = new LineGeometry(figure, startPoint)
             {
-                Name = "Segment",
+                Kind = "Segment",
+                Name = "Отрезок",
             };
         }
 
@@ -34,7 +35,8 @@ namespace PetCAD.Figures
         {
             figure.Geometry = new ArcGeometry(figure, center, radius, startAngle, sweepAngle)
             {
-                Name = "Arc",
+                Kind = "Arc",
+                Name = "Дуга",
             };
         }
 

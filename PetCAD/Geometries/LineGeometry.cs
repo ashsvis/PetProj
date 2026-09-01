@@ -1,7 +1,6 @@
 ﻿using PetCAD.Common;
 using PetCAD.Figures;
 using PetCAD.Makers;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -54,6 +53,7 @@ namespace PetCAD.Geometries
         public LineGeometry(Figure figure)
         {
             Owner = figure;
+            Kind = "Segment";
         }
 
         /// <summary>
@@ -63,6 +63,7 @@ namespace PetCAD.Geometries
         internal LineGeometry(Figure figure, PointF point)
         {
             Owner = figure;
+            Kind = "Segment";
             Points.Add(point);
         }
 
@@ -70,6 +71,7 @@ namespace PetCAD.Geometries
         {
             var geometry = new LineGeometry(figure, StartPoint)
             {
+                Kind = Kind,
                 Name = Name,
             };
             geometry.Points.AddRange(Points.Skip(1));
@@ -79,7 +81,9 @@ namespace PetCAD.Geometries
         public override XElement GetXml()
         {
             var xgeometry = new XElement("Geometry");
-            xgeometry.Add(new XAttribute("Name", Name));
+            xgeometry.Add(new XAttribute("Kind", Kind));
+            if (!string.IsNullOrEmpty(Name))
+                xgeometry.Add(new XAttribute("Name", Name));
             var xline = new XElement("Line");
             xline.Add(new XAttribute("Start", StartPoint.ToString()));
             xline.Add(new XAttribute("End", EndPoint.ToString()));
@@ -90,9 +94,9 @@ namespace PetCAD.Geometries
         public override void SetXml(XElement xgeometry)
         {
             if (xgeometry == null || xgeometry.Name != "Geometry") return;
-            var name = xgeometry.Attribute("Name")?.Value;
-            if (string.IsNullOrWhiteSpace(name)) return;
-            Name = name;
+            var kind = xgeometry.Attribute("Kind")?.Value;
+            if (string.IsNullOrWhiteSpace(kind)) return;
+            Name = xgeometry.Attribute("Name")?.Value;
             var xpath = xgeometry.Element("Line");
             if (xpath == null) return;
             var sstart = xpath.Attribute("Start")?.Value;

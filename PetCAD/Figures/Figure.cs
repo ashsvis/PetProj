@@ -63,10 +63,11 @@ namespace PetCAD.Figures
             if (xfigure == null || xfigure.Name != "Figure") return;
             var xgeometry = xfigure.Element("Geometry");
             if (xgeometry == null) return;
+            var kind = xgeometry.Attribute("Kind")?.Value;
             var name = xgeometry.Attribute("Name")?.Value;
-            var figure = figureFunc(name);
+            var figure = figureFunc(kind);
             if (figure == null) return;
-            figure.Geometry = geometryFunc(name);
+            figure.Geometry = geometryFunc(kind);
             figure.Geometry?.SetXml(xgeometry);
             var xtransform = xfigure.Attribute("Matrix")?.Value;
             if (xtransform != null)
@@ -80,7 +81,7 @@ namespace PetCAD.Figures
                     figure.Transformation = new Matrix(m[0], m[1], m[2], m[3], m[4], m[5]);
                 }
             }
-            figure.Renderer = rendererFunc(name);
+            figure.Renderer = rendererFunc(kind);
             var xstyle = xfigure.Element("Style");
             if (xstyle == null) return;
             figure.Style.SetXml(xstyle);

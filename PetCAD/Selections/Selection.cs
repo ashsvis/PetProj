@@ -118,9 +118,7 @@ namespace PetCAD.Selections
                 {
                     // то получаем карандаш из стиля рисования фигуры
                     using (var pen = new Pen(color, 2.6f / penWidthFactor))
-                    { 
                         graphics.DrawPath(pen, path); 
-                    }
                 }
             }
         }

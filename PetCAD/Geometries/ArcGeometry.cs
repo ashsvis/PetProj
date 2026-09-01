@@ -35,11 +35,13 @@ namespace PetCAD.Geometries
         public ArcGeometry(Figure figure) 
         { 
             Owner = figure;
-        }    
+            Kind = "Arc";
+        }
 
         internal ArcGeometry(Figure figure, PointF center, float radius, float startAngle, float sweepAngle)
         {
             Owner = figure;
+            Kind = "Arc";
             CenterPoint = center;
             Radius = radius;
             StartAngle = startAngle;
@@ -81,6 +83,7 @@ namespace PetCAD.Geometries
         {
             var geometry = new ArcGeometry(figure, CenterPoint, Radius, StartAngle, SweepAngle)
             {
+                Kind = Kind,
                 Name = Name,
             };
             return geometry;
@@ -89,7 +92,9 @@ namespace PetCAD.Geometries
         public override XElement GetXml()
         {
             var xgeometry = new XElement("Geometry");
-            xgeometry.Add(new XAttribute("Name", Name));
+            xgeometry.Add(new XAttribute("Kind", Kind));
+            if (!string.IsNullOrEmpty(Name))
+                xgeometry.Add(new XAttribute("Name", Name));
             var xarc = new XElement("Arc");
             xarc.Add(new XAttribute("Center", CenterPoint.ToString()));
             xarc.Add(new XAttribute("Radius", Radius.ToString()));
@@ -102,9 +107,9 @@ namespace PetCAD.Geometries
         public override void SetXml(XElement xgeometry)
         {
             if (xgeometry == null || xgeometry.Name != "Geometry") return;
-            var name = xgeometry.Attribute("Name")?.Value;
-            if (string.IsNullOrWhiteSpace(name)) return;
-            Name = name;
+            var kind = xgeometry.Attribute("Kind")?.Value;
+            if (string.IsNullOrWhiteSpace(kind)) return;
+            Name = xgeometry.Attribute("Name")?.Value;
             var xpath = xgeometry.Element("Arc");
             if (xpath == null) return;
             var scenter = xpath.Attribute("Center")?.Value;

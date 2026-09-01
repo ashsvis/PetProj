@@ -11,6 +11,7 @@ namespace PetCAD.Geometries
     /// </summary>
     public abstract class Geometry
     {
+        public string Kind { get; set; }
         public string Name { get; set; }
         public Figure Owner { get; set; }
 

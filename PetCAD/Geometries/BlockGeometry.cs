@@ -18,6 +18,7 @@ namespace PetCAD.Geometries
         public BlockGeometry(Figure figure, string name)
         {
             Owner = figure;
+            Kind = "BlockRef";
             Name = name;
             if (DefinedBlocks.ContainsKey(name))
                 zeroBasedFigures = DefinedBlocks[name];
@@ -26,11 +27,13 @@ namespace PetCAD.Geometries
         public BlockGeometry(Figure figure) 
         { 
             Owner = figure;
+            Kind = "BlockRef";
         }
 
         public BlockGeometry(Figure figure, string name, Figure[] zeroBasedFigures)
         {
             Owner = figure;
+            Kind = "BlockRef";
             Name = name;
             this.zeroBasedFigures = zeroBasedFigures;
         }
@@ -99,6 +102,7 @@ namespace PetCAD.Geometries
         public override XElement GetXml()
         {
             var xgeometry = new XElement("Geometry");
+            xgeometry.Add(new XAttribute("Kind", Kind));
             xgeometry.Add(new XAttribute("Name", Name));
             return xgeometry;
         }
@@ -106,6 +110,8 @@ namespace PetCAD.Geometries
         public override void SetXml(XElement xgeometry)
         {
             if (xgeometry == null || xgeometry.Name != "Geometry") return;
+            var kind = xgeometry.Attribute("Kind")?.Value;
+            if (string.IsNullOrWhiteSpace(kind)) return;
             var name = xgeometry.Attribute("Name")?.Value;
             if (string.IsNullOrWhiteSpace(name)) return;
             Name = name;
@@ -167,7 +173,7 @@ namespace PetCAD.Geometries
         public override Marker[] GetGeometryMarkers()
         {
             var pts = new PointF[] { PointF.Empty };
-            var m = ((BlockReference)Owner).Transformation;
+            var m = Owner.Transformation;
             m.TransformPoints(pts);
             var markers = new List<Marker>
             {

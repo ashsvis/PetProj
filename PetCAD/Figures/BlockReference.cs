@@ -36,7 +36,9 @@ namespace PetCAD.Figures
             var blockGeometry = (BlockGeometry)Geometry;
             foreach (var f in blockGeometry.GetZeroBasedFigures())
                 path.AddPath(f.GetRendererPath(), false);
+            
             path.Transform(Transformation);
+            
             return path;
         }
 
