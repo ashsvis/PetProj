@@ -61,6 +61,7 @@
     <Compile Include="Commands\ChangeBorderWidthCommand.cs" />
     <Compile Include="Commands\CreateFigureCommand.cs" />
     <Compile Include="Commands\CreateFiguresCommand.cs" />
+    <Compile Include="Commands\ExplodeBlockCommand.cs" />
     <Compile Include="Commands\MoveFiguresCommand.cs" />
     <Compile Include="Commands\MoveMarkersCommand.cs" />
     <Compile Include="Commands\RemoveFigureCommand.cs" />

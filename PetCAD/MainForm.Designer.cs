@@ -80,8 +80,8 @@
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbMove = new System.Windows.Forms.ToolStripButton();
-            this.tsbRotate = new System.Windows.Forms.ToolStripButton();
             this.tsbMoveCopy = new System.Windows.Forms.ToolStripButton();
+            this.tsbRotate = new System.Windows.Forms.ToolStripButton();
             this.tsbScale = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCut = new System.Windows.Forms.ToolStripButton();
@@ -610,17 +610,6 @@
             this.tsbMove.Text = "Перенести";
             this.tsbMove.Click += new System.EventHandler(this.tsmiMove_Click);
             // 
-            // tsbRotate
-            // 
-            this.tsbRotate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRotate.Enabled = false;
-            this.tsbRotate.Image = global::PetCAD.Properties.Resources.rotate;
-            this.tsbRotate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRotate.Name = "tsbRotate";
-            this.tsbRotate.Size = new System.Drawing.Size(23, 22);
-            this.tsbRotate.Text = "Повернуть";
-            this.tsbRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
-            // 
             // tsbMoveCopy
             // 
             this.tsbMoveCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -631,6 +620,17 @@
             this.tsbMoveCopy.Size = new System.Drawing.Size(23, 22);
             this.tsbMoveCopy.Text = "Копировать";
             this.tsbMoveCopy.Click += new System.EventHandler(this.tsmiMoveCopy_Click);
+            // 
+            // tsbRotate
+            // 
+            this.tsbRotate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRotate.Enabled = false;
+            this.tsbRotate.Image = global::PetCAD.Properties.Resources.rotate;
+            this.tsbRotate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRotate.Name = "tsbRotate";
+            this.tsbRotate.Size = new System.Drawing.Size(23, 22);
+            this.tsbRotate.Text = "Повернуть";
+            this.tsbRotate.Click += new System.EventHandler(this.tsmiRotate_Click);
             // 
             // tsbScale
             // 

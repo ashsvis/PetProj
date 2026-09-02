@@ -1265,13 +1265,8 @@ namespace PetCAD
                     list.Add((figure, addedfigs));
                 }
             }
-
             foreach (var item in list)
-            {
-                undoRedoManager.Execute(new CreateFiguresCommand(figures, item.Item2.ToList()));
-                undoRedoManager.Execute(new RemoveFigureCommand(figures, item.Item1));
-            }
-
+                undoRedoManager.Execute(new ExplodeBlockCommand(figures, item.Item2.ToList(), item.Item1));
             selectionController.Clear();
             underCursor.Clear();
             Changed = true;
