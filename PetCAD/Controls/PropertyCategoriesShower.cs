@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using PetCAD.Common;
+using PetCAD.Figures;
 using PetCAD.Geometries;
 using PetCAD.Selections;
 
@@ -34,7 +35,11 @@ namespace PetCAD.Controls
             {
                 var categories = selection.Select(f => f.Geometry.Name).Distinct().ToList();
                 if (categories.Count == 1)
-                    labelCaption.Text = $"{categories.First()} ({selection.Count})";
+                {
+                    var name = categories.First();
+                    var text = selection.First() is BlockReference ? $"Вхождение блока" : name;
+                    labelCaption.Text = $"{text} ({selection.Count})";
+                }
                 else
                     labelCaption.Text = $"Несколько фигур ({selection.Count})";
             }
@@ -44,7 +49,9 @@ namespace PetCAD.Controls
             }
             else 
             {
-                labelCaption.Text = selection.First().Geometry.Name;
+                var name = selection.First().Geometry.Name;
+                var text = selection.First() is BlockReference ? $"Вхождение блока" : name;
+                labelCaption.Text = text;
             }
 
             // копируем свойства объекта в GUI

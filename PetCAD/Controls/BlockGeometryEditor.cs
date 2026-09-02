@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PetCAD.Controls
 {
-    public partial class TransformationShower : UserControl, IEditor<Selection>
+    public partial class BlockGeometryEditor : UserControl, IEditor<Selection>
     {
         private Selection selection;
         private int updating;
@@ -16,7 +16,7 @@ namespace PetCAD.Controls
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<ChangeEventArgs> Changed = delegate { };
 
-        public TransformationShower()
+        public BlockGeometryEditor()
         {
             InitializeComponent();
         }
@@ -37,10 +37,12 @@ namespace PetCAD.Controls
             // копируем свойства объекта в GUI
             updating++;
 
+            var name = figTrans.GetProperty(f => f.Name);
             var offset = figTrans.GetProperty(f => f.Owner.Transformation.GetOffset());
             var scale = figTrans.GetProperty(f => f.Owner.Transformation.GetScale());
             var angle = figTrans.GetProperty(f => f.Owner.Transformation.GetAngle());
 
+            tbBlockName.Text = name;
             tbOffsetX.Text = $"{offset.X:0.####}";
             tbOffsetY.Text = $"{offset.Y:0.####}";
             tbScaleX.Text = $"{scale.Width:0.####}";

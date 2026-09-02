@@ -3,6 +3,7 @@ using PetCAD.Geometries;
 using PetCAD.Selections;
 using System;
 using System.Drawing;
+using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -78,38 +79,71 @@ namespace PetCAD.Controls
         private void UpdateObject()
         {
             if (updating > 0 || selection == null) return; // we are in updating mode
+            // получаем список объектов
+            var geometryStyles = selection.ToList();
 
             // вызывем событие
             StartChanging(this, new ChangingEventArgs("ArcGeometry", figure.Geometry));
 
             // получаем список объектов
-            var lineStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
+            var arcStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
 
             // посылаем значения назад из GUI в объект
-            lineStyles.SetProperty(f => f.CenterPoint = new PointF(float.Parse(tbCenterX.Text), float.Parse(tbCenterY.Text)));
-            lineStyles.SetProperty(f => f.Radius = float.Parse(tbRadius.Text));
-            lineStyles.SetProperty(f => f.StartAngle = float.Parse(tbStartAngle.Text));
-            lineStyles.SetProperty(f => f.SweepAngle = float.Parse(tbSweepAngle.Text));
+            arcStyles.SetProperty(f => f.CenterPoint = new PointF(float.Parse(tbCenterX.Text), float.Parse(tbCenterY.Text)));
+            arcStyles.SetProperty(f => f.Radius = float.Parse(tbRadius.Text));
+            arcStyles.SetProperty(f => f.StartAngle = float.Parse(tbStartAngle.Text));
+            arcStyles.SetProperty(f => f.SweepAngle = float.Parse(tbSweepAngle.Text));
 
-            var startAngle = lineStyles.GetProperty(f => f.StartAngle);
-            var sweepAngle = lineStyles.GetProperty(f => f.SweepAngle);
-            var radius = lineStyles.GetProperty(f => f.Radius);
+            var startAngle = arcStyles.GetProperty(f => f.StartAngle);
+            var sweepAngle = arcStyles.GetProperty(f => f.SweepAngle);
+            var radius = arcStyles.GetProperty(f => f.Radius);
             CalculateFields(radius, startAngle, sweepAngle);
 
             // вызывем событие
             Changed(this, new ChangeEventArgs("ArcGeometry", figure.Geometry));
         }
 
-        private void tbText_Validated(object sender, EventArgs e)
+        private void tbCenterX_Validated(object sender, EventArgs e)
         {
-            try
+            SendChanges(sender, "ArcGeometryCenterX");
+        }
+
+        private void tbCenterY_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "ArcGeometryCenterY");
+        }
+
+        private void tbRadius_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "ArcGeometryRadius");
+        }
+
+        private void tbStartAngle_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "ArcGeometryStartAngle");
+        }
+
+        private void tbSweepAngle_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "ArcGeometrySweepAngle");
+        }
+
+        private void SendChanges(object sender, string id)
+        {
+            if (updating > 0 || selection == null) return; // we are in updating mode
+            // получаем список объектов
+            var arcGeometries = selection.ToList();
+            var tbox = (TextBox)sender;
+            if (float.TryParse(tbox.Text, out float value))
             {
-                UpdateObject();
                 errorProv.Clear();
+                arcGeometries.SetProperty(f =>
+                {
+                    Changed(this, new ChangeEventArgs(id, f, value));
+                });
             }
-            catch 
+            else
             {
-                var tbox = (TextBox)sender;
                 errorProv.SetError(tbox, $"{tbox.Text} не число!");
                 tbox.Focus();
             }

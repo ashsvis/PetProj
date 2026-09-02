@@ -54,6 +54,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ChangeArcCenterXCommand.cs" />
+    <Compile Include="Commands\ChangeArcCenterYCommand.cs" />
+    <Compile Include="Commands\ChangeArcRadiusCommand.cs" />
+    <Compile Include="Commands\ChangeArcStartAngleCommand.cs" />
+    <Compile Include="Commands\ChangeArcSweepAngleCommand.cs" />
     <Compile Include="Commands\ChangeBorderColorCommand.cs" />
     <Compile Include="Commands\ChangeBorderDashStyleCommand.cs" />
     <Compile Include="Commands\ChangeBorderIsVisibleCommand.cs" />
@@ -83,11 +88,11 @@
     <Compile Include="Controllers\BuildLine.cs" />
     <Compile Include="Controllers\BuildRectangle.cs" />
     <Compile Include="Controllers\IBuildFigure.cs" />
-    <Compile Include="Controls\TransformationShower.cs">
+    <Compile Include="Controls\BlockGeometryEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\TransformationShower.Designer.cs">
-      <DependentUpon>TransformationShower.cs</DependentUpon>
+    <Compile Include="Controls\BlockGeometryEditor.Designer.cs">
+      <DependentUpon>BlockGeometryEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ArcGeometryEditor.cs">
       <SubType>UserControl</SubType>
@@ -195,8 +200,8 @@
     <Compile Include="ZoomControl.Designer.cs">
       <DependentUpon>ZoomControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\TransformationShower.resx">
-      <DependentUpon>TransformationShower.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\BlockGeometryEditor.resx">
+      <DependentUpon>BlockGeometryEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ArcGeometryEditor.resx">
       <DependentUpon>ArcGeometryEditor.cs</DependentUpon>

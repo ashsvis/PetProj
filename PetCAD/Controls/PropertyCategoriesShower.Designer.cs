@@ -35,6 +35,7 @@
             // 
             // labelCaption
             // 
+            this.labelCaption.AutoEllipsis = true;
             this.labelCaption.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.tableLayoutPanel1.SetColumnSpan(this.labelCaption, 2);
             this.labelCaption.Dock = System.Windows.Forms.DockStyle.Top;

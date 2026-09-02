@@ -170,7 +170,7 @@ namespace PetCAD
                 typeof(BorderStyleEditor),
                 typeof(LineGeometryEditor),
                 typeof(ArcGeometryEditor),
-                typeof(TransformationShower),
+                typeof(BlockGeometryEditor),
             };
             foreach (var typeName in editors)
             {
@@ -228,6 +228,41 @@ namespace PetCAD
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig5 && e.Arguments[1] is bool isVisible)
                     {
                         drawControl.UndoRedoManager.Execute(new ChangeBorderIsVisibleCommand(fig5, isVisible));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "ArcGeometryCenterX":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig6 && e.Arguments[1] is float centerX)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeArcCenterXCommand(fig6, centerX));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "ArcGeometryCenterY":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig7 && e.Arguments[1] is float centerY)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeArcCenterYCommand(fig7, centerY));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "ArcGeometryRadius":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig8 && e.Arguments[1] is float radius)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeArcRadiusCommand(fig8, radius));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "ArcGeometryStartAngle":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig9 && e.Arguments[1] is float startAngle)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeArcStartAngleCommand(fig9, startAngle));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "ArcGeometrySweepAngle":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig10 && e.Arguments[1] is float sweepAngle)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeArcSweepAngleCommand(fig10, sweepAngle));
                         drawControl.Changed = true;
                     }
                     break;

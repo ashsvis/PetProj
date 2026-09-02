@@ -299,7 +299,7 @@
             this.tbCenterX.Name = "tbCenterX";
             this.tbCenterX.Size = new System.Drawing.Size(95, 23);
             this.tbCenterX.TabIndex = 10;
-            this.tbCenterX.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbCenterX.Validated += new System.EventHandler(this.tbCenterX_Validated);
             // 
             // tbCenterY
             // 
@@ -308,7 +308,7 @@
             this.tbCenterY.Name = "tbCenterY";
             this.tbCenterY.Size = new System.Drawing.Size(95, 23);
             this.tbCenterY.TabIndex = 10;
-            this.tbCenterY.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbCenterY.Validated += new System.EventHandler(this.tbCenterY_Validated);
             // 
             // tbEndX
             // 
@@ -335,7 +335,7 @@
             this.tbRadius.Name = "tbRadius";
             this.tbRadius.Size = new System.Drawing.Size(95, 23);
             this.tbRadius.TabIndex = 10;
-            this.tbRadius.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbRadius.Validated += new System.EventHandler(this.tbRadius_Validated);
             // 
             // tbStartAngle
             // 
@@ -344,7 +344,7 @@
             this.tbStartAngle.Name = "tbStartAngle";
             this.tbStartAngle.Size = new System.Drawing.Size(95, 23);
             this.tbStartAngle.TabIndex = 10;
-            this.tbStartAngle.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbStartAngle.Validated += new System.EventHandler(this.tbStartAngle_Validated);
             // 
             // tbEndAngle
             // 
@@ -362,7 +362,7 @@
             this.tbSweepAngle.Name = "tbSweepAngle";
             this.tbSweepAngle.Size = new System.Drawing.Size(95, 23);
             this.tbSweepAngle.TabIndex = 10;
-            this.tbSweepAngle.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbSweepAngle.Validated += new System.EventHandler(this.tbSweepAngle_Validated);
             // 
             // tbArcLength
             // 
