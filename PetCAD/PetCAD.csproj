@@ -64,6 +64,10 @@
     <Compile Include="Commands\ChangeBorderIsVisibleCommand.cs" />
     <Compile Include="Commands\ChangeBorderOpacityCommand.cs" />
     <Compile Include="Commands\ChangeBorderWidthCommand.cs" />
+    <Compile Include="Commands\ChangeLineEndXCommand.cs" />
+    <Compile Include="Commands\ChangeLineEndYCommand.cs" />
+    <Compile Include="Commands\ChangeLineStartXCommand.cs" />
+    <Compile Include="Commands\ChangeLineStartYCommand.cs" />
     <Compile Include="Commands\CreateFigureCommand.cs" />
     <Compile Include="Commands\CreateFiguresCommand.cs" />
     <Compile Include="Commands\ExplodeBlockCommand.cs" />

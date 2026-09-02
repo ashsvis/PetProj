@@ -211,7 +211,7 @@
             this.tbStartX.Name = "tbStartX";
             this.tbStartX.Size = new System.Drawing.Size(96, 23);
             this.tbStartX.TabIndex = 10;
-            this.tbStartX.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbStartX.Validated += new System.EventHandler(this.tbStartX_Validated);
             // 
             // tbStartY
             // 
@@ -220,7 +220,7 @@
             this.tbStartY.Name = "tbStartY";
             this.tbStartY.Size = new System.Drawing.Size(95, 23);
             this.tbStartY.TabIndex = 10;
-            this.tbStartY.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbStartY.Validated += new System.EventHandler(this.tbStartY_Validated);
             // 
             // tbEndX
             // 
@@ -229,7 +229,7 @@
             this.tbEndX.Name = "tbEndX";
             this.tbEndX.Size = new System.Drawing.Size(95, 23);
             this.tbEndX.TabIndex = 10;
-            this.tbEndX.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbEndX.Validated += new System.EventHandler(this.tbEndX_Validated);
             // 
             // tbEndY
             // 
@@ -238,7 +238,7 @@
             this.tbEndY.Name = "tbEndY";
             this.tbEndY.Size = new System.Drawing.Size(95, 23);
             this.tbEndY.TabIndex = 10;
-            this.tbEndY.Validated += new System.EventHandler(this.tbText_Validated);
+            this.tbEndY.Validated += new System.EventHandler(this.tbEndY_Validated);
             // 
             // tbDeltaX
             // 

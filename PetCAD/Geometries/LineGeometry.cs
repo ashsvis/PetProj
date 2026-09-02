@@ -30,7 +30,6 @@ namespace PetCAD.Geometries
                 {
                     var points = Points.ToArray();
                     path.AddLines(points);
-                    //path.Flatten();
                 }
                 return path;
             }

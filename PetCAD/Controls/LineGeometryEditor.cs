@@ -65,38 +65,79 @@ namespace PetCAD.Controls
             tbAngle.Text = $"{angle:0.#}";
         }
 
-        private void UpdateObject()
+        //private void UpdateObject()
+        //{
+        //    if (updating > 0 || selection == null) return; // we are in updating mode
+
+        //    // вызывем событие
+        //    StartChanging(this, new ChangingEventArgs("LineGeometry", figure.Geometry));
+
+        //    // получаем список объектов
+        //    var lineStyles = selection.Select(f => f.Geometry as LineGeometry).ToList();
+
+        //    // посылаем значения назад из GUI в объект
+        //    lineStyles.SetProperty(f => f.Points[0] = new PointF(float.Parse(tbStartX.Text), float.Parse(tbStartY.Text)));
+        //    lineStyles.SetProperty(f => f.Points[1] = new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
+
+        //    var start = lineStyles.GetProperty(f => f.StartPoint);
+        //    var end = lineStyles.GetProperty(f => f.EndPoint);
+        //    CalculateFields(start, end);
+
+        //    // вызывем событие
+        //    Changed(this, new ChangeEventArgs("LineGeometry", figure.Geometry));
+        //}
+
+        //private void tbText_Validated(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        UpdateObject();
+        //        errorProv.Clear();
+        //    }
+        //    catch
+        //    {
+        //        var tbox = (TextBox)sender;
+        //        errorProv.SetError(tbox, $"{tbox.Text} не число!");
+        //        tbox.Focus();
+        //    }
+        //}
+
+        private void tbStartX_Validated(object sender, EventArgs e)
         {
-            if (updating > 0 || selection == null) return; // we are in updating mode
-
-            // вызывем событие
-            StartChanging(this, new ChangingEventArgs("LineGeometry", figure.Geometry));
-
-            // получаем список объектов
-            var lineStyles = selection.Select(f => f.Geometry as LineGeometry).ToList();
-
-            // посылаем значения назад из GUI в объект
-            lineStyles.SetProperty(f => f.Points[0] = new PointF(float.Parse(tbStartX.Text), float.Parse(tbStartY.Text)));
-            lineStyles.SetProperty(f => f.Points[1] = new PointF(float.Parse(tbEndX.Text), float.Parse(tbEndY.Text)));
-
-            var start = lineStyles.GetProperty(f => f.StartPoint);
-            var end = lineStyles.GetProperty(f => f.EndPoint);
-            CalculateFields(start, end);
-
-            // вызывем событие
-            Changed(this, new ChangeEventArgs("LineGeometry", figure.Geometry));
+            SendChanges(sender, "LineGeometryStartX");
         }
 
-        private void tbText_Validated(object sender, EventArgs e)
+        private void tbStartY_Validated(object sender, EventArgs e)
         {
-            try
+            SendChanges(sender, "LineGeometryStartY");
+        }
+
+        private void tbEndX_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "LineGeometrybEndX");
+        }
+
+        private void tbEndY_Validated(object sender, EventArgs e)
+        {
+            SendChanges(sender, "LineGeometryEndY");
+        }
+
+        private void SendChanges(object sender, string id)
+        {
+            if (updating > 0 || selection == null) return; // we are in updating mode
+            // получаем список объектов
+            var arcGeometries = selection.ToList();
+            var tbox = (TextBox)sender;
+            if (float.TryParse(tbox.Text, out float value))
             {
-                UpdateObject();
                 errorProv.Clear();
+                arcGeometries.SetProperty(f =>
+                {
+                    Changed(this, new ChangeEventArgs(id, f, value));
+                });
             }
-            catch 
+            else
             {
-                var tbox = (TextBox)sender;
                 errorProv.SetError(tbox, $"{tbox.Text} не число!");
                 tbox.Focus();
             }

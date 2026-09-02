@@ -266,6 +266,34 @@ namespace PetCAD
                         drawControl.Changed = true;
                     }
                     break;
+                case "LineGeometryStartX":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig11 && e.Arguments[1] is float startX)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeLineStartXCommand(fig11, startX));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "LineGeometryStartY":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig12 && e.Arguments[1] is float startY)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeLineStartYCommand(fig12, startY));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "LineGeometrybEndX":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig13 && e.Arguments[1] is float endX)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeLineEndXCommand(fig13, endX));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "LineGeometryEndY":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig14 && e.Arguments[1] is float endY)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeLineEndYCommand(fig14, endY));
+                        drawControl.Changed = true;
+                    }
+                    break;
             }
             drawControl.SelectionController.BuildMarkers(drawControl.SelectionController.Selection);
             drawControl.UpdateInterface();

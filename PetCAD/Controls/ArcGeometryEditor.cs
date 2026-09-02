@@ -76,32 +76,32 @@ namespace PetCAD.Controls
             tbSegmentSquare.Text = $"{segmentSquare:0.#}";
         }
 
-        private void UpdateObject()
-        {
-            if (updating > 0 || selection == null) return; // we are in updating mode
-            // получаем список объектов
-            var geometryStyles = selection.ToList();
+        //private void UpdateObject()
+        //{
+        //    if (updating > 0 || selection == null) return; // we are in updating mode
+        //    // получаем список объектов
+        //    var geometryStyles = selection.ToList();
 
-            // вызывем событие
-            StartChanging(this, new ChangingEventArgs("ArcGeometry", figure.Geometry));
+        //    // вызывем событие
+        //    StartChanging(this, new ChangingEventArgs("ArcGeometry", figure.Geometry));
 
-            // получаем список объектов
-            var arcStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
+        //    // получаем список объектов
+        //    var arcStyles = selection.Select(f => f.Geometry as ArcGeometry).ToList();
 
-            // посылаем значения назад из GUI в объект
-            arcStyles.SetProperty(f => f.CenterPoint = new PointF(float.Parse(tbCenterX.Text), float.Parse(tbCenterY.Text)));
-            arcStyles.SetProperty(f => f.Radius = float.Parse(tbRadius.Text));
-            arcStyles.SetProperty(f => f.StartAngle = float.Parse(tbStartAngle.Text));
-            arcStyles.SetProperty(f => f.SweepAngle = float.Parse(tbSweepAngle.Text));
+        //    // посылаем значения назад из GUI в объект
+        //    arcStyles.SetProperty(f => f.CenterPoint = new PointF(float.Parse(tbCenterX.Text), float.Parse(tbCenterY.Text)));
+        //    arcStyles.SetProperty(f => f.Radius = float.Parse(tbRadius.Text));
+        //    arcStyles.SetProperty(f => f.StartAngle = float.Parse(tbStartAngle.Text));
+        //    arcStyles.SetProperty(f => f.SweepAngle = float.Parse(tbSweepAngle.Text));
 
-            var startAngle = arcStyles.GetProperty(f => f.StartAngle);
-            var sweepAngle = arcStyles.GetProperty(f => f.SweepAngle);
-            var radius = arcStyles.GetProperty(f => f.Radius);
-            CalculateFields(radius, startAngle, sweepAngle);
+        //    var startAngle = arcStyles.GetProperty(f => f.StartAngle);
+        //    var sweepAngle = arcStyles.GetProperty(f => f.SweepAngle);
+        //    var radius = arcStyles.GetProperty(f => f.Radius);
+        //    CalculateFields(radius, startAngle, sweepAngle);
 
-            // вызывем событие
-            Changed(this, new ChangeEventArgs("ArcGeometry", figure.Geometry));
-        }
+        //    // вызывем событие
+        //    Changed(this, new ChangeEventArgs("ArcGeometry", figure.Geometry));
+        //}
 
         private void tbCenterX_Validated(object sender, EventArgs e)
         {
