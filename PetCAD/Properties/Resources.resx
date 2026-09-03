@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="explode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\explode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="endpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\endpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -136,6 +139,9 @@
   <data name="rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="circR2tg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circR2tg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -153,6 +159,9 @@
   </data>
   <data name="normalmarker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\normalmarker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="circR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="blockinsert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blockinsert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -184,6 +193,9 @@
   <data name="bindingChecked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bindingChecked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="circ2pt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circ2pt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tangentmarker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tangentmarker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -199,6 +211,9 @@
   <data name="center" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\center.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="circ3pt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circ3pt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="line" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -207,6 +222,9 @@
   </data>
   <data name="quadrant" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\quadrant.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="circD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="middle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\middle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,7 +235,7 @@
   <data name="scale" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\scale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="explode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="circ3tg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circ3tg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

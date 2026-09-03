@@ -398,6 +398,12 @@ namespace PetCAD
                 drawControl.SetMode(EditorMode.BuildRectangle);
                 tsbRect.Checked = true;
             }
+            else if (sender == tsbCircle)
+            {
+                SwitchOffButtons();
+                drawControl.SetMode((EditorMode)(tsbCircle.Tag ?? EditorMode.BuildCircR));
+                tsbCircle.Checked = true;
+            }
             else if (sender == tsbArc)
             {
                 SwitchOffButtons();
@@ -888,6 +894,60 @@ namespace PetCAD
             {
                 drawControl.ExplodeSelected();
             }
+        }
+
+        private void tcmiBuildCircR_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCircR);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCircR;
+            tsbCircle.Checked = true;
+        }
+
+        private void tsmiBuildCircD_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCircD);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCircD;
+            tsbCircle.Checked = true;
+        }
+
+        private void tsmiBuildCircTwoPoints_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCircTwoPoints);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCircTwoPoints;
+            tsbCircle.Checked = true;
+        }
+
+        private void tsmiBuildCircThreePoints_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCircThreePoints);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCircThreePoints;
+            tsbCircle.Checked = true;
+        }
+
+        private void tsmiBuildCircTwoTangentsR_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCircR2Tangets);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCircR2Tangets;
+            tsbCircle.Checked = true;
+        }
+
+        private void tsmiBuildCircThreeTangents_Click(object sender, EventArgs e)
+        {
+            SwitchOffButtons();
+            drawControl.SetMode(EditorMode.BuildCirc3Tangets);
+            tsbCircle.Image = ((ToolStripMenuItem)sender).Image;
+            tsbCircle.Tag = EditorMode.BuildCirc3Tangets;
+            tsbCircle.Checked = true;
         }
     }
 }

@@ -298,6 +298,12 @@
     <None Include="Resources\scale.png" />
     <None Include="Resources\rotate.png" />
     <None Include="Resources\explode.png" />
+    <None Include="Resources\circR.png" />
+    <None Include="Resources\circD.png" />
+    <None Include="Resources\circ2pt.png" />
+    <None Include="Resources\circ3pt.png" />
+    <None Include="Resources\circR2tg.png" />
+    <None Include="Resources\circ3tg.png" />
     <Content Include="чертилка.ico" />
   </ItemGroup>
   <ItemGroup />

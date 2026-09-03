@@ -95,6 +95,15 @@
             this.tsbRect = new PetCAD.ToolStripSplitButtonCheckable();
             this.tsmiRectangle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPolygone = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCircle = new PetCAD.ToolStripSplitButtonCheckable();
+            this.tcmiBuildCircR = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildCircD = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiBuildCircTwoPoints = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildCircThreePoints = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiBuildCircTwoTangentsR = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBuildCircThreeTangents = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbArc = new PetCAD.ToolStripSplitButtonCheckable();
             this.tsmiBuildArcByThreePoints = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBuildArcByBeginCenterEnd = new System.Windows.Forms.ToolStripMenuItem();
@@ -515,6 +524,7 @@
             this.tsbArrow,
             this.tsbLine,
             this.tsbRect,
+            this.tsbCircle,
             this.tsbArc,
             this.toolStripSeparator12,
             this.tsbCreateBlock,
@@ -747,6 +757,84 @@
             this.tsmiPolygone.Name = "tsmiPolygone";
             this.tsmiPolygone.Size = new System.Drawing.Size(163, 22);
             this.tsmiPolygone.Text = "Полигон";
+            // 
+            // tsbCircle
+            // 
+            this.tsbCircle.Checked = false;
+            this.tsbCircle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCircle.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tcmiBuildCircR,
+            this.tsmiBuildCircD,
+            this.toolStripMenuItem2,
+            this.tsmiBuildCircTwoPoints,
+            this.tsmiBuildCircThreePoints,
+            this.toolStripMenuItem3,
+            this.tsmiBuildCircTwoTangentsR,
+            this.tsmiBuildCircThreeTangents});
+            this.tsbCircle.Image = global::PetCAD.Properties.Resources.circR;
+            this.tsbCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCircle.Name = "tsbCircle";
+            this.tsbCircle.Size = new System.Drawing.Size(32, 22);
+            this.tsbCircle.Text = "Построение круга";
+            this.tsbCircle.ButtonClick += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // tcmiBuildCircR
+            // 
+            this.tcmiBuildCircR.Image = global::PetCAD.Properties.Resources.circR;
+            this.tcmiBuildCircR.Name = "tcmiBuildCircR";
+            this.tcmiBuildCircR.Size = new System.Drawing.Size(206, 22);
+            this.tcmiBuildCircR.Text = "Центр, радиус";
+            this.tcmiBuildCircR.Click += new System.EventHandler(this.tcmiBuildCircR_Click);
+            // 
+            // tsmiBuildCircD
+            // 
+            this.tsmiBuildCircD.Image = global::PetCAD.Properties.Resources.circD;
+            this.tsmiBuildCircD.Name = "tsmiBuildCircD";
+            this.tsmiBuildCircD.Size = new System.Drawing.Size(206, 22);
+            this.tsmiBuildCircD.Text = "Центр, диаметр";
+            this.tsmiBuildCircD.Click += new System.EventHandler(this.tsmiBuildCircD_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(203, 6);
+            // 
+            // tsmiBuildCircTwoPoints
+            // 
+            this.tsmiBuildCircTwoPoints.Image = global::PetCAD.Properties.Resources.circ2pt;
+            this.tsmiBuildCircTwoPoints.Name = "tsmiBuildCircTwoPoints";
+            this.tsmiBuildCircTwoPoints.Size = new System.Drawing.Size(206, 22);
+            this.tsmiBuildCircTwoPoints.Text = "2 точки";
+            this.tsmiBuildCircTwoPoints.Click += new System.EventHandler(this.tsmiBuildCircTwoPoints_Click);
+            // 
+            // tsmiBuildCircThreePoints
+            // 
+            this.tsmiBuildCircThreePoints.Image = global::PetCAD.Properties.Resources.circ3pt;
+            this.tsmiBuildCircThreePoints.Name = "tsmiBuildCircThreePoints";
+            this.tsmiBuildCircThreePoints.Size = new System.Drawing.Size(206, 22);
+            this.tsmiBuildCircThreePoints.Text = "3 точки";
+            this.tsmiBuildCircThreePoints.Click += new System.EventHandler(this.tsmiBuildCircThreePoints_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(203, 6);
+            // 
+            // tsmiBuildCircTwoTangentsR
+            // 
+            this.tsmiBuildCircTwoTangentsR.Image = global::PetCAD.Properties.Resources.circR2tg;
+            this.tsmiBuildCircTwoTangentsR.Name = "tsmiBuildCircTwoTangentsR";
+            this.tsmiBuildCircTwoTangentsR.Size = new System.Drawing.Size(206, 22);
+            this.tsmiBuildCircTwoTangentsR.Text = "2 точки касания, радиус";
+            this.tsmiBuildCircTwoTangentsR.Click += new System.EventHandler(this.tsmiBuildCircTwoTangentsR_Click);
+            // 
+            // tsmiBuildCircThreeTangents
+            // 
+            this.tsmiBuildCircThreeTangents.Image = global::PetCAD.Properties.Resources.circ3tg;
+            this.tsmiBuildCircThreeTangents.Name = "tsmiBuildCircThreeTangents";
+            this.tsmiBuildCircThreeTangents.Size = new System.Drawing.Size(206, 22);
+            this.tsmiBuildCircThreeTangents.Text = "3 точки касания";
+            this.tsmiBuildCircThreeTangents.Click += new System.EventHandler(this.tsmiBuildCircThreeTangents_Click);
             // 
             // tsbArc
             // 
@@ -1221,6 +1309,15 @@
         private System.Windows.Forms.ToolStripButton tsbRotate;
         private System.Windows.Forms.ToolStripMenuItem tsmiRotate;
         private System.Windows.Forms.ToolStripButton tsbExplode;
+        private ToolStripSplitButtonCheckable tsbCircle;
+        private System.Windows.Forms.ToolStripMenuItem tcmiBuildCircR;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildCircD;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildCircTwoPoints;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildCircThreePoints;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildCircTwoTangentsR;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBuildCircThreeTangents;
     }
 }
 
