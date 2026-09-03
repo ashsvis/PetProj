@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace PetCAD.Renderers
 {
-    public static class DrawHelper
+    public static class RenderHelper
     {
         /// <summary>
         /// Рисуем курсор-перекрестье на всё окно
@@ -690,8 +690,7 @@ namespace PetCAD.Renderers
             PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
             PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
             // точка пересечения двух перпендикуляров
-            if (!SegmentIntersection.Intersection(df1, ef1, df2, ef2, out PointF center))
-                return;
+            PointF center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
             var r = center.Vector(pt1).Length();
             var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
             try
@@ -751,8 +750,7 @@ namespace PetCAD.Renderers
             PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
             PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
             // точка пересечения двух перпендикуляров
-            if (!SegmentIntersection.Intersection(df1, ef1, df2, ef2, out center))
-                return false;
+            center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
             radius = center.Vector(pt1).Length();
 
             #region блок коррекции углов дуги

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
@@ -131,7 +132,14 @@ namespace PetCAD.Geometries
             CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
         }
 
-        public void Move(int index, float offsetX, float offsetY)
+        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        {
+            if (index == 2 && StartPoint == EndPoint)
+                return false;
+            return new int[] { 0, 1, 2, 3 }.Contains(index);
+        }
+
+        public void MoveMarker(int index, float offsetX, float offsetY)
         {
             PointF center;
             float radius, angle, sweep;
@@ -249,7 +257,8 @@ namespace PetCAD.Geometries
             PointF df2 = new PointF(mid2.X + px2 * halfLength, mid2.Y + py2 * halfLength);
             PointF ef2 = new PointF(mid2.X - px2 * halfLength, mid2.Y - py2 * halfLength);
             // точка пересечения двух перпендикуляров
-            center = SegmentIntersection.Intersection(df1, ef1, df2, ef2);
+            if (!SegmentIntersection.Intersection(df1, ef1, df2, ef2, out center))
+                return false;
             radius = center.Vector(pt1).Length();
 
             #region блок коррекции углов дуги

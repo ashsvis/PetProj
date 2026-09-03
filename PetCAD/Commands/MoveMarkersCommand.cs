@@ -23,7 +23,7 @@ namespace PetCAD.Commands
             foreach (var (figure, offset, index) in movedOffsets)
             {
                 if (figure.Geometry is IMoveMarker marker)
-                    marker.Move(index, offset.X, offset.Y);
+                    marker.MoveMarker(index, offset.X, offset.Y);
             }
         }
 
@@ -33,7 +33,7 @@ namespace PetCAD.Commands
             foreach (var (figure, offset, index) in movedOffsets)
             {
                 if (figure.Geometry is IMoveMarker marker)
-                    marker.Move(index, -offset.X, -offset.Y);
+                    marker.MoveMarker(index, -offset.X, -offset.Y);
             }
         }
     }

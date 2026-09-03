@@ -2,6 +2,7 @@
 {
     public interface IMoveMarker
     {
-        void Move(int index, float offsetX, float offsetY);
+        void MoveMarker(int index, float offsetX, float offsetY);
+        bool CanMoveMarker(int index, float offsetX, float offsetY);
     }
 }

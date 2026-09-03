@@ -141,13 +141,18 @@ namespace PetCAD.Geometries
             m.Scale(scaled.Width, scaled.Height);
         }
 
+        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        {
+            return index != 0;
+        }
+
         /// <summary>
         /// Перемещение блока за маркер
         /// </summary>
         /// <param name="index"></param>
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
-        public void Move(int index, float offsetX, float offsetY)
+        public void MoveMarker(int index, float offsetX, float offsetY)
         {
             // нулевой маркер - это ORIGIN
             if (index == 0)

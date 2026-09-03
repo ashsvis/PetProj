@@ -491,7 +491,9 @@ namespace PetCAD
             var offsets = new List<(Figure, PointF, int)>();
             foreach (var marker in markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex)))
             {
-                if (marker is VertexMarker vertex)
+                if (marker is VertexMarker vertex && 
+                    marker.Owner.Geometry is IMoveMarker moveMarker &&
+                    moveMarker.CanMoveMarker(vertex.Index, current.X - last.X, current.Y - last.Y))
                 {
                     // добавляем в список
                     offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex.Index));
