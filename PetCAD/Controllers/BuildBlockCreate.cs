@@ -2,6 +2,7 @@
 using PetCAD.Common;
 using PetCAD.Figures;
 using PetCAD.Renderers;
+using PetCAD.Selections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,6 +13,7 @@ namespace PetCAD.Controllers
     public class BuildBlockCreate : IBuildFigure
     {
         private readonly DrawControl drawer;
+        private readonly BlowedSelection underCursor = new BlowedSelection();
 
         public BuildBlockCreate(DrawControl drawer, Control zoomer)
         {
@@ -38,6 +40,9 @@ namespace PetCAD.Controllers
                     using (var font = new Font("Arial", (float)(10f / zoom)))
                         e.Graphics.DrawString(text, font, Brushes.Black, 
                             drawer.PrepareMousePosition(PointF.Add(drawer.CurrentMousePosition, new SizeF(1f, 1f))));
+                    if (drawer.MouseClickCount == 2)
+                        // отрисовка временно подсвеченных под курсором или рамкой выделения
+                        underCursor.Render(e.Graphics, Color.White, zoom, drawer.SelectionController.Selection);
                 }
                 if (drawer.MouseClickCount >= 1)
                 {
@@ -67,20 +72,14 @@ namespace PetCAD.Controllers
                 if (drawer.MouseClickCount == 1)
                 {
                     var pt = drawer.PrepareMousePosition(mousePosition); // вторая точка нажатия;
-                    //поиск ближайшей точки привязки, если включен режим объектной привязки
-                    pt = drawer.FindBindingPoint(pt);
-                    pt = drawer.FindOrthoPoint(pt);
                     drawer.SecondMouseDown = pt;
                     drawer.AddMouseCount();
                 }
                 else if (drawer.MouseClickCount == 2)
                 {
-                    // построение дуги трём точкам 
                     var ptBaseInsert = drawer.FirstMouseDown; // первая точка нажатия (базовая точка вставки блока)
                     var ptFirstSelectCorner = drawer.SecondMouseDown; // вторая точка нажатия (первый угол рамки выделения)
                     var ptSecondSelectCorner = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия (другой угол рамки выделения)
-                    // поиск ближайшей точки привязки, если включен режим объектной привязки
-                    ptSecondSelectCorner = drawer.FindBindingPoint(ptSecondSelectCorner);
 
                     var selMode = ptFirstSelectCorner.X > ptSecondSelectCorner.X;
                     var rectangle = new RectangleF(
@@ -104,10 +103,11 @@ namespace PetCAD.Controllers
                     {
                         if (drawer.AddBlock(drawer.EnteredBlockName, ptBaseInsert, figures))
                         {
-                            drawer.InsertBlock(ptBaseInsert, drawer.EnteredBlockName);
+                            var block = drawer.InsertBlock(ptBaseInsert, drawer.EnteredBlockName);
                             // удаляем фигуры, которые теперь вошли в блок
                             foreach (Figure fig in figures)
                                 drawer.UndoRedoManager.Execute(new RemoveFigureCommand(drawer.Figures, fig));
+                            drawer.SelectionController.Selection.Add(block);
                         }
                     }
                     drawer.ClearMouseCount();
@@ -121,7 +121,27 @@ namespace PetCAD.Controllers
         {
             if (drawer.EditorMode == EditorMode.BuildCreateBlock)
             {
-                //throw new System.NotImplementedException();
+                var mousePosition = e.Location;
+                // определение фигуры под рамкой выбора
+                var ptFirstSelectCorner = drawer.SecondMouseDown;
+                var ptSecondSelectCorner = drawer.PrepareMousePosition(mousePosition);
+                var selMode = ptFirstSelectCorner.X > ptSecondSelectCorner.X;
+                var rectangle = new RectangleF(
+                    Math.Min(ptFirstSelectCorner.X, ptSecondSelectCorner.X), Math.Min(ptFirstSelectCorner.Y, ptSecondSelectCorner.Y),
+                    Math.Abs(ptFirstSelectCorner.X - ptSecondSelectCorner.X), Math.Abs(ptFirstSelectCorner.Y - ptSecondSelectCorner.Y));
+                underCursor.Clear();
+                drawer.SelectionController.SelectUnselectByFrame(drawer.Figures, drawer.ShiftPressed, selMode, rectangle,
+                    (manager, fig) =>
+                    {
+                        if (!underCursor.Contains(fig))
+                            underCursor.Add(fig);
+                    },
+                    (manager, fig) =>
+                    {
+                        if (underCursor.Contains(fig))
+                            underCursor.Remove(fig);
+                    }
+                );
             }
         }
 

@@ -143,7 +143,7 @@ namespace PetCAD.Geometries
 
         public bool CanMoveMarker(int index, float offsetX, float offsetY)
         {
-            return index != 0;
+            return index == 0;
         }
 
         /// <summary>

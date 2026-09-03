@@ -615,7 +615,7 @@ namespace PetCAD
                                 if (marker.Owner.Geometry is LineGeometry segment)
                                     selectionController.BuildBindingMarkers(underCursor, allowed,
                                         marker.Position == segment.EndPoint ? segment.StartPoint : segment.EndPoint);
-                            zoomPad.Invalidate();
+                            zoomPad.Refresh();
                             return;
                         }
                     }
@@ -624,7 +624,7 @@ namespace PetCAD
                 else
                     selectionController.ClearBindingMarkers();
             }
-            zoomPad.Invalidate();
+            zoomPad.Refresh();
         }
 
         private void zoomPad_MouseUp(object sender, MouseEventArgs e)
@@ -659,7 +659,7 @@ namespace PetCAD
             return false;
         }
 
-        public void InsertBlock(PointF insertPoint, string blockName)
+        public BlockReference InsertBlock(PointF insertPoint, string blockName)
         {
             Figure block = new BlockReference();
             block.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
@@ -669,6 +669,7 @@ namespace PetCAD
                 FigureBuilder.BuildBlockGeometry(blockName, block, insertPoint, BlockGeometry.DefinedBlocks[blockName]);
                 undoRedoManager.Execute(new CreateFigureCommand(figures, block));
             }
+            return (BlockReference)block;
         }
 
         /// <summary>
