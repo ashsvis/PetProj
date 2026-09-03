@@ -339,6 +339,12 @@ namespace PetCAD.Renderers
                                     graphics.DrawLine(penA, startPoint, pt);
                                     break;
                                 }
+                            case CircleGeometry circle:
+                                drawControl.DrawCircleByCenterRadius(graphics, pen, circle.CenterPoint, circle.Radius);
+                                drawControl.DrawCircleByCenterRadius(graphics, penA,
+                                    vertex.Index == 0 ? pt : circle.CenterPoint,
+                                    pt.Vector(circle.CenterPoint).Length());
+                                break;
                             case ArcGeometry arc:
                                 drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
                                 drawControl.DrawArcByThreePoints(graphics, penA,

@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Security.Cryptography;
-using System.Windows.Forms;
 
 namespace PetCAD.Common
 {
@@ -233,7 +231,7 @@ namespace PetCAD.Common
             return true;
         }
 
-        public static bool NormalPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] norms)
+        public static bool NormalPointOnArc(ICircleGeometry arc, PointF basePoint, out PointF[] norms)
         {
             norms = new PointF[] { };
             if (basePoint == arc.CenterPoint || arc.Radius <= 0)
@@ -283,7 +281,7 @@ namespace PetCAD.Common
             return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
         }
 
-        public static bool TangentPointOnArc(ArcGeometry arc, PointF basePoint, out PointF[] tangents)
+        public static bool TangentPointOnArc(ICircleGeometry arc, PointF basePoint, out PointF[] tangents)
         {
             tangents = new PointF[] { };
             if (basePoint == arc.CenterPoint || arc.Radius <= 0)

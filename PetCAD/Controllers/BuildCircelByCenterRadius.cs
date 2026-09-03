@@ -52,28 +52,18 @@ namespace PetCAD.Controllers
                 var mousePosition = e.Location;
                 if (drawer.MouseClickCount == 1)
                 {
-                    var pt = drawer.PrepareMousePosition(mousePosition); // вторая точка нажатия;
-                    //поиск ближайшей точки привязки, если включен режим объектной привязки
-                    pt = drawer.FindBindingPoint(pt);
-                    pt = drawer.FindOrthoPoint(pt);
-                    drawer.SecondMouseDown = pt;
-                    drawer.AddMouseCount();
+                    // построение круга по двум точкам 
+                    var pt1 = drawer.FirstMouseDown; // первая точка нажатия
+                    var pt2 = drawer.PrepareMousePosition(mousePosition); // вторая точка нажатия
+                    // поиск ближайшей точки привязки, если включен режим объектной привязки
+                    pt2 = drawer.FindBindingPoint(pt2);
+
+                    drawer.AddCircleByCenterRadius(pt1, pt2);
+
+                    drawer.SelectionController.Selection.Clear();
+                    drawer.ClearMouseCount();
+                    drawer.Changed = true;
                 }
-                //else if (drawer.MouseClickCount == 2)
-                //{
-                //    // построение дуги трём точкам 
-                //    var pt1 = drawer.FirstMouseDown; // первая точка нажатия
-                //    var pt2 = drawer.SecondMouseDown; // вторая точка нажатия
-                //    var pt3 = drawer.PrepareMousePosition(mousePosition); // третья точка нажатия
-                //    // поиск ближайшей точки привязки, если включен режим объектной привязки
-                //    pt3 = drawer.FindBindingPoint(pt3);
-
-                //    drawer.AddArcByCenterStartEnd(pt1, pt2, pt3);
-
-                //    drawer.SelectionController.Selection.Clear();
-                //    drawer.ClearMouseCount();
-                //    drawer.Changed = true;
-                //}
             }
         }
 
@@ -89,14 +79,6 @@ namespace PetCAD.Controllers
                         drawer.SendParamsOnChange(new object[] { pt });
                     else if (drawer.MouseClickCount == 1)
                         drawer.SendParamsOnChange(new object[] { pt });
-                    //else if (drawer.MouseClickCount == 2)
-                    //{
-                    //    drawer.SendParamsOnChange(new object[] { pt });
-                    //    //var pt1 = drawer.FirstMouseDown;                                    // первая точка нажатия
-                    //    //var pt2 = drawer.SecondMouseDown;                                   // вторая точка нажатия
-                    //    //var pt3 = drawer.PrepareMousePosition(drawer.CurrentMousePosition); // третья точка нажатия
-                    //    //drawer.SendParamsOnChange(new object[] { pt1, pt2, pt3 });
-                    //}
                 }
             }
         }

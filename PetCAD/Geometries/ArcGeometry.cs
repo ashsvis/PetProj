@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class ArcGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
+    public sealed class ArcGeometry : Geometry, ICircleGeometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker
     {
         public PointF CenterPoint { get; set; }
         public float Radius { get; set; }

@@ -22,6 +22,15 @@ namespace PetCAD.Figures
                 Name = "Отрезок",
             };
         }
+    
+        public static void BuildCircleGeometry(Figure figure, PointF center, float radius)
+        {
+            figure.Geometry = new CircleGeometry(figure, center, radius)
+            {
+                Kind = "Circle",
+                Name = "Круг",
+            };
+        }
 
         /// <summary>
         /// Построение пути для дуги

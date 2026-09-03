@@ -144,6 +144,8 @@
       <DependentUpon>DrawControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\EditorMode.cs" />
+    <Compile Include="Geometries\CircleGeometry.cs" />
+    <Compile Include="Geometries\ICircleGeometry.cs" />
     <Compile Include="Geometries\IExplodeGeometry.cs" />
     <Compile Include="Markers\AllowedMarkerOperations.cs" />
     <Compile Include="Figures\BlockReference.cs" />

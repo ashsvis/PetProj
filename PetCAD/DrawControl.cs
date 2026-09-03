@@ -707,6 +707,30 @@ namespace PetCAD
                 undoRedoManager.Execute(new CreateFigureCommand(figures, line));
         }
 
+        private Figure CreateCircle(PointF center, float radius)
+        {
+            Figure circle = new Figure();
+            circle.Style.BorderStyle = Layer.Style.BorderStyle.DeepCopy();
+            FigureBuilder.BuildCircleGeometry(circle, center, radius);
+            circle.Style.FillStyle.IsVisible = false;
+            return circle;
+        }
+
+        public void AddCircle(PointF center, float radius, bool loading = false)
+        {
+            Figure circle = CreateCircle(center, radius);
+            if (loading)
+                figures.Add(circle);
+            else
+                undoRedoManager.Execute(new CreateFigureCommand(figures, circle));
+        }
+
+        public void AddCircleByCenterRadius(PointF center, PointF point)
+        {
+            var radius = center.Vector(point).Length();
+            AddCircle(center, radius);
+        }
+
         /// <summary>
         /// Создать дугу с центром, радиусом, начальным углом и углов створа
         /// </summary>
@@ -937,6 +961,8 @@ namespace PetCAD
                                                 {
                                                     case "Segment":
                                                         return new LineGeometry(figure);
+                                                    case "Circle":
+                                                        return new CircleGeometry(figure);
                                                     case "Arc":
                                                         return new ArcGeometry(figure);
                                                     case "BlockRef":
@@ -994,6 +1020,8 @@ namespace PetCAD
                                         {
                                             case "Segment":
                                                 return new LineGeometry(figure);
+                                            case "Circle":
+                                                return new CircleGeometry(figure);
                                             case "Arc":
                                                 return new ArcGeometry(figure);
                                             case "BlockRef":
