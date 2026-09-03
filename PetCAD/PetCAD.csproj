@@ -89,6 +89,7 @@
     <Compile Include="Controllers\BuildArcByThreePoints.cs" />
     <Compile Include="Controllers\BuildBlockCreate.cs" />
     <Compile Include="Controllers\BuildBlockInsert.cs" />
+    <Compile Include="Controllers\BuildCircelByCenterRadius.cs" />
     <Compile Include="Controllers\BuildLine.cs" />
     <Compile Include="Controllers\BuildRectangle.cs" />
     <Compile Include="Controllers\IBuildFigure.cs" />

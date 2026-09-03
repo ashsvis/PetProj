@@ -71,6 +71,7 @@ namespace PetCAD
 
         private readonly BuildLine buildLineController;
         private readonly BuildRectangle buildRectangleController;
+        private readonly BuildCircelByCenterRadius buildCircelByCenterRadiusController;
         private readonly BuildArcByThreePoints buildArcByThreePointsController;
         private readonly BuildArcByStartCenterEnd buildArcByStartCenterEndController;
         private readonly BuildArcByCenterStartEnd buildArcByCenterStartrEndController;
@@ -88,6 +89,9 @@ namespace PetCAD
             selectionController.SelectedFigureChanged += BuildInterface;
             buildLineController = new BuildLine(this, zoomPad);
             buildRectangleController = new BuildRectangle(this, zoomPad);
+
+            buildCircelByCenterRadiusController = new BuildCircelByCenterRadius(this, zoomPad);
+
             buildArcByThreePointsController = new BuildArcByThreePoints(this, zoomPad);
             buildArcByStartCenterEndController = new BuildArcByStartCenterEnd(this, zoomPad);
             buildArcByCenterStartrEndController = new BuildArcByCenterStartEnd(this, zoomPad);
@@ -1127,6 +1131,7 @@ namespace PetCAD
         {
             buildLineController.SetParameters(strings);
             buildRectangleController.SetParameters(strings);
+            buildCircelByCenterRadiusController.SetParameters(strings);
             buildArcByThreePointsController.SetParameters(strings);
             buildArcByStartCenterEndController.SetParameters(strings);
             buildArcByCenterStartrEndController.SetParameters(strings);

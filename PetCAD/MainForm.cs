@@ -365,6 +365,7 @@ namespace PetCAD
             tsbArrow.Checked = false;
             tsbLine.Checked = false;
             tsbRect.Checked = false;
+            tsbCircle.Checked = false;
             tsbArc.Checked = false;
             tsbCreateBlock.Checked = false;
             tsbInsertBlock.Checked = false;

@@ -501,7 +501,40 @@ namespace PetCAD.Renderers
                     }
                 }
             }
-            drawControl.ToolTipChanged($"Количество нажатий: {drawControl.MouseClickCount}");
+        }
+
+        public static void DrawRibbonSizeLine(this DrawControl drawControl, Graphics graphics, Pen pen,
+            PointF firstMouseDown, PointF mousePosition, bool ortho = true)
+        {
+            float zoom = drawControl.Zoom;
+            var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            if (ortho)
+            {
+                //поиск ортогональной точки, если включен режим ортогонального построения
+                pt2 = drawControl.FindOrthoPoint(pt2);
+            }
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            graphics.DrawLine(pen, pt1, pt2);
+            if (drawControl.MouseClickCount == 1)
+            {
+                if (drawControl.IsDynamicalEnter)
+                {
+                    using (var dynpen = new Pen(Color.Gray, 0) { DashStyle = DashStyle.Dot })
+                    {
+                        drawControl.DrawSizeLine(graphics, dynpen, pt1, pt2, (float)(50f / zoom)); // Выноска размера 50 пикселей
+                    }
+                }
+            }
+        }
+
+        public static void DrawRibbonCircle(this DrawControl drawControl, Graphics graphics, Pen pen,
+            PointF firstMouseDown, PointF mousePosition)
+        {
+            var pt1 = firstMouseDown;
+            var pt2 = drawControl.PrepareMousePosition(mousePosition);
+            drawControl.DrawCircleByCenterRadius(graphics, pen, pt1, pt2.Vector(pt1).Length());
         }
 
         /// <summary>
@@ -615,6 +648,18 @@ namespace PetCAD.Renderers
             }
             catch { }
         }
+
+        public static void DrawCircleByCenterRadius(this DrawControl drawControl, Graphics graphics, Pen pen, PointF center, float radius)
+        {
+            var r = radius;
+            var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
+            try
+            {
+                graphics.DrawEllipse(pen, rect);
+            }
+            catch { }
+        }
+
 
         /// <summary>
         /// Рисуем дугу, с центром, проходящую из начала, к концу
