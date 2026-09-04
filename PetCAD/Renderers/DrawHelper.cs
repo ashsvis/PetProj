@@ -334,19 +334,25 @@ namespace PetCAD.Renderers
                         {
                             case LineGeometry segment:
                                 {
+                                    // рисуем отрезок на текущем месте
                                     graphics.DrawLine(pen, segment.StartPoint, segment.EndPoint);
+                                    // рисуем отрезок на новом месте
                                     var startPoint = vertex.Index == 0 ? segment.EndPoint : segment.StartPoint;
                                     graphics.DrawLine(penA, startPoint, pt);
                                     break;
                                 }
                             case CircleGeometry circle:
+                                // рисуем круг на текущем месте
                                 drawControl.DrawCircleByCenterRadius(graphics, pen, circle.CenterPoint, circle.Radius);
+                                // рисуем круг на новом месте
                                 drawControl.DrawCircleByCenterRadius(graphics, penA,
                                     vertex.Index == 0 ? pt : circle.CenterPoint,
                                     pt.Vector(circle.CenterPoint).Length());
                                 break;
                             case ArcGeometry arc:
+                                // рисуем дугу на текущем месте
                                 drawControl.DrawArcByThreePoints(graphics, pen, arc.StartPoint, arc.MiddlePoint, arc.EndPoint);
+                                // рисуем дугу на новом месте
                                 drawControl.DrawArcByThreePoints(graphics, penA,
                                     vertex.Index == 1 ? pt : arc.StartPoint,
                                     vertex.Index == 2 ? pt : arc.MiddlePoint,
@@ -355,7 +361,9 @@ namespace PetCAD.Renderers
                             case BlockGeometry block:
                                 using (var path = marker.Owner.GetRendererPath())
                                 {
+                                    // рисуем содержимое блока на текущем месте
                                     graphics.DrawPath(pen, path);
+                                    // рисуем содержимое блока на новом месте
                                     var m = new Matrix();
                                     m.Translate(pt.X - drawControl.FirstMouseDown.X, pt.Y - drawControl.FirstMouseDown.Y);
                                     path.Transform(m);
@@ -368,36 +376,33 @@ namespace PetCAD.Renderers
             }
         }
 
-        public static PointF FindOrthoPoint(this DrawControl drawControl, PointF pt2)
+        /// <summary>
+        /// Ищем точку, ортогональную указанной точке
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="point">указаная точка</param>
+        /// <returns>ортогональная точка</returns>
+        public static PointF FindOrthoPoint(this DrawControl drawControl, PointF point)
         {
             if (drawControl.IsDrawOrthoMode)
             {
-                pt2 = drawControl.PrepareMousePosition(drawControl.CurrentMousePosition);
-                var dx = Math.Abs(drawControl.FirstMouseDown.X - pt2.X);
-                var dy = Math.Abs(drawControl.FirstMouseDown.Y - pt2.Y);
+                point = drawControl.PrepareMousePosition(drawControl.CurrentMousePosition);
+                var dx = Math.Abs(drawControl.FirstMouseDown.X - point.X);
+                var dy = Math.Abs(drawControl.FirstMouseDown.Y - point.Y);
                 if (dx < dy)
-                    pt2.X = drawControl.FirstMouseDown.X;
+                    point.X = drawControl.FirstMouseDown.X;
                 else
-                    pt2.Y = drawControl.FirstMouseDown.Y;
+                    point.Y = drawControl.FirstMouseDown.Y;
             }
-            return pt2;
+            return point;
         }
 
-        public static PointF FindOrthoPoint(this DrawControl drawControl, PointF pt1, PointF pt2)
-        {
-            if (drawControl.IsDrawOrthoMode)
-            {
-                pt2 = drawControl.PrepareMousePosition(drawControl.CurrentMousePosition);
-                var dx = Math.Abs(pt1.X - pt2.X);
-                var dy = Math.Abs(pt1.Y - pt2.Y);
-                if (dx < dy)
-                    pt2.X = pt1.X;
-                else
-                    pt2.Y = pt1.Y;
-            }
-            return pt2;
-        }
-
+        /// <summary>
+        /// Ищем ближайшую точку привязки к указанной точке
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="point">указанная точка</param>
+        /// <returns></returns>
         public static PointF FindBindingPoint(this DrawControl drawControl, PointF point)
         {
             if (drawControl.IsObjectBinding)
@@ -415,8 +420,8 @@ namespace PetCAD.Renderers
         /// Рисуем резиновый прямоугольник выбора
         /// </summary>
         /// <param name="graphics"></param>
-        /// <param name="firstMouseDown"></param>
-        /// <param name="mousePosition"></param>
+        /// <param name="firstMouseDown">первая точка рамки</param>
+        /// <param name="mousePosition">вторая точка рамки (текущая позиция указателя)</param>
         public static void DrawRibbonSelectionRect(this DrawControl drawControl, Graphics graphics, PointF firstMouseDown, PointF mousePosition)
         {
             var pt1 = firstMouseDown;
@@ -535,6 +540,14 @@ namespace PetCAD.Renderers
             }
         }
 
+        /// <summary>
+        /// Рисуем круг при построении
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="firstMouseDown"></param>
+        /// <param name="mousePosition"></param>
         public static void DrawRibbonCircle(this DrawControl drawControl, Graphics graphics, Pen pen,
             PointF firstMouseDown, PointF mousePosition)
         {
@@ -583,7 +596,6 @@ namespace PetCAD.Renderers
                     }
                 }
             }
-            drawControl.ToolTipChanged($"Количество нажатий: {drawControl.MouseClickCount}");
         }
 
         /// <summary>
@@ -625,6 +637,25 @@ namespace PetCAD.Renderers
         }
 
         /// <summary>
+        /// Рисуем круг, с центром и радиусом
+        /// </summary>
+        /// <param name="drawControl"></param>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        public static void DrawCircleByCenterRadius(this DrawControl drawControl, Graphics graphics, Pen pen, PointF center, float radius)
+        {
+            var r = radius;
+            var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
+            try
+            {
+                graphics.DrawEllipse(pen, rect);
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// Рисуем дугу, проходящую через начало, с центром, к концу
         /// </summary>
         /// <param name="drawControl"></param>
@@ -651,17 +682,6 @@ namespace PetCAD.Renderers
                     graphics.DrawArc(pen, rect, angle2, 360 - sweepAngle);
                 else
                     graphics.DrawArc(pen, rect, angle1, sweepAngle);
-            }
-            catch { }
-        }
-
-        public static void DrawCircleByCenterRadius(this DrawControl drawControl, Graphics graphics, Pen pen, PointF center, float radius)
-        {
-            var r = radius;
-            var rect = new RectangleF(center.X - r, center.Y - r, r * 2f, r * 2f);
-            try
-            {
-                graphics.DrawEllipse(pen, rect);
             }
             catch { }
         }
