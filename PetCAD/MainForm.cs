@@ -169,6 +169,7 @@ namespace PetCAD
                 typeof(PropertyCategoriesShower),
                 typeof(BorderStyleEditor),
                 typeof(LineGeometryEditor),
+                typeof(CircleGeometryEditor),
                 typeof(ArcGeometryEditor),
                 typeof(BlockGeometryEditor),
             };
@@ -291,6 +292,27 @@ namespace PetCAD
                     if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig14 && e.Arguments[1] is float endY)
                     {
                         drawControl.UndoRedoManager.Execute(new ChangeLineEndYCommand(fig14, endY));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "CircleGeometryCenterX":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig15 && e.Arguments[1] is float centerX1)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeCircleCenterXCommand(fig15, centerX1));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "CircleGeometryCenterY":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig16 && e.Arguments[1] is float centerY1)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeCircleCenterYCommand(fig16, centerY1));
+                        drawControl.Changed = true;
+                    }
+                    break;
+                case "CircleGeometryRadius":
+                    if (e.Arguments.Length == 2 && e.Arguments[0] is Figure fig17 && e.Arguments[1] is float radius1)
+                    {
+                        drawControl.UndoRedoManager.Execute(new ChangeCircleRadiusCommand(fig17, radius1));
                         drawControl.Changed = true;
                     }
                     break;

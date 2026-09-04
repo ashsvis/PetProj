@@ -64,6 +64,9 @@
     <Compile Include="Commands\ChangeBorderIsVisibleCommand.cs" />
     <Compile Include="Commands\ChangeBorderOpacityCommand.cs" />
     <Compile Include="Commands\ChangeBorderWidthCommand.cs" />
+    <Compile Include="Commands\ChangeCircleCenterXCommand.cs" />
+    <Compile Include="Commands\ChangeCircleCenterYCommand.cs" />
+    <Compile Include="Commands\ChangeCircleRadiusCommand.cs" />
     <Compile Include="Commands\ChangeLineEndXCommand.cs" />
     <Compile Include="Commands\ChangeLineEndYCommand.cs" />
     <Compile Include="Commands\ChangeLineStartXCommand.cs" />
@@ -93,6 +96,12 @@
     <Compile Include="Controllers\BuildLine.cs" />
     <Compile Include="Controllers\BuildRectangle.cs" />
     <Compile Include="Controllers\IBuildFigure.cs" />
+    <Compile Include="Controls\CircleGeometryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CircleGeometryEditor.Designer.cs">
+      <DependentUpon>CircleGeometryEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BlockGeometryEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -207,6 +216,9 @@
     <Compile Include="ZoomControl.Designer.cs">
       <DependentUpon>ZoomControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Controls\CircleGeometryEditor.resx">
+      <DependentUpon>CircleGeometryEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BlockGeometryEditor.resx">
       <DependentUpon>BlockGeometryEditor.cs</DependentUpon>
     </EmbeddedResource>
