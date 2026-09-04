@@ -5,6 +5,7 @@
         Vertex,
         Middle,
         Center,
+        Size,
         BindingVertex,
         BindingMiddle,
         BindingCenter,

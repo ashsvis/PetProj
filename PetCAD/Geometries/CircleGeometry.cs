@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net;
 using System.Xml.Linq;
 
 namespace PetCAD.Geometries
 {
-    public sealed class CircleGeometry : Geometry, ICircleGeometry, IMoveGeometry, IScaleGeometry, IMoveMarker
+    public sealed class CircleGeometry : Geometry, ICircleGeometry, IMoveGeometry, IRotateGeometry, IScaleGeometry, IMoveMarker
     {
         public PointF CenterPoint { get; set; }
         public float Radius { get; set; }
@@ -106,44 +107,44 @@ namespace PetCAD.Geometries
             CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
         }
 
-        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        public bool CanMoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
-            return new int[] { 0, 1, 2, 3, 4 }.Contains(index);
+            return true;
         }
 
-        public void MoveMarker(int index, float offsetX, float offsetY)
+        public void MoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
-            switch (index)
+            if (maker.MarkerType == MarkerType.Center)
+                CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
+            else if (maker.MarkerType == MarkerType.Size)
             {
-                case 0:
-                    CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    var quadrants = QuadrantPoints();
-                    var point = PointF.Add(quadrants[index - 1], SizeF.Empty /*new SizeF(offsetX, offsetY)*/);
-                    var length = point.Vector(CenterPoint).Length();
-                    Radius = length;
-                    break;
+                var point = PointF.Add(maker.Position, new SizeF(offsetX, offsetY));
+                var length = point.Vector(CenterPoint).Length();
+                Radius = length;
             }
+        }
+
+        public void Rotate(PointF baseRotatePoint, float angle)
+        {
+            var points = new PointF[] { CenterPoint };
+            var m = new Matrix();
+            m.Translate(-baseRotatePoint.X, -baseRotatePoint.Y, MatrixOrder.Append);
+            m.Rotate(angle, MatrixOrder.Append);
+            m.Translate(baseRotatePoint.X, baseRotatePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            CenterPoint = points[0];
         }
 
         public void Scale(PointF basePoint, float zoom)
         {
-            //var points = new PointF[] { StartPoint, MiddlePoint, EndPoint };
-            //var m = new Matrix();
-            //m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
-            //m.Scale(zoom, zoom, MatrixOrder.Append);
-            //m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
-            //m.TransformPoints(points);
-            //if (ConvertThreePointsToCenterRadiusAndAngles(points[0], points[1], points[2],
-            //    out PointF center, out float radius, out float startAngle, out float sweepAngle))
-            //{
-            //    CenterPoint = center;
-            //    Radius = radius;
-            //}
+            var points = new PointF[] { CenterPoint, new PointF(CenterPoint.X + Radius, CenterPoint.Y) };
+            var m = new Matrix();
+            m.Translate(-basePoint.X, -basePoint.Y, MatrixOrder.Append);
+            m.Scale(zoom, zoom, MatrixOrder.Append);
+            m.Translate(basePoint.X, basePoint.Y, MatrixOrder.Append);
+            m.TransformPoints(points);
+            CenterPoint = points[0];
+            Radius = points[1].Vector(points[0]).Length();
         }
 
         public override Marker[] GetGeometryMarkers()
@@ -163,7 +164,7 @@ namespace PetCAD.Geometries
                 markers.Add(
                     new VertexMarker
                     {
-                        MarkerType = MarkerType.Vertex,
+                        MarkerType = MarkerType.Size,
                         Position = quadrantPoint,
                         Index = ++n,
                         Owner = Owner,

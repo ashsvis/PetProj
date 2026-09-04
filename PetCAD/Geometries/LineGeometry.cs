@@ -119,12 +119,12 @@ namespace PetCAD.Geometries
                 Points[i] = PointF.Add(Points[i], new SizeF(offsetX, offsetY));
         }
 
-        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        public bool CanMoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             return new int[] { 0, 1 }.Contains(index);
         }
 
-        public void MoveMarker(int index, float offsetX, float offsetY)
+        public void MoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             switch (index)
             {

@@ -142,7 +142,7 @@ namespace PetCAD.Geometries
             m.Scale(scaled.Width, scaled.Height);
         }
 
-        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        public bool CanMoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             return index == 0;
         }
@@ -153,7 +153,7 @@ namespace PetCAD.Geometries
         /// <param name="index"></param>
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
-        public void MoveMarker(int index, float offsetX, float offsetY)
+        public void MoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             // нулевой маркер - это ORIGIN
             if (index == 0)

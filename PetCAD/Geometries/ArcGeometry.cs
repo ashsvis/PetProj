@@ -132,14 +132,14 @@ namespace PetCAD.Geometries
             CenterPoint = PointF.Add(CenterPoint, new SizeF(offsetX, offsetY));
         }
 
-        public bool CanMoveMarker(int index, float offsetX, float offsetY)
+        public bool CanMoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             if (index == 2 && StartPoint == EndPoint)
                 return false;
             return new int[] { 0, 1, 2, 3 }.Contains(index);
         }
 
-        public void MoveMarker(int index, float offsetX, float offsetY)
+        public void MoveMarker(Marker maker, int index, float offsetX, float offsetY)
         {
             PointF center;
             float radius, angle, sweep;

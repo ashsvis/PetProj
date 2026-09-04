@@ -492,15 +492,15 @@ namespace PetCAD
         /// <param name="current"></param>
         private void MoveVertexByMarker(PointF last, PointF current)
         {
-            var offsets = new List<(Figure, PointF, int)>();
+            var offsets = new List<(Figure, PointF, Marker, int)>();
             foreach (var marker in markers.Where(m => m.AllowedOperations.HasFlag(AllowedMarkerOperations.MoveVertex)))
             {
                 if (marker is VertexMarker vertex && 
-                    marker.Owner.Geometry is IMoveMarker moveMarker &&
-                    moveMarker.CanMoveMarker(vertex.Index, current.X - last.X, current.Y - last.Y))
+                    marker.Owner.Geometry is IMoveMarker mover &&
+                    mover.CanMoveMarker(vertex, vertex.Index, current.X - last.X, current.Y - last.Y))
                 {
                     // добавляем в список
-                    offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex.Index));
+                    offsets.Add((marker.Owner, new PointF(current.X - last.X, current.Y - last.Y), vertex, vertex.Index));
                 }
             }
             // если список не пуст, выполняем метод перемещения

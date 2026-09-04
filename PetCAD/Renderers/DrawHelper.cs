@@ -209,7 +209,7 @@ namespace PetCAD.Renderers
                             }
                             var fig = figure.DeepCopy();
                             // рисуем масштабируемое представление цветом LightPink
-                            if (fig.Geometry is IRotateGeometry rotateGeometry)
+                            if (fig.Geometry is IScaleGeometry scaleGeometry)
                             {
                                 using (var path = fig.GetRendererPath())
                                 {
