@@ -54,12 +54,11 @@ namespace PetCAD.Controls
 
         private void CalculateFields(float radius)
         {
-            var sweepRad = Math.PI * 2;
-            var arcLength = Math.Abs(radius * sweepRad);
-            var segmentSquare = Math.Abs(0.5 * radius * radius * (sweepRad - Math.Sin(sweepRad)));
+            var arcLength = Math.PI * 2 * radius;
+            var circleSquare = Math.PI * radius * radius;
 
             tbArcLength.Text = $"{arcLength:0.#}";
-            tbSegmentSquare.Text = $"{segmentSquare:0.#}";
+            tbSegmentSquare.Text = $"{circleSquare:0.#}";
         }
 
         private void tbCenterX_Validated(object sender, EventArgs e)
@@ -75,6 +74,10 @@ namespace PetCAD.Controls
         private void tbRadius_Validated(object sender, EventArgs e)
         {
             SendChanges(sender, "CircleGeometryRadius");
+            // получаем список объектов
+            var lineStyles = selection.Select(f => f.Geometry as CircleGeometry).ToList();
+            var radius = lineStyles.GetProperty(f => f.Radius);
+            CalculateFields(radius);
         }
 
         private void SendChanges(object sender, string id)
