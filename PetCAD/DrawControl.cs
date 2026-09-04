@@ -152,25 +152,29 @@ namespace PetCAD
             // отрисовка выделения
             selectionController.Selection.Render(graphics,
                     editorMode == EditorMode.MoveSelected && mouseClickCount == 1 ? Color.Silver : Color.Pink, zoom);
+
             // отрисовка маркеров на выбранных фигурах
             foreach (var marker in selectionController.Markers)
                 marker.Render(graphics, markers.Contains(marker) ? Color.Red : Color.Blue, zoom);
+
             // отрисовка маркеров привязки на фигурах под курсором, при построении линий
             if (IsObjectBinding && (editorMode != EditorMode.Selection))
             {
                 var loc = PrepareMousePosition(PointToClient(MousePosition));
                 var query = selectionController.BindingMarkers.Select(mrk => (mrk,
                    $"{Math.Sqrt((mrk.Position.X - loc.X) * (mrk.Position.X - loc.X) + (mrk.Position.Y - loc.Y) * (mrk.Position.Y - loc.Y)):00000}")).OrderBy(x => x.Item2);
-                // рисуем ближайший маркер привязки к текущему курсору
-                using (var pen = new Pen(Color.White, 1f / zoom))
-                {
-                    ////foreach (var item in query.Skip(1))
-                    ////    item.mrk.Render(graphics, Color.White, zoom);
+                
+                // рисуем все доступные маркеры привязки
+                foreach (var item in query)
+                    item.mrk.Render(graphics, Color.Silver, zoom);
 
+                // рисуем ближайший маркер привязки к текущему курсору
+                using (var pen = new Pen(Color.Silver, 1f / zoom))
+                {
                     foreach (var item in query.Take(1))
                     {
                         // рисование перекрестья в центре дуги
-                        if (item.mrk.Owner is Figure fig && fig.Geometry is ArcGeometry arc)
+                        if (item.mrk.Owner is Figure fig && fig.Geometry is ICircleGeometry arc)
                         {
                             graphics.DrawLine(pen,
                                 new PointF(arc.CenterPoint.X - 4f / zoom, arc.CenterPoint.Y),
@@ -179,7 +183,7 @@ namespace PetCAD
                                 new PointF(arc.CenterPoint.X, arc.CenterPoint.Y - 4f / zoom),
                                 new PointF(arc.CenterPoint.X, arc.CenterPoint.Y + 4f / zoom));
                         }
-                        item.mrk.Render(graphics, Color.Yellow, zoom);
+                        item.mrk.Render(graphics, Color.White, zoom);
                     }
                 }
             }

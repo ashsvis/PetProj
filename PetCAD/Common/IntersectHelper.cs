@@ -18,7 +18,7 @@ namespace PetCAD.Common
         /// <returns></returns>
         public static bool Contains(this Figure figure, PointF point, float kf)
         {
-            if ( figure.Geometry is ArcGeometry arc)
+            if (figure.Geometry is ICircleGeometry arc)
             {
                 var marker = new Marker() { Owner = figure, Position = arc.CenterPoint };
                 var rect = marker.Target(1);
