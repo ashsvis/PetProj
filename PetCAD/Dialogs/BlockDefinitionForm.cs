@@ -12,6 +12,9 @@ namespace PetCAD.Dialogs
         }
 
         public string EnteredBlockName => cbBlockName.Text;
+        public bool EnteredBlockExplodeAvailable => cbExplodeEnabled.Checked;
+        public bool EnteredBlockRemoveSources => rbRemoveSource.Checked;
+        public bool EnteredBlockLeaveSources => rbLeaveSource.Checked;
 
         private void BlockDefinitionForm_Load(object sender, System.EventArgs e)
         {

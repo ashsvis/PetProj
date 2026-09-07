@@ -441,7 +441,8 @@ namespace PetCAD
                     if (!BlockGeometry.DefinedBlocks.ContainsKey(frm.EnteredBlockName))
                     {
                         SwitchOffButtons();
-                        drawControl.DefineBlockName(frm.EnteredBlockName);
+                        drawControl.DefineBlockName(frm.EnteredBlockName, frm.EnteredBlockExplodeAvailable,
+                            frm.EnteredBlockRemoveSources, frm.EnteredBlockLeaveSources);
                         drawControl.SetMode(EditorMode.BuildCreateBlock);
                         tsbCreateBlock.Checked = true;
                     }
@@ -456,7 +457,7 @@ namespace PetCAD
             else if (sender == tsbInsertBlock)
             {
                 SwitchOffButtons();
-                drawControl.DefineBlockName($"{tsbInsertBlock.Tag}");
+                drawControl.DefineBlockName($"{tsbInsertBlock.Tag}", true, false, false);
                 drawControl.SetMode(EditorMode.BuildInsertBlock);
                 tsbInsertBlock.Checked = true;
             }
@@ -510,7 +511,7 @@ namespace PetCAD
             tsmiSaveDocumentAs.Enabled = !string.IsNullOrEmpty(workedFileName);
             tsbInsertBlock.Enabled = BlockGeometry.DefinedBlocks.Count > 0;
             tsbExplode.Enabled = drawControl.SelectionController.Selection.Count > 0 &&
-                drawControl.SelectionController.Selection.All(x => x.Geometry is IExplodeGeometry);
+                drawControl.SelectionController.Selection.All(x => x.Geometry.AllowedOperations.HasFlag(AllowedGeometryOperations.Explode));
         }
 
         /// <summary>

@@ -13,7 +13,6 @@ namespace PetCAD.Geometries
     public sealed class BlockGeometry : Geometry, IMoveGeometry, IScaleGeometry, IRotateGeometry, IMoveMarker, IExplodeGeometry
     {
         private Figure[] zeroBasedFigures = new Figure[] { };
-
         public static readonly Dictionary<string, Figure[]> DefinedBlocks = new Dictionary<string, Figure[]>();
 
         public BlockGeometry(Figure figure, string name)
@@ -91,12 +90,12 @@ namespace PetCAD.Geometries
         /// </summary>
         public override AllowedGeometryOperations AllowedOperations 
         { 
-            get { return AllowedGeometryOperations.All ^ AllowedGeometryOperations.Vertex; } 
+            get { return AllowedGeometryOperations.None ^ AllowedGeometryOperations.Explode; } 
         }
 
         public override Geometry DeepCopy(Figure figure)
         {
-            var geometry = new BlockGeometry(figure, Name);           
+            var geometry = new BlockGeometry(figure, Name);    
             return geometry;
         }
 

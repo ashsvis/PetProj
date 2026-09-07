@@ -40,9 +40,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbPointOriginInScreen = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbRemoveSource = new System.Windows.Forms.RadioButton();
+            this.rbConvertSource = new System.Windows.Forms.RadioButton();
+            this.rbLeaveSource = new System.Windows.Forms.RadioButton();
             this.cbSelectObjectsInScreen = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbExplodeEnabled = new System.Windows.Forms.CheckBox();
@@ -169,9 +169,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.radioButton3);
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
+            this.groupBox2.Controls.Add(this.rbRemoveSource);
+            this.groupBox2.Controls.Add(this.rbConvertSource);
+            this.groupBox2.Controls.Add(this.rbLeaveSource);
             this.groupBox2.Controls.Add(this.cbSelectObjectsInScreen);
             this.groupBox2.Location = new System.Drawing.Point(202, 57);
             this.groupBox2.Name = "groupBox2";
@@ -180,39 +180,37 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Объекты";
             // 
-            // radioButton3
+            // rbRemoveSource
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Enabled = false;
-            this.radioButton3.Location = new System.Drawing.Point(7, 125);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(69, 19);
-            this.radioButton3.TabIndex = 1;
-            this.radioButton3.Text = "Удалить";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.rbRemoveSource.AutoSize = true;
+            this.rbRemoveSource.Location = new System.Drawing.Point(7, 125);
+            this.rbRemoveSource.Name = "rbRemoveSource";
+            this.rbRemoveSource.Size = new System.Drawing.Size(69, 19);
+            this.rbRemoveSource.TabIndex = 1;
+            this.rbRemoveSource.Text = "Удалить";
+            this.rbRemoveSource.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // rbConvertSource
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(7, 100);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(148, 19);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Преобразовать в блок";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.rbConvertSource.AutoSize = true;
+            this.rbConvertSource.Checked = true;
+            this.rbConvertSource.Location = new System.Drawing.Point(7, 100);
+            this.rbConvertSource.Name = "rbConvertSource";
+            this.rbConvertSource.Size = new System.Drawing.Size(148, 19);
+            this.rbConvertSource.TabIndex = 1;
+            this.rbConvertSource.TabStop = true;
+            this.rbConvertSource.Text = "Преобразовать в блок";
+            this.rbConvertSource.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // rbLeaveSource
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Enabled = false;
-            this.radioButton1.Location = new System.Drawing.Point(7, 75);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(75, 19);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.Text = "Оставить";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.rbLeaveSource.AutoSize = true;
+            this.rbLeaveSource.Location = new System.Drawing.Point(7, 75);
+            this.rbLeaveSource.Name = "rbLeaveSource";
+            this.rbLeaveSource.Size = new System.Drawing.Size(75, 19);
+            this.rbLeaveSource.TabIndex = 1;
+            this.rbLeaveSource.Text = "Оставить";
+            this.rbLeaveSource.UseVisualStyleBackColor = true;
             // 
             // cbSelectObjectsInScreen
             // 
@@ -242,7 +240,6 @@
             this.cbExplodeEnabled.AutoSize = true;
             this.cbExplodeEnabled.Checked = true;
             this.cbExplodeEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbExplodeEnabled.Enabled = false;
             this.cbExplodeEnabled.Location = new System.Drawing.Point(7, 23);
             this.cbExplodeEnabled.Name = "cbExplodeEnabled";
             this.cbExplodeEnabled.Size = new System.Drawing.Size(161, 19);
@@ -302,8 +299,8 @@
         private System.Windows.Forms.TextBox tbOffsetY;
         private System.Windows.Forms.TextBox tbOffsetX;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbRemoveSource;
+        private System.Windows.Forms.RadioButton rbConvertSource;
+        private System.Windows.Forms.RadioButton rbLeaveSource;
     }
 }

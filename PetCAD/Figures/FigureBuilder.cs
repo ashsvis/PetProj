@@ -1,5 +1,4 @@
 ﻿using PetCAD.Geometries;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace PetCAD.Figures

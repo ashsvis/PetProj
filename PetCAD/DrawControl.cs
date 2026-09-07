@@ -24,6 +24,9 @@ namespace PetCAD
         private PointF mousePosition;
         private EditorMode editorMode;
         public string EnteredBlockName { get; set; }
+        public bool EnteredBlockExplodeAvailable { get; set; }
+        public bool EnteredBlockRemoveSources { get; set; }
+        public bool EnteredBlockLeaveSources { get; set; }
 
         public bool IsDynamicalEnter { get; set; } = true;
         public bool IsDrawOrthoMode { get; set; } = false;
@@ -1309,7 +1312,8 @@ namespace PetCAD
             var list = new List<(Figure, Figure[])>();
             foreach (var figure in SelectionController.Selection.ToList())
             {
-                if (figure.Geometry is IExplodeGeometry explodeGeometry)
+                if (figure.Geometry.AllowedOperations.HasFlag(AllowedGeometryOperations.Explode) &&
+                    figure.Geometry is IExplodeGeometry explodeGeometry)
                 {
                     var addedfigs = explodeGeometry.Explode();
                     list.Add((figure, addedfigs));
@@ -1322,9 +1326,13 @@ namespace PetCAD
             Changed = true;
         }
 
-        public void DefineBlockName(string enteredBlockName)
+        public void DefineBlockName(string enteredBlockName, 
+            bool enteredBlockExplodeAvailable, bool enteredBlockRemoveSources, bool enteredBlockLeaveSources)
         {
             EnteredBlockName = enteredBlockName;
+            EnteredBlockExplodeAvailable = enteredBlockExplodeAvailable;
+            EnteredBlockRemoveSources = enteredBlockRemoveSources;
+            EnteredBlockLeaveSources = enteredBlockLeaveSources;
         }
     }
 }
