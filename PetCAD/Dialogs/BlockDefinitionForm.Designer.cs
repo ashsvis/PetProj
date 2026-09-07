@@ -34,18 +34,18 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbOffsetY = new System.Windows.Forms.TextBox();
+            this.tbOffsetX = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.cbPointOriginInScreen = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.cbSelectObjectsInScreen = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbExplodeEnabled = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbOffsetX = new System.Windows.Forms.TextBox();
-            this.tbOffsetY = new System.Windows.Forms.TextBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -118,6 +118,42 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Базовая точка";
             // 
+            // tbOffsetY
+            // 
+            this.tbOffsetY.Enabled = false;
+            this.tbOffsetY.Location = new System.Drawing.Point(31, 75);
+            this.tbOffsetY.Name = "tbOffsetY";
+            this.tbOffsetY.Size = new System.Drawing.Size(135, 23);
+            this.tbOffsetY.TabIndex = 2;
+            this.tbOffsetY.Text = "0";
+            // 
+            // tbOffsetX
+            // 
+            this.tbOffsetX.Enabled = false;
+            this.tbOffsetX.Location = new System.Drawing.Point(31, 46);
+            this.tbOffsetX.Name = "tbOffsetX";
+            this.tbOffsetX.Size = new System.Drawing.Size(135, 23);
+            this.tbOffsetX.TabIndex = 2;
+            this.tbOffsetX.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 78);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 15);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Y:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 15);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "X:";
+            // 
             // cbPointOriginInScreen
             // 
             this.cbPointOriginInScreen.AutoSize = true;
@@ -143,6 +179,40 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Объекты";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Enabled = false;
+            this.radioButton3.Location = new System.Drawing.Point(7, 125);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(69, 19);
+            this.radioButton3.TabIndex = 1;
+            this.radioButton3.Text = "Удалить";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Checked = true;
+            this.radioButton2.Location = new System.Drawing.Point(7, 100);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(148, 19);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Преобразовать в блок";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Enabled = false;
+            this.radioButton1.Location = new System.Drawing.Point(7, 75);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(75, 19);
+            this.radioButton1.TabIndex = 1;
+            this.radioButton1.Text = "Оставить";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // cbSelectObjectsInScreen
             // 
@@ -180,76 +250,6 @@
             this.cbExplodeEnabled.Text = "Разрешить расчленение";
             this.cbExplodeEnabled.UseVisualStyleBackColor = true;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "X:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 78);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(17, 15);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Y:";
-            // 
-            // tbOffsetX
-            // 
-            this.tbOffsetX.Enabled = false;
-            this.tbOffsetX.Location = new System.Drawing.Point(31, 46);
-            this.tbOffsetX.Name = "tbOffsetX";
-            this.tbOffsetX.Size = new System.Drawing.Size(135, 23);
-            this.tbOffsetX.TabIndex = 2;
-            this.tbOffsetX.Text = "0";
-            // 
-            // tbOffsetY
-            // 
-            this.tbOffsetY.Enabled = false;
-            this.tbOffsetY.Location = new System.Drawing.Point(31, 75);
-            this.tbOffsetY.Name = "tbOffsetY";
-            this.tbOffsetY.Size = new System.Drawing.Size(135, 23);
-            this.tbOffsetY.TabIndex = 2;
-            this.tbOffsetY.Text = "0";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Enabled = false;
-            this.radioButton1.Location = new System.Drawing.Point(7, 75);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(75, 19);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.Text = "Оставить";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(7, 100);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(148, 19);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Преобразовать в блок";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Enabled = false;
-            this.radioButton3.Location = new System.Drawing.Point(7, 125);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(69, 19);
-            this.radioButton3.TabIndex = 1;
-            this.radioButton3.Text = "Удалить";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
             // BlockDefinitionForm
             // 
             this.AcceptButton = this.btnOk;
@@ -273,6 +273,7 @@
             this.Name = "BlockDefinitionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Определение блока";
+            this.Load += new System.EventHandler(this.BlockDefinitionForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

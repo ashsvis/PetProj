@@ -596,12 +596,18 @@ namespace PetCAD
                     (manager, fig) =>
                     {
                         if (!underCursor.Contains(fig))
+                        {
                             underCursor.Add(fig);
+                            zoomPad.Invalidate();
+                        }
                     },
                     (manager, fig) =>
                     {
                         if (underCursor.Contains(fig))
+                        {
                             underCursor.Remove(fig);
+                            zoomPad.Invalidate();
+                        }
                     }
                     );
                 OnSelected?.Invoke(this, selectionController.Selection);
@@ -620,10 +626,14 @@ namespace PetCAD
                         if (allowed.HasFlag(AllowedObjectBindings.Tangent))
                         {
                             foreach (var marker in markers)
+                            {
                                 if (marker.Owner.Geometry is LineGeometry segment)
                                     selectionController.BuildBindingMarkers(underCursor, allowed,
                                         marker.Position == segment.EndPoint ? segment.StartPoint : segment.EndPoint);
-                            zoomPad.Refresh();
+                                else
+                                    selectionController.BuildBindingMarkers(underCursor, allowed, firstMouseDown);
+                            }
+                            zoomPad.Invalidate();
                             return;
                         }
                     }
@@ -632,7 +642,7 @@ namespace PetCAD
                 else
                     selectionController.ClearBindingMarkers();
             }
-            zoomPad.Refresh();
+            zoomPad.Invalidate();
         }
 
         private void zoomPad_MouseUp(object sender, MouseEventArgs e)
